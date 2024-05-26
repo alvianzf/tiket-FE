@@ -1,3 +1,4 @@
+import AppNavbar from "@components/AppNavbar";
 import { ReactNode } from "react"
 
 interface Props {
@@ -6,7 +7,10 @@ interface Props {
 
 const AppLayout = ({ children } : Props) => {
     return (
-        <>{children}</>
+        <>
+            <AppNavbar />
+            {children}
+        </>
     )
 }
 
