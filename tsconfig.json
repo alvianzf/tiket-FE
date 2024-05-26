@@ -13,7 +13,16 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": ["./*"]
+      "@api/*": ["./src/api/*"],
+      "@atoms/*": ["./src/atoms/*"],
+      "@components/*": ["./src/components/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@containers/*": ["./src/containers/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@layouts": ["./src/layouts"],
+      "@queries/*": ["./src/queries/*"],
+      "@interfaces/*": ["./src/types/*"],
+      "@utils/*": ["./src/utils/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
