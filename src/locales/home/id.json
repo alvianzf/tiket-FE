@@ -1,0 +1,9 @@
+{
+    "id" : {
+        "home" : {
+            "airlines_partners": "Mitra Maskapai Penerbangan",
+            "airlines_partners_description": "Mitra Maskapai Domestik & Internasional",
+            "payment_partners": "Mitra Pembayaran"
+        }
+    }
+}

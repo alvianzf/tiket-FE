@@ -3,6 +3,7 @@ import { NextPageWithLayout } from "@interfaces/common";
 import { buildSeoTags } from "@utils/common";
 import Head from "next/head";
 import { AppLayout } from "@layouts";
+import HomeContainer from "@containers/HomeContainer";
 
 const HomePage: NextPageWithLayout = () => {
     const seoTags = useMetaTags({ title: 'HomePage'})
@@ -10,6 +11,7 @@ const HomePage: NextPageWithLayout = () => {
     return (
         <>
             <Head>{buildSeoTags(seoTags)}</Head>
+            <HomeContainer />
         </>
     )
 }
