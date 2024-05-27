@@ -16,3 +16,7 @@ nav > header > ul > li > a {
   color: #4267b2 !important;
   font-weight: 500;
 }
+
+.bg-blue {
+  background: #4267b2;
+}
