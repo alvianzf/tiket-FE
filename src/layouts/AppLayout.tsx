@@ -1,4 +1,5 @@
 import AppNavbar from "@components/AppNavbar";
+import Footer from "@components/Footer";
 import { ReactNode } from "react"
 
 interface Props {
@@ -10,6 +11,7 @@ const AppLayout = ({ children } : Props) => {
         <>
             <AppNavbar />
             {children}
+            <Footer />
         </>
     )
 }

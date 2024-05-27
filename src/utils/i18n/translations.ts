@@ -3,7 +3,8 @@ type LocaleIdFile = { id: Record<string, string> };
 
 const localeGroups = [
     'meta',
-    'home'
+    'home',
+    'footer'
 ];
 
 const localeEnGroups = {};
