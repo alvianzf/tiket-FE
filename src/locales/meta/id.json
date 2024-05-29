@@ -1,7 +1,8 @@
 {
     "id" : {
         "meta" : {
-            "title": "Tiketq"
+            "title": "Tiketq",
+            "ticket_list_title": "Daftar Tiket"
         }
     }
 }

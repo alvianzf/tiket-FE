@@ -1,0 +1,23 @@
+{
+    "id" : {
+        "tickets" : {
+            "filter": "Filter",
+            "highest_price": "Harga Tertinggi",
+            "lowest_price": "Harga Terendah",
+            "best_time": "Waktu Terbaik",
+            "direct": "Langsung",
+            "transit": "Transit %{number}",
+            "luggage": "Bagasi",
+            "non_luggage": "Non-Bagasi",
+            "economy": "Economy",
+            "business_class": "Business Class",
+            "first_class": "First Class",
+            "search": "Search",
+            "price_placeholder": "Pilih Harga",
+            "airline_placeholder": "Pilih Maskapai",
+            "transit_placeholder": "Pilih Transit",
+            "luggage_placeholder": "Pilih Bagasi",
+            "class_placeholder": "Pilih Kelas"
+        }
+    }
+}

@@ -1,7 +1,8 @@
 {
     "en" : {
         "meta" : {
-            "title": "Tiketq"
+            "title": "Tiketq",
+            "ticket_list_title": "Ticket List"
         }
     }
 }

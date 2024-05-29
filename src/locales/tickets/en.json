@@ -1,0 +1,23 @@
+{
+    "en" : {
+        "tickets" : {
+            "filter": "Filter",
+            "highest_price": "Highest Price",
+            "lowest_price": "Lowest Price",
+            "best_time": "Best Time",
+            "direct": "Direct",
+            "transit": "Transit %{number}",
+            "luggage": "Luggage",
+            "non_luggage": "Non-Luggage",
+            "economy": "Economy",
+            "business_class": "Business Class",
+            "first_class": "First Class",
+            "search": "Search",
+            "price_placeholder": "Choose Price",
+            "airline_placeholder": "Choose Airline",
+            "transit_placeholder": "Choose Transit",
+            "luggage_placeholder": "Choose Luggage",
+            "class_placeholder": "Choose Class"
+        }
+    }
+}

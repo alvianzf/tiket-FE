@@ -20,3 +20,13 @@ nav > header > ul > li > a {
 .bg-blue {
   background: #4267b2;
 }
+
+.button-blue {
+  background: #4267b2;
+  color: #fff;
+}
+
+.button-orange {
+  background: #ff5a00;
+  color: #fff;
+}
