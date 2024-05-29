@@ -17,7 +17,9 @@
             "airline_placeholder": "Choose Airline",
             "transit_placeholder": "Choose Transit",
             "luggage_placeholder": "Choose Luggage",
-            "class_placeholder": "Choose Class"
+            "class_placeholder": "Choose Class",
+            "choose": "Pilih",
+            "flight_not_found": "Flight Not Available"
         }
     }
 }

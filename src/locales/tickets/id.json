@@ -17,7 +17,9 @@
             "airline_placeholder": "Pilih Maskapai",
             "transit_placeholder": "Pilih Transit",
             "luggage_placeholder": "Pilih Bagasi",
-            "class_placeholder": "Pilih Kelas"
+            "class_placeholder": "Pilih Kelas",
+            "choose": "Pilih",
+            "flight_not_found": "Penerbangan Tidak Tersedia"
         }
     }
 }

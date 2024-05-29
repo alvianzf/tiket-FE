@@ -1,5 +1,5 @@
 import Button from "@components/Button";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Card, CardBody, Select, SelectItem } from "@nextui-org/react";
 import { useTranslation } from "react-i18next"
 
 const TicketFilter = () => {
@@ -38,76 +38,80 @@ const TicketFilter = () => {
     return (
         <div className="flex flex-col gap-3">
             <p className="font-medium">{t('tickets.filter')}</p>
-            <div className="flex flex-row flex-wrap lg:flex-nowrap md:flex-nowrap gap-3 justify-between">
-                <Select 
-                    placeholder={t('tickets.price_placeholder')}
-                    className="max-w-xs"
-                    variant="bordered"
-                    radius="sm" 
-                >
-                    {pricesData.map((item) => (
-                        <SelectItem key={item.key}>
-                            {item.label}
-                        </SelectItem>
-                        ))
-                    }
-                </Select>
-                <Select 
-                    placeholder={t('tickets.airline_placeholder')}
-                    className="max-w-xs"
-                    variant="bordered"
-                    radius="sm" 
-                >
-                    {airlinesData.map((item) => (
-                        <SelectItem key={item.key}>
-                            {item.label}
-                        </SelectItem>
-                        ))
-                    }
-                </Select>
-                <Select 
-                    placeholder={t('tickets.transit_placeholder')}
-                    className="max-w-xs"
-                    variant="bordered"
-                    radius="sm" 
-                >
-                    {transitsData.map((item) => (
-                        <SelectItem key={item.key}>
-                            {item.label}
-                        </SelectItem>
-                        ))
-                    }
-                </Select>
-                <Select 
-                    placeholder={t('tickets.luggage_placeholder')}
-                    className="max-w-xs"
-                    variant="bordered"
-                    radius="sm" 
-                >
-                    {luggagesData.map((item) => (
-                        <SelectItem key={item.key}>
-                            {item.label}
-                        </SelectItem>
-                        ))
-                    }
-                </Select>
-                <Select 
-                    placeholder={t('tickets.class_placeholder')}
-                    className="max-w-xs"
-                    variant="bordered"
-                    radius="sm" 
-                >
-                    {classesData.map((item) => (
-                        <SelectItem key={item.key}>
-                            {item.label}
-                        </SelectItem>
-                        ))
-                    }
-                </Select>
-                <Button bgColor="blue">
-                    {t('tickets.search')}
-                </Button>
-            </div>
+            <Card>
+                <CardBody>
+                    <div className="flex flex-row flex-wrap lg:flex-nowrap md:flex-nowrap gap-3 justify-between">
+                        <Select 
+                            placeholder={t('tickets.price_placeholder')}
+                            className="max-w-xs"
+                            variant="bordered"
+                            radius="sm" 
+                        >
+                            {pricesData.map((item) => (
+                                <SelectItem key={item.key}>
+                                    {item.label}
+                                </SelectItem>
+                                ))
+                            }
+                        </Select>
+                        <Select 
+                            placeholder={t('tickets.airline_placeholder')}
+                            className="max-w-xs"
+                            variant="bordered"
+                            radius="sm" 
+                        >
+                            {airlinesData.map((item) => (
+                                <SelectItem key={item.key}>
+                                    {item.label}
+                                </SelectItem>
+                                ))
+                            }
+                        </Select>
+                        <Select 
+                            placeholder={t('tickets.transit_placeholder')}
+                            className="max-w-xs"
+                            variant="bordered"
+                            radius="sm" 
+                        >
+                            {transitsData.map((item) => (
+                                <SelectItem key={item.key}>
+                                    {item.label}
+                                </SelectItem>
+                                ))
+                            }
+                        </Select>
+                        <Select 
+                            placeholder={t('tickets.luggage_placeholder')}
+                            className="max-w-xs"
+                            variant="bordered"
+                            radius="sm" 
+                        >
+                            {luggagesData.map((item) => (
+                                <SelectItem key={item.key}>
+                                    {item.label}
+                                </SelectItem>
+                                ))
+                            }
+                        </Select>
+                        <Select 
+                            placeholder={t('tickets.class_placeholder')}
+                            className="max-w-xs"
+                            variant="bordered"
+                            radius="sm" 
+                        >
+                            {classesData.map((item) => (
+                                <SelectItem key={item.key}>
+                                    {item.label}
+                                </SelectItem>
+                                ))
+                            }
+                        </Select>
+                        <Button bgColor="blue">
+                            {t('tickets.search')}
+                        </Button>
+                    </div>
+                </CardBody>
+            </Card>
         </div>
     )
 }

@@ -13,8 +13,10 @@ const Button = ({ children, bgColor, ...restProps} : Props) => {
         [bgColor]
     );
 
+    const baseClassNames = [classNames, restProps.className].join(" ");
+
     return (
-        <BaseButton color="default" {...restProps} className={classNames}>
+        <BaseButton color="default" {...restProps} className={baseClassNames}>
             {children}
         </BaseButton>
     )
