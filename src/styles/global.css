@@ -4,7 +4,6 @@
 
 nav > header {
   background: #4267b2;
-  border-radius: 0px 0px 10px 10px;
 }
 
 nav > header > ul > li > a {
@@ -48,4 +47,9 @@ nav > header > ul > li > a {
   padding: 2px 5px;
   font-weight: 500;
   color: #057532;
+}
+
+.home-app {
+  background: url("/images/bg-image.jpg");
+  background-size: cover;
 }

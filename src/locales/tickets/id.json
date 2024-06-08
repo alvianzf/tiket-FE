@@ -10,6 +10,7 @@
             "luggage": "Bagasi",
             "non_luggage": "Non-Bagasi",
             "economy": "Economy",
+            "premium_economy": "Premium Economy",
             "business_class": "Business Class",
             "first_class": "First Class",
             "search": "Search",
@@ -19,7 +20,22 @@
             "luggage_placeholder": "Pilih Bagasi",
             "class_placeholder": "Pilih Kelas",
             "choose": "Pilih",
-            "flight_not_found": "Penerbangan Tidak Tersedia"
+            "flight_not_found": "Penerbangan Tidak Tersedia",
+            "from": "Dari",
+            "from_placeholder": "Cari",
+            "to": "Tujuan",
+            "to_placeholder": "Cari",
+            "no_of_passengers": "Jumlah Penumpang",
+            "departured_date": "Tanggal Keberangkatan",
+            "set_class": "Atur Kelas",
+            "adult": "Dewasa",
+            "adult_desc": "( 12 tahun ke atas )",
+            "child": "Anak",
+            "child_desc": "( 2 - 11 tahun )",
+            "infant": "Balita",
+            "infant_desc": "( dibawah 2 tahun )",
+            "popular_city": "Kota Populer",
+            "done": "Selesai"
         }
     }
 }

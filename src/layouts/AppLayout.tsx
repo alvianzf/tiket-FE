@@ -9,7 +9,9 @@ interface Props {
 const AppLayout = ({ children } : Props) => {
     return (
         <>
-            <AppNavbar />
+            <div className="bg-blue flex flex-row justify-center">
+                <AppNavbar />
+            </div>
             {children}
             <Footer />
         </>

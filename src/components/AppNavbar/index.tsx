@@ -4,7 +4,9 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@ne
 const AppNavbar = () => {
 
     return (
-        <Navbar>
+        <Navbar isBlurred={false} maxWidth="xl" classNames={{
+            base: "bg-transparent"
+        }}>
             <NavbarBrand>
                 <Logo />
             </NavbarBrand>
