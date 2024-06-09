@@ -38,7 +38,11 @@
             "insurance": "Asuransi",
             "mr": "Tuan.",
             "mrs": "Nyonya.",
-            "ms": "Nona."
+            "ms": "Nona.",
+            "back": "Kembali",
+            "confirm_order": "Konfirmasi Pesanan",
+            "confirm_order_desc": "Pastikan data penumpang telah terisi dengan benar dan sesuai dengan kartu identitas",
+            "cancel": "Batal"
         }
     }
 }
