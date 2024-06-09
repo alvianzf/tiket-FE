@@ -35,7 +35,10 @@
             "payment_failed": "Pembayaran gagal",
             "person": "Orang %{number}",
             "order_summary": "Rincian Pesanan",
-            "insurance": "Asuransi"
+            "insurance": "Asuransi",
+            "mr": "Tuan.",
+            "mrs": "Nyonya.",
+            "ms": "Nona."
         }
     }
 }

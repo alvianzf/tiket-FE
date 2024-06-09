@@ -35,7 +35,10 @@
             "payment_failed": "Payment Failed",
             "person": "Person %{number}",
             "order_summary": "Order Summary",
-            "insurance": "Insurance"
+            "insurance": "Insurance",
+            "mr": "Mr.",
+            "mrs": "Mrs.",
+            "ms": "Ms."
         }
     }
 }
