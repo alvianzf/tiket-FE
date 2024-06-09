@@ -2,7 +2,7 @@
     "en" : {
         "meta" : {
             "title": "Tiketq",
-            "ticket_list_title": "Ticket List"
+            "flight_list_title": "Flight List"
         }
     }
 }

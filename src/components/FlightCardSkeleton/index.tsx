@@ -1,6 +1,6 @@
 import { Card, Skeleton  } from "@nextui-org/react";
 
-const TicketCardSkeleton = () => {
+const FlightCardSkeleton = () => {
 
     return (
         <Card className="w-full">
@@ -11,4 +11,4 @@ const TicketCardSkeleton = () => {
     )
 }
 
-export default TicketCardSkeleton
+export default FlightCardSkeleton

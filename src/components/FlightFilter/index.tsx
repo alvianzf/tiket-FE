@@ -2,7 +2,7 @@ import Button from "@components/Button";
 import { Card, CardBody, Select, SelectItem } from "@nextui-org/react";
 import { useTranslation } from "react-i18next"
 
-const TicketFilter = () => {
+const FlightFilter = () => {
     const { t } = useTranslation();
 
     const pricesData = [
@@ -116,4 +116,4 @@ const TicketFilter = () => {
     )
 }
 
-export default TicketFilter
+export default FlightFilter

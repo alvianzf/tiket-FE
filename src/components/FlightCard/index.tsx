@@ -1,10 +1,14 @@
+import { Flight } from "@api/findFlights/types";
 import Button from "@components/Button";
-import LionAir from "@icons/LionAir";
-import { Card, CardBody, Select, SelectItem } from "@nextui-org/react";
+import { Card, CardBody, Image, Select, SelectItem } from "@nextui-org/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-const TicketCard = () => {
+interface Props {
+    flight: Flight;
+}
+
+const FlightCard = ({ flight } : Props) => {
 
     const { t } = useTranslation();
     const [extended, setExtended] = useState<boolean>(false);
@@ -24,32 +28,34 @@ const TicketCard = () => {
             <CardBody onClick={handleExtended}>
                 <div className="flex flex-col gap-8 flex-wrap lg:flex-nowrap md:flex-nowrap">
                     <div className="flex flex-row justify-between gap-5 items-center">
-                        <LionAir width={80} height={80}/>
+                        <Image src={flight.flight_image} alt={flight.flight_code} width={80} height={80}/>
                         <div className="flex flex-col gap-3">
-                            <p className="text-xl font-medium">{'Lion Air'}</p>
+                            <p className="text-xl font-medium">{`${flight.flight} (${flight.flight_code})`}</p>
                             <div className="flex flex-row gap-3">
                                 <div className="luggage-badge">
-                                    <p className="text-sm">{'20 kg'}</p>
+                                    <p className="text-sm">{flight.flight_baggage}</p>
                                 </div>
                                 <div className="luggage-reschedule">
                                     <p className="text-sm">{'Reschedule'}</p>
                                 </div>
                             </div>
-                            <p className="text-xl text-orange font-medium">{'Rp 1.920.000 / Org'}</p>
+                            <p className="text-xl text-orange font-medium">
+                                {`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(parseInt(flight.flight_price))} / Org`}
+                            </p>
                         </div>
                         <div className="flex flex-row gap-3 items-center">
                             <div className="flex flex-col text-center">
                                 <p className="font-medium text-2xl">{'08.25'}</p>
-                                <p className="text-lg text-gray-400">{'BTH'}</p>
+                                <p className="text-lg text-gray-400">{flight.flight_from}</p>
                             </div>
                             <div className="flex flex-col text-center">
-                                <p className="text-sm text-gray-400">{'1j 35m'}</p>
+                                <p className="text-sm text-gray-400">{flight.flight_duration}</p>
                                 <hr />
-                                <p className="text-sm text-gray-400">{'Langsung'}</p>
+                                <p className="text-sm text-gray-400">{flight.flight_transit}</p>
                             </div>
                             <div className="flex flex-col text-center">
                                 <p className="font-medium text-2xl">{'10.00'}</p>
-                                <p className="text-lg text-gray-400">{'CGK'}</p>
+                                <p className="text-lg text-gray-400">{flight.flight_to}</p>
                             </div>
                         </div>
                         <Button bgColor={"orange"} className="min-w-40">
@@ -104,4 +110,4 @@ const TicketCard = () => {
     )
 }
 
-export default TicketCard
+export default FlightCard

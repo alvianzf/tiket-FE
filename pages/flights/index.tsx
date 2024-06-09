@@ -4,21 +4,21 @@ import { buildSeoTags } from "@utils/common";
 import Head from "next/head";
 import { AppLayout } from "@layouts";
 import { useTranslation } from "react-i18next";
-import TicketListContainer from "@containers/TicketListContainer";
+import FlightListContainer from "@containers/FlightListContainer";
 
-const TicketListPage: NextPageWithLayout = () => {
+const FlightListPage: NextPageWithLayout = () => {
     const { t } = useTranslation();
-    const seoTags = useMetaTags({ title: t('meta.ticket_list_title') })
+    const seoTags = useMetaTags({ title: t('meta.flight_list_title') })
 
     return (
         <>
             <Head>{buildSeoTags(seoTags)}</Head>
-            <TicketListContainer />
+            <FlightListContainer />
         </>
     )
 }
 
-TicketListPage.getLayout = (page) => {
+FlightListPage.getLayout = (page) => {
     return (
         <AppLayout>
             {page}
@@ -26,4 +26,4 @@ TicketListPage.getLayout = (page) => {
     )
 }
 
-export default TicketListPage
+export default FlightListPage

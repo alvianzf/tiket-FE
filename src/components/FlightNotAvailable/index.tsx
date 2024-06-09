@@ -1,7 +1,7 @@
 import { Image } from "@nextui-org/react"
 import { useTranslation } from "react-i18next"
 
-const TicketNotAvailable = () => {
+const FlightNotAvailable = () => {
 
     const { t } = useTranslation();
 
@@ -13,4 +13,4 @@ const TicketNotAvailable = () => {
     )
 }
 
-export default TicketNotAvailable
+export default FlightNotAvailable

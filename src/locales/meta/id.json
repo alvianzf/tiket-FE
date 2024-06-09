@@ -2,7 +2,7 @@
     "id" : {
         "meta" : {
             "title": "Tiketq",
-            "ticket_list_title": "Daftar Tiket"
+            "flight_list_title": "Daftar Penerbangan"
         }
     }
 }
