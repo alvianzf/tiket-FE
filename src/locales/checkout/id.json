@@ -45,7 +45,8 @@
             "cancel": "Batal",
             "flight_detail": "Detail Penerbangan",
             "passenger_detail": "Detail Penumpang",
-            "copy": "Copy"
+            "copy": "Copy",
+            "get_eticket": "Ambil E-Ticket"
         }
     }
 }

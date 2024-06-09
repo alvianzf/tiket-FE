@@ -45,7 +45,8 @@
             "cancel": "Cancel",
             "flight_detail": "Flight Detail",
             "passenger_detail": "Passenger Detail",
-            "copy": "Copy"
+            "copy": "Copy",
+            "get_eticket": "Get E-Ticket"
         }
     }
 }

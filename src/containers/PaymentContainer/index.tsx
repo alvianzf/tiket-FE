@@ -1,4 +1,4 @@
-import { PaymentConfirmation, PaymentForm, PaymentSummary, PaymentWaiting } from "@components/Payment";
+import { PaymentConfirmation, PaymentForm, PaymentSuccess, PaymentSummary, PaymentWaiting } from "@components/Payment";
 import { useState } from "react";
 import { useTranslation } from "react-i18next"
 
@@ -37,6 +37,9 @@ const PaymentContainer = () => {
                             )}
                             {step === 'confirmation' && (
                                 <PaymentConfirmation handleCompletePayment={handleCompletePayment} />
+                            )}
+                            {step === 'success' && (
+                                <PaymentSuccess />
                             )}
                         </div>
                         <div className="w-[100%] md:w-[36%] lg:w-[36%]">
