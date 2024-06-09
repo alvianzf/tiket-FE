@@ -1,11 +1,9 @@
-import CheckoutTab from "./CheckoutTab"
+import CheckoutOrder from "./CheckoutOrder";
 
 const Checkout = () => {
 
     return (
-        <div className="flex flex-col">
-            <CheckoutTab />
-        </div>
+        <CheckoutOrder />
     )
 }
 

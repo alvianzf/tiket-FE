@@ -32,7 +32,10 @@
             "upload": "Upload",
             "payment_received": "Payment Received",
             "thankyou_for_your_payment": "Thank You For Your Payment",
-            "payment_failed": "Payment Failed"
+            "payment_failed": "Payment Failed",
+            "person": "Person %{number}",
+            "order_summary": "Order Summary",
+            "insurance": "Insurance"
         }
     }
 }

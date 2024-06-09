@@ -8,7 +8,7 @@ import CheckoutContainer from "@containers/CheckoutContainer";
 
 const CheckoutPage: NextPageWithLayout = () => {
     const { t } = useTranslation();
-    const seoTags = useMetaTags({ title: t('meta.ticket_list_title') })
+    const seoTags = useMetaTags({ title: t('meta.checkout_title') })
 
     return (
         <>

@@ -1,7 +1,41 @@
 {
     "id" : {
         "checkout" : {
-            
+            "order": "Pemesanan",
+            "review": "Review Pemesanan",
+            "payment": "Pembayaran",
+            "eticket": "E-Ticket",
+            "order_section_title": "Data Pesanan",
+            "order_section_description": "Data Pesanan ( Untuk E-Ticket / Voucher )",
+            "name_middle_name": "Nama Awal & Nama Tengah (Jika Ada)",
+            "last_name": "Nama Akhir",
+            "phone_no": "Nomor Telepon",
+            "detail_traveler": "Detail Traveler",
+            "email": "Email",
+            "date_of_birth": "Tanggal Lahir",
+            "continue": "Lanjut",
+            "save": "Simpan",
+            "continue_payment": "Lanjut ke Pembayaran",
+            "change_details": "Ubah Detail",
+            "choose_payment": "Pilih Pembayaran",
+            "order_no": "No Pemesanan %{no}",
+            "total": "Total",
+            "payment_instruction": "Petunjuk Pembayaran",
+            "account_number": "Nomor akun",
+            "recipient_name": "Nama Penerima",
+            "transfer_amount": "Jumlah transfer",
+            "have_you_pay_yet": "Apakah Anda sudah membayar?",
+            "already_payment": "Sudah Bayar",
+            "once_payment_description": "Setelah pembayaran Anda dikonfirmasi, kami akan mengirimkan E-Ticket ke alamat email Anda",
+            "waiting_payment_verification": "Menunggu Verifikasi Pembayaran",
+            "upload_description": "Silakan upload bukti pembayaran Anda untuk mempercepat proses verifikasi pembayaran",
+            "upload": "Upload",
+            "payment_received": "Pembayaran diterima",
+            "thankyou_for_your_payment": "Terima kasih atas pembayaran Anda",
+            "payment_failed": "Pembayaran gagal",
+            "person": "Orang %{number}",
+            "order_summary": "Rincian Pesanan",
+            "insurance": "Asuransi"
         }
     }
 }

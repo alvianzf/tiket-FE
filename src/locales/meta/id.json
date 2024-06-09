@@ -2,7 +2,8 @@
     "id" : {
         "meta" : {
             "title": "Tiketq",
-            "flight_list_title": "Daftar Penerbangan"
+            "flight_list_title": "Daftar Penerbangan",
+            "checkout_title": "Pemesanan"
         }
     }
 }

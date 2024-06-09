@@ -8,7 +8,7 @@ const Footer = () => {
 
     return (
         <div className="flex justify-center my-10">
-            <div className="flex flex-col w-full gap-8 max-w-[1024px]">
+            <div className="flex flex-col w-full gap-8 px-5 max-w-[1024px]">
                 <div className="flex flex-row flex-wrap justify-between">
                     <div className="flex flex-col lg:w-3/12 md:w-2/16 gap-3 sm:w-full w-full">
                         <p className="font-bold">{t('footer.contact_us')}</p>
