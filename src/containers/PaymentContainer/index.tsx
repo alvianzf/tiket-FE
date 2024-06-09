@@ -1,4 +1,4 @@
-import { PaymentForm, PaymentSummary, PaymentWaiting } from "@components/Payment";
+import { PaymentConfirmation, PaymentForm, PaymentSummary, PaymentWaiting } from "@components/Payment";
 import { useState } from "react";
 import { useTranslation } from "react-i18next"
 
@@ -18,6 +18,10 @@ const PaymentContainer = () => {
         setSteps('confirmation');
     }
 
+    const handleCompletePayment = () => {
+        setSteps('success');
+    }
+
     return (
         <div className="flex flex-wrap justify-center my-10">
             <div className="flex flex-col gap-8 w-full px-5 max-w-[1024px]">
@@ -30,6 +34,9 @@ const PaymentContainer = () => {
                             )}
                             {step === 'waiting' && (
                                 <PaymentWaiting handleAlreadyPayment={handleAlreadyPayment} />
+                            )}
+                            {step === 'confirmation' && (
+                                <PaymentConfirmation handleCompletePayment={handleCompletePayment} />
                             )}
                         </div>
                         <div className="w-[100%] md:w-[36%] lg:w-[36%]">
