@@ -28,7 +28,9 @@ const FlightCard = ({ flight } : Props) => {
             <CardBody onClick={handleExtended}>
                 <div className="flex flex-col gap-8 flex-wrap lg:flex-nowrap md:flex-nowrap">
                     <div className="flex flex-row justify-between gap-5 items-center">
-                        <Image src={flight.flight_image} alt={flight.flight_code} width={80} height={80}/>
+                        <div className="w-[80px]">
+                            <Image src={flight.flight_image} alt={flight.flight_code} width={80} height={80}/>
+                        </div>
                         <div className="flex flex-col gap-3">
                             <p className="text-xl font-medium">{`${flight.flight} (${flight.flight_code})`}</p>
                             <div className="flex flex-row gap-3">
