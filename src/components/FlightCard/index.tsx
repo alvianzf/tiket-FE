@@ -23,6 +23,14 @@ const FlightCard = ({ flight } : Props) => {
         { key: 'first_class', label: t('tickets.first_class') },
     ];
 
+    const dateTimeArr = flight.flight_datetime.split(' ');
+
+    const cityCodeArr = flight.flight_detailroute?.[0].route_city_code.split('|');
+    const cityNameArr = flight.flight_detailroute?.[0].route_city_name.split('|');
+    const airportArr = flight.flight_detailroute?.[0].route_airport.split('|');
+    const timeArr = flight.flight_detailroute?.[0].route_time.split('|');
+    const flightCodeArr = flight.flight_code.split(',');
+
     return (
         <Card className="px-4 flex flex-wrap lg:flex-nowrap md:flex-nowrap">
             <CardBody onClick={handleExtended}>
@@ -47,7 +55,7 @@ const FlightCard = ({ flight } : Props) => {
                         </div>
                         <div className="flex flex-row gap-3 items-center">
                             <div className="flex flex-col text-center">
-                                <p className="font-medium text-2xl">{'08.25'}</p>
+                                <p className="font-medium text-2xl">{dateTimeArr?.[0]}</p>
                                 <p className="text-lg text-gray-400">{flight.flight_from}</p>
                             </div>
                             <div className="flex flex-col text-center">
@@ -56,7 +64,7 @@ const FlightCard = ({ flight } : Props) => {
                                 <p className="text-sm text-gray-400">{flight.flight_transit}</p>
                             </div>
                             <div className="flex flex-col text-center">
-                                <p className="font-medium text-2xl">{'10.00'}</p>
+                                <p className="font-medium text-2xl">{dateTimeArr?.[2]}</p>
                                 <p className="text-lg text-gray-400">{flight.flight_to}</p>
                             </div>
                         </div>
@@ -66,29 +74,42 @@ const FlightCard = ({ flight } : Props) => {
                     </div>
                     {extended && (
                         <div className="flex flex-row justify-between items-start">
-                            <div className="flex flex-col gap-8">
-                                <div className="flex flex-row gap-20">
-                                    <p className="text-lg font-medium">{'08.25'}</p>
-                                    <div className="flex flex-col">
-                                        <p className="text-lg font-medium">{'Batam (BTH)'}</p>
-                                        <p className="text-gray-400">{'Hang Nadim'}</p>
+                            <div className="flex flex-col gap-5">
+                                {cityCodeArr?.map((cityCode, index) => {
+                                    const splitCityCode = cityCode.split('~');
+                                    const splitCityName = cityNameArr?.[index]?.split('~');
+                                    const splitAirportName = airportArr?.[index]?.split('~');
+                                    const splitTime = timeArr?.[index]?.split('~');
+
+                                    return (
+                                    <div className="flex flex-col gap-8">
+                                        <div className="flex flex-row gap-20">
+                                            <p className="text-lg font-medium">{splitTime?.[0]}</p>
+                                            <div className="flex flex-col">
+                                                <p className="text-lg font-medium">{`${splitCityName?.[0]} (${splitCityCode?.[0]})`}</p>
+                                                <p className="text-gray-400">{splitAirportName?.[0]}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-row gap-20">
+                                            <p className="text-gray-400 w-[40px]">{}</p>
+                                            <div className="flex flex-col">
+                                                <p className="text-lg font-medium">{flightCodeArr?.[index]}</p>
+                                                {/* <p>{'Airbus A320'}</p> */}
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-row gap-20">
+                                            <p className="text-lg font-medium">{splitTime?.[1]}</p>
+                                            <div className="flex flex-col">
+                                                <p className="text-lg font-medium">{`${splitCityName?.[1]} (${splitCityCode?.[1]})`}</p>
+                                                <p className="text-gray-400">{splitAirportName?.[1]}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-row gap-20">
-                                    <p className="text-gray-400">{'1j 35m'}</p>
-                                    <div className="flex flex-col">
-                                        <p className="text-lg font-medium">{'QG-945'}</p>
-                                        <p>{'Airbus A320'}</p>
-                                    </div>
-                                </div>
-                                <div className="flex flex-row gap-20">
-                                    <p className="text-lg font-medium">{'10.00'}</p>
-                                    <div className="flex flex-col">
-                                        <p className="text-lg font-medium">{'Jakarta (CGK)'}</p>
-                                        <p className="text-gray-400">{'Soekarno Hatta Internation Airport'}</p>
-                                    </div>
-                                </div>
+                                    )
+                                })}
+                                
                             </div>
+                            
                             <Select 
                                 placeholder={t('tickets.class_placeholder')}
                                 className="max-w-xs"

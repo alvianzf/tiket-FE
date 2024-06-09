@@ -26,4 +26,14 @@ export interface Flight {
     flight_seatavail: string;
     flight_baggage: string;
     flight_facilities: string;
+    flight_detailroute: FlightDetail[];
+}
+
+interface FlightDetail {
+    route_airport: string;
+    route_city_code: string;
+    route_city_name: string;
+    route_date: string;
+    route_duration_stop: string;
+    route_time: string;
 }

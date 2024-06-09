@@ -14,15 +14,17 @@ const FlightListContainer = () => {
     const from = query?.from as unknown as string;
     const to = query?.to as unknown as string;
     const date = query?.date as unknown as DateIndoFormat;
+    const adult = query?.adult as unknown as string;
+    const child = query?.child as unknown as string;
+    const infant = query?.infant as unknown as string;
 
-    useEffect(
-        () => {
-            if(isReady && !from && !to && !date) {
-                push('/');
-            }
-        },
-        [isReady, from, to, date]
-    )
+    useEffect(() => {
+        if (!isReady) return;
+
+        if (!from || !to || !date || !adult || !child || !infant) {
+            push('/');
+        }
+    }, [isReady, from, to, date, adult, child, infant, push]);
 
     const { data, isFetching } = useQueryFindFlights({
         request: {
@@ -30,7 +32,7 @@ const FlightListContainer = () => {
             to,
             date
         },
-        enabled: (!!from && !!to && !!date && isReady)
+        enabled: (!!from && !!to && !!date && isReady && !!adult && !!child && !!infant)
     });
 
     return (
@@ -39,8 +41,8 @@ const FlightListContainer = () => {
                 <FlightFilter />
                 <div className="flex flex-col gap-4">
                     {!isFetching && data && data?.length > 0 && (
-                        data?.map((flight) => (
-                            <FlightCard flight={flight} key={flight.flight_id}/>
+                        data?.map((flight, index) => (
+                            <FlightCard flight={flight} key={index}/>
                         ))
                     )}
                     {isFetching && (
