@@ -42,7 +42,9 @@
             "back": "Kembali",
             "confirm_order": "Konfirmasi Pesanan",
             "confirm_order_desc": "Pastikan data penumpang telah terisi dengan benar dan sesuai dengan kartu identitas",
-            "cancel": "Batal"
+            "cancel": "Batal",
+            "flight_detail": "Detail Penerbangan",
+            "passenger_detail": "Detail Penumpang"
         }
     }
 }

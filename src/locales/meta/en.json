@@ -3,7 +3,8 @@
         "meta" : {
             "title": "Tiketq",
             "flight_list_title": "Flight List",
-            "checkout_title": "Checkout"
+            "checkout_title": "Checkout",
+            "checkout_payment_title": "Payment"
         }
     }
 }

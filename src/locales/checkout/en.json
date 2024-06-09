@@ -42,7 +42,9 @@
             "back": "Back",
             "confirm_order": "Confirm Order",
             "confirm_order_desc": "Make sure the passenger data has been filled in correctly and matches the identity card",
-            "cancel": "Cancel"
+            "cancel": "Cancel",
+            "flight_detail": "Flight Detail",
+            "passenger_detail": "Passenger Detail"
         }
     }
 }
