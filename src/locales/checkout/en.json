@@ -46,7 +46,8 @@
             "flight_detail": "Flight Detail",
             "passenger_detail": "Passenger Detail",
             "copy": "Copy",
-            "get_eticket": "Get E-Ticket"
+            "get_eticket": "Get E-Ticket",
+            "home": "Home"
         }
     }
 }

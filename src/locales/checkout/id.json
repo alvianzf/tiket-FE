@@ -46,7 +46,8 @@
             "flight_detail": "Detail Penerbangan",
             "passenger_detail": "Detail Penumpang",
             "copy": "Copy",
-            "get_eticket": "Ambil E-Ticket"
+            "get_eticket": "Ambil E-Ticket",
+            "home": "Home"
         }
     }
 }
