@@ -25,7 +25,13 @@
             "city_of_residence": "City of Residence",
             "male": "Male",
             "female": "Female",
-            "choose_gender": "Choose Gender"
+            "choose_gender": "Choose Gender",
+            "email_or_phone": "Email / Phone No.",
+            "email_or_phone_placeholder": "Enter your email or phone number",
+            "password": "Password",
+            "register": "Register",
+            "login": "Login",
+            "forgot_password": "Forgot Password?"
         }
     }
 }

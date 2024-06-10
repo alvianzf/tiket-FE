@@ -25,7 +25,13 @@
             "city_of_residence": "Kota Tempat Tinggal",
             "male": "Pria",
             "female": "Wanita",
-            "choose_gender": "Pilih Jenis Kelamin"
+            "choose_gender": "Pilih Jenis Kelamin",
+            "email_or_phone": "Email / No. Handphone",
+            "email_or_phone_placeholder": "Masukan email atau nomor handphone mu",
+            "password": "Password",
+            "register": "Daftar",
+            "login": "Masuk",
+            "forgot_password": "Lupa Password?"
         }
     }
 }
