@@ -6,11 +6,15 @@ import IconReceipt from "@icons/IconReceipt";
 import Logo from "@icons/Logo";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button, Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, DropdownTrigger, DropdownMenu, Dropdown, DropdownItem} from "@nextui-org/react";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import ReactCountryFlag from "react-country-flag";
 import { useTranslation } from "react-i18next";
 
 const AppNavbar = () => {
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+
+    const [language, setLanguage] = useState<'id' | 'en'>('id');
 
     const { isOpen: isOpenLogin, onOpen: onOpenLogin, onOpenChange: onOpenChangeLogin } = useDisclosure();
 
@@ -18,16 +22,69 @@ const AppNavbar = () => {
 
     const { push } = useRouter();
 
+    const onHandleChangeLanguage = (lang: 'id' | 'en') => {
+        i18n.changeLanguage(lang)
+        setLanguage(lang)
+    }
 
     return (
         <>
             <Navbar isBlurred={false} maxWidth="xl" classNames={{
-                base: "bg-transparent"
+                base: "bg-transparent",
+                content: "gap-1"
             }}>
                 <NavbarBrand>
                     <Logo />
                 </NavbarBrand>
                 <NavbarContent justify="end">
+                    <Dropdown className="w-fit min-w-fit">
+                        <NavbarItem>
+                            <DropdownTrigger>
+                                <Button
+                                    disableRipple
+                                    className="bg-transparent data-[hover=true]:bg-transparent text-white min-w-fit"                   
+                                    radius="sm"
+                                    variant="light"
+                                >
+                                    {language === 'id' ? 
+                                        (
+                                            <ReactCountryFlag countryCode="ID" svg/>
+                                        ) : (
+                                            <ReactCountryFlag countryCode="US" svg/>
+                                        )
+                                    }
+                                </Button>
+                            </DropdownTrigger>
+                        </NavbarItem>
+                        <DropdownMenu
+                            aria-label="ACME features"
+                            className="w-fit"
+                            itemClasses={{
+                                base: "gap-2",
+                            }}
+                        >
+                            {language === 'id' ? 
+                                (
+                                    <DropdownItem
+                                        key="en"
+                                        onClick={() => onHandleChangeLanguage('en')}
+                                        startContent={<ReactCountryFlag countryCode="US" svg/>}
+                                    >
+                                        {'EN'}
+                                    </DropdownItem>
+                                ) : (
+                                    <DropdownItem
+                                        key="id"
+                                        onClick={() => onHandleChangeLanguage('id')}
+                                        startContent={<ReactCountryFlag countryCode="ID" svg/>}
+                                    >
+                                        {'ID'}
+                                    </DropdownItem>
+                                )
+                            }
+                            
+                        </DropdownMenu>
+                    </Dropdown>
                     <NavbarItem className="lg:flex">
                         <Button variant="light" className="text-white" onClick={onOpenLogin}>
                             {t('profile.login')}
@@ -43,8 +100,7 @@ const AppNavbar = () => {
                             <DropdownTrigger>
                                 <Button
                                     disableRipple
-                                    className="p-0 bg-transparent data-[hover=true]:bg-transparent text-white"
-                                    
+                                    className="bg-transparent data-[hover=true]:bg-transparent text-white min-w-fit"                   
                                     radius="sm"
                                     variant="light"
                                 >
