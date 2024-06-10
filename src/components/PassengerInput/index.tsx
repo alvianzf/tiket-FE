@@ -50,13 +50,9 @@ const PassengerInput = () => {
     const handleClose = () => setOpen(false);
     
     return (
-        <div className="w-full relative">
+        <div className="w-full flex flex-col gap-2">
+            <p className="font-medium">{t('tickets.no_of_passengers')}</p>
             <Input type="string" 
-                classNames={{
-                    label: "font-medium"
-                }} 
-                labelPlacement="outside" 
-                label={t('tickets.no_of_passengers')} 
                 placeholder={`${adultTotal} ${t('tickets.adult')}, ${childTotal} ${t('tickets.child')}, ${infantTotal} ${t('tickets.infant')}`} 
                 variant="underlined"
                 readOnly

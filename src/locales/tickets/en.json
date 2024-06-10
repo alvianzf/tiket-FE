@@ -35,7 +35,8 @@
             "infant": "Infant",
             "infant_desc": "( under 2 y.o )",
             "popular_city": "Popular City",
-            "done": "Done"
+            "done": "Done",
+            "passenger": "%{count} Passenger"
         }
     }
 }

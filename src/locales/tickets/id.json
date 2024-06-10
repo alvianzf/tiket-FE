@@ -35,7 +35,8 @@
             "infant": "Balita",
             "infant_desc": "( dibawah 2 tahun )",
             "popular_city": "Kota Populer",
-            "done": "Selesai"
+            "done": "Selesai",
+            "passenger": "%{count} Penumpang"
         }
     }
 }
