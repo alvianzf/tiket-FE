@@ -1,11 +1,11 @@
 import LoginForm from "@components/LoginForm";
 import RegisterForm from "@components/RegisterForm";
-import IconLogout from "@icons/IconLogout";
-import IconProfile from "@icons/IconProfile";
-import IconReceipt from "@icons/IconReceipt";
+// import IconLogout from "@icons/IconLogout";
+// import IconProfile from "@icons/IconProfile";
+// import IconReceipt from "@icons/IconReceipt";
 import Logo from "@icons/Logo";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button, Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, DropdownTrigger, DropdownMenu, Dropdown, DropdownItem} from "@nextui-org/react";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
 import { useTranslation } from "react-i18next";
@@ -20,7 +20,7 @@ const AppNavbar = () => {
 
     const { isOpen: isOpenRegister, onOpen: onOpenRegister, onOpenChange: onOpenChangeRegister } = useDisclosure();
 
-    const { push } = useRouter();
+    // const { push } = useRouter();
 
     const onHandleChangeLanguage = (lang: 'id' | 'en') => {
         i18n.changeLanguage(lang)
@@ -95,7 +95,7 @@ const AppNavbar = () => {
                             {t('profile.register')}
                         </Button>
                     </NavbarItem>
-                    <Dropdown className="w-fit min-w-fit">
+                    {/* <Dropdown className="w-fit min-w-fit">
                         <NavbarItem>
                             <DropdownTrigger>
                                 <Button
@@ -143,7 +143,7 @@ const AppNavbar = () => {
                                 {t('profile.logout')}
                             </DropdownItem>
                         </DropdownMenu>
-                    </Dropdown>
+                    </Dropdown> */}
                 </NavbarContent>
             </Navbar>
 
