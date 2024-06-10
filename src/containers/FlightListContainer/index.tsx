@@ -47,12 +47,31 @@ const FlightListContainer = () => {
         request: {
             from: from?.split('-')?.[1],
             to: to?.split('-')?.[1],
-            date
+            date,
+            adult: parseInt(adult),
+            child: parseInt(child),
+            infant: parseInt(infant),
         },
         enabled: (!!from && !!to && !!date && isReady && !!adult && !!child && !!infant && !!classParams)
     });
 
-    const totalPassenger = parseInt(adult) + parseInt(child) + parseInt(infant)
+    const totalPassenger = parseInt(adult) + parseInt(child) + parseInt(infant);
+
+    const handleSelect = (flightCode: string) => () => {
+        push({
+            pathname: '/checkout',
+            query: {
+                from,
+                to,
+                date,
+                adult,
+                child,
+                infant,
+                class: classParams,
+                code: flightCode
+            }
+        });
+    }
 
     return (
         <>
@@ -95,7 +114,7 @@ const FlightListContainer = () => {
                     <div className="flex flex-col gap-4">
                         {!isFetching && data && data?.length > 0 && (
                             data?.map((flight, index) => (
-                                <FlightCard flight={flight} key={index}/>
+                                <FlightCard flight={flight} key={index} handleSelect={handleSelect}/>
                             ))
                         )}
                         {isFetching && (

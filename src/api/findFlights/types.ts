@@ -4,6 +4,9 @@ export interface FindFlightsRequest {
     from: string;
     to: string;
     date: string;
+    adult: number;
+    child: number;
+    infant: number;
 }
 
 export type FindFlightsResponse = Flight[];

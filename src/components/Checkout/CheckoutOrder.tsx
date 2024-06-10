@@ -2,12 +2,15 @@ import { Card, CardBody, CardHeader, DatePicker, Divider, Input, Select, SelectI
 import { useTranslation } from "react-i18next"
 import CheckoutOrderSummary from "./CheckoutOrderSummary"
 import Button from "@components/Button";
+import { FindPrice } from "@api/findPrice/types";
 
 interface Props {
     handleSelectTab: () => void;
+    flightPrice?: FindPrice;
+    isLoading: boolean;
 }
 
-const CheckoutOrder = ({ handleSelectTab }: Props) => {
+const CheckoutOrder = ({ handleSelectTab, isLoading, flightPrice }: Props) => {
 
     const { t } = useTranslation();
 
@@ -141,10 +144,10 @@ const CheckoutOrder = ({ handleSelectTab }: Props) => {
                     </div>
                 </div>
                 <div className="w-[100%] md:w-[36%] lg:w-[36%]">
-                    <CheckoutOrderSummary />
+                    <CheckoutOrderSummary flightPrice={flightPrice} isLoading={isLoading}/>
                 </div>
             </div>
-            <Button bgColor={"orange"} className="min-w-40" onClick={handleSelectTab}>
+            <Button bgColor={"orange"} className="min-w-40" onClick={handleSelectTab} disabled={isLoading} isLoading={isLoading}>
                 {t('checkout.continue')}
             </Button>
         </div>

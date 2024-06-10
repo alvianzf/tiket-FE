@@ -3,10 +3,16 @@ import { useTranslation } from "react-i18next"
 import CheckoutOrder from "./CheckoutOrder";
 import { useState } from "react";
 import CheckoutOrderReview from "./CheckoutOrderReview";
+import { FindPrice } from "@api/findPrice/types";
 
 export type Key = string | number;
 
-const Checkout = () => {
+interface Props {
+    flightPrice?: FindPrice;
+    isLoading: boolean;
+}
+
+const Checkout = ({ flightPrice, isLoading }: Props) => {
 
     const { t } = useTranslation();
 
@@ -22,7 +28,7 @@ const Checkout = () => {
             base: "justify-center"
         }} onSelectionChange={(key) => handleSelectTab(key)}>
             <Tab key="order" title={t('checkout.order')}>
-                <CheckoutOrder handleSelectTab={() => handleSelectTab('review')}/>
+                <CheckoutOrder handleSelectTab={() => handleSelectTab('review')} flightPrice={flightPrice} isLoading={isLoading}/>
             </Tab>
             <Tab key="review" title={t('checkout.review')}>
                 <CheckoutOrderReview handlePreviousTab={() => handleSelectTab('order')} />

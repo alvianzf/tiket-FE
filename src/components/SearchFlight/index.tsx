@@ -78,7 +78,7 @@ const SearchFlight = () => {
                     infant: data.infant,
                     class: data.class
                 }
-            })
+            });
         }
     }
 

@@ -6,9 +6,10 @@ import { useTranslation } from "react-i18next";
 
 interface Props {
     flight: Flight;
+    handleSelect: (flightCode: string) => () => void;
 }
 
-const FlightCard = ({ flight } : Props) => {
+const FlightCard = ({ flight, handleSelect } : Props) => {
 
     const { t } = useTranslation();
     const [extended, setExtended] = useState<boolean>(false);
@@ -68,7 +69,7 @@ const FlightCard = ({ flight } : Props) => {
                                 <p className="text-lg text-gray-400">{flight.flight_to}</p>
                             </div>
                         </div>
-                        <Button bgColor={"orange"} className="min-w-40">
+                        <Button bgColor={"orange"} className="min-w-40" onClick={handleSelect(flight.flight_code)}>
                             {t('tickets.choose')}
                         </Button>
                     </div>
