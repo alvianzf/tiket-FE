@@ -48,7 +48,11 @@
             "copy": "Copy",
             "get_eticket": "Ambil E-Ticket",
             "home": "Home",
-            "tax": "Pajak"
+            "tax": "Pajak",
+            "adult": "Dewasa %{count}",
+            "child": "Anak %{count}",
+            "infant": "Balita %{count}",
+            "choose": "Pilih"
         }
     }
 }

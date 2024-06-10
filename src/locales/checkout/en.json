@@ -48,7 +48,11 @@
             "copy": "Copy",
             "get_eticket": "Get E-Ticket",
             "home": "Home",
-            "tax": "Tax"
+            "tax": "Tax",
+            "adult": "Adult %{count}",
+            "child": "Child %{count}",
+            "infant": "Infant %{count}",
+            "choose": "Choose"
         }
     }
 }

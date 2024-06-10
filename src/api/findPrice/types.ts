@@ -27,9 +27,9 @@ export interface FindPrice {
     flight_availableseat: string;
     flight_baggage: string;
     flight_facilities: string;
-    adult: string;
-    child: string;
-    infant: string;
+    adult: number;
+    child: number;
+    infant: number;
     publish: number;
     tax: number;
     totalfare: number;

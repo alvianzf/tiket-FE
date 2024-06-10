@@ -1,18 +1,39 @@
-import { Card, CardBody, CardHeader, Divider, Button as BaseButton, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react"
+import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react"
 import { useTranslation } from "react-i18next"
 import CheckoutOrderSummary from "./CheckoutOrderSummary"
-import Button from "@components/Button";
 import CheckoutOrderReviewPassenger from "./CheckoutOrderReviewPassenger";
+import { FindPrice } from "@api/findPrice/types";
+import { useFieldArray, useFormContext } from "react-hook-form";
+import { FormProps } from "./forms/useForm";
 
 interface Props {
-    handlePreviousTab: () => void;
+    flightPrice?: FindPrice;
+    isLoading: boolean;
 }
 
-const CheckoutOrderReview = ({ handlePreviousTab }: Props) => {
+const CheckoutOrderReview = ({ flightPrice, isLoading }: Props) => {
 
     const { t } = useTranslation();
 
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const { watch, control } = useFormContext<FormProps>();
+
+    const { fields: adultFields } = useFieldArray({
+        control,
+        name: 'adultPassengers',
+        keyName: 'adultPassengerKey'
+    });
+
+    const { fields: childFields } = useFieldArray({
+        control,
+        name: 'childPassengers',
+        keyName: 'childPassengerKey'
+    });
+
+    const { fields: infantFields } = useFieldArray({
+        control,
+        name: 'infantPassengers',
+        keyName: 'infantPassengerKey'
+    });
 
     return (
         <>
@@ -26,7 +47,7 @@ const CheckoutOrderReview = ({ handlePreviousTab }: Props) => {
                             }}>
                                 <CardHeader>
                                     <div className="flex justify-between">
-                                        {'John Doe'}
+                                        {`${watch('firstname')} ${watch('lastname')}`}
                                     </div>
                                 </CardHeader>
                                 <Divider />
@@ -34,11 +55,11 @@ const CheckoutOrderReview = ({ handlePreviousTab }: Props) => {
                                     <div className="flex justify-between">
                                         <div className="flex flex-col">
                                             <p className="text-gray-500">{t('checkout.email')}</p>
-                                            <p>{'johndoe@gmail.com'}</p>
+                                            <p>{watch('email')}</p>
                                         </div>
                                         <div className="flex flex-col">
                                             <p className="text-gray-500">{t('checkout.phone_no')}</p>
-                                            <p>{'123456789'}</p>
+                                            <p>{watch('phone')}</p>
                                         </div>
                                     </div>
                                 </CardBody>
@@ -46,44 +67,31 @@ const CheckoutOrderReview = ({ handlePreviousTab }: Props) => {
                         </div>
                         <div className="flex flex-col gap-4">
                             <p className="text-lg font-medium">{t('checkout.detail_traveler')}</p>
-                            <CheckoutOrderReviewPassenger />
+                            {adultFields.map((_field, index) => (
+                                <CheckoutOrderReviewPassenger 
+                                    fullname={`${watch(`adultPassengers.${index}.firstname`)} ${watch(`adultPassengers.${index}.lastname`)}`} 
+                                    date_of_birth={`${watch(`adultPassengers.${index}.date_of_birth`)}`} index={index+1} />
+
+                            ))}
+                            {childFields.map((_field, index) => (
+                                <CheckoutOrderReviewPassenger 
+                                    fullname={`${watch(`childPassengers.${index}.firstname`)} ${watch(`childPassengers.${index}.lastname`)}`} 
+                                    date_of_birth={`${watch(`childPassengers.${index}.date_of_birth`)}`} index={index+1} />
+
+                            ))}
+                            {infantFields.map((_field, index) => (
+                                <CheckoutOrderReviewPassenger 
+                                    fullname={`${watch(`infantPassengers.${index}.firstname`)} ${watch(`infantPassengers.${index}.lastname`)}`} 
+                                    date_of_birth={`${watch(`infantPassengers.${index}.date_of_birth`)}`} index={index+1} />
+
+                            ))}
                         </div>
                     </div>
                     <div className="w-[100%] md:w-[36%] lg:w-[36%]">
-                        <CheckoutOrderSummary />
+                        <CheckoutOrderSummary isLoading={isLoading} flightPrice={flightPrice}/>
                     </div>
                 </div>
-                <div className="flex flex-col gap-5">
-                    <Button bgColor={"orange"} className="min-w-40" onClick={onOpen}>
-                        {t('checkout.continue_payment')}
-                    </Button>
-                    <BaseButton color="primary" variant="light" onClick={handlePreviousTab}>
-                        {t('checkout.back')}
-                    </BaseButton>
-                </div>
             </div>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
-                {(onClose) => (
-                    <>
-                    <ModalHeader className="flex flex-col gap-1">{t('checkout.confirm_order')}</ModalHeader>
-                    <ModalBody>
-                        <p> 
-                        {t('checkout.confirm_order_desc')}
-                        </p>
-                    </ModalBody>
-                    <ModalFooter>
-                        <BaseButton color="danger" variant="light" onPress={onClose}>
-                            {t('checkout.cancel')}
-                        </BaseButton>
-                        <Button bgColor={"orange"} className="min-w-40">
-                            {t('checkout.continue_payment')}
-                        </Button>
-                    </ModalFooter>
-                    </>
-                )}
-                </ModalContent>
-            </Modal>
         </>
     )
 }

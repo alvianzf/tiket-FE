@@ -1,19 +1,20 @@
-import Button from "@components/Button";
-import { Card, CardBody, CardFooter, CardHeader, DatePicker, Divider, Input, Select, SelectItem } from "@nextui-org/react"
-import { useState } from "react";
-import { useTranslation } from "react-i18next"
+import { Card, CardBody, CardHeader, DatePicker, Divider, Input, Select, SelectItem } from "@nextui-org/react"
+import { useFieldArray, useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { FormProps } from "./forms/useForm";
+import moment from "moment";
 
-interface Props {
-    fullname: string;
-    date_of_birth: string;
-    index: number;
-}
+const CheckoutOrderAdult = () => {
 
-const CheckoutOrderReviewPassenger = ({ fullname, date_of_birth, index } : Props) => {
+    const { setValue, formState: { errors }, control, watch } = useFormContext<FormProps>();
 
     const { t } = useTranslation();
 
-    const [edit, setEdit] = useState(false);
+    const { fields } = useFieldArray({
+        control,
+        name: 'adultPassengers',
+        keyName: 'adultPassengerKey'
+    })
 
     const options = [
         { key: 'mr', label: t('checkout.mr') },
@@ -22,12 +23,12 @@ const CheckoutOrderReviewPassenger = ({ fullname, date_of_birth, index } : Props
     ];
 
     return (
-        edit ? (
-            <Card classNames={{
+        fields.map((field, index) => (
+            <Card key={index} classNames={{
                 header: "font-medium"
             }}>
                 <CardHeader>
-                    {t('checkout.person', { number: index})}
+                    {t('checkout.adult', { count: index+1 })}
                 </CardHeader>
                 <Divider />
                 <CardBody>
@@ -40,7 +41,11 @@ const CheckoutOrderReviewPassenger = ({ fullname, date_of_birth, index } : Props
                                     variant="bordered"
                                     radius="sm"
                                     selectionMode="single"
-                                    defaultSelectedKeys={["mr"]}
+                                    placeholder={t('checkout.choose')}
+                                    defaultSelectedKeys={[field.call]}
+                                    errorMessage={errors?.adultPassengers?.[index]?.call?.message}
+                                    isInvalid={!!errors?.adultPassengers?.[index]?.call}
+                                    onSelectionChange={(keys) => setValue(`adultPassengers.${index}.call`, keys.toString()?.[0])}
                                 >
                                     {options.map((item) => (
                                             <SelectItem key={item.key}>
@@ -52,6 +57,10 @@ const CheckoutOrderReviewPassenger = ({ fullname, date_of_birth, index } : Props
                                 <Input
                                     type="text"
                                     variant="bordered"
+                                    defaultValue={watch(`adultPassengers.${index}.firstname`)}
+                                    onValueChange={(value) => setValue(`adultPassengers.${index}.firstname`, value)}
+                                    errorMessage={errors?.adultPassengers?.[index]?.firstname?.message}
+                                    isInvalid={!!errors?.adultPassengers?.[index]?.firstname}
                                     classNames={{
                                         inputWrapper: "rounded-none",
                                         mainWrapper: "w-full"
@@ -64,6 +73,10 @@ const CheckoutOrderReviewPassenger = ({ fullname, date_of_birth, index } : Props
                             <Input
                                 type="text"
                                 variant="bordered"
+                                defaultValue={watch(`adultPassengers.${index}.lastname`)}
+                                onValueChange={(value) => setValue(`adultPassengers.${index}.lastname`, value)}
+                                errorMessage={errors?.adultPassengers?.[index]?.lastname?.message}
+                                isInvalid={!!errors?.adultPassengers?.[index]?.lastname}
                                 classNames={{
                                     inputWrapper: "rounded-none",
                                     mainWrapper: "w-full"
@@ -73,41 +86,18 @@ const CheckoutOrderReviewPassenger = ({ fullname, date_of_birth, index } : Props
                         <div className="flex flex-row gap-2 items-center">
                             <p className="w-[50%]">{t('checkout.date_of_birth')}</p>
                             <DatePicker
+                                onChange={(value) => setValue(`adultPassengers.${index}.date_of_birth`, moment(value).format('YYYY-MM-DD'))}
                                 variant="underlined"
+                                showMonthAndYearPickers
+                                errorMessage={errors?.adultPassengers?.[index]?.date_of_birth?.message}
+                                isInvalid={!!errors?.adultPassengers?.[index]?.date_of_birth}
                             />
                         </div>
                     </div>
                 </CardBody>
-                <CardFooter>
-                    <Button bgColor={"blue"} className="w-full" onClick={() => setEdit(false)}>
-                        {t('checkout.save')}
-                    </Button>
-                </CardFooter>
             </Card>
-        ): (
-            <Card classNames={{
-                header: "font-medium"
-            }}>
-                <CardHeader>
-                    <div className="flex w-full items-center justify-between">
-                        <p>{fullname}</p>
-                        {/* <BaseButton color="primary" variant="light" onClick={() => setEdit(true)}>
-                            {t('checkout.change_details')}
-                        </BaseButton> */}
-                    </div>
-                </CardHeader>
-                <Divider />
-                <CardBody>
-                    <div className="flex justify-between">
-                        <div className="flex flex-col">
-                            <p className="text-gray-500">{t('checkout.date_of_birth')}</p>
-                            <p>{date_of_birth}</p>
-                        </div>
-                    </div>
-                </CardBody>
-            </Card>
-        )
+        ))
     )
 }
 
-export default CheckoutOrderReviewPassenger
+export default CheckoutOrderAdult
