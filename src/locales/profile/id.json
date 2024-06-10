@@ -1,0 +1,37 @@
+{
+    "id" : {
+        "profile" : {
+            "title": "Profil",
+            "purchase_title": "Daftar Pembelian",
+            "no_purchases_yet_title": "Belum Ada Pembelian",
+            "no_purchases_yet_description": "Tidak ada pembelian dalam 30 hari terakhir. Jika Anda pernah melakukan pembelian sebelumnya, silakan gunakan filter untuk melihatnya.",
+            "make_a_new_purchase": "Buat pembelian baru",
+            "order_title": "Daftar Pesanan",
+            "no_orders_yet_title": "Belum Ada Pesanan",
+            "no_orders_yet_description": "Seluruh pesanan anda akan muncul di sini, tapi kini anda belum punya satu pun. Mari buat pesanan via homepage.",
+            "home": "Home",
+            "personal_data": "Data Pribadi",
+            "contact": "Kontak",
+            "fullname": "Nama Lengkap",
+            "date_of_birth": "Tanggal Lahir",
+            "gender": "Jenis Kelamin",
+            "email": "Email",
+            "phone_number": "Phone No.",
+            "my_profile": "Profile Saya",
+            "change_profile": "Change Profile",
+            "logout": "Keluar",
+            "cancel": "Batal",
+            "save": "Simpan",
+            "city_of_residence": "Kota Tempat Tinggal",
+            "male": "Pria",
+            "female": "Wanita",
+            "choose_gender": "Pilih Jenis Kelamin",
+            "email_or_phone": "Email / No. Handphone",
+            "email_or_phone_placeholder": "Masukan email atau nomor handphone mu",
+            "password": "Password",
+            "register": "Daftar",
+            "login": "Masuk",
+            "forgot_password": "Lupa Password?"
+        }
+    }
+}

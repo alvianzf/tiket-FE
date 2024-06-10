@@ -1,0 +1,42 @@
+{
+    "en" : {
+        "tickets" : {
+            "filter": "Filter",
+            "highest_price": "Highest Price",
+            "lowest_price": "Lowest Price",
+            "best_time": "Best Time",
+            "direct": "Direct",
+            "transit": "Transit %{number}",
+            "luggage": "Luggage",
+            "non_luggage": "Non-Luggage",
+            "economy": "Economy",
+            "premium_economy": "Premium Economy",
+            "business_class": "Business Class",
+            "first_class": "First Class",
+            "search": "Search",
+            "price_placeholder": "Choose Price",
+            "airline_placeholder": "Choose Airline",
+            "transit_placeholder": "Choose Transit",
+            "luggage_placeholder": "Choose Luggage",
+            "class_placeholder": "Choose Class",
+            "choose": "Pilih",
+            "flight_not_found": "Flight Not Available",
+            "from": "From",
+            "from_placeholder": "Search",
+            "to": "To",
+            "to_placeholder": "Search",
+            "no_of_passengers": "No. of Passengers",
+            "departured_date": "Departured Date",
+            "set_class": "Set Class",
+            "adult": "Adult",
+            "adult_desc": "( 12 y.o or older )",
+            "child": "Child",
+            "child_desc": "( 2 - 11 y.o )",
+            "infant": "Infant",
+            "infant_desc": "( under 2 y.o )",
+            "popular_city": "Popular City",
+            "done": "Done",
+            "passenger": "%{count} Passenger"
+        }
+    }
+}

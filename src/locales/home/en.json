@@ -1,0 +1,16 @@
+{
+    "en" : {
+        "home" : {
+            "airlines_partners": "Airlines Partners",
+            "airlines_partners_description": "Domestic & Internation Airlines Partners",
+            "payment_partners": "Payment Partners",
+            "why_book_title": "Why Book With TiketQ",
+            "secure_transaction": "Secure Transaction Guaranted",
+            "secure_transaction_description": "Security and privacy of your online transaction are protected by RapidSSL authorized technology. Receive instant confirmation and e-ticket directly in your email.",
+            "assistance_and_support": "Assistance and Suppport",
+            "assistance_and_support_description": "We can help you navigate changes in travel plans, flight delays, cancellations, or unforeseen circumstances.",
+            "various_payment_option": "Variuos Payment Option",
+            "various_payment_option_description": "Easy transaction with various payment options from ATM Transfer, Credit Card to Internet Banking."
+        }
+    }
+}

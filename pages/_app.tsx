@@ -7,6 +7,8 @@ import { Hydrate, QueryClient, QueryClientProvider, QueryErrorResetBoundary } fr
 import { ReactQueryDevtools } from "react-query/devtools";
 import '@utils/i18n';
 import { useTranslation } from "react-i18next";
+import { NextUIProvider } from "@nextui-org/react";
+import "@styles/global.css"
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
     const { t } = useTranslation();
@@ -14,7 +16,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     const [queryClient] = useState(() => new QueryClient(defaultQueryOption))
 
     return (
-        <>
+        <NextUIProvider>
             <Head>
                 <title>{t('meta.title')}</title>
             </Head>
@@ -38,6 +40,6 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
                     </QueryErrorResetBoundary>
                 </Hydrate>
             </QueryClientProvider>
-        </>
+        </NextUIProvider>
     );
 }

@@ -1,0 +1,16 @@
+{
+    "id" : {
+        "home" : {
+            "airlines_partners": "Mitra Maskapai Penerbangan",
+            "airlines_partners_description": "Mitra Maskapai Domestik & Internasional",
+            "payment_partners": "Mitra Pembayaran",
+            "why_book_title": "Mengapa Memesan Dengan TiketQ",
+            "secure_transaction": "Transaksi Aman Dijamin",
+            "secure_transaction_description": "Keamanan dan privasi transaksi online Anda dilindungi oleh teknologi resmi RapidSSL. Terima konfirmasi instan dan tiket elektronik langsung di email Anda.",
+            "assistance_and_support": "Bantuan dan Dukungan",
+            "assistance_and_support_description": "Kami dapat membantu Anda mengetahui perubahan rencana perjalanan, penundaan penerbangan, pembatalan, atau keadaan yang tidak terduga.",
+            "various_payment_option": "Berbagai Opsi Pembayaran",
+            "various_payment_option_description": "Transaksi mudah dengan berbagai pilihan pembayaran mulai dari Transfer ATM, Kartu Kredit hingga Internet Banking."
+        }
+    }
+}

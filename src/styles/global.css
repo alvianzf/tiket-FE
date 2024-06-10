@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+nav > header {
+  background: #4267b2;
+}
+
+nav > header > ul > li > a {
+  color: #fff !important;
+}
+
+.btn-register {
+  background: #fff;
+  color: #4267b2 !important;
+  font-weight: 500;
+}
+
+.bg-blue {
+  background: #4267b2;
+}
+
+.button-blue {
+  background: #4267b2;
+  color: #fff;
+}
+
+.button-orange {
+  background: #ff5a00;
+  color: #fff;
+}
+
+.text-orange {
+  color: #ff5a00;
+}
+
+.luggage-badge {
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 2px 5px;
+  font-weight: 500;
+}
+
+.luggage-reschedule {
+  border: 1px solid #057532;
+  border-radius: 8px;
+  padding: 2px 5px;
+  font-weight: 500;
+  color: #057532;
+}
+
+.home-app {
+  background: url("/images/bg-image.jpg");
+  background-size: cover;
+}

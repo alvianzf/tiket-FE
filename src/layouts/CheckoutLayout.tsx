@@ -1,3 +1,5 @@
+import CheckoutNavbar from "@components/CheckoutNavbar";
+import Footer from "@components/Footer";
 import { ReactNode } from "react"
 
 interface Props {
@@ -6,7 +8,11 @@ interface Props {
 
 const CheckoutLayout = ({ children } : Props) => {
     return (
-        <>{children}</>
+        <>
+            <CheckoutNavbar />
+            {children}
+            <Footer />
+        </>
     )
 }
 

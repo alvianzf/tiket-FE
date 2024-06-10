@@ -1,3 +1,5 @@
+import AppNavbar from "@components/AppNavbar";
+import Footer from "@components/Footer";
 import { ReactNode } from "react"
 
 interface Props {
@@ -6,7 +8,13 @@ interface Props {
 
 const AppLayout = ({ children } : Props) => {
     return (
-        <>{children}</>
+        <>
+            <div className="bg-blue flex flex-row justify-center">
+                <AppNavbar />
+            </div>
+            {children}
+            <Footer />
+        </>
     )
 }
 
