@@ -2,47 +2,52 @@ import IconMinus from "@icons/IconMinus";
 import IconPlus from "@icons/IconPlus";
 import { Button, Input } from "@nextui-org/react";
 import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { FormProps } from "../forms/useForm";
 
 const PassengerInput = () => {
     const { t } = useTranslation();
 
-    const [open, setOpen] = useState<boolean>(false); 
-    const [adultTotal, setAdultTotal] = useState<number>(1);   
-    const [childTotal, setChildTotal] = useState<number>(0);   
-    const [infantTotal, setInfantTotal] = useState<number>(0);
+    const [open, setOpen] = useState<boolean>(false);   
+
+    const { setValue, watch } = useFormContext<FormProps>();
+
+    const adult = parseInt(watch('adult'));
+    const child = parseInt(watch('child'));
+    const infant = parseInt(watch('infant'));
 
     const handleIncreaseAdultTotal = () => {
-        setAdultTotal((prevState) => prevState + 1)
+        setValue('adult', (adult + 1).toString());
     }
 
     const handleDecreaseAdultTotal = () => {
-        if(adultTotal === 1) {
+        if(adult === 1) {
             return
         }
-        setAdultTotal((prevState) => prevState - 1)
+        setValue('adult', (adult - 1).toString());
     }
 
     const handleIncreaseChildTotal = () => {
-        setChildTotal((prevState) => prevState + 1)
+        setValue('child', (child + 1).toString());
     }
 
     const handleDecreaseChildTotal = () => {
-        if(childTotal === 0) {
+        if(child === 0) {
             return
         }
-        setChildTotal((prevState) => prevState - 1)
+        setValue('child', (child - 1).toString());
     }
 
     const handleIncreaseInfantTotal = () => {
-        setInfantTotal((prevState) => prevState + 1)
+        setValue('infant', (infant + 1).toString());
     }
 
     const handleDecreaseInfantTotal = () => {
-        if(infantTotal === 0) {
+        if(infant === 0) {
             return
         }
-        setInfantTotal((prevState) => prevState - 1)
+        setValue('infant', (infant - 1).toString());
     }
 
     const handleOpen = () => setOpen(true);
@@ -53,7 +58,7 @@ const PassengerInput = () => {
         <div className="w-full flex flex-col gap-2">
             <p className="font-medium">{t('tickets.no_of_passengers')}</p>
             <Input type="string" 
-                placeholder={`${adultTotal} ${t('tickets.adult')}, ${childTotal} ${t('tickets.child')}, ${infantTotal} ${t('tickets.infant')}`} 
+                placeholder={`${adult} ${t('tickets.adult')}, ${child} ${t('tickets.child')}, ${infant} ${t('tickets.infant')}`} 
                 variant="underlined"
                 readOnly
                 onClick={handleOpen}
@@ -71,7 +76,7 @@ const PassengerInput = () => {
                                     <Button isIconOnly variant="light" onClick={handleIncreaseAdultTotal}>
                                         <IconPlus width={20} height={20}/>
                                     </Button>   
-                                    <p className="text-orange">{adultTotal}</p>
+                                    <p className="text-orange">{adult}</p>
                                     <Button isIconOnly variant="light" onClick={handleDecreaseAdultTotal}>
                                         <IconMinus width={20} height={20}/>
                                     </Button>   
@@ -86,7 +91,7 @@ const PassengerInput = () => {
                                     <Button isIconOnly variant="light" onClick={handleIncreaseChildTotal}>
                                         <IconPlus width={20} height={20}/>
                                     </Button>   
-                                    <p className="text-orange">{childTotal}</p>
+                                    <p className="text-orange">{child}</p>
                                     <Button isIconOnly variant="light" onClick={handleDecreaseChildTotal}>
                                         <IconMinus width={20} height={20}/>
                                     </Button>   
@@ -101,7 +106,7 @@ const PassengerInput = () => {
                                     <Button isIconOnly variant="light" onClick={handleIncreaseInfantTotal}>
                                         <IconPlus width={20} height={20}/>
                                     </Button>   
-                                    <p className="text-orange">{infantTotal}</p>
+                                    <p className="text-orange">{infant}</p>
                                     <Button isIconOnly variant="light" onClick={handleDecreaseInfantTotal}>
                                         <IconMinus width={20} height={20}/>
                                     </Button>   

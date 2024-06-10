@@ -1,7 +1,8 @@
 import { CodeArea } from "@api/codeArea/types";
 import { Autocomplete, AutocompleteItem, AutocompleteSection } from "@nextui-org/react";
-import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { FormProps } from "../forms/useForm";
 
 interface Props {
     items: CodeArea[];
@@ -11,11 +12,11 @@ const FromInput = ({ items } : Props) => {
 
     const { t } = useTranslation();
 
-    const [value, setValue] = useState<string | number | null>('');
+    const { setValue, watch, formState: { errors }} = useFormContext<FormProps>();
 
     const handleContent = () => {
         return items.map((item) => (
-            <AutocompleteItem value={item.code} key={`${item.city} (${item.code})`}>{`${item.city} (${item.code})`}</AutocompleteItem>
+            <AutocompleteItem value={item.code} key={`${item.city}-${item.code}`}>{`${item.city} (${item.code})`}</AutocompleteItem>
         ))
     }
 
@@ -38,8 +39,14 @@ const FromInput = ({ items } : Props) => {
                     }
                 }}
                 defaultItems={items}
-                selectedKey={value}
-                onSelectionChange={(key) => setValue(key)}
+                selectedKey={watch('from')}
+                onSelectionChange={(key) => {
+                    if(key && typeof key === 'string') {
+                        setValue('from', key)
+                    }
+                }}
+                errorMessage={errors?.from?.message}
+                isInvalid={!!errors?.from?.message}
             >
                 <AutocompleteSection title={t('tickets.popular_city')} classNames={{
                     heading: 'text-orange text-base',

@@ -1,9 +1,9 @@
-import { DateISOFormat, DateIndoFormat } from "@api/baseApi/types";
+import { DateISOFormat } from "@api/baseApi/types";
 
 export interface FindFlightsRequest {
     from: string;
     to: string;
-    date: DateIndoFormat;
+    date: string;
 }
 
 export type FindFlightsResponse = Flight[];

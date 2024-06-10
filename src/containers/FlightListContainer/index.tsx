@@ -1,4 +1,3 @@
-import { DateIndoFormat } from "@api/baseApi/types"
 import FlightCard from "@components/FlightCard"
 import FlightCardSkeleton from "@components/FlightCardSkeleton"
 import FlightFilter from "@components/FlightFilter"
@@ -23,26 +22,34 @@ const FlightListContainer = () => {
 
     const from = query?.from as unknown as string;
     const to = query?.to as unknown as string;
-    const date = query?.date as unknown as DateIndoFormat;
+    const date = query?.date as unknown as string;
     const adult = query?.adult as unknown as string;
     const child = query?.child as unknown as string;
     const infant = query?.infant as unknown as string;
+    const classParams = query?.class as unknown as string;
 
     useEffect(() => {
         if (!isReady) return;
 
-        if (!from || !to || !date || !adult || !child || !infant) {
+        if (!from || !to || !date || !adult || !child || !classParams) {
             push('/');
+
+            return;
         }
-    }, [isReady, from, to, date, adult, child, infant, push]);
+
+        if(!!from && !!to && !!date && isReady && !!adult && !!child && !!infant && !!classParams) {
+            setOpen(false);
+            return
+        }
+    }, [isReady, from, to, date, adult, child, infant, push, classParams]);
 
     const { data, isFetching } = useQueryFindFlights({
         request: {
-            from,
-            to,
+            from: from?.split('-')?.[1],
+            to: to?.split('-')?.[1],
             date
         },
-        enabled: (!!from && !!to && !!date && isReady && !!adult && !!child && !!infant)
+        enabled: (!!from && !!to && !!date && isReady && !!adult && !!child && !!infant && !!classParams)
     });
 
     const totalPassenger = parseInt(adult) + parseInt(child) + parseInt(infant)
@@ -59,16 +66,16 @@ const FlightListContainer = () => {
                                     <div className="flex flex-row gap-3 justify-between w-full items-center">
                                         <div className="flex flex-col gap-2 w-[89%]">
                                             <div className="flex flex-row gap-2">
-                                                <p className="text-lg font-medium">{'Batam (BTH)'}</p>
+                                                <p className="text-lg font-medium">{`${from?.split('-')?.[1]} (${from?.split('-')?.[0]})`}</p>
                                                 <p></p>
-                                                <p className="text-lg font-medium">{'Bali (DPS)'}</p>
+                                                <p className="text-lg font-medium">{`${to?.split('-')?.[1]} (${to?.split('-')?.[0]})`}</p>
                                             </div>
                                             <div className="flex flex-row gap-2">
                                                 <p>{date}</p>
                                                 <p>|</p>
                                                 <p>{t('tickets.passenger', { count: totalPassenger })}</p>
                                                 <p>|</p>
-                                                <p>{'Economy'}</p>
+                                                <p>{classParams}</p>
                                             </div>
                                         </div>
                                         <div className="flex w-[10%] justify-end">

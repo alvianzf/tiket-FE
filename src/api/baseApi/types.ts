@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
 
+export type KeyForm<T> = T | null | number;
 
 export interface DefaultSuccess<T> {
     data: T;
