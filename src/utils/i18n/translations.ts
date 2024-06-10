@@ -6,7 +6,8 @@ const localeGroups = [
     'home',
     'footer',
     'tickets',
-    'checkout'
+    'checkout',
+    'profile'
 ];
 
 const localeEnGroups = {};

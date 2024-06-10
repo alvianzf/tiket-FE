@@ -1,0 +1,31 @@
+{
+    "en" : {
+        "profile" : {
+            "title": "Profile",
+            "purchase_title": "Purchase List",
+            "no_purchases_yet_title": "No Purchases Yet",
+            "no_purchases_yet_description": "No purchases in the last 30 days. If you have made a purchase before, please use the filters to view it.",
+            "make_a_new_purchase": "Make a new purchase",
+            "order_title": "Order List",
+            "no_orders_yet_title": "No Orders Yet",
+            "no_orders_yet_description": "All your orders will appear here, but now you don't have any. Let's make an order via the homepage.",
+            "home": "Home",
+            "personal_data": "Personal Data",
+            "contact": "Contact",
+            "fullname": "Fullname",
+            "date_of_birth": "Date of Birth",
+            "gender": "Gender",
+            "email": "Email",
+            "phone_number": "Phone No.",
+            "my_profile": "My Profile",
+            "change_profile": "Change Profile",
+            "logout": "Logout",
+            "cancel": "Cancel",
+            "save": "Save",
+            "city_of_residence": "City of Residence",
+            "male": "Male",
+            "female": "Female",
+            "choose_gender": "Choose Gender"
+        }
+    }
+}

@@ -4,7 +4,10 @@
             "title": "Tiketq",
             "flight_list_title": "Daftar Penerbangan",
             "checkout_title": "Pemesanan",
-            "checkout_payment_title": "Pembayaran"
+            "checkout_payment_title": "Pembayaran",
+            "purchase_title": "Daftar Pembelian",
+            "order_title": "Daftar Pesanan",
+            "change_profile": "Ubah Profil"
         }
     }
 }

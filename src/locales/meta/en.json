@@ -4,7 +4,10 @@
             "title": "Tiketq",
             "flight_list_title": "Flight List",
             "checkout_title": "Checkout",
-            "checkout_payment_title": "Payment"
+            "checkout_payment_title": "Payment",
+            "purchase_title": "Purchase List",
+            "order_title": "Order List",
+            "change_profile": "Change Profile"
         }
     }
 }
