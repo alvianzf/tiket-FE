@@ -1,7 +1,11 @@
 import LoginForm from "@components/LoginForm";
 import RegisterForm from "@components/RegisterForm";
+import IconLogout from "@icons/IconLogout";
+import IconProfile from "@icons/IconProfile";
+import IconReceipt from "@icons/IconReceipt";
 import Logo from "@icons/Logo";
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Modal, ModalContent, ModalHeader, ModalBody, useDisclosure} from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button, Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, DropdownTrigger, DropdownMenu, Dropdown, DropdownItem} from "@nextui-org/react";
+import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
 const AppNavbar = () => {
@@ -11,6 +15,8 @@ const AppNavbar = () => {
     const { isOpen: isOpenLogin, onOpen: onOpenLogin, onOpenChange: onOpenChangeLogin } = useDisclosure();
 
     const { isOpen: isOpenRegister, onOpen: onOpenRegister, onOpenChange: onOpenChangeRegister } = useDisclosure();
+
+    const { push } = useRouter();
 
 
     return (
@@ -28,10 +34,60 @@ const AppNavbar = () => {
                         </Button>
                     </NavbarItem>
                     <NavbarItem>
-                        <Button as={Link} href="#" variant="flat" className="btn-register" onClick={onOpenRegister}>
-                            Register
+                        <Button variant="flat" className="btn-register" onClick={onOpenRegister}>
+                            {t('profile.register')}
                         </Button>
                     </NavbarItem>
+                    <Dropdown className="w-fit min-w-fit">
+                        <NavbarItem>
+                            <DropdownTrigger>
+                                <Button
+                                    disableRipple
+                                    className="p-0 bg-transparent data-[hover=true]:bg-transparent text-white"
+                                    
+                                    radius="sm"
+                                    variant="light"
+                                >
+                                    {t('profile.title')}
+                                </Button>
+                            </DropdownTrigger>
+                        </NavbarItem>
+                        <DropdownMenu
+                            aria-label="ACME features"
+                            className="w-fit"
+                            itemClasses={{
+                                base: "gap-2",
+                            }}
+                        >
+                            <DropdownItem
+                                key="changeprofile"
+                                onClick={() => push('/profile/change')}
+                                startContent={<IconProfile width={14} height={14}/>}
+                            >
+                                {t('profile.change_profile')}
+                            </DropdownItem>
+                            <DropdownItem
+                                key="purchase"
+                                onClick={() => push('/profile/purchases')}
+                                startContent={<IconReceipt width={14} height={14} />}
+                            >
+                                {t('profile.purchase_title')}
+                            </DropdownItem>
+                            <DropdownItem
+                                key="order"
+                                onClick={() => push('/profile/orders')}
+                                startContent={<IconReceipt width={14} height={14} />}
+                            >
+                                {t('profile.order_title')}
+                            </DropdownItem>
+                            <DropdownItem
+                                key="logout"
+                                startContent={<IconLogout width={14} height={14} />}
+                            >
+                                {t('profile.logout')}
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                 </NavbarContent>
             </Navbar>
 
