@@ -33,6 +33,13 @@ interface PassengerInfo {
     passenger_passportexpired: string;
 }
 
+interface DetailRoute {
+    route_city_code: string;
+    route_city_name: string;
+    route_date: string;
+    route_time: string;
+}
+
 export interface BookFlight {
     result: "ok" | "no";
     tid: string;
@@ -64,6 +71,8 @@ export interface BookFlight {
     flight_issuedby: string;
     flight_issuedby_kodeagen: string;
     flight_statusbooking: string;
+    flight_duration: string;
+    flight_detailroute_json: DetailRoute[];
 }
 
 export interface CheckBookRequest {
