@@ -10,7 +10,9 @@
             "assistance_and_support": "Bantuan dan Dukungan",
             "assistance_and_support_description": "Kami dapat membantu Anda mengetahui perubahan rencana perjalanan, penundaan penerbangan, pembatalan, atau keadaan yang tidak terduga.",
             "various_payment_option": "Berbagai Opsi Pembayaran",
-            "various_payment_option_description": "Transaksi mudah dengan berbagai pilihan pembayaran mulai dari Transfer ATM, Kartu Kredit hingga Internet Banking."
+            "various_payment_option_description": "Transaksi mudah dengan berbagai pilihan pembayaran mulai dari Transfer ATM, Kartu Kredit hingga Internet Banking.",
+            "booking_no": "No Booking",
+            "find_booking_no": "Cari No Booking"
         }
     }
 }
