@@ -5,9 +5,12 @@ import { useEffect, useState } from "react";
 import CheckoutOrderReview from "./CheckoutOrderReview";
 import { FindPrice } from "@api/findPrice/types";
 import { FormProvider } from "react-hook-form";
-import useForm, { DEFAULT_VALUES, Passenger } from "./forms/useForm";
+import useForm, { DEFAULT_VALUES, FormProps, Passenger } from "./forms/useForm";
 import Button from "@components/Button";
 import { useRouter } from "next/router";
+import { useMutation } from "react-query";
+import { bookFlight } from "@api/bookFlight";
+import buildRequest from "./forms/buildRequest";
 
 export type Key = string | number;
 
@@ -101,13 +104,27 @@ const Checkout = ({ flightPrice, isLoading }: Props) => {
         [flightPrice, methods]
     );
 
-    const onSubmit = () => {
-        push({
-            pathname: '/checkout/payment',
-            query: {
-                bookingno: '123456'
+    const { mutate, isLoading: isMutating } = useMutation(bookFlight, {
+        onSuccess: (data) => {
+            if(data.result === "ok") {
+                push({
+                    pathname: '/checkout/payment',
+                    query: {
+                        bookingno: data.kodebooking
+                    }
+                })
+                return
             }
-        })
+        },
+        onError: () => {
+
+        }
+    })
+
+    const onSubmit = (data: FormProps) => {
+        const request = buildRequest(data);
+
+        mutate(request)
     }
 
     return (
@@ -132,10 +149,10 @@ const Checkout = ({ flightPrice, isLoading }: Props) => {
             )}
             {selected === 'review' && (
                 <div className="flex flex-col gap-5">
-                    <Button bgColor={"orange"} className="min-w-40" onClick={onOpen}>
+                    <Button bgColor={"orange"} className="min-w-40" disabled={isMutating} isLoading={isMutating} onClick={onOpen}>
                         {t('checkout.continue_payment')}
                     </Button>
-                    <BaseButton color="primary" variant="light" onClick={() => handleSelectTab('order')}>
+                    <BaseButton color="primary" variant="light" disabled={isMutating} isLoading={isMutating} onClick={() => setSelected('order')}>
                         {t('checkout.back')}
                     </BaseButton>
                 </div>
@@ -151,10 +168,10 @@ const Checkout = ({ flightPrice, isLoading }: Props) => {
                         </p>
                     </ModalBody>
                     <ModalFooter>
-                        <BaseButton color="danger" variant="light" onPress={onClose}>
+                        <BaseButton color="danger" variant="light" disabled={isMutating} isLoading={isMutating} onPress={onClose}>
                             {t('checkout.cancel')}
                         </BaseButton>
-                        <Button bgColor={"orange"} className="min-w-40" onClick={handleSubmit(onSubmit)}>
+                        <Button bgColor={"orange"} className="min-w-40" disabled={isMutating} isLoading={isMutating} onClick={handleSubmit(onSubmit)}>
                             {t('checkout.continue_payment')}
                         </Button>
                     </ModalFooter>

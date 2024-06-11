@@ -6,6 +6,7 @@ import { useFormContext } from "react-hook-form";
 import { FormProps } from "./forms/useForm";
 import CheckoutOrderAdult from "./CheckoutOrderAdult";
 import CheckoutOrderChild from "./CheckoutOrderChild";
+import CheckoutOrderInfant from "./CheckoutOrderInfant";
 
 interface Props {
     flightPrice?: FindPrice;
@@ -102,6 +103,7 @@ const CheckoutOrder = ({ isLoading, flightPrice }: Props) => {
                         {/* Adult Section */}
                         <CheckoutOrderAdult />
                         <CheckoutOrderChild />
+                        <CheckoutOrderInfant />
                     </div>
                 </div>
                 <div className="w-[100%] md:w-[36%] lg:w-[36%]">
