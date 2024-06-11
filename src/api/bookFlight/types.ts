@@ -65,3 +65,9 @@ export interface BookFlight {
     flight_issuedby_kodeagen: string;
     flight_statusbooking: string;
 }
+
+export interface CheckBookRequest {
+    kodebooking: string;
+}
+
+export type CheckBookResponse = BookFlight;

@@ -1,8 +1,13 @@
+import { BookFlight } from "@api/bookFlight/types";
 import Button from "@components/Button";
 import { Image } from "@nextui-org/react";
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "react-i18next";
 
-const PaymentSuccess = () => {
+interface Props {
+    flight?: BookFlight;
+}
+
+const PaymentSuccess = ({ flight } :Props) => {
 
     const { t } = useTranslation();
 
@@ -12,7 +17,7 @@ const PaymentSuccess = () => {
                 <Image src="/images/payment-success.png" width={200} height={200}/>
             </div>
             <p className="text-orange text-lg font-medium">{t('checkout.payment_received')}</p>
-            <p>{t('checkout.order_no', { no : 12345})}</p>
+            <p>{t('checkout.order_no', { no : flight?.kodebooking })}</p>
             <p className="text-orange text-lg font-medium">{t('checkout.thankyou_for_your_payment')}</p>
             <Button bgColor={"orange"}>
                 {t('checkout.get_eticket')}
