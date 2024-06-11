@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "./forms/useForm";
 import moment from "moment";
+import { parseDate } from "@internationalized/date";
 
 const CheckoutOrderInfant = () => {
 
@@ -17,8 +18,8 @@ const CheckoutOrderInfant = () => {
     })
 
     const options = [
-        { key: 'mr', label: t('checkout.mr') },
-        { key: 'ms', label: t('checkout.ms') },
+        { key: 'Mr', label: t('checkout.mr') },
+        { key: 'Ms', label: t('checkout.ms') },
     ];
 
     return (
@@ -41,10 +42,10 @@ const CheckoutOrderInfant = () => {
                                     radius="sm"
                                     selectionMode="single"
                                     placeholder={t('checkout.choose')}
-                                    defaultSelectedKeys={[field.call]}
+                                    selectedKeys={[watch(`infantPassengers.${index}.call`)]}
                                     errorMessage={errors?.infantPassengers?.[index]?.call?.message}
                                     isInvalid={!!errors?.infantPassengers?.[index]?.call}
-                                    onSelectionChange={(keys) => setValue(`infantPassengers.${index}.call`, keys.toString()?.[0])}
+                                    onChange={(e) => setValue(`infantPassengers.${index}.call`, e.target.value)}
                                 >
                                     {options.map((item) => (
                                             <SelectItem key={item.key}>
@@ -90,6 +91,7 @@ const CheckoutOrderInfant = () => {
                                 showMonthAndYearPickers
                                 errorMessage={errors?.infantPassengers?.[index]?.date_of_birth?.message}
                                 isInvalid={!!errors?.infantPassengers?.[index]?.date_of_birth}
+                                defaultValue={watch(`infantPassengers.${index}.date_of_birth`) ? parseDate(watch(`infantPassengers.${index}.date_of_birth`)) : null}
                             />
                         </div>
                     </div>

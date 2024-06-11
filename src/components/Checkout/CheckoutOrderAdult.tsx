@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "./forms/useForm";
 import moment from "moment";
+import { parseDate } from "@internationalized/date";
 
 const CheckoutOrderAdult = () => {
 
@@ -17,9 +18,9 @@ const CheckoutOrderAdult = () => {
     })
 
     const options = [
-        { key: 'mr', label: t('checkout.mr') },
-        { key: 'mrs', label: t('checkout.mrs') },
-        { key: 'ms', label: t('checkout.ms') },
+        { key: 'Mr', label: t('checkout.mr') },
+        { key: 'Mrs', label: t('checkout.mrs') },
+        { key: 'Ms', label: t('checkout.ms') },
     ];
 
     return (
@@ -42,10 +43,10 @@ const CheckoutOrderAdult = () => {
                                     radius="sm"
                                     selectionMode="single"
                                     placeholder={t('checkout.choose')}
-                                    defaultSelectedKeys={[field.call]}
+                                    selectedKeys={[watch(`adultPassengers.${index}.call`)]}
                                     errorMessage={errors?.adultPassengers?.[index]?.call?.message}
                                     isInvalid={!!errors?.adultPassengers?.[index]?.call}
-                                    onSelectionChange={(keys) => setValue(`adultPassengers.${index}.call`, keys.toString()?.[0])}
+                                    onChange={(e) => setValue(`adultPassengers.${index}.call`, e.target.value)}
                                 >
                                     {options.map((item) => (
                                             <SelectItem key={item.key}>
@@ -91,6 +92,7 @@ const CheckoutOrderAdult = () => {
                                 showMonthAndYearPickers
                                 errorMessage={errors?.adultPassengers?.[index]?.date_of_birth?.message}
                                 isInvalid={!!errors?.adultPassengers?.[index]?.date_of_birth}
+                                defaultValue={watch(`adultPassengers.${index}.date_of_birth`) ? parseDate(watch(`adultPassengers.${index}.date_of_birth`)) : null}
                             />
                         </div>
                     </div>

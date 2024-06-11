@@ -6,14 +6,28 @@ import BankMandiri from "@icons/BankMandiri";
 import BankBni from "@icons/BankBni";
 import Dana from "@icons/Dana";
 import Button from "@components/Button";
+import { BookFlight } from "@api/bookFlight/types";
+import { useRouter } from "next/router";
 
 interface Props {
-    handleChoosePayment: () => void;
+    isLoading: boolean;
+    flight?: BookFlight;
 }
 
-const PaymentForm = ({ handleChoosePayment } : Props) => {
+const PaymentForm = ({ isLoading, flight } : Props) => {
 
     const { t } = useTranslation();
+
+    const { push, query } = useRouter();
+
+    const handleOnPayment = () => {
+        push({
+            pathname: '/checkout/payment/waiting',
+            query: {
+                ...query
+            }
+        })
+    }
 
     return (
         <>
@@ -67,20 +81,12 @@ const PaymentForm = ({ handleChoosePayment } : Props) => {
                         <div className="flex flex-col gap-5">
                             <div className="flex flex-row justify-between">
                                 <p className="text-lg font-medium text-orange">{t('checkout.total')}</p>
-                                <p className="text-lg font-medium text-orange">{'Rp 1.800.000'}</p>
+                                <p className="text-lg font-medium text-orange">{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(flight?.flight_totalfare ?? 0)}`}</p>
                             </div>
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-row justify-between">
-                                    <p>{t('checkout.insurance')}</p>
-                                    <p>{'Rp 1.800.000'}</p>
-                                </div>
-                                <div className="flex flex-row justify-between">
-                                    <p>{t('checkout.insurance')}</p>
-                                    <p>{'Rp 1.800.000'}</p>
-                                </div>
-                                <div className="flex flex-row justify-between">
-                                    <p>{t('checkout.insurance')}</p>
-                                    <p>{'Rp 1.800.000'}</p>
+                                    <p>{t('checkout.tax')}</p>
+                                    <p>{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(flight?.flight_tax ?? 0)}`}</p>
                                 </div>
                             </div>
                         </div>
@@ -88,7 +94,7 @@ const PaymentForm = ({ handleChoosePayment } : Props) => {
                 </Card>
             </div>
 
-            <Button bgColor={"orange"} onClick={handleChoosePayment}>
+            <Button bgColor={"orange"} isLoading={isLoading} disabled={isLoading} onClick={handleOnPayment}>
                 {t('checkout.choose_payment')}
             </Button>
         </>

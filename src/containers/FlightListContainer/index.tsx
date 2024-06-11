@@ -124,7 +124,7 @@ const FlightListContainer = () => {
                                 <FlightCardSkeleton />
                         </>
                         )}
-                        {!isFetching && !!data && (
+                        {!isFetching && !data && (
                             <FlightNotAvailable />
                         )}
                     </div>

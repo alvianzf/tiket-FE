@@ -1,10 +1,12 @@
 import LoginForm from "@components/LoginForm";
 import RegisterForm from "@components/RegisterForm";
+import SearchBookingNumber from "@components/SearchBookingNumber";
 // import IconLogout from "@icons/IconLogout";
 // import IconProfile from "@icons/IconProfile";
 // import IconReceipt from "@icons/IconReceipt";
 import Logo from "@icons/Logo";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button, Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, DropdownTrigger, DropdownMenu, Dropdown, DropdownItem} from "@nextui-org/react";
+import { useRouter } from "next/router";
 // import { useRouter } from "next/router";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
@@ -18,9 +20,12 @@ const AppNavbar = () => {
 
     const { isOpen: isOpenLogin, onOpen: onOpenLogin, onOpenChange: onOpenChangeLogin } = useDisclosure();
 
-    const { isOpen: isOpenRegister, onOpen: onOpenRegister, onOpenChange: onOpenChangeRegister } = useDisclosure();
+    const { isOpen: isOpenRegister, onOpenChange: onOpenChangeRegister } = useDisclosure();
 
-    // const { push } = useRouter();
+    const { isOpen: isOpenFind, onOpen: onOpenFind, onOpenChange: onOpenChangeFind } = useDisclosure();
+
+
+    const { push } = useRouter();
 
     const onHandleChangeLanguage = (lang: 'id' | 'en') => {
         i18n.changeLanguage(lang)
@@ -33,7 +38,7 @@ const AppNavbar = () => {
                 base: "bg-transparent",
                 content: "gap-1"
             }}>
-                <NavbarBrand>
+                <NavbarBrand onClick={() => push('/')}>
                     <Logo />
                 </NavbarBrand>
                 <NavbarContent justify="end">
@@ -85,7 +90,12 @@ const AppNavbar = () => {
                             
                         </DropdownMenu>
                     </Dropdown>
-                    <NavbarItem className="lg:flex">
+                    <NavbarItem>
+                        <Button variant="light" className="text-white" onClick={onOpenFind}>
+                            {t('home.find_booking_no')}
+                        </Button>
+                    </NavbarItem>
+                    {/* <NavbarItem className="lg:flex">
                         <Button variant="light" className="text-white" onClick={onOpenLogin}>
                             {t('profile.login')}
                         </Button>
@@ -94,7 +104,7 @@ const AppNavbar = () => {
                         <Button variant="flat" className="btn-register" onClick={onOpenRegister}>
                             {t('profile.register')}
                         </Button>
-                    </NavbarItem>
+                    </NavbarItem> */}
                     {/* <Dropdown className="w-fit min-w-fit">
                         <NavbarItem>
                             <DropdownTrigger>
@@ -167,6 +177,19 @@ const AppNavbar = () => {
                             <ModalHeader className="flex flex-col gap-1">{t('profile.register')}</ModalHeader>
                             <ModalBody>
                                 <RegisterForm onOpenLogin={onOpenLogin}/>
+                            </ModalBody>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+
+            <Modal isOpen={isOpenFind} onOpenChange={onOpenChangeFind}>
+                <ModalContent>
+                    {() => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">{t('home.find_booking_no')}</ModalHeader>
+                            <ModalBody>
+                                <SearchBookingNumber />
                             </ModalBody>
                         </>
                     )}
