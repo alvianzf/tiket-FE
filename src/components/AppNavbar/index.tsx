@@ -6,6 +6,7 @@ import SearchBookingNumber from "@components/SearchBookingNumber";
 // import IconReceipt from "@icons/IconReceipt";
 import Logo from "@icons/Logo";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button, Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, DropdownTrigger, DropdownMenu, Dropdown, DropdownItem} from "@nextui-org/react";
+import { useRouter } from "next/router";
 // import { useRouter } from "next/router";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
@@ -24,7 +25,7 @@ const AppNavbar = () => {
     const { isOpen: isOpenFind, onOpen: onOpenFind, onOpenChange: onOpenChangeFind } = useDisclosure();
 
 
-    // const { push } = useRouter();
+    const { push } = useRouter();
 
     const onHandleChangeLanguage = (lang: 'id' | 'en') => {
         i18n.changeLanguage(lang)
@@ -37,7 +38,7 @@ const AppNavbar = () => {
                 base: "bg-transparent",
                 content: "gap-1"
             }}>
-                <NavbarBrand>
+                <NavbarBrand onClick={() => push('/')}>
                     <Logo />
                 </NavbarBrand>
                 <NavbarContent justify="end">
