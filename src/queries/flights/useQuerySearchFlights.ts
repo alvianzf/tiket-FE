@@ -1,20 +1,20 @@
-import { findFlights } from "@api/findFlights";
-import { FindFlightsRequest, FindFlightsResponse } from "@api/findFlights/types";
+import { searchFlights } from "@api/searchFlights";
+import { GetFlightRequest, GetFlightResponse } from "@api/searchFlights/types";
 import { GET_FLIGHTS_KEY } from "@constants/queryKey";
 import { useQuery } from "react-query";
 
 interface CodeFlightsQueryKeys {
     key: string;
-    payload: FindFlightsRequest;
+    payload: GetFlightRequest;
 }
 
 interface Props {
     enabled?: boolean;
-    onSuccess?: (response: FindFlightsResponse) => void;
-    request: FindFlightsRequest;
+    onSuccess?: (response: GetFlightResponse) => void;
+    request: GetFlightRequest;
 }
 
-const useQueryFindFlights = ({ enabled, onSuccess, request } : Props ) => {
+const useQuerySearchFlights = ({ enabled, onSuccess, request } : Props ) => {
 
     const queryKeys: CodeFlightsQueryKeys[] = [
         {
@@ -23,7 +23,7 @@ const useQueryFindFlights = ({ enabled, onSuccess, request } : Props ) => {
         }
     ];
 
-    const { data, isFetching, error } = useQuery(queryKeys, ({ queryKey: [{ payload }]}) => findFlights(payload), {
+    const { data, isFetching, error } = useQuery(queryKeys, ({ queryKey: [{ payload }]}) => searchFlights(payload), {
         enabled,
         staleTime: 300_000,
         onSuccess
@@ -37,4 +37,4 @@ const useQueryFindFlights = ({ enabled, onSuccess, request } : Props ) => {
     };
 }
 
-export default useQueryFindFlights
+export default useQuerySearchFlights

@@ -10,3 +10,7 @@ export interface GetAirportsResponse {
     msg: string;
     data: Airport[];
 }
+
+export interface GetSearchAirportsResponse {
+    data: Airport[];
+}

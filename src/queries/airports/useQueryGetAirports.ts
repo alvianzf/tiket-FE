@@ -3,7 +3,7 @@ import { GetAirportsResponse } from "@api/airports/types";
 import { GET_AIRPORTS_KEY } from "@constants/queryKey";
 import { useQuery } from "react-query";
 
-interface GetAirlinesQueryKeys {
+interface GetAirportsQueryKeys {
     key: string;
 }
 
@@ -14,7 +14,7 @@ interface Props {
 
 const useQueryGetAirports = ({ enabled, onSuccess } : Props ) => {
 
-    const queryKeys: GetAirlinesQueryKeys[] = [
+    const queryKeys: GetAirportsQueryKeys[] = [
         {
             key: GET_AIRPORTS_KEY
         }
