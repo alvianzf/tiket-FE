@@ -23,9 +23,7 @@ const WaitingPaymentContainer = () => {
 
     const { data, isFetching } = useQueryCheckBookFlight({
         enabled: !!bookingno,
-        request: {
-            kodebooking: bookingno
-        }
+        request: bookingno
     });
 
     return (

@@ -6,12 +6,12 @@ import BankMandiri from "@icons/BankMandiri";
 import BankBni from "@icons/BankBni";
 import Dana from "@icons/Dana";
 import Button from "@components/Button";
-import { BookFlight } from "@api/bookFlight/types";
+import { GetBookFlightResponse } from "@api/bookFlight/types";
 import { useRouter } from "next/router";
 
 interface Props {
     isLoading: boolean;
-    flight?: BookFlight;
+    flight?: GetBookFlightResponse;
 }
 
 const PaymentForm = ({ isLoading, flight } : Props) => {
@@ -27,7 +27,9 @@ const PaymentForm = ({ isLoading, flight } : Props) => {
                 ...query
             }
         })
-    }
+    };
+
+    const total = parseInt(flight?.data?.nominal ?? '0') + parseInt(flight?.data?.comission ?? '0')
 
     return (
         <>
@@ -81,12 +83,12 @@ const PaymentForm = ({ isLoading, flight } : Props) => {
                         <div className="flex flex-col gap-5">
                             <div className="flex flex-row justify-between">
                                 <p className="text-lg font-medium text-orange">{t('checkout.total')}</p>
-                                <p className="text-lg font-medium text-orange">{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(flight?.flight_totalfare ?? 0)}`}</p>
+                                <p className="text-lg font-medium text-orange">{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(total ?? 0)}`}</p>
                             </div>
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-row justify-between">
                                     <p>{t('checkout.tax')}</p>
-                                    <p>{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(flight?.flight_tax ?? 0)}`}</p>
+                                    <p>{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(parseInt(flight?.data.comission ?? '0') ?? 0)}`}</p>
                                 </div>
                             </div>
                         </div>
