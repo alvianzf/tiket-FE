@@ -5,7 +5,8 @@ import FlightNotAvailable from "@components/FlightNotAvailable"
 import SearchFlight from "@components/SearchFlight"
 import IconSearch from "@icons/IconSearch"
 import { Button } from "@nextui-org/react"
-import { useQueryFindFlights } from "@queries/flights"
+import { useQuerySearchAirports } from "@queries/airports"
+import { useQuerySearchFlights } from "@queries/flights"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -43,17 +44,29 @@ const FlightListContainer = () => {
         }
     }, [isReady, from, to, date, adult, child, infant, push, classParams]);
 
-    const { data, isFetching } = useQueryFindFlights({
+    const { data: flights, isFetching } = useQuerySearchFlights({
         request: {
-            from: from?.split('-')?.[1],
-            to: to?.split('-')?.[1],
-            date,
+            departure: from,
+            arrival: to,
+            departureDate: date,
             adult: parseInt(adult),
             child: parseInt(child),
             infant: parseInt(infant),
         },
         enabled: (!!from && !!to && !!date && isReady && !!adult && !!child && !!infant && !!classParams)
     });
+
+    const { data: origin } = useQuerySearchAirports({
+        enabled: true,
+        request: from
+    });
+
+    const { data: destination } = useQuerySearchAirports({
+        enabled: true,
+        request: to
+    });
+
+    const flightDatas = flights?.data.flatMap((flight) => flight.flat()) ?? [];
 
     const totalPassenger = parseInt(adult) + parseInt(child) + parseInt(infant);
 
@@ -85,9 +98,9 @@ const FlightListContainer = () => {
                                     <div className="flex flex-row gap-3 justify-between w-full items-center">
                                         <div className="flex flex-col gap-2 w-[89%]">
                                             <div className="flex flex-row gap-2">
-                                                <p className="text-lg font-medium">{`${from?.split('-')?.[1]} (${from?.split('-')?.[0]})`}</p>
-                                                <p></p>
-                                                <p className="text-lg font-medium">{`${to?.split('-')?.[1]} (${to?.split('-')?.[0]})`}</p>
+                                                <p className="text-lg font-medium">{origin?.data?.[0]?.name ?? '-'}</p>
+                                                <p>{'-'}</p>
+                                                <p className="text-lg font-medium">{destination?.data?.[0]?.name ?? '-'}</p>
                                             </div>
                                             <div className="flex flex-row gap-2">
                                                 <p>{date}</p>
@@ -112,8 +125,8 @@ const FlightListContainer = () => {
                 <div className="flex flex-col gap-8 w-full max-w-[1024px]">
                     <FlightFilter />
                     <div className="flex flex-col gap-4">
-                        {!isFetching && data && data?.length > 0 && (
-                            data?.map((flight, index) => (
+                        {!isFetching && flightDatas && flightDatas?.length > 0 && (
+                            flightDatas?.map((flight, index) => (
                                 <FlightCard flight={flight} key={index} handleSelect={handleSelect}/>
                             ))
                         )}
@@ -124,7 +137,7 @@ const FlightListContainer = () => {
                                 <FlightCardSkeleton />
                         </>
                         )}
-                        {!isFetching && !data && (
+                        {!isFetching && !flights && (
                             <FlightNotAvailable />
                         )}
                     </div>

@@ -1,1 +1,0 @@
-export { default as useQueryCodeAreas } from './useQueryCodeAreas';

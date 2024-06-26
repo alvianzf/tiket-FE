@@ -23,9 +23,7 @@ const SuccessPaymentContainer = () => {
 
     const { data } = useQueryCheckBookFlight({
         enabled: !!bookingno,
-        request: {
-            kodebooking: bookingno
-        }
+        request: bookingno
     });
 
     return (

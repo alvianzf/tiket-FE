@@ -1,13 +1,35 @@
 import { Card, Image, Skeleton } from "@nextui-org/react";
-import { useQueryCodeFlights } from "@queries/codeFlights";
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "react-i18next";
+import { useQueryGetAirlines } from '@queries/airlines';
 
 const AirlinesPartners = () => {
     const { t } = useTranslation();
 
-    const { data, isFetching } = useQueryCodeFlights({
+    const { data: airlines, isFetching } = useQueryGetAirlines({
         enabled: true
     });
+
+    const imageUrl = (code: string) => {
+        if(code === 'LIO') {
+            return 'http://117.102.64.238:1212/assets/maskapai/TPJT.png';
+        }
+
+        if(code === 'GAR') {
+            return 'http://117.102.64.238:1212/assets/maskapai/TPGA.png';
+        }
+
+        if(code === 'CIT') {
+            return 'http://117.102.64.238:1212/assets/maskapai/TPQG.png';
+        }
+
+        if(code === 'PLA') {
+            return 'http://117.102.64.238:1212/assets/maskapai/TPIP.png';
+        }
+
+        if(code === 'SRI') {
+            return 'http://117.102.64.238:1212/assets/maskapai/TPSJ.png';
+        }
+    }
 
     return (
         <div className="flex flex-col lg:w-6/12 md:w-6/12 gap-3 sm:w-full w-full">
@@ -81,20 +103,8 @@ const AirlinesPartners = () => {
 
                     </>
                 )}
-                {data?.filter((codeFlight) => codeFlight.flight_name === "Garuda Indonesia" 
-                    || codeFlight.flight_code === "JT"
-                    || codeFlight.flight_code === "ID"
-                    || codeFlight.flight_code === "IW"
-                    || codeFlight.flight_code === "QZ"
-                    || codeFlight.flight_code === "OD"
-                    || codeFlight.flight_code === "IP"
-                    || codeFlight.flight_code === "IN"
-                    || codeFlight.flight_code === "IU"
-                    || codeFlight.flight_code === "QG"
-                    || codeFlight.flight_code === "SJ"
-                    )
-                .map((codeFlight, index) => (
-                    <Image width={50} height={50} src={codeFlight.flight_image} alt={codeFlight.flight_name} key={index}/>
+                {airlines?.data?.map((airline, index) => (
+                    <Image width={50} height={50} src={imageUrl(airline.airlineCode)} alt={airline.airlineCode} key={index}/>
                 ))}
             </div>
         </div>

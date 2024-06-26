@@ -2,16 +2,16 @@ import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react"
 import { useTranslation } from "react-i18next"
 import CheckoutOrderSummary from "./CheckoutOrderSummary"
 import CheckoutOrderReviewPassenger from "./CheckoutOrderReviewPassenger";
-import { FindPrice } from "@api/findPrice/types";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { FormProps } from "./forms/useForm";
+import { Flight } from "@api/searchFlights/types";
 
 interface Props {
-    flightPrice?: FindPrice;
+    flightData?: Flight;
     isLoading: boolean;
 }
 
-const CheckoutOrderReview = ({ flightPrice, isLoading }: Props) => {
+const CheckoutOrderReview = ({ flightData, isLoading }: Props) => {
 
     const { t } = useTranslation();
 
@@ -88,7 +88,7 @@ const CheckoutOrderReview = ({ flightPrice, isLoading }: Props) => {
                         </div>
                     </div>
                     <div className="w-[100%] md:w-[36%] lg:w-[36%]">
-                        <CheckoutOrderSummary isLoading={isLoading} flightPrice={flightPrice}/>
+                        <CheckoutOrderSummary isLoading={isLoading} flightData={flightData}/>
                     </div>
                 </div>
             </div>

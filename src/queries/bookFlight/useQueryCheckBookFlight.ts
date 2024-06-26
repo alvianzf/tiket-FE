@@ -1,17 +1,17 @@
 import { checkBookFlight } from "@api/bookFlight";
-import { CheckBookRequest, CheckBookResponse } from "@api/bookFlight/types";
+import { GetBookFlightResponse } from "@api/bookFlight/types";
 import { GET_CHECK_BOOK_FLIGHT } from "@constants/queryKey";
 import { useQuery } from "react-query";
 
 interface CheckBookQueryKeys {
     key: string;
-    payload: CheckBookRequest;
+    payload: string;
 }
 
 interface Props {
     enabled?: boolean;
-    onSuccess?: (response: CheckBookResponse) => void;
-    request: CheckBookRequest;
+    onSuccess?: (response: GetBookFlightResponse) => void;
+    request: string;
 }
 
 const useQueryCheckBookFlight = ({ enabled, onSuccess, request } : Props ) => {

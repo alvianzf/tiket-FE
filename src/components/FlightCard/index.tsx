@@ -1,4 +1,4 @@
-import { Flight } from "@api/findFlights/types";
+import { Flight } from "@api/searchFlights/types";
 import Button from "@components/Button";
 import { Card, CardBody, Image, Select, SelectItem } from "@nextui-org/react";
 import { useState } from "react";
@@ -24,90 +24,82 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
         { key: 'first_class', label: t('tickets.first_class') },
     ];
 
-    const dateTimeArr = flight.flight_datetime.split(' ');
+    const departureTime = flight.detailTitle?.[0]?.depart ?? '';
+    const arrivalTime = flight.detailTitle?.[flight.detailTitle.length - 1]?.arrival ?? '';
 
-    const cityCodeArr = flight.flight_detailroute?.[0].route_city_code.split('|');
-    const cityNameArr = flight.flight_detailroute?.[0].route_city_name.split('|');
-    const airportArr = flight.flight_detailroute?.[0].route_airport.split('|');
-    const timeArr = flight.flight_detailroute?.[0].route_time.split('|');
-    const flightCodeArr = flight.flight_code.split(',');
+    const origin = flight.detailTitle?.[0]?.origin ?? '';
+    const destination = flight.detailTitle?.[flight.detailTitle.length - 1]?.destination ?? '';
 
+    const totalPrice = flight.classes?.flatMap((flightClass) => flightClass).reduce((acc, { price }) => acc + price, 0);
     return (
         <Card className="px-4 flex flex-wrap lg:flex-nowrap md:flex-nowrap">
             <CardBody onClick={handleExtended}>
                 <div className="flex flex-col gap-8 flex-wrap lg:flex-nowrap md:flex-nowrap">
                     <div className="flex flex-row justify-between gap-5 items-center">
-                        <div className="w-[80px]">
-                            <Image src={flight.flight_image} alt={flight.flight_code} width={80} height={80}/>
+                        <div className="w-[15%]">
+                            <Image src={flight.airlineIcon} alt={flight.airlineCode} width={80} height={80}/>
                         </div>
-                        <div className="flex flex-col gap-3">
-                            <p className="text-xl font-medium">{`${flight.flight} (${flight.flight_code})`}</p>
+                        <div className="flex flex-col gap-3 w-[25%]">
+                            <p className="text-xl font-medium">{`${flight.airlineName}`}</p>
                             <div className="flex flex-row gap-3">
-                                <div className="luggage-badge">
-                                    <p className="text-sm">{flight.flight_baggage}</p>
+                                {/* <div className="luggage-badge">
+                                    <p className="text-sm">{''}</p>
                                 </div>
                                 <div className="luggage-reschedule">
                                     <p className="text-sm">{'Reschedule'}</p>
-                                </div>
+                                </div> */}
                             </div>
                             <p className="text-xl text-orange font-medium">
-                                {`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(parseInt(flight.flight_price))} / Org`}
+                                {`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(totalPrice)} / Org`}
                             </p>
                         </div>
-                        <div className="flex flex-row gap-3 items-center">
+                        <div className="flex flex-row gap-3 items-center w-[25%]">
                             <div className="flex flex-col text-center">
-                                <p className="font-medium text-2xl">{dateTimeArr?.[0]}</p>
-                                <p className="text-lg text-gray-400">{flight.flight_from}</p>
+                                <p className="font-medium text-2xl">{departureTime}</p>
+                                <p className="text-lg text-gray-400">{origin}</p>
                             </div>
                             <div className="flex flex-col text-center">
-                                <p className="text-sm text-gray-400">{flight.flight_duration}</p>
+                                <p className="text-sm text-gray-400">{flight.duration}</p>
                                 <hr />
-                                <p className="text-sm text-gray-400">{flight.flight_transit}</p>
+                                <p className="text-sm text-gray-400">{'transit'}</p>
                             </div>
                             <div className="flex flex-col text-center">
-                                <p className="font-medium text-2xl">{dateTimeArr?.[2]}</p>
-                                <p className="text-lg text-gray-400">{flight.flight_to}</p>
+                                <p className="font-medium text-2xl">{arrivalTime}</p>
+                                <p className="text-lg text-gray-400">{destination}</p>
                             </div>
                         </div>
-                        <Button bgColor={"orange"} className="min-w-40" onClick={handleSelect(flight.flight_code)}>
+                        <Button bgColor={"orange"} className="min-w-40" onClick={handleSelect(flight.searchId)}>
                             {t('tickets.choose')}
                         </Button>
                     </div>
                     {extended && (
                         <div className="flex flex-row justify-between items-start">
-                            <div className="flex flex-col gap-5">
-                                {cityCodeArr?.map((cityCode, index) => {
-                                    const splitCityCode = cityCode.split('~');
-                                    const splitCityName = cityNameArr?.[index]?.split('~');
-                                    const splitAirportName = airportArr?.[index]?.split('~');
-                                    const splitTime = timeArr?.[index]?.split('~');
-
-                                    return (
-                                    <div className="flex flex-col gap-8">
+                            <div className="flex flex-col gap-5 w-[50%]">
+                                {flight.detailTitle?.map((detail, index) => (
+                                    <div className="flex flex-col gap-8" key={index}>
                                         <div className="flex flex-row gap-20">
-                                            <p className="text-lg font-medium">{splitTime?.[0]}</p>
-                                            <div className="flex flex-col">
-                                                <p className="text-lg font-medium">{`${splitCityName?.[0]} (${splitCityCode?.[0]})`}</p>
-                                                <p className="text-gray-400">{splitAirportName?.[0]}</p>
+                                            <p className="text-lg font-medium w-[50%]">{detail.depart}</p>
+                                            <div className="flex flex-col w-[50%]">
+                                                <p className="text-lg font-medium">{`${detail.originName} (${detail.origin})`}</p>
+                                                {/* <p className="text-gray-400">{'Airport'}</p> */}
                                             </div>
                                         </div>
                                         <div className="flex flex-row gap-20">
-                                            <p className="text-gray-400 w-[40px]">{}</p>
-                                            <div className="flex flex-col">
-                                                <p className="text-lg font-medium">{flightCodeArr?.[index]}</p>
+                                            <p className="text-gray-400 w-[50%]">{detail.durationDetail}</p>
+                                            <div className="flex flex-col w-[50%]">
+                                                <p className="text-lg font-medium">{detail.flightCode}</p>
                                                 {/* <p>{'Airbus A320'}</p> */}
                                             </div>
                                         </div>
                                         <div className="flex flex-row gap-20">
-                                            <p className="text-lg font-medium">{splitTime?.[1]}</p>
-                                            <div className="flex flex-col">
-                                                <p className="text-lg font-medium">{`${splitCityName?.[1]} (${splitCityCode?.[1]})`}</p>
-                                                <p className="text-gray-400">{splitAirportName?.[1]}</p>
+                                            <p className="text-lg font-medium w-[50%]">{detail.arrival}</p>
+                                            <div className="flex flex-col w-[50%]">
+                                                <p className="text-lg font-medium">{`${detail.destinationName} (${detail.destination})`}</p>
+                                                {/* <p className="text-gray-400">{'Airport'}</p> */}
                                             </div>
                                         </div>
                                     </div>
-                                    )
-                                })}
+                                ))}
                                 
                             </div>
                             

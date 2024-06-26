@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next"
 import CheckoutOrder from "./CheckoutOrder";
 import { useEffect, useState } from "react";
 import CheckoutOrderReview from "./CheckoutOrderReview";
-import { FindPrice } from "@api/findPrice/types";
 import { FormProvider } from "react-hook-form";
 import useForm, { DEFAULT_VALUES, FormProps, Passenger } from "./forms/useForm";
 import Button from "@components/Button";
@@ -11,21 +10,30 @@ import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import { bookFlight } from "@api/bookFlight";
 import buildRequest from "./forms/buildRequest";
+import { Flight } from "@api/searchFlights/types";
 
 export type Key = string | number;
 
 interface Props {
-    flightPrice?: FindPrice;
+    flightData?: Flight;
     isLoading: boolean;
 }
 
-const Checkout = ({ flightPrice, isLoading }: Props) => {
+const Checkout = ({ flightData, isLoading }: Props) => {
 
     const { t } = useTranslation();
 
+    const { query, push } = useRouter();
+
+    const from = query?.from as unknown as string;
+    const to = query?.to as unknown as string;
+    const date = query?.date as unknown as string;
+    const adult = query?.adult as unknown as string;
+    const child = query?.child as unknown as string;
+    const infant = query?.infant as unknown as string;
+
     const [selected, setSelected] = useState<Key>("order");
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
-    const { push } = useRouter();
     
     const methods = useForm();
     const { handleSubmit } = methods;
@@ -85,32 +93,32 @@ const Checkout = ({ flightPrice, isLoading }: Props) => {
 
     useEffect(
         () => {
-            if(flightPrice) {
+            if(flightData) {
                 methods.reset({
                     ...DEFAULT_VALUES,
-                    flight: flightPrice.flight_code,
-                    from: flightPrice.flight_from,
-                    to: flightPrice.flight_to,
-                    date: flightPrice.flight_date,
-                    adult: flightPrice.adult,
-                    child: flightPrice.child,
-                    infant: flightPrice.infant,
-                    adultPassengers: generateAdultPassengers(flightPrice.adult),
-                    childPassengers: generateChildPassengers(flightPrice.child),
-                    infantPassengers: generateInfantPassengers(flightPrice.infant)
+                    searchId: flightData.searchId,
+                    from,
+                    to,
+                    date,
+                    adult: parseInt(adult),
+                    child: parseInt(child),
+                    infant: parseInt(infant),
+                    adultPassengers: generateAdultPassengers(parseInt(adult)),
+                    childPassengers: generateChildPassengers(parseInt(child)),
+                    infantPassengers: generateInfantPassengers(parseInt(infant))
                 })
             }
         },
-        [flightPrice, methods]
+        [flightData, methods]
     );
 
     const { mutate, isLoading: isMutating } = useMutation(bookFlight, {
         onSuccess: (data) => {
-            if(data.result === "ok") {
+            if(data.rc === "00") {
                 push({
                     pathname: '/checkout/payment',
                     query: {
-                        bookingno: data.kodebooking
+                        bookingno: data.data.bookingCode
                     }
                 })
                 return
@@ -123,7 +131,6 @@ const Checkout = ({ flightPrice, isLoading }: Props) => {
 
     const onSubmit = (data: FormProps) => {
         const request = buildRequest(data);
-
         mutate(request)
     }
 
@@ -135,10 +142,10 @@ const Checkout = ({ flightPrice, isLoading }: Props) => {
                     base: "justify-center"
                 }} onSelectionChange={(key) => handleSelectTab(key)}>
                     <Tab key="order" title={t('checkout.order')}>
-                        <CheckoutOrder flightPrice={flightPrice} isLoading={isLoading}/>
+                        <CheckoutOrder flightData={flightData} isLoading={isLoading}/>
                     </Tab>
                     <Tab key="review" title={t('checkout.review')}>
-                        <CheckoutOrderReview  flightPrice={flightPrice} isLoading={isLoading} />
+                        <CheckoutOrderReview  flightData={flightData} isLoading={isLoading} />
                     </Tab>
                 </Tabs>
             </FormProvider>

@@ -4,7 +4,7 @@ import FromInput from "./FromInput";
 import DestinationInput from "./DestinationInput";
 import PassengerInput from "./PassengerInput";
 import IconSearch from "@icons/IconSearch";
-import { useQueryCodeAreas } from "@queries/codeAreas";
+import { useQueryGetAirports } from "@queries/airports";
 import { FormProvider } from "react-hook-form";
 import useForm, { DEFAULT_VALUES, FormProps } from "./forms/useForm";
 import { useEffect } from "react";
@@ -18,7 +18,7 @@ const SearchFlight = () => {
 
     const { push, query, isReady } = useRouter();
 
-    const { data } = useQueryCodeAreas({
+    const { data: airports } = useQueryGetAirports({
         enabled: true
     });
 
@@ -31,7 +31,9 @@ const SearchFlight = () => {
 
     const methods = useForm();
 
-    const { handleSubmit, reset, watch, setValue } = methods;
+    const { handleSubmit, reset, watch, setValue, getValues } = methods;
+
+    console.log(getValues())
 
     const from = query?.from as unknown as string;
     const to = query?.to as unknown as string;
@@ -87,9 +89,9 @@ const SearchFlight = () => {
             <FormProvider {...methods}>
                 <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap gap-4 items-center">
                     <FromInput 
-                        items={data?.filter((item) => item.grup === 'lokal') ?? []}
+                        items={airports?.data?.filter((item) => item.group === 'Domestik') ?? []}
                     />
-                    <DestinationInput items={data?.filter((item) => item.grup === 'lokal') ?? []}/>
+                    <DestinationInput items={airports?.data?.filter((item) => item.group === 'Domestik') ?? []}/>
                     <PassengerInput />
                     <div className="w-full flex flex-col gap-2">
                         <p className="font-medium">{t('tickets.departured_date')}</p>
