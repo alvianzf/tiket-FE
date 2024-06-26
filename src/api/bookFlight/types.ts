@@ -17,7 +17,7 @@ interface FlightDetail {
     arrivalTimeZoneText: string;
 }
 
-interface PassengerResponse {
+export interface PassengerResponse {
     title: string;
     first_name: string;
     last_name: string;
