@@ -1,3 +1,4 @@
+import { PassengerResponse } from "@api/bookFlight/types";
 import LionAir from "@icons/LionAir"
 import { Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react"
 import { useQueryCheckBookFlight } from "@queries/bookFlight";
@@ -21,10 +22,14 @@ const EticketContainer = () => {
 
     const { data, isFetching } = useQueryCheckBookFlight({
         enabled: !!bookingno,
-        request: {
-            kodebooking: bookingno
-        }
+        request: bookingno
     });
+
+    const passengers: PassengerResponse[] = [];
+
+    data?.data.passengers.adults?.flatMap((passenger) => passengers.push(passenger))
+    data?.data.passengers.children?.flatMap((passenger) => passengers.push(passenger))
+    data?.data.passengers.infants?.flatMap((passenger) => passengers.push(passenger))
     
     return (
         isFetching ? (
@@ -36,7 +41,7 @@ const EticketContainer = () => {
             <div className="p-10 flex flex-col gap-4">
                 <p className="text-xl font-medium">Flight E-Ticket</p>
                 <p className="text-xl font-medium">Penerbangan Pergi</p>
-                <p className="text-2xl font-medium text-orange">{data?.kodebooking}</p>
+                <p className="text-2xl font-medium text-orange">{data?.data.bookingCode}</p>
                 <div className="flex flex-row justify-between rounded border-2 p-2 gap-[60px] text-center">
                     <p>Perlihatkan E-ticket dan identitas diri saat check-in</p>
                     <p>Check-in paling lambat 90 menit sebelum keberangkatan</p>
@@ -44,29 +49,29 @@ const EticketContainer = () => {
                 </div>
                 <div className="flex flex-row justify-between items-center">
                     <LionAir width={100} height={100}/>
-                    {data?.flight_detailroute_json.map((route, index) => (
+                    {data?.data.flightdetail.map((route, index) => (
                         <div key={index} className="flex flex-col gap-8">
                             <div className="flex flex-row gap-20">
-                                <p className="text-lg font-medium">{route.route_time.split("~")?.[0]}</p>
+                                <p className="text-lg font-medium">{route.depart}</p>
                                 <div className="flex flex-col">
                                     <p className="text-lg font-medium">
-                                        {`${route.route_city_name.split("~")?.[0]} (${route.route_city_code.split("~")?.[0]})`}
+                                        {`${route.originName} (${route.origin})`}
                                     </p>
                                     <p className="text-gray-400">{'Hang Nadim'}</p>
                                 </div>
                             </div>
                             <div className="flex flex-row gap-20">
-                                <p className="text-gray-400 w-[40px]">{data?.flight_duration}</p>
+                                <p className="text-gray-400 w-[40px]">{route.durationDetail}</p>
                                 <div className="flex flex-col">
-                                    <p className="text-lg font-medium">{data?.flight_code}</p>
+                                    <p className="text-lg font-medium">{route.flightCode}</p>
                                     {/* <p>{'Airbus A320'}</p> */}
                                 </div>
                             </div>
                             <div className="flex flex-row gap-20">
-                                <p className="text-lg font-medium">{route.route_time.split("~")?.[1]}</p>
+                                <p className="text-lg font-medium">{route.arrival}</p>
                                 <div className="flex flex-col">
                                     <p className="text-lg font-medium">
-                                        {`${route.route_city_name.split("~")?.[1]} (${route.route_city_code.split("~")?.[1]})`}
+                                        {`${route.destinationName} (${route.destination})`}
                                     </p>
                                     <p className="text-gray-400">{'Soekarno Hatta Internation Airport'}</p>
                                 </div>
@@ -84,16 +89,17 @@ const EticketContainer = () => {
                         <TableColumn>Fasilitas</TableColumn>
                     </TableHeader>
                     
-                    <TableBody items={data?.flight_datapassengers_json ?? []}>
+                    <TableBody items={passengers ?? []}>
                         {(item) => (
-                            <TableRow key={'asd'}>
+                            <TableRow key={item.date_of_birth}>
                                 <TableCell>{1}</TableCell>
-                                <TableCell>{item.passenger_fullname}</TableCell>
-                                <TableCell>{data?.flight_code}</TableCell>
+                                <TableCell>{`${item.title} ${item.first_name} ${item.last_name}`}</TableCell>
+                                <TableCell>{data?.data.flightdetail?.[0]?.flightCode}</TableCell>
                                 <TableCell>{'-'}</TableCell>
                             </TableRow>
                         )}
                     </TableBody>
+                    
                 </Table>
                 <div className="flex flex-col gap-4">
                     <p>Catatan Penting:</p>
