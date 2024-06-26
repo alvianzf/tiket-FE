@@ -1,11 +1,11 @@
-import { CodeArea } from "@api/codeArea/types";
 import { Autocomplete, AutocompleteItem, AutocompleteSection } from "@nextui-org/react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "../forms/useForm";
+import { Airport } from "@api/airports/types";
 
 interface Props {
-    items: CodeArea[];
+    items: Airport[];
 }
 
 const FromInput = ({ items } : Props) => {
@@ -16,7 +16,7 @@ const FromInput = ({ items } : Props) => {
 
     const handleContent = () => {
         return items.map((item) => (
-            <AutocompleteItem value={item.code} key={`${item.city}-${item.code}`}>{`${item.city} (${item.code})`}</AutocompleteItem>
+            <AutocompleteItem value={item.code} key={`${item.code}`}>{`${item.name}`}</AutocompleteItem>
         ))
     }
 
