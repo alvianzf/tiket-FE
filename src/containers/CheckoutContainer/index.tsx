@@ -43,6 +43,14 @@ const CheckoutContainer = () => {
 
     const flightData = flightDatas.find((flight) => flight.searchId === code);
 
+    useEffect(() => {
+        if (!isFetching && !flightData) {
+            push('/');
+
+            return;
+        }
+    },[isFetching, flightData])
+
     return (
         <div className="flex flex-wrap justify-center my-10">
             <div className="flex flex-col gap-8 w-full px-5 max-w-[1024px]">
