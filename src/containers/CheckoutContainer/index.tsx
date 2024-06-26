@@ -1,5 +1,5 @@
 import Checkout from "@components/Checkout"
-import { useQueryFindPrice } from "@queries/flights";
+import { useQuerySearchFlights } from "@queries/flights";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -27,23 +27,26 @@ const CheckoutContainer = () => {
 
     }, [isReady, from, to, date, adult, child, infant, push, classParams]);
 
-    const { data, isFetching } = useQueryFindPrice({
+    const { data: flights, isFetching } = useQuerySearchFlights({
         request: {
-            from: from?.split('-')?.[1],
-            to: to?.split('-')?.[1],
-            date,
+            departure: from,
+            arrival: to,
+            departureDate: date,
             adult: parseInt(adult),
             child: parseInt(child),
-            infant: parseInt(child),
-            flight: code
+            infant: parseInt(infant),
         },
-        enabled: (!!from && !!to && !!date && isReady && !!adult && !!child && !!infant && !!classParams && !!code)
-    })
+        enabled: (!!from && !!to && !!date && isReady && !!adult && !!child && !!infant && !!classParams)
+    });
+
+    const flightDatas = flights?.data.flatMap((flight) => flight.flat()) ?? [];
+
+    const flightData = flightDatas.find((flight) => flight.searchId === code);
 
     return (
         <div className="flex flex-wrap justify-center my-10">
             <div className="flex flex-col gap-8 w-full px-5 max-w-[1024px]">
-                <Checkout flightPrice={data} isLoading={isFetching} />
+                <Checkout flightData={flightData} isLoading={isFetching} />
             </div>
         </div>
     )

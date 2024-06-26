@@ -13,7 +13,7 @@ export interface Passenger {
 export interface FormProps {
     firstname: string;
     lastname: string;
-    flight: string;
+    searchId: string;
     from: string;
     to: string;
     date: string;
@@ -28,7 +28,6 @@ export interface FormProps {
 }
 
 export const DEFAULT_VALUES: FormProps = {
-    flight: '',
     from: '',
     to: '',
     date: '',
@@ -41,7 +40,8 @@ export const DEFAULT_VALUES: FormProps = {
     firstname: '',
     lastname: '',
     childPassengers: [],
-    infantPassengers: []
+    infantPassengers: [],
+    searchId: ''
 };
 
 const useForm = () => {
@@ -51,7 +51,7 @@ const useForm = () => {
         .object({
             firstname: yup.string().required(t('form.required')),
             lastname: yup.string().required(t('form.required')),
-            flight: yup.string().required(t('form.required')),
+            searchId: yup.string().required(t('form.required')),
             from: yup.string().required(t('form.required')),
             to: yup.string().required(t('form.required')),
             date: yup.string().required(t('form.required')),
