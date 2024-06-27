@@ -35,11 +35,11 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
         <Card className="px-4 flex flex-wrap lg:flex-nowrap md:flex-nowrap">
             <CardBody onClick={handleExtended}>
                 <div className="flex flex-col gap-8 flex-wrap lg:flex-nowrap md:flex-nowrap">
-                    <div className="flex flex-row justify-between gap-5 items-center">
-                        <div className="w-[15%]">
+                    <div className="flex flex-row flex-wrap justify-between gap-5 items-center">
+                        <div className="w-[35%] lg:w-[15%] md:w-[15%]">
                             <Image src={flight.airlineIcon} alt={flight.airlineCode} width={80} height={80}/>
                         </div>
-                        <div className="flex flex-col gap-3 w-[25%]">
+                        <div className="flex flex-col gap-3 w-[55%] lg:w-[25%] md:w-[25%]">
                             <p className="text-xl font-medium">{`${flight.airlineName}`}</p>
                             <div className="flex flex-row gap-3">
                                 {/* <div className="luggage-badge">
@@ -53,7 +53,7 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
                                 {`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(totalPrice)} / Org`}
                             </p>
                         </div>
-                        <div className="flex flex-row gap-3 items-center w-[25%]">
+                        <div className="flex flex-row gap-3 items-center justify-center w-full lg:w-[25%] md:w-[25%]">
                             <div className="flex flex-col text-center">
                                 <p className="font-medium text-2xl">{departureTime}</p>
                                 <p className="text-lg text-gray-400">{origin}</p>
@@ -68,7 +68,7 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
                                 <p className="text-lg text-gray-400">{destination}</p>
                             </div>
                         </div>
-                        <Button bgColor={"orange"} className="min-w-40" onClick={handleSelect(flight.searchId)}>
+                        <Button bgColor={"orange"} className="w-full md:min-w-40 lg:min-w-40" onClick={handleSelect(flight.searchId)}>
                             {t('tickets.choose')}
                         </Button>
                     </div>

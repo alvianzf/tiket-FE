@@ -43,7 +43,7 @@ const FlightFilter = () => {
                     <div className="flex flex-row flex-wrap lg:flex-nowrap md:flex-nowrap gap-3 justify-between">
                         <Select 
                             placeholder={t('tickets.price_placeholder')}
-                            className="max-w-xs"
+                            className="w-full lg:max-w-xs md:max-w-xs"
                             variant="bordered"
                             radius="sm" 
                         >
@@ -56,7 +56,7 @@ const FlightFilter = () => {
                         </Select>
                         <Select 
                             placeholder={t('tickets.airline_placeholder')}
-                            className="max-w-xs"
+                            className="w-full lg:max-w-xs md:max-w-xs"
                             variant="bordered"
                             radius="sm" 
                         >
@@ -69,7 +69,7 @@ const FlightFilter = () => {
                         </Select>
                         <Select 
                             placeholder={t('tickets.transit_placeholder')}
-                            className="max-w-xs"
+                            className="w-full lg:max-w-xs md:max-w-xs"
                             variant="bordered"
                             radius="sm" 
                         >
@@ -82,7 +82,7 @@ const FlightFilter = () => {
                         </Select>
                         <Select 
                             placeholder={t('tickets.luggage_placeholder')}
-                            className="max-w-xs"
+                            className="w-full lg:max-w-xs md:max-w-xs"
                             variant="bordered"
                             radius="sm" 
                         >
@@ -95,7 +95,7 @@ const FlightFilter = () => {
                         </Select>
                         <Select 
                             placeholder={t('tickets.class_placeholder')}
-                            className="max-w-xs"
+                            className="w-full lg:max-w-xs md:max-w-xs"
                             variant="bordered"
                             radius="sm" 
                         >
@@ -106,7 +106,7 @@ const FlightFilter = () => {
                                 ))
                             }
                         </Select>
-                        <Button bgColor="blue">
+                        <Button bgColor="blue" className="w-full lg:w-fit md:w-fit">
                             {t('tickets.search')}
                         </Button>
                     </div>
