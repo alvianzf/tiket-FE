@@ -121,7 +121,7 @@ const FlightListContainer = () => {
                         )}
                 </div>
             </div>
-            <div className="flex flex-wrap justify-center my-10">
+            <div className="flex flex-wrap justify-center my-10 mx-[40px] lg:mx-0 md:mx-[40px]">
                 <div className="flex flex-col gap-8 w-full max-w-[1024px]">
                     <FlightFilter />
                     <div className="flex flex-col gap-4">

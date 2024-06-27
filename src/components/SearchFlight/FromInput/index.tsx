@@ -26,7 +26,7 @@ const FromInput = ({ items } : Props) => {
             <Autocomplete
                 aria-label={t('tickets.from')}
                 placeholder={t('tickets.from_placeholder')}
-                className="max-w-lg"
+                className="w-full lg:max-w-lg md:max-w-lg"
                 variant="underlined"
                 classNames={{
                     listbox: 'flex flex-row',

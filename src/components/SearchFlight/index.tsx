@@ -108,7 +108,7 @@ const SearchFlight = () => {
                         <Select
                             aria-label={t('tickets.set_class')}
                             placeholder={t('tickets.set_class')}
-                            className="max-w-xs"
+                            className="w-full lg:max-w-xs md:max-w-xs"
                             variant="bordered"
                             radius="sm" 
                             defaultSelectedKeys={[watch('class')]}
@@ -123,7 +123,7 @@ const SearchFlight = () => {
                             }
                         </Select>
                     </div>
-                    <Button isIconOnly className="button-orange" onClick={handleSubmit(onSubmit)}>
+                    <Button isIconOnly className="button-orange w-full lg:w-fit md:w-fit" onClick={handleSubmit(onSubmit)}>
                         <IconSearch width={30} height={30}/>
                     </Button> 
                 </div>
