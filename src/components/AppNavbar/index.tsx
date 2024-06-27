@@ -189,7 +189,7 @@ const AppNavbar = () => {
                         <>
                             <ModalHeader className="flex flex-col gap-1">{t('home.find_booking_no')}</ModalHeader>
                             <ModalBody>
-                                <SearchBookingNumber />
+                                <SearchBookingNumber onOpenChangeFind={onOpenChangeFind}/>
                             </ModalBody>
                         </>
                     )}

@@ -6,7 +6,11 @@ import { useMutation } from "react-query";
 import { checkBookFlight } from "@api/bookFlight";
 import { useRouter } from "next/router";
 
-const SearchBookingNumber = () => {
+interface Props {
+    onOpenChangeFind: () => void;
+}
+
+const SearchBookingNumber = ({ onOpenChangeFind } : Props) => {
 
     const { t } = useTranslation();
 
@@ -20,21 +24,24 @@ const SearchBookingNumber = () => {
 
     const { mutate, isLoading } = useMutation(checkBookFlight, {
         onSuccess: (data) => {
-            if(data.result === 'ok') {
+            if(data.rc === '00') {
                 push({
                     pathname: '/eticket',
                     query: {
-                        bookingno: data.kodebooking
+                        bookingno: data.data.bookingCode
                     }
                 })
             }
+            onOpenChangeFind();
+        },
+        onError: () => {
+            onOpenChangeFind();
         }
     })
 
     const onSubmit = (data: FormProps) => {
-        mutate({
-            kodebooking: data.booking_no
-        });
+        mutate(data.booking_no);
+        
     }
 
     return (

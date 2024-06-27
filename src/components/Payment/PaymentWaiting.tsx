@@ -1,11 +1,11 @@
 import { Card, CardBody, CardHeader, Divider, Button as BaseButton } from "@nextui-org/react"
 import { useTranslation } from "react-i18next"
 import Button from "@components/Button";
-import { BookFlight } from "@api/bookFlight/types";
+import { GetBookFlightResponse } from "@api/bookFlight/types";
 import { useRouter } from "next/router";
 
 interface Props {
-    flight?: BookFlight;
+    flight?: GetBookFlightResponse;
     isLoading: boolean;
 }
 
@@ -27,6 +27,8 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
             }
         })
     }
+
+    const total = parseInt(flight?.data?.nominal ?? '0') + parseInt(flight?.data?.comission ?? '0')
 
     return (
         <>
@@ -60,7 +62,7 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
                             <div className="flex flex-row justify-between gap-5 items-center">
                                 <p className="text-orange font-medium">{t('checkout.transfer_amount')}</p>
                                 <div className="flex flex-row gap-3 items-center">
-                                    <p className="text-orange font-medium">{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(flight?.flight_totalfare ?? 0)}`}</p>
+                                    <p className="text-orange font-medium">{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(total ?? 0)}`}</p>
                                     <BaseButton color="primary" variant="light" onClick={copyToClipboard('1800000')}>
                                         {t('checkout.copy')}
                                     </BaseButton>
