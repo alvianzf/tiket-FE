@@ -4,10 +4,10 @@ import PaymentRadio from "./PaymentRadio";
 import BankBca from "@icons/BankBca";
 import BankMandiri from "@icons/BankMandiri";
 import BankBni from "@icons/BankBni";
-import Dana from "@icons/Dana";
 import Button from "@components/Button";
 import { GetBookFlightResponse } from "@api/bookFlight/types";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 interface Props {
     isLoading: boolean;
@@ -17,6 +17,7 @@ interface Props {
 const PaymentForm = ({ isLoading, flight } : Props) => {
 
     const { t } = useTranslation();
+    const [payment,setPayment] = useState<string>('');
 
     const { push, query } = useRouter();
 
@@ -24,7 +25,8 @@ const PaymentForm = ({ isLoading, flight } : Props) => {
         push({
             pathname: '/checkout/payment/waiting',
             query: {
-                ...query
+                ...query,
+                payment
             }
         })
     };
@@ -42,29 +44,23 @@ const PaymentForm = ({ isLoading, flight } : Props) => {
                     </CardHeader>
                     <Divider />
                     <CardBody>
-                        <RadioGroup>
+                        <RadioGroup value={payment} onValueChange={setPayment}>
                             <PaymentRadio value="bca">
                                 <div className="flex flex-row items-center gap-5">
                                     <BankBca width={30} height={30}/>
-                                    <p>{'BCA'}</p>
-                                </div>
-                            </PaymentRadio>
-                            <PaymentRadio value="mandiri">
-                                <div className="flex flex-row items-center gap-5">
-                                    <BankMandiri width={30} height={30}/>
-                                    <p>{'Mandiri'}</p>
+                                    <p>{'BCA - Abdul Rahman 0613336939'}</p>
                                 </div>
                             </PaymentRadio>
                             <PaymentRadio value="bni">
                                 <div className="flex flex-row items-center gap-5">
-                                    <BankBni width={30} height={30}/>
-                                    <p>{'BNI'}</p>
+                                    <BankMandiri width={30} height={30}/>
+                                    <p>{'BNI - Abdul Rahman 2100900774'}</p>
                                 </div>
                             </PaymentRadio>
-                            <PaymentRadio value="dana">
+                            <PaymentRadio value="bri">
                                 <div className="flex flex-row items-center gap-5">
-                                    <Dana width={30} height={30}/>
-                                    <p>{'Dana'}</p>
+                                    <BankBni width={30} height={30}/>
+                                    <p>{'BRI - Abdul Rahman 033101073801501'}</p>
                                 </div>
                             </PaymentRadio>
                         </RadioGroup>

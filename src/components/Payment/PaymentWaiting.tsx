@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next"
 import Button from "@components/Button";
 import { GetBookFlightResponse } from "@api/bookFlight/types";
 import { useRouter } from "next/router";
+import { useEffect, useMemo } from "react";
 
 interface Props {
     flight?: GetBookFlightResponse;
@@ -19,16 +20,54 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
 
     const { query, push } = useRouter();
 
-    const handleOnPayment = () => {
-        push({
-            pathname: '/checkout/payment/confirm',
-            query: {
-                ...query
+    useEffect(
+        () => {
+            if(!query.payment && !query.bookingno) {
+                push({
+                    pathname: '/checkout/payment',
+                    query: {
+                        ...query
+                    }
+                })
             }
-        })
+        },
+        []
+    )
+
+    const total = parseInt(flight?.data?.nominal ?? '0') + parseInt(flight?.data?.comission ?? '0');
+
+    const handleOnPayment = () => {
+        window.open(`https://wa.me/6282382709777?text=Saya%20baru%20saja%20melakukan%20booking%20pesawat%20dengan%20informasi%3A%0Anama%3A%20${flight?.data.buyer.name}%0Akode%20booking%3A%20${flight?.data.bookingCode}%0Anominal%3A%20${total}`)
     }
 
-    const total = parseInt(flight?.data?.nominal ?? '0') + parseInt(flight?.data?.comission ?? '0')
+    
+
+    const paymentAccountDetail = useMemo(
+        () => {
+            if(query.payment === 'bca') {
+                return {
+                    bank: 'BCA',
+                    code: '0613336939'
+                }
+            }
+
+            if(query.payment === 'bni') {
+                return {
+                    bank: 'BNI',
+                    code: '2100900774'
+                }
+            }
+
+            if(query.payment === 'bri') {
+                return {
+                    bank: 'BRI',
+                    code: '033101073801501'
+                }
+            }
+        },
+        []
+    )
+    
 
     return (
         <>
@@ -42,12 +81,12 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
                     <Divider />
                     <CardBody>
                         <div className="flex flex-col gap-5">
-                            <p>{'Bank Central Asia'}</p>
+                            <p>{paymentAccountDetail?.bank}</p>
                             <div className="flex flex-row justify-between gap-5 items-center">
                                 <p>{t('checkout.account_number')}</p>
                                 <div className="flex flex-row gap-3 items-center">
-                                    <p className="text-primary">{'5543213'}</p>
-                                    <BaseButton color="primary" variant="light" onClick={copyToClipboard('5543213')}>
+                                    <p className="text-primary">{paymentAccountDetail?.code}</p>
+                                    <BaseButton color="primary" variant="light" onClick={copyToClipboard(paymentAccountDetail?.code ?? '')}>
                                         {t('checkout.copy')}
                                     </BaseButton>
                                 </div>
@@ -55,7 +94,7 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
                             <div className="flex flex-row justify-between gap-5">
                                 <p>{t('checkout.recipient_name')}</p>
                                 <div className="flex flex-row gap-3 items-center">
-                                    <p className="text-primary">{'PT Tiketq'}</p>
+                                    <p className="text-primary">{'Abdul Rahman'}</p>
                                     <div className="w-[80px]"/>
                                 </div>
                             </div>
@@ -63,7 +102,7 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
                                 <p className="text-orange font-medium">{t('checkout.transfer_amount')}</p>
                                 <div className="flex flex-row gap-3 items-center">
                                     <p className="text-orange font-medium">{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(total ?? 0)}`}</p>
-                                    <BaseButton color="primary" variant="light" onClick={copyToClipboard('1800000')}>
+                                    <BaseButton color="primary" variant="light" onClick={copyToClipboard(total.toString() ?? '')}>
                                         {t('checkout.copy')}
                                     </BaseButton>
                                 </div>

@@ -1,6 +1,6 @@
 import FlightCard from "@components/FlightCard"
 import FlightCardSkeleton from "@components/FlightCardSkeleton"
-import FlightFilter from "@components/FlightFilter"
+// import FlightFilter from "@components/FlightFilter"
 import FlightNotAvailable from "@components/FlightNotAvailable"
 import SearchFlight from "@components/SearchFlight"
 import IconSearch from "@icons/IconSearch"
@@ -123,7 +123,7 @@ const FlightListContainer = () => {
             </div>
             <div className="flex flex-wrap justify-center my-10 mx-[40px] lg:mx-0 md:mx-[40px]">
                 <div className="flex flex-col gap-8 w-full max-w-[1024px]">
-                    <FlightFilter />
+                    {/* <FlightFilter /> */}
                     <div className="flex flex-col gap-4">
                         {!isFetching && flightDatas && flightDatas?.length > 0 && (
                             flightDatas?.map((flight, index) => (

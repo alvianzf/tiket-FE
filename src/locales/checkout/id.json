@@ -26,7 +26,7 @@
             "transfer_amount": "Jumlah transfer",
             "have_you_pay_yet": "Apakah Anda sudah membayar?",
             "already_payment": "Sudah Bayar",
-            "once_payment_description": "Setelah pembayaran Anda dikonfirmasi, kami akan mengirimkan E-Ticket ke alamat email Anda",
+            "once_payment_description": "Setelah pembayaran Anda dikonfirmasi, Anda bisa mendapatkan e-ticket dari website kami menggunakan booking no",
             "waiting_payment_verification": "Menunggu Verifikasi Pembayaran",
             "upload_description": "Silakan upload bukti pembayaran Anda untuk mempercepat proses verifikasi pembayaran",
             "upload": "Upload",

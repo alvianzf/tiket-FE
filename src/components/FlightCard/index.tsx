@@ -1,6 +1,6 @@
 import { Flight } from "@api/searchFlights/types";
 import Button from "@components/Button";
-import { Card, CardBody, Image, Select, SelectItem } from "@nextui-org/react";
+import { Card, CardBody, Image } from "@nextui-org/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -18,11 +18,11 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
         setExtended((prevState) => !prevState);
     };
 
-    const classesData = [
-        { key: 'economy', label: t('tickets.economy') },
-        { key: 'business_class', label: t('tickets.business_class') },
-        { key: 'first_class', label: t('tickets.first_class') },
-    ];
+    // const classesData = [
+    //     { key: 'economy', label: t('tickets.economy') },
+    //     { key: 'business_class', label: t('tickets.business_class') },
+    //     { key: 'first_class', label: t('tickets.first_class') },
+    // ];
 
     const departureTime = flight.detailTitle?.[0]?.depart ?? '';
     const arrivalTime = flight.detailTitle?.[flight.detailTitle.length - 1]?.arrival ?? '';
@@ -103,7 +103,7 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
                                 
                             </div>
                             
-                            <Select 
+                            {/* <Select 
                                 placeholder={t('tickets.class_placeholder')}
                                 className="max-w-xs"
                                 variant="bordered"
@@ -117,7 +117,7 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
                                     </SelectItem>
                                     ))
                                 }
-                            </Select>
+                            </Select> */}
                         </div>
                     )}
                 </div>
