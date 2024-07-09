@@ -26,8 +26,7 @@ const useQueryCheckBookFlight = ({ enabled, onSuccess, request } : Props ) => {
     const { data, isFetching, error } = useQuery(queryKeys, ({ queryKey: [{ payload }]}) => checkBookFlight(payload), {
         enabled,
         onSuccess,
-        refetchInterval: 30_000,
-        refetchOnWindowFocus: true
+        refetchInterval: 30_000
     });
 
     return {

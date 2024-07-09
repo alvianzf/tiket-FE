@@ -4,12 +4,16 @@ import { Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRo
 import { useQueryCheckBookFlight } from "@queries/bookFlight";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import Button from '@components/Button';
+import { useTranslation } from "react-i18next";
 
 const EticketContainer = () => {
 
     const { query, isReady, push } = useRouter();
 
     const bookingno = query?.bookingno as unknown as string;
+
+    const { t } = useTranslation();
 
     useEffect(
         () => {
@@ -30,6 +34,32 @@ const EticketContainer = () => {
     data?.data.passengers.adults?.flatMap((passenger) => passengers.push(passenger))
     data?.data.passengers.children?.flatMap((passenger) => passengers.push(passenger))
     data?.data.passengers.infants?.flatMap((passenger) => passengers.push(passenger))
+
+    const base64toBlob = (base64Data: string) => {
+        const sliceSize = 1024;
+        const byteCharacters = atob(base64Data);
+        const bytesLength = byteCharacters.length;
+        const slicesCount = Math.ceil(bytesLength / sliceSize);
+        const byteArrays = new Array(slicesCount);
+
+        for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+            const begin = sliceIndex * sliceSize;
+            const end = Math.min(begin + sliceSize, bytesLength);
+
+            const bytes = new Array(end - begin);
+            for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
+            bytes[i] = byteCharacters[offset].charCodeAt(0);
+            }
+            byteArrays[sliceIndex] = new Uint8Array(bytes);
+        }
+        return new Blob(byteArrays, { type: "application/pdf" });
+    };
+
+    const openBase64NewTab = (base64Pdf: string) => {
+        const blob = base64toBlob(base64Pdf);
+        const blobUrl = URL.createObjectURL(blob);
+        window.open(blobUrl);
+      }
     
     return (
         isFetching ? (
@@ -41,7 +71,14 @@ const EticketContainer = () => {
             <div className="p-10 flex flex-col gap-4">
                 <p className="text-xl font-medium">Flight E-Ticket</p>
                 <p className="text-xl font-medium">Penerbangan Pergi</p>
-                <p className="text-2xl font-medium text-orange">{data?.data.bookingCode}</p>
+                <div className="flex flex-row justify-between p-2 gap-[60px] text-center">
+                    <p className="text-2xl font-medium text-orange">{`${data?.data.bookingCode} (${data?.data.status})`}</p>
+                    {data?.data.status === 'ISSUED' && (
+                        <Button bgColor={"orange"} isLoading={isFetching} disabled={isFetching} onClick={() => openBase64NewTab(data?.data.tiket_pdf ?? '')}>
+                            {t('checkout.get_eticket')}
+                        </Button>
+                    )}
+                </div>
                 <div className="flex flex-row justify-between rounded border-2 p-2 gap-[60px] text-center">
                     <p>Perlihatkan E-ticket dan identitas diri saat check-in</p>
                     <p>Check-in paling lambat 90 menit sebelum keberangkatan</p>
