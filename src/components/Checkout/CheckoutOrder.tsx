@@ -1,19 +1,12 @@
-import { Card, CardBody, CardHeader, Divider, Input } from "@nextui-org/react"
-import { useTranslation } from "react-i18next"
-import CheckoutOrderSummary from "./CheckoutOrderSummary"
+import { Card, CardBody, CardHeader, Divider, Input } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { FormProps } from "./forms/useForm";
 import CheckoutOrderAdult from "./CheckoutOrderAdult";
 import CheckoutOrderChild from "./CheckoutOrderChild";
 import CheckoutOrderInfant from "./CheckoutOrderInfant";
-import { Flight } from "@api/searchFlights/types";
 
-interface Props {
-    flightData?: Flight;
-    isLoading: boolean;
-}
-
-const CheckoutOrder = ({ isLoading, flightData }: Props) => {
+const CheckoutOrder = () => {
 
     const { watch, setValue, formState: { errors } } = useFormContext<FormProps>();
 
@@ -22,7 +15,7 @@ const CheckoutOrder = ({ isLoading, flightData }: Props) => {
     return (
         <div className="flex flex-col gap-10">
             <div className="flex flex-row flex-wrap gap-[30px]">
-                <div className="flex flex-col gap-[80px] w-[100%] md:w-[60%] lg:w-[60%]">
+                <div className="flex flex-col gap-[80px] w-[100%] md:w-[100%] lg:w-[100%]">
                     <div className="flex flex-col gap-4">
                         <p className="text-lg font-medium">{t('checkout.order_section_title')}</p>
                         <Card classNames={{
@@ -105,9 +98,6 @@ const CheckoutOrder = ({ isLoading, flightData }: Props) => {
                         <CheckoutOrderChild />
                         <CheckoutOrderInfant />
                     </div>
-                </div>
-                <div className="w-[100%] md:w-[36%] lg:w-[36%]">
-                    <CheckoutOrderSummary flightData={flightData} isLoading={isLoading}/>
                 </div>
             </div>
         </div>

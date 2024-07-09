@@ -142,10 +142,10 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                     base: "justify-center"
                 }} onSelectionChange={(key) => handleSelectTab(key)}>
                     <Tab key="order" title={t('checkout.order')}>
-                        <CheckoutOrder flightData={flightData} isLoading={isLoading}/>
+                        <CheckoutOrder />
                     </Tab>
                     <Tab key="review" title={t('checkout.review')}>
-                        <CheckoutOrderReview  flightData={flightData} isLoading={isLoading} />
+                        <CheckoutOrderReview  />
                     </Tab>
                 </Tabs>
             </FormProvider>

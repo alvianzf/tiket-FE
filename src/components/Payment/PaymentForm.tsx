@@ -31,7 +31,7 @@ const PaymentForm = ({ isLoading, flight } : Props) => {
         })
     };
 
-    const total = parseInt(flight?.data?.nominal ?? '0') + parseInt(flight?.data?.comission ?? '0')
+    const total = parseInt(flight?.data?.nominal ?? '0')
 
     return (
         <>

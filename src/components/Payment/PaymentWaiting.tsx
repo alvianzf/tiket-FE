@@ -34,13 +34,20 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
         []
     )
 
-    const total = parseInt(flight?.data?.nominal ?? '0') + parseInt(flight?.data?.comission ?? '0');
+    const total = parseInt(flight?.data?.nominal ?? '0');
 
     const handleOnPayment = () => {
         window.open(`https://wa.me/6282382709777?text=Saya%20baru%20saja%20melakukan%20booking%20pesawat%20dengan%20informasi%3A%0Anama%3A%20${flight?.data.buyer.name}%0Akode%20booking%3A%20${flight?.data.bookingCode}%0Anominal%3A%20${total}`)
-    }
+    };
 
-    
+    const handleGetTicket = () => {
+        push({
+            pathname: '/eticket',
+            query: {
+                bookingno: flight?.data.bookingCode 
+            }
+        })
+    }
 
     const paymentAccountDetail = useMemo(
         () => {
@@ -122,9 +129,16 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
                     <CardBody>
                         <div className="flex flex-col gap-5">
                             <p>{t('checkout.once_payment_description')}</p>
-                            <Button bgColor={"orange"} isLoading={isLoading} disabled={isLoading} onClick={handleOnPayment}>
-                                {t('checkout.already_payment')}
-                            </Button>
+                            {flight?.data.status === 'ISSUED' ? (
+                                <Button bgColor={"orange"} isLoading={isLoading} disabled={isLoading} onClick={handleGetTicket}>
+                                    {t('checkout.get_eticket')}
+                                </Button>
+                            ) : (
+                                <Button bgColor={"orange"} isLoading={isLoading} disabled={isLoading} onClick={handleOnPayment}>
+                                    {t('checkout.already_payment')}
+                                </Button>
+
+                            )}
                         </div>
                     </CardBody>
                 </Card>
