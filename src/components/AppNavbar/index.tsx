@@ -114,7 +114,11 @@ const AppNavbar = () => {
                             >
                                 Book
                             </DropdownItem>
-                            
+                            <DropdownItem
+                                onClick={() => push('/ferry/find')}
+                            >
+                                Find Book
+                            </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     {/* <NavbarItem className="lg:flex">
