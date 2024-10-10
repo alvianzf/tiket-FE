@@ -95,6 +95,11 @@ const AppNavbar = () => {
                             {t('home.find_booking_no')}
                         </Button>
                     </NavbarItem>
+                    <NavbarItem>
+                        <Button variant="light" className="text-white" onClick={() => push('/ship')}>
+                            {t('home.ferry_ticket')}
+                        </Button>
+                    </NavbarItem>
                     {/* <NavbarItem className="lg:flex">
                         <Button variant="light" className="text-white" onClick={onOpenLogin}>
                             {t('profile.login')}

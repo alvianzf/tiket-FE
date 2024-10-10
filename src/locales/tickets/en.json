@@ -36,7 +36,15 @@
             "infant_desc": "( under 2 y.o )",
             "popular_city": "Popular City",
             "done": "Done",
-            "passenger": "%{count} Passenger"
+            "passenger": "%{count} Passenger",
+            "passenger_nationalitty": "Passenger Nationality",
+            "departure": "Departure",
+            "departure_placeholder": "Select Departure",
+            "destination": "Destination",
+            "destination_placeholder": "Select Destination",
+            "return_date": "Return Date",
+            "one_way": "One Way",
+            "round_trip": "Round Trip"
         }
     }
 }

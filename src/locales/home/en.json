@@ -2,7 +2,7 @@
     "en" : {
         "home" : {
             "airlines_partners": "Airlines Partners",
-            "airlines_partners_description": "Domestic & Internation Airlines Partners",
+            "airlines_partners_description": "Domestic & International Airlines Partners",
             "payment_partners": "Payment Partners",
             "why_book_title": "Why Book With TiketQ",
             "secure_transaction": "Secure Transaction Guaranted",
@@ -12,7 +12,10 @@
             "various_payment_option": "Variuos Payment Option",
             "various_payment_option_description": "Easy transaction with various payment options from ATM Transfer, Credit Card to Internet Banking.",
             "booking_no": "Booking No",
-            "find_booking_no": "Find Booking No"
+            "find_booking_no": "Find Booking No",
+            "ferry_ticket": "Ferry Ticket",
+            "ferry_partners": "Ferry Partners",
+            "ferry_partners_description": "Domestic & International Ferry Partners"
         }
     }
 }

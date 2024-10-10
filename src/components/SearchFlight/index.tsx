@@ -31,9 +31,8 @@ const SearchFlight = () => {
 
     const methods = useForm();
 
-    const { handleSubmit, reset, watch, setValue, getValues } = methods;
+    const { handleSubmit, reset, watch, setValue } = methods;
 
-    console.log(getValues())
 
     const from = query?.from as unknown as string;
     const to = query?.to as unknown as string;

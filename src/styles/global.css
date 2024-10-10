@@ -53,3 +53,9 @@ nav > header > ul > li > a {
   background: url("/images/bg-image.jpg");
   background-size: cover;
 }
+
+.ferry-app {
+  background: url("/images/ferry-bg.jpg");
+  background-size: cover;
+  background-position: 0px 80%;
+}

@@ -36,7 +36,15 @@
             "infant_desc": "( dibawah 2 tahun )",
             "popular_city": "Kota Populer",
             "done": "Selesai",
-            "passenger": "%{count} Penumpang"
+            "passenger": "%{count} Penumpang",
+            "passenger_nationalitty": "Kewarganegaraan Penumpang",
+            "departure": "Keberangkatan",
+            "departure_placeholder": "Pilih Keberangkatan",
+            "destination": "Tujuan",
+            "destination_placeholder": "Pilih Tujuan",
+            "return_date": "Tanggal Kembali",
+            "one_way": "Satu Arah",
+            "round_trip": "Pulang Pergi"
         }
     }
 }
