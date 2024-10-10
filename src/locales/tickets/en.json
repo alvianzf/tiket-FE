@@ -44,7 +44,11 @@
             "destination_placeholder": "Select Destination",
             "return_date": "Return Date",
             "one_way": "One Way",
-            "round_trip": "Round Trip"
+            "round_trip": "Round Trip",
+            "order": "Order",
+            "select_schedule": "Select Schedule",
+            "ordering_details": "Ordering Details",
+            "payment": "Payment"
         }
     }
 }

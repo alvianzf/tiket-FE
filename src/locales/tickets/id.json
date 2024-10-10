@@ -44,7 +44,11 @@
             "destination_placeholder": "Pilih Tujuan",
             "return_date": "Tanggal Kembali",
             "one_way": "Satu Arah",
-            "round_trip": "Pulang Pergi"
+            "round_trip": "Pulang Pergi",
+            "order": "Pesan",
+            "select_schedule": "Pilih Jadwal",
+            "ordering_details": "Detail Pemesanan",
+            "payment": "Pembayaran"
         }
     }
 }
