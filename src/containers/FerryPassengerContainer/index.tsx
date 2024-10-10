@@ -1,12 +1,13 @@
 import FerryPassenger from "@components/FerryPassenger";
 import { Button, Card, CardBody, CardHeader, Input } from "@nextui-org/react";
+import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
 const FerryPassengerContainer = () => {
 
     const { t } = useTranslation();
 
-    
+    const { push } = useRouter();
 
     return (
         <div className="flex flex-col gap-8 w-full items-center justify-center">
@@ -115,10 +116,10 @@ const FerryPassengerContainer = () => {
                     </CardBody>
                 </Card>
                 <div className="flex flex-row justify-between w-full">
-                    <Button className={'button-grey'}>
+                    <Button className={'button-grey'} onClick={() => push('/ferry/list')}>
                         {'Back'}
                     </Button> 
-                    <Button className={'button-orange'}>
+                    <Button className={'button-orange'} onClick={() => push('/ferry/payment')}>
                         {'Next'}
                     </Button> 
                 </div>

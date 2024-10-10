@@ -11,7 +11,7 @@ const ShipContainer = () => {
     return (
         <>
             <div className="flex flex-wrap justify-center min-h-[400px] ferry-app">
-                <div className="flex flex-wrap justify-center items-center w-full py-[40px] mx-[40px] lg:mx-0 md:mx-[40px] sm:mx-[40px]">
+                <div className="flex flex-wrap justify-end items-center w-full py-[40px] mr-[40px]">
                     <SearchFerry />
                 </div>
             </div>

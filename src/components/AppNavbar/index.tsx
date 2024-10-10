@@ -95,11 +95,28 @@ const AppNavbar = () => {
                             {t('home.find_booking_no')}
                         </Button>
                     </NavbarItem>
-                    <NavbarItem>
-                        <Button variant="light" className="text-white" onClick={() => push('/ship')}>
-                            {t('home.ferry_ticket')}
-                        </Button>
-                    </NavbarItem>
+                    <Dropdown>
+                        <NavbarItem>
+                            <DropdownTrigger>
+                                <Button
+                                    disableRipple
+                                    className="p-0 bg-transparent data-[hover=true]:bg-transparent text-white"
+                                    radius="sm"
+                                    variant="light"
+                                >
+                                    {t('home.ferry_ticket')}
+                                </Button>
+                            </DropdownTrigger>
+                        </NavbarItem>
+                        <DropdownMenu aria-label="ACME features">
+                            <DropdownItem
+                                onClick={() => push('/ferry')}
+                            >
+                                Book
+                            </DropdownItem>
+                            
+                        </DropdownMenu>
+                    </Dropdown>
                     {/* <NavbarItem className="lg:flex">
                         <Button variant="light" className="text-white" onClick={onOpenLogin}>
                             {t('profile.login')}

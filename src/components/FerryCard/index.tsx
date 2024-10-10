@@ -1,9 +1,12 @@
 import { Button, Card, CardBody } from "@nextui-org/react"
+import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next"
 
 const FerryCard = () => {
     const { t } = useTranslation();
-    
+
+    const { push } = useRouter();
+
     return (
         <Card className="px-4 w-full">
             <CardBody>
@@ -40,7 +43,7 @@ const FerryCard = () => {
                         </div>
                     </div>
                     <div className="flex w-[10%]">
-                        <Button className="button-orange w-full">
+                        <Button className="button-orange w-full" onClick={() => push('/ferry/passenger')}>
                             {t('tickets.order')}
                         </Button>
                     </div>

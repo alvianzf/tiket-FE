@@ -3,10 +3,12 @@ import { parseDate } from "@internationalized/date";
 import moment from "moment";
 import { useTranslation } from "react-i18next"
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const SearchFerry = () => {
     const { t } = useTranslation();
     const [type, setType] = useState<'one_way' | 'round_trip'>('one_way');
+    const { push } = useRouter();
 
     const classesData = [
         { key: 'economy', label: t('tickets.economy') },
@@ -87,7 +89,7 @@ const SearchFerry = () => {
                         }
                     </Select>
                 </div>
-                <Button className="button-orange w-full">
+                <Button className="button-orange w-full" onClick={() => push('/ferry/list')}>
                     {t('tickets.search')}
                 </Button> 
             </div>

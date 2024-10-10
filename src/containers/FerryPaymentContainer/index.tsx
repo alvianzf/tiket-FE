@@ -3,11 +3,14 @@ import BankBca from "@icons/BankBca";
 import BankBni from "@icons/BankBni";
 import BankMandiri from "@icons/BankMandiri";
 import { Button, Card, CardBody, CardHeader, RadioGroup } from "@nextui-org/react";
+import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
 const FerryPaymentContainer = () => {
 
     const { t } = useTranslation();
+
+    const { push } = useRouter();
 
     return (
         <div className="flex flex-col gap-8 w-full items-center justify-center">
@@ -149,7 +152,7 @@ const FerryPaymentContainer = () => {
                                     </div>
                                 </div>
                             </div>
-                            <Button className={'button-orange'}>
+                            <Button className={'button-orange'} onClick={() => push('/ferry/success')}>
                                 {'Verifikasi Pembayaran'}
                             </Button> 
                         </div>
