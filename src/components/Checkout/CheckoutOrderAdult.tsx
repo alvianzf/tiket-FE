@@ -1,9 +1,9 @@
-import { Card, CardBody, CardHeader, DatePicker, Divider, Input, Select, SelectItem } from "@nextui-org/react"
+import { Card, CardBody, CardHeader, Divider, Input, Select, SelectItem } from "@nextui-org/react"
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "./forms/useForm";
-import moment from "moment";
-import { parseDate } from "@internationalized/date";
+// Remove the import for DatePicker as it's causing issues
+// import { DatePicker } from "@internationalized/date";
 
 const CheckoutOrderAdult = () => {
     const { setValue, formState: { errors }, control, watch } = useFormContext<FormProps>();
@@ -21,23 +21,8 @@ const CheckoutOrderAdult = () => {
         { key: 'Ms', label: t('checkout.ms') },
     ];
 
-    const handleDateChange = (value: Date | null, index: number) => {
-        if (value) {
-            setValue(`adultPassengers.${index}.date_of_birth`, moment(value).format('YYYY-MM-DD'));
-        } else {
-            console.error("Invalid date selected");
-        }
-    };
-
-    const parseDateSafely = (dateString: string | undefined): Date | undefined => {
-        if (!dateString) return undefined;
-        try {
-            const parsedDate = parseDate(dateString);
-            return new Date(parsedDate.year, parsedDate.month - 1, parsedDate.day);
-        } catch (error) {
-            console.error("Error parsing date:", error);
-            return undefined;
-        }
+    const handleDateChange = (value: string, index: number) => {
+        setValue(`adultPassengers.${index}.date_of_birth`, value);
     };
 
     return (
@@ -95,12 +80,15 @@ const CheckoutOrderAdult = () => {
                             </div>
                             <div className="flex flex-row gap-2 items-center">
                                 <p className="w-[50%]">{t('checkout.date_of_birth')}</p>
-                                <DatePicker
-                                    onChange={(value) => handleDateChange(value?.toDate() ?? null, index)}
+                                <Input
+                                    type="date"
+                                    variant="bordered"
                                     placeholder={t('checkout.select_date')}
+                                    value={watch(`adultPassengers.${index}.date_of_birth`)}
+                                    onValueChange={(value) => handleDateChange(value, index)}
                                     isInvalid={!!errors?.adultPassengers?.[index]?.date_of_birth}
                                     errorMessage={errors?.adultPassengers?.[index]?.date_of_birth?.message}
-                                    defaultValue={parseDateSafely(watch(`adultPassengers.${index}.date_of_birth`), index)}
+                                    className="rounded-none w-full"
                                 />
                             </div>
                         </div>
