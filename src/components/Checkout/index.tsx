@@ -46,49 +46,13 @@ const Checkout = ({ flightData, isLoading }: Props) => {
         }
     };
 
-    const generateAdultPassengers = (total: number) => {
-        const passengers: Passenger[] = [];
-
-        for (let i = 0; i < total; i++) {
-            passengers.push({
-                firstname: '',
-                lastname: '',
-                call: '',
-                date_of_birth: ''
-            })
-        }
-
-        return passengers
-    };
-
-    const generateChildPassengers = (total: number) => {
-        const passengers: Passenger[] = [];
-
-        for (let i = 0; i < total; i++) {
-            passengers.push({
-                firstname: '',
-                lastname: '',
-                call: '',
-                date_of_birth: ''
-            })
-        }
-
-        return passengers
-    };
-
-    const generateInfantPassengers = (total: number) => {
-        const passengers: Passenger[] = [];
-
-        for (let i = 0; i < total; i++) {
-            passengers.push({
-                firstname: '',
-                lastname: '',
-                call: '',
-                date_of_birth: ''
-            })
-        }
-
-        return passengers
+    const generatePassengers = (total: number): Passenger[] => {
+        return Array(total).fill(null).map(() => ({
+            firstname: '',
+            lastname: '',
+            call: '',
+            date_of_birth: ''
+        }));
     };
 
     useEffect(
@@ -103,13 +67,13 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                     adult: parseInt(adult),
                     child: parseInt(child),
                     infant: parseInt(infant),
-                    adultPassengers: generateAdultPassengers(parseInt(adult)),
-                    childPassengers: generateChildPassengers(parseInt(child)),
-                    infantPassengers: generateInfantPassengers(parseInt(infant))
+                    adultPassengers: generatePassengers(parseInt(adult)),
+                    childPassengers: generatePassengers(parseInt(child)),
+                    infantPassengers: generatePassengers(parseInt(infant))
                 })
             }
         },
-        [flightData, methods]
+        [flightData, methods, from, to, date, adult, child, infant]
     );
 
     const { mutate, isLoading: isMutating } = useMutation(bookFlight, {
@@ -125,7 +89,7 @@ const Checkout = ({ flightData, isLoading }: Props) => {
             }
         },
         onError: () => {
-
+            // Handle error
         }
     })
 
@@ -140,7 +104,7 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                 <Tabs aria-label="Options" variant="underlined" selectedKey={selected} classNames={{
                     cursor:"bg-[#ff5a00]",
                     base: "justify-center"
-                }} onSelectionChange={(key) => handleSelectTab(key)}>
+                }} onSelectionChange={handleSelectTab}>
                     <Tab key="order" title={t('checkout.order')}>
                         <CheckoutOrder />
                     </Tab>
@@ -175,7 +139,7 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                         </p>
                     </ModalBody>
                     <ModalFooter>
-                        <BaseButton color="danger" variant="light" disabled={isMutating} isLoading={isMutating} onPress={onClose}>
+                        <BaseButton color="danger" variant="light" disabled={isMutating} isLoading={isMutating} onClick={onClose}>
                             {t('checkout.cancel')}
                         </BaseButton>
                         <Button bgColor={"orange"} className="min-w-40" disabled={isMutating} isLoading={isMutating} onClick={handleSubmit(onSubmit)}>
