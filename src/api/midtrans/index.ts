@@ -1,10 +1,10 @@
 import baseAPI, { handleDefaultError, handleDefaultSuccess } from "@api/baseApi";
-import { MidtransSnapRequest, MidtransSnapResponse } from "./types";
+import { midtrans_snap_request, midtrans_snap_response } from "./types";
 
 const API_CREATE_MIDTRANS_TOKEN = '/api/create-midtrans-token';
 
-export const createMidtransToken = async (request: MidtransSnapRequest) =>
+export const createMidtransToken = async (request: midtrans_snap_request) =>
     await baseAPI
-        .post<MidtransSnapResponse>(API_CREATE_MIDTRANS_TOKEN, request)
+        .post<midtrans_snap_response>(API_CREATE_MIDTRANS_TOKEN, request)
         .then(handleDefaultSuccess)
         .catch(handleDefaultError);
