@@ -92,10 +92,9 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
 
                 const request: midtrans_snap_request = {
                     customer_details: {
-                        first_name: "John",
-                        last_name: "Doe",
-                        email: "johndoe@example.com",
-                        phone: "08111222333"
+                        name: flight?.data?.buyer.name ?? '',
+                        email: flight?.data?.buyer.email ?? '',
+                        phone: flight?.data?.buyer.mobile_number ?? ''
                     },
                     transaction_details: {
                         order_id: orderId,
@@ -124,7 +123,8 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
                     },
                     onPending: function (result: SnapResult) {
                         console.log('pending', result);
-                        push('/checkout/payment/pending');
+                        const currentUrl = window.location.href;
+                        push(currentUrl);
                     },
                     onError: function (result: SnapResult) {
                         console.error('error', result);
