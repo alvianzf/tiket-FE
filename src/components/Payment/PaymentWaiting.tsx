@@ -37,7 +37,8 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
     const total = parseInt(flight?.data?.nominal ?? '0');
 
     const handleOnPayment = () => {
-        window.open(`https://wa.me/6282382709777?text=Saya%20baru%20saja%20melakukan%20booking%20pesawat%20dengan%20informasi%3A%0Anama%3A%20${flight?.data.buyer.name}%0Akode%20booking%3A%20${flight?.data.bookingCode}%0Anominal%3A%20${total}`)
+        // Redirect to home
+        push('/');
     };
 
     const handleGetTicket = () => {
@@ -137,7 +138,6 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
                                 <Button bgColor={"orange"} isLoading={isLoading} disabled={isLoading} onClick={handleOnPayment}>
                                     {t('checkout.already_payment')}
                                 </Button>
-
                             )}
                         </div>
                     </CardBody>
