@@ -3,7 +3,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "./forms/useForm";
 import moment from "moment";
-import { parseDate, CalendarDate } from "@internationalized/date";
+import { parseDate } from "@internationalized/date";
 
 const CheckoutOrderAdult = () => {
     const { setValue, formState: { errors }, control, watch } = useFormContext<FormProps>();
@@ -29,10 +29,11 @@ const CheckoutOrderAdult = () => {
         }
     };
 
-    const parseDateSafely = (dateString: string | undefined): CalendarDate | undefined => {
+    const parseDateSafely = (dateString: string | undefined): Date | undefined => {
         if (!dateString) return undefined;
         try {
-            return parseDate(dateString);
+            const parsedDate = parseDate(dateString);
+            return new Date(parsedDate.year, parsedDate.month - 1, parsedDate.day);
         } catch (error) {
             console.error("Error parsing date:", error);
             return undefined;
@@ -95,7 +96,7 @@ const CheckoutOrderAdult = () => {
                             <div className="flex flex-row gap-2 items-center">
                                 <p className="w-[50%]">{t('checkout.date_of_birth')}</p>
                                 <DatePicker
-                                    onChange={(value) => handleDateChange(value, index)}
+                                    onChange={(value) => handleDateChange(value?.toDate() ?? null, index)}
                                     placeholder={t('checkout.select_date')}
                                     isInvalid={!!errors?.adultPassengers?.[index]?.date_of_birth}
                                     errorMessage={errors?.adultPassengers?.[index]?.date_of_birth?.message}
