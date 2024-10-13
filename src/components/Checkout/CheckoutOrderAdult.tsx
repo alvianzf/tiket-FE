@@ -100,7 +100,7 @@ const CheckoutOrderAdult = () => {
                                     placeholder={t('checkout.select_date')}
                                     isInvalid={!!errors?.adultPassengers?.[index]?.date_of_birth}
                                     errorMessage={errors?.adultPassengers?.[index]?.date_of_birth?.message}
-                                    defaultValue={parseDateSafely(watch(`adultPassengers.${index}.date_of_birth`))}
+                                    defaultValue={parseDateSafely(watch(`adultPassengers.${index}.date_of_birth`), index)}
                                 />
                             </div>
                         </div>
