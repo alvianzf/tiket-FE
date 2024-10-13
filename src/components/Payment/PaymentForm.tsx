@@ -72,6 +72,10 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
         };
     }, []);
 
+    useEffect(() => {
+        localStorage.removeItem('midtransToken');
+    }, []);
+
     const handleOnPayment = async () => {
         try {
             if (!isMidtransLoaded) {
@@ -81,37 +85,74 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
 
             setIsProcessing(true);
 
-            const orderId = `order-id-${Math.round((new Date()).getTime() / 1000)}`;
-            const grossAmount = total;
+            let token = localStorage.getItem('midtransToken');
+            if (!token) {
+                const orderId = `order-id-${Math.round((new Date()).getTime() / 1000)}`;
+                const grossAmount = total;
 
-            const request: midtrans_snap_request = {
-                customer_details: {
-                    first_name: "John",
-                    last_name: "Doe",
-                    email: "johndoe@example.com",
-                    phone: "08111222333"
-                },
-                transaction_details: {
-                    order_id: orderId,
-                    gross_amount: grossAmount
-                },
-                item_details: [
-                    {
-                        id: "FLIGHT1",
-                        price: grossAmount,
-                        quantity: 1,
-                        name: "Flight Ticket"
+                const request: midtrans_snap_request = {
+                    customer_details: {
+                        first_name: "John",
+                        last_name: "Doe",
+                        email: "johndoe@example.com",
+                        phone: "08111222333"
+                    },
+                    transaction_details: {
+                        order_id: orderId,
+                        gross_amount: grossAmount
+                    },
+                    item_details: [
+                        {
+                            id: "FLIGHT1",
+                            price: grossAmount,
+                            quantity: 1,
+                            name: "Flight Ticket"
+                        }
+                    ]
+                };
+
+                const response = await createMidtransToken(request);
+                token = response.token;
+                localStorage.setItem('midtransToken', token);
+            }
+
+            if (window.snap) {
+                window.snap.pay(token as string, {
+                    onSuccess: function (result: SnapResult) {
+                        console.log('success', result);
+                        push('/checkout/payment/success');
+                    },
+                    onPending: function (result: SnapResult) {
+                        console.log('pending', result);
+                        push('/checkout/payment/pending');
+                    },
+                    onError: function (result: SnapResult) {
+                        console.error('error', result);
+                        push('/checkout/payment/error');
+                    },
+                    onClose: function () {
+                        console.log('customer closed the popup without finishing the payment');
                     }
-                ]
-            };
+                });
+            } else {
+                console.error('Midtrans snap instance is not available');
+            }
 
-            const response = await createMidtransToken(request);
+            setIsProcessing(false);
 
-            const { token } = response;
+        } catch (error) {
+            console.error('Error in payment process:', error);
+            setIsProcessing(false);
+        }
+    };
 
+    useEffect(() => {
+        const token = localStorage.getItem('midtransToken');
+        if (token && window.snap) {
             window.snap.pay(token, {
                 onSuccess: function (result: SnapResult) {
                     console.log('success', result);
+                    localStorage.removeItem('midtransToken');
                     push('/checkout/payment/success');
                 },
                 onPending: function (result: SnapResult) {
@@ -124,15 +165,10 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
                 },
                 onClose: function () {
                     console.log('customer closed the popup without finishing the payment');
-                    setIsProcessing(false);
                 }
             });
-
-        } catch (error) {
-            console.error('Error in payment process:', error);
-            setIsProcessing(false);
         }
-    };
+    }, []);
 
     const total = parseInt(flight?.data?.nominal ?? '0');
 
