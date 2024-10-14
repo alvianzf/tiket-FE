@@ -121,6 +121,11 @@ const AppNavbar = () => {
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
+                    <NavbarItem>
+                        <Button variant="light" className="text-white" onClick={() => push('/car-rent')}>
+                            {'Rental Mobil'}
+                        </Button>
+                    </NavbarItem>
                     {/* <NavbarItem className="lg:flex">
                         <Button variant="light" className="text-white" onClick={onOpenLogin}>
                             {t('profile.login')}
