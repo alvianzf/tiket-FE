@@ -1,72 +1,179 @@
-import { Card, CardBody, CardHeader, Divider, RadioGroup } from "@nextui-org/react"
+import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react"
 import { useTranslation } from "react-i18next"
-import PaymentRadio from "./PaymentRadio";
-import BankBca from "@icons/BankBca";
-import BankMandiri from "@icons/BankMandiri";
-import BankBni from "@icons/BankBni";
 import Button from "@components/Button";
 import { GetBookFlightResponse } from "@api/bookFlight/types";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createMidtransToken } from "@api/midtrans";
+import { midtrans_snap_request } from "@api/midtrans/types";
+
+const MIDTRANS_CLIENT_KEY = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
 
 interface Props {
     isLoading: boolean;
     flight?: GetBookFlightResponse;
 }
 
-const PaymentForm = ({ isLoading, flight } : Props) => {
+interface SnapResult {
+    status_code: string;
+    status_message: string;
+    transaction_id: string;
+    order_id: string;
+    gross_amount: string;
+    payment_type: string;
+    transaction_time: string;
+    transaction_status: string;
+}
 
+interface SnapInstance {
+    pay: (token: string, options: SnapOptions) => void;
+}
+
+interface SnapOptions {
+    onSuccess: (result: SnapResult) => void;
+    onPending: (result: SnapResult) => void;
+    onError: (result: SnapResult) => void;
+    onClose: () => void;
+}
+
+declare global {
+    interface Window {
+        snap: SnapInstance;
+    }
+}
+
+const PaymentForm = ({ isLoading, flight }: Props) => {
     const { t } = useTranslation();
-    const [payment,setPayment] = useState<string>('');
+    const [isMidtransLoaded, setIsMidtransLoaded] = useState(false);
+    const [isProcessing, setIsProcessing] = useState(false);
 
-    const { push, query } = useRouter();
+    const { push } = useRouter();
 
-    const handleOnPayment = () => {
-        push({
-            pathname: '/checkout/payment/waiting',
-            query: {
-                ...query,
-                payment
+    useEffect(() => {
+        const loadMidtransScript = async () => {
+            const script = document.createElement('script');
+            script.src = `https://app.sandbox.midtrans.com/snap/snap.js`;
+            script.setAttribute('data-client-key', MIDTRANS_CLIENT_KEY || '');
+            document.body.appendChild(script);
+
+            script.onload = () => {
+                setIsMidtransLoaded(true);
+            };
+        };
+
+        loadMidtransScript();
+
+        return () => {
+            const script = document.querySelector('script[src="https://app.sandbox.midtrans.com/snap/snap.js"]');
+            if (script) {
+                script.remove();
             }
-        })
+            setIsMidtransLoaded(false);
+        };
+    }, []);
+
+    useEffect(() => {
+        localStorage.removeItem('midtransToken');
+    }, []);
+
+    const handleOnPayment = async () => {
+        try {
+            if (!isMidtransLoaded) {
+                console.error('Midtrans is not loaded');
+                return;
+            }
+
+            setIsProcessing(true);
+
+            let token = localStorage.getItem('midtransToken');
+            if (!token) {
+                const orderId = `order-id-${Math.round((new Date()).getTime() / 1000)}`;
+                const grossAmount = total;
+
+                const request: midtrans_snap_request = {
+                    customer_details: {
+                        name: flight?.data?.buyer.name ?? '',
+                        email: flight?.data?.buyer.email ?? '',
+                        phone: flight?.data?.buyer.mobile_number ?? ''
+                    },
+                    transaction_details: {
+                        order_id: orderId,
+                        gross_amount: grossAmount
+                    },
+                    item_details: [
+                        {
+                            id: "FLIGHT1",
+                            price: grossAmount,
+                            quantity: 1,
+                            name: "Flight Ticket"
+                        }
+                    ]
+                };
+
+                const response = await createMidtransToken(request);
+                token = response.token;
+                localStorage.setItem('midtransToken', token);
+            }
+
+            if (window.snap) {
+                window.snap.pay(token as string, {
+                    onSuccess: function (result: SnapResult) {
+                        console.log('success', result);
+                        push('/checkout/payment/success');
+                    },
+                    onPending: function (result: SnapResult) {
+                        console.log('pending', result);
+                        const currentUrl = window.location.href;
+                        push(currentUrl);
+                    },
+                    onError: function (result: SnapResult) {
+                        console.error('error', result);
+                        push('/checkout/payment/error');
+                    },
+                    onClose: function () {
+                        console.log('customer closed the popup without finishing the payment');
+                    }
+                });
+            } else {
+                console.error('Midtrans snap instance is not available');
+            }
+
+            setIsProcessing(false);
+
+        } catch (error) {
+            console.error('Error in payment process:', error);
+            setIsProcessing(false);
+        }
     };
 
-    const total = parseInt(flight?.data?.nominal ?? '0')
+    useEffect(() => {
+        const token = localStorage.getItem('midtransToken');
+        if (token && window.snap) {
+            window.snap.pay(token, {
+                onSuccess: function (result: SnapResult) {
+                    console.log('success', result);
+                    localStorage.removeItem('midtransToken');
+                    push('/checkout/payment/success');
+                },
+                onPending: function (result: SnapResult) {
+                    console.log('pending', result);
+                    push('/checkout/payment/pending');
+                },
+                onError: function (result: SnapResult) {
+                    console.error('error', result);
+                    push('/checkout/payment/error');
+                },
+                onClose: function () {
+                    console.log('customer closed the popup without finishing the payment');
+                }
+            });
+        }
+    }, []);
+
+    const total = parseInt(flight?.data?.nominal ?? '0');
 
     return (
         <>
-            <div className="flex flex-col gap-4">
-                <Card classNames={{
-                    header: "font-medium"
-                }}>
-                    <CardHeader>
-                        {t('checkout.choose_payment')}
-                    </CardHeader>
-                    <Divider />
-                    <CardBody>
-                        <RadioGroup value={payment} onValueChange={setPayment}>
-                            <PaymentRadio value="bca">
-                                <div className="flex flex-row items-center gap-5">
-                                    <BankBca width={30} height={30}/>
-                                    <p>{'BCA - Abdul Rahman 0613336939'}</p>
-                                </div>
-                            </PaymentRadio>
-                            <PaymentRadio value="bni">
-                                <div className="flex flex-row items-center gap-5">
-                                    <BankMandiri width={30} height={30}/>
-                                    <p>{'BNI - Abdul Rahman 2100900774'}</p>
-                                </div>
-                            </PaymentRadio>
-                            <PaymentRadio value="bri">
-                                <div className="flex flex-row items-center gap-5">
-                                    <BankBni width={30} height={30}/>
-                                    <p>{'BRI - Abdul Rahman 033101073801501'}</p>
-                                </div>
-                            </PaymentRadio>
-                        </RadioGroup>
-                    </CardBody>
-                </Card>           
-            </div>
             <div className="flex flex-col gap-4">
                 <Card classNames={{
                     header: "font-medium"
@@ -79,12 +186,12 @@ const PaymentForm = ({ isLoading, flight } : Props) => {
                         <div className="flex flex-col gap-5">
                             <div className="flex flex-row justify-between">
                                 <p className="text-lg font-medium text-orange">{t('checkout.total')}</p>
-                                <p className="text-lg font-medium text-orange">{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(total ?? 0)}`}</p>
+                                <p className="text-lg font-medium text-orange">{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(total ?? 0)}`}</p>
                             </div>
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-row justify-between">
                                     <p>{t('checkout.tax')}</p>
-                                    <p>{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(parseInt(flight?.data.comission ?? '0') ?? 0)}`}</p>
+                                    <p>{`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(parseInt(flight?.data.comission ?? '0') ?? 0)}`}</p>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +199,7 @@ const PaymentForm = ({ isLoading, flight } : Props) => {
                 </Card>
             </div>
 
-            <Button bgColor={"orange"} isLoading={isLoading} disabled={isLoading} onClick={handleOnPayment}>
+            <Button bgColor={"orange"} isLoading={isLoading || isProcessing} disabled={isLoading || isProcessing || !isMidtransLoaded} onClick={handleOnPayment}>
                 {t('checkout.choose_payment')}
             </Button>
         </>
