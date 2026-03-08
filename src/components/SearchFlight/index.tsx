@@ -108,7 +108,8 @@ const SearchFlight = () => {
                             aria-label={t('tickets.set_class')}
                             placeholder={t('tickets.set_class')}
                             className="w-full lg:max-w-xs md:max-w-xs"
-                            variant="bordered"
+                            variant="underlined"
+                            startContent={<FaUserTag className="text-[#3C9DFF] mr-2" />}
                             radius="sm" 
                             defaultSelectedKeys={[watch('class')]}
                             onSelectionChange={(keys) => setValue('class', keys.toString()?.[0])}

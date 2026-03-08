@@ -6,7 +6,6 @@ import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "../forms/useForm";
 import { FaUsers } from "react-icons/fa";
-import { FaUsers } from "react-icons/fa";
 
 const PassengerInput = () => {
     const { t } = useTranslation();
@@ -80,7 +79,7 @@ const PassengerInput = () => {
                 placeholder={`${adult} ${t('tickets.adult')}, ${child} ${t('tickets.child')}, ${infant} ${t('tickets.infant')}`} 
                 variant="underlined"
                 readOnly
-                startContent={<FaUsers className="text-orange-500 mr-2" />}
+                startContent={<FaUsers className="text-[#3C9DFF] mr-2" />}
                 onClick={handleOpen}
             />
             {open && (
