@@ -74,20 +74,21 @@ const AppNavbar = () => {
                         </Button>
                     </NavbarItem>
 
-                    <Dropdown className="glass-card shadow-xl border-white/20">
+                    <Dropdown className="pill-dropdown glass-card shadow-xl border-white/20">
                         <NavbarItem>
                             <DropdownTrigger>
                                 <Button
                                     disableRipple
                                     className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white min-w-fit font-medium transition-all"                   
-                                    radius="lg"
+                                    radius="full"
                                     variant="flat"
+                                    isIconOnly
                                 >
                                     {language === 'id' ? 
                                         (
-                                            <ReactCountryFlag countryCode="ID" svg className="rounded-sm"/>
+                                            <ReactCountryFlag countryCode="ID" svg className="rounded-full w-6 h-6 object-cover"/>
                                         ) : (
-                                            <ReactCountryFlag countryCode="US" svg className="rounded-sm"/>
+                                            <ReactCountryFlag countryCode="US" svg className="rounded-full w-6 h-6 object-cover"/>
                                         )
                                     }
                                 </Button>
@@ -95,9 +96,9 @@ const AppNavbar = () => {
                         </NavbarItem>
                         <DropdownMenu
                             aria-label="Language"
-                            className="w-fit"
+                            className="w-fit min-w-[50px]"
                             itemClasses={{
-                                base: "gap-2",
+                                base: "flex justify-center p-2",
                             }}
                         >
                             {language === 'id' ? 
@@ -105,17 +106,15 @@ const AppNavbar = () => {
                                     <DropdownItem
                                         key="en"
                                         onClick={() => onHandleChangeLanguage('en')}
-                                        startContent={<ReactCountryFlag countryCode="US" svg/>}
                                     >
-                                        {'EN'}
+                                        <ReactCountryFlag countryCode="US" svg className="rounded-full w-6 h-6 object-cover"/>
                                     </DropdownItem>
                                 ) : (
                                     <DropdownItem
                                         key="id"
                                         onClick={() => onHandleChangeLanguage('id')}
-                                        startContent={<ReactCountryFlag countryCode="ID" svg/>}
                                     >
-                                        {'ID'}
+                                        <ReactCountryFlag countryCode="ID" svg className="rounded-full w-6 h-6 object-cover"/>
                                     </DropdownItem>
                                 )
                             }
@@ -125,7 +124,7 @@ const AppNavbar = () => {
                     <NavbarItem>
                         <Button 
                             variant="solid" 
-                            className="bg-white text-[#3C9DFF] font-bold shadow-lg hover:bg-slate-100 transition-all"
+                            className="bg-white text-[#4267B2] font-bold shadow-lg hover:bg-slate-100 transition-all"
                             onClick={onOpenLogin}
                         >
                             {t('profile.login')}

@@ -2,6 +2,8 @@
   "id": {
     "book": "Pesan",
     "find_booking": "Cari Pesanan",
+    "search": "Cari",
+    "done": "Selesai",
     "home": "Beranda",
     "back": "Kembali",
     "submit": "Kirim",

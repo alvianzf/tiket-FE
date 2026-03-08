@@ -18,15 +18,6 @@
             "ferry_ticket": "Tiket Feri",
             "ferry_partners": "Mitra Kapal Feri",
             "ferry_partners_description": "Mitra Kapal Feri Domestik & Internasional"
-        },
-        "common": {
-            "find_booking": "Cari Pesanan",
-            "book": "Pesan",
-            "search": "Cari"
-        },
-        "profile": {
-            "login": "Masuk",
-            "register": "Daftar"
         }
     }
 }
