@@ -1,4 +1,4 @@
-import { Button, DatePicker, Select, SelectItem } from "@nextui-org/react";
+import { Button, DatePicker } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import FromInput from "./FromInput";
 import DestinationInput from "./DestinationInput";
@@ -11,7 +11,6 @@ import { useEffect } from "react";
 import { parseDate } from "@internationalized/date";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { FaUserTag } from "react-icons/fa";
 
 const SearchFlight = () => {
 
@@ -22,13 +21,6 @@ const SearchFlight = () => {
     const { data: airports } = useQueryGetAirports({
         enabled: true
     });
-
-    const classesData = [
-        { key: 'economy', label: t('tickets.economy') },
-        { key: 'premium_economy', label: t('tickets.premium_economy') },
-        { key: 'business_class', label: t('tickets.business_class') },
-        { key: 'first_class', label: t('tickets.first_class') },
-    ];
 
     const methods = useForm();
 
