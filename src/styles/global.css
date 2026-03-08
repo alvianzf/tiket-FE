@@ -2,60 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
-nav > header {
-  background: #4267b2;
+:root {
+  --primary: #2563eb;
+  --secondary: #4f46e5;
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --glass-blur: 16px;
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
 }
 
-nav > header > ul > li > a {
-  color: #fff !important;
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+  font-family: 'Inter', sans-serif;
 }
 
-.btn-register {
-  background: #fff;
-  color: #4267b2 !important;
-  font-weight: 500;
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  @apply rounded-2xl transition-all duration-300;
+}
+
+.glass-card-dark {
+  background: rgba(17, 24, 39, 0.6);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  @apply rounded-2xl;
+}
+
+.glass-navbar {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  @apply sticky top-0 z-50;
 }
 
 .bg-blue {
-  background: #4267b2;
+  background: #1e40af; /* Deeper, more modern blue */
 }
 
-.button-blue {
-  background: #4267b2;
-  color: #fff;
+.btn-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300;
 }
 
-.button-orange {
-  background: #ff5a00;
-  color: #fff;
-}
-
-.text-orange {
-  color: #ff5a00;
-}
-
-.luggage-badge {
-  border: 1px solid #000;
-  border-radius: 8px;
-  padding: 2px 5px;
-  font-weight: 500;
-}
-
-.luggage-reschedule {
-  border: 1px solid #057532;
-  border-radius: 8px;
-  padding: 2px 5px;
-  font-weight: 500;
-  color: #057532;
+.btn-secondary {
+  @apply bg-indigo-600 text-white hover:bg-indigo-700 transition-all duration-300;
 }
 
 .home-app {
-  background: url("/images/bg-image.jpg");
+  background:
+    linear-gradient(rgba(30, 64, 175, 0.7), rgba(30, 64, 175, 0.7)),
+    url("/images/bg-image.jpg");
   background-size: cover;
+  background-position: center;
 }
 
 .ferry-app {
-  background: url("/images/ferry-bg.jpg");
+  background:
+    linear-gradient(rgba(30, 64, 175, 0.7), rgba(30, 64, 175, 0.7)),
+    url("/images/ferry-bg.jpg");
   background-size: cover;
   background-position: 0px 80%;
+}
+
+/* Custom button styles */
+.button-orange {
+  @apply bg-orange-500 hover:bg-orange-600 text-white transition-all shadow-lg hover:shadow-orange-500/30 active:scale-95;
+}
+
+.button-blue {
+  @apply bg-blue-600 hover:bg-blue-700 text-white transition-all shadow-lg hover:shadow-blue-500/30 active:scale-95;
 }
