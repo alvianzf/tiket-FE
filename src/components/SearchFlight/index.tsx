@@ -103,26 +103,6 @@ const SearchFlight = () => {
                             onChange={(value) => setValue('date', moment(value).format('YYYY-MM-DD'))}
                         />
                     </div>
-                    <div className="w-full flex flex-col gap-2">
-                        <Select
-                            aria-label={t('tickets.set_class')}
-                            placeholder={t('tickets.set_class')}
-                            className="w-full lg:max-w-xs md:max-w-xs"
-                            variant="underlined"
-                            startContent={<FaUserTag className="text-[#3C9DFF] mr-2" />}
-                            radius="sm" 
-                            defaultSelectedKeys={[watch('class')]}
-                            onSelectionChange={(keys) => setValue('class', keys.toString()?.[0])}
-                            multiple={false}
-                        >
-                            {classesData.map((item) => (
-                                    <SelectItem key={item.key}>
-                                        {item.label}
-                                    </SelectItem>
-                                ))
-                            }
-                        </Select>
-                    </div>
                     <Button isIconOnly className="button-orange w-full lg:w-fit md:w-fit" onClick={handleSubmit(onSubmit)}>
                         <IconSearch width={30} height={30}/>
                     </Button> 
