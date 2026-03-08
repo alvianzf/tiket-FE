@@ -118,13 +118,13 @@ const AppNavbar = () => {
                         <DropdownMenu aria-label="Ferry Features">
                             <DropdownItem
                                 onClick={() => push('/ferry')}
-                                className="hover:bg-orange-500 hover:text-white transition-colors"
+                                className="hover:bg-[#3C9DFF] hover:text-white transition-colors"
                             >
                                 {t('common.book')}
                             </DropdownItem>
                             <DropdownItem
                                 onClick={() => push('/history')}
-                                className="hover:bg-orange-500 hover:text-white transition-colors"
+                                className="hover:bg-[#3C9DFF] hover:text-white transition-colors"
                             >
                                 {t('common.find_booking')}
                             </DropdownItem>
