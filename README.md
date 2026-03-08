@@ -1,67 +1,144 @@
-# **Tiket FE Project**
+# ✈️ TiketQ Frontend
 
-## **Figma Design**
+TiketQ is a modern, premium web application for booking flights and ferries. It features a sleek glassmorphism UI, smooth Framer Motion animations, and robust error handling.
 
-Check out our Figma design file to see the visual concept behind our project: [Figma Design](https://www.figma.com/design/ypRptFzMIB6Pfgd4ILK0Te/TiketQ?node-id=2-2&t=ke6BbSANAI9qr00r-0)
+> **Note:** Real application screenshots are intended to be placed below. Due to system browser automation limits at the time of writing, please capture and place your snapshots here.
 
-## **Pages**
+### 📸 Application Snapshots
+*(Place `landing_page.png` and `history_lookup.png` in the `/public/docs/` folder to display here)*
 
-- [Home Page](#) - Our landing page, where users can find an overview of our project
-- [About Page](#) - Learn more about our team and the story behind our project
-- [Contact Page](#) - Get in touch with us, whether it's for feedback or just to say hi!
+![Landing Page](./public/docs/landing_page.png)
+![History Lookup](./public/docs/history_lookup.png)
 
-## **Technologies & Libraries**
 
-- Frontend:
-  - [React](https://reactjs.org/) - Our frontend framework of choice
-  - [Redux](https://redux.js.org/) - For state management
-- Backend:
-  - [Node.js](https://nodejs.org/en/) - Our server-side runtime environment
-  - [Express](https://expressjs.com/) - Our web framework
-- Database:
-  - [MongoDB](https://www.mongodb.com/) - Our NoSQL database of choice
-- Libraries:
-  - [Lodash](https://lodash.com/) - For utility functions
-  - [Axios](https://axios-http.com/) - For making HTTP requests
-  - [Webpack](https://webpack.js.org/) - For module bundling
-  - [Babel](https://babeljs.io/) - For JavaScript transpilation
-  - [ESLint](https://eslint.org/) - For code linting
-  - [Prettier](https://prettier.io/) - For code formatting
-  - [Jest](https://jestjs.io/) - For unit testing
-  - [Enzyme](https://enzymejs.github.io/enzyme/) - For component testing
-  - [React Router](https://reactrouter.com/) - For client-side routing
-  - [Redux Saga](https://redux-saga.js.org/) - For side effect management
-  - [Redux Form](https://redux-form.com/) - For form management
-  - [Material UI](https://material-ui.com/) - For UI components
-  - [Font Awesome](https://fontawesome.com/) - For icons
-  - [Moment](https://momentjs.com/) - For date and time formatting
-  - [Numeral](http://numeraljs.com/) - For number formatting
+## 🚀 Tech Stack
 
-## **Badges**
+- **Framework:** [Next.js 14](https://nextjs.org/) (React 18)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) with Glassmorphism aesthetics
+- **UI Components:** [NextUI v2](https://nextui.org/)
+- **Animations:** [Framer Motion](https://www.framer.com/motion/)
+- **State/Query Management:** [React Query v5](https://tanstack.com/query/latest)
+- **HTTP Client:** [Axios](https://axios-http.com/)
+- **Notifications:** [React Toastify](https://fkhadra.github.io/react-toastify/)
 
-[![Build Status](https://travis-ci.org/alvianzf/tiket-FE.svg?branch=master)](https://travis-ci.org/alvianzf/tiket-FE)
-[![Code Coverage](https://codecov.io/gh/alvianzf/tiket-FE/branch/master/graph/badge.svg)](https://codecov.io/gh/alvianzf/tiket-FE)
-[![License](https://img.shields.io/npm/l/tiket-FE.svg)](https://www.npmjs.com/package/tiket-FE)
+---
 
-## **Icons**
+## 🛠️ Local Development
 
-- [Font Awesome](https://fontawesome.com/) - We're using Font Awesome for our icons!
-- [Material Design Icons](https://material.io/icons) - We're also using Material Design Icons for some of our icons!
+1. **Clone the repository:**
+   ```bash
+   git clone git@github.com:alvianzf/tiket-FE.git
+   cd tiket-FE
+   ```
 
-## **Tech Stack**
+2. **Install dependencies:**
+   Make sure you are using `npm` (Yarn is discouraged to prevent conflicting resolutions).
+   ```bash
+   npm install
+   ```
 
-We're building our project with a combination of modern web technologies, including HTML5, CSS3, and JavaScript. Our frontend is built with React, and we're using Redux for state management.
+3. **Set up Environment Variables:**
+   Create a `.env` file based on the local configuration:
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:3001/api
+   ```
 
-## **Getting Started**
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   The app will be available at [http://localhost:3000](http://localhost:3000).
 
-1. Clone the repository: `git clone git@github.com:alvianzf/tiket-FE.git`
-2. Install dependencies: `npm install`
-3. Start the development server: `npm start`
+---
 
-## **Contributing**
+## 🌍 Production Deployment (Ubuntu + PM2 + Nginx)
 
-We welcome contributions from the community! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
+Follow this guide to securely expose your Next.js application to the internet using Nginx as a reverse proxy and PM2 as a process manager.
 
-## **License**
+### 1. Prerequisites
+Ensure you have Node.js (v18+), npm, Nginx, and PM2 installed on your Ubuntu server.
 
-This project is licensed under the [MIT License](LICENSE.md).
+```bash
+# Update packages
+sudo apt update && sudo apt upgrade -y
+
+# Install Nginx
+sudo apt install nginx -y
+
+# Install PM2 globally
+sudo npm install -g pm2
+```
+
+### 2. Build the Application
+Navigate to your project directory on the server, install dependencies, and build the Next.js production bundle.
+
+```bash
+cd /var/www/tiket-FE
+npm install
+npm run build
+```
+
+### 3. Start with PM2
+Use PM2 to run the Next.js application in the background so it automatically restarts if the server crashes or reboots.
+
+```bash
+# Start the application on port 3000
+pm2 start npm --name "tiket-frontend" -- run start
+
+# Save the PM2 list so it resurrects on reboot
+pm2 save
+pm2 startup
+```
+
+### 4. Configure Nginx
+Create a new server block configuration for Nginx to proxy HTTP requests from port 80 to your Next.js app running on port 3000.
+
+```bash
+sudo nano /etc/nginx/sites-available/tiket-fe
+```
+
+Paste the following configuration (replace `yourdomain.com` with your actual domain or IP address):
+
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com www.yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        
+        # Security headers
+        add_header X-Frame-Options "SAMEORIGIN";
+        add_header X-XSS-Protection "1; mode=block";
+        add_header X-Content-Type-Options "nosniff";
+    }
+}
+```
+
+Enable the configuration and restart Nginx:
+
+```bash
+# Create a symlink to enable the site
+sudo ln -s /etc/nginx/sites-available/tiket-fe /etc/nginx/sites-enabled/
+
+# Test Nginx config for syntax errors
+sudo nginx -t
+
+# Restart Nginx
+sudo systemctl restart nginx
+```
+
+### 5. Secure with SSL (Optional but Recommended)
+Use Certbot to automatically provision and install Let's Encrypt SSL certificates.
+
+```bash
+sudo apt install certbot python3-certbot-nginx -y
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+```
+
+Your TiketQ frontend is now live, secured, and running flawlessly in production! 🎉

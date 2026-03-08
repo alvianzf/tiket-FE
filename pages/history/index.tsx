@@ -4,7 +4,7 @@ import { AppLayout } from "@layouts";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Input, Button, Card, CardBody } from "@nextui-org/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation } from "react-query";
 import axios from "axios";
 import OrderContainer from "@containers/OrderContainer";
 
@@ -68,8 +68,7 @@ const FindBookingPage: NextPageWithLayout = () => {
                                         type="submit" 
                                         color="primary" 
                                         size="lg" 
-                                        className="font-bold shadow-lg shadow-primary/30"
-                                        isLoading={historyMutation.isPending}
+                                        isLoading={historyMutation.isLoading}
                                     >
                                         {t('submit', 'Search History')}
                                     </Button>

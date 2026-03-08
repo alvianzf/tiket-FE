@@ -79,7 +79,7 @@ const PassengerInput = () => {
                 placeholder={`${adult} ${t('tickets.adult')}, ${child} ${t('tickets.child')}, ${infant} ${t('tickets.infant')}`} 
                 variant="underlined"
                 readOnly
-                startContent={<FaUsers className="text-[#3C9DFF] mr-2" />}
+                startContent={<FaUsers className="text-[#4267B2] mr-2" />}
                 onClick={handleOpen}
             />
             {open && (

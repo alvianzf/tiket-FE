@@ -97,7 +97,7 @@ const SearchFlight = () => {
                     </div>
                     <Button 
                         isIconOnly 
-                        className="bg-[#3C9DFF] text-white hover:bg-[#0AD1FF] transition-all shadow-lg shadow-[#3C9DFF]/30 w-full lg:w-[60px] h-[60px] rounded-2xl active:scale-95" 
+                        className="bg-[#4267B2] text-white hover:bg-[#00D5FF] transition-all shadow-lg shadow-[#4267B2]/30 w-full lg:w-[60px] h-[60px] rounded-2xl active:scale-95" 
                         onClick={handleSubmit(onSubmit)}
                     >
                         <IconSearch width={24} height={24}/>

@@ -29,7 +29,7 @@ const DestinationInput = ({ items } : Props) => {
                 placeholder={t('tickets.to_placeholder')}
                 className="w-full"
                 variant="underlined"
-                startContent={<FaPlaneArrival className="text-[#3C9DFF] mr-2" />}
+                startContent={<FaPlaneArrival className="text-[#4267B2] mr-2" />}
                 classNames={{
                     listbox: 'flex flex-col',
                     popoverContent: 'w-fit border border-white/20 bg-white/95 backdrop-blur-xl'
@@ -51,7 +51,7 @@ const DestinationInput = ({ items } : Props) => {
                 isInvalid={!!errors?.to?.message}
             >
                 <AutocompleteSection title={t('tickets.popular_city')} classNames={{
-                    heading: 'text-[#0AD1FF] text-base font-bold',
+                    heading: 'text-[#00D5FF] text-base font-bold',
                     group: 'grid grid-cols-3 gap-2 min-w-[400px]'
                 }} hideSelectedIcon>
                      {handleContent()}

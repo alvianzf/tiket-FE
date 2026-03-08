@@ -3,7 +3,7 @@ import { Button } from '@nextui-org/react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import AppLayout from '@layouts/AppLayout';
+import AppLayout from '../src/layouts/AppLayout';
 
 const Custom404 = () => {
   const router = useRouter();
@@ -19,15 +19,16 @@ const Custom404 = () => {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="glass-card max-w-lg w-full p-12 text-center relative z-10"
       >
-        <motion.h1 
+        <div className="glass-card max-w-lg w-full p-12 text-center relative z-10">
+        <motion.div 
           initial={{ y: -20 }}
           animate={{ y: 0 }}
-          className="text-9xl font-bold bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent mb-4"
         >
-          404
-        </motion.h1>
+          <h1 className="text-9xl font-bold bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent mb-4">
+            404
+          </h1>
+        </motion.div>
         
         <h2 className="text-2xl font-semibold text-slate-800 mb-6 font-display">
           Oops! Page Not Found
@@ -56,6 +57,7 @@ const Custom404 = () => {
           >
             {t('back', 'Go Back')}
           </Button>
+        </div>
         </div>
       </motion.div>
     </div>
