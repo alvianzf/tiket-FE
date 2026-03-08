@@ -44,6 +44,36 @@ const AppNavbar = () => {
                     <Logo />
                 </NavbarBrand>
                 <NavbarContent justify="end">
+                    <NavbarItem>
+                        <Button 
+                            variant="flat" 
+                            className="bg-transparent text-white font-medium hover:bg-white/10 transition-all border-none"
+                            onClick={() => push('/')}
+                        >
+                            {t('home.flight')}
+                        </Button>
+                    </NavbarItem>
+
+                    <NavbarItem>
+                        <Button 
+                            variant="flat" 
+                            className="bg-transparent text-white font-medium hover:bg-white/10 transition-all border-none"
+                            onClick={() => push('/ferry')}
+                        >
+                            {t('home.ferry')}
+                        </Button>
+                    </NavbarItem>
+
+                    <NavbarItem>
+                        <Button 
+                            variant="flat" 
+                            className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white font-medium transition-all" 
+                            onClick={onOpenFind}
+                        >
+                            {t('common.find_booking')}
+                        </Button>
+                    </NavbarItem>
+
                     <Dropdown className="glass-card shadow-xl border-white/20">
                         <NavbarItem>
                             <DropdownTrigger>
@@ -94,57 +124,8 @@ const AppNavbar = () => {
 
                     <NavbarItem>
                         <Button 
-                            variant="flat" 
-                            className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white font-medium transition-all" 
-                            onClick={onOpenFind}
-                        >
-                            {t('home.find_booking_no')}
-                        </Button>
-                    </NavbarItem>
-
-                    <Dropdown className="glass-card shadow-xl border-white/20">
-                        <NavbarItem>
-                            <DropdownTrigger>
-                                <Button
-                                    disableRipple
-                                    className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white font-medium transition-all"
-                                    radius="lg"
-                                    variant="flat"
-                                >
-                                    {t('home.ferry_ticket')}
-                                </Button>
-                            </DropdownTrigger>
-                        </NavbarItem>
-                        <DropdownMenu aria-label="Ferry Features">
-                            <DropdownItem
-                                onClick={() => push('/ferry')}
-                                className="hover:bg-[#3C9DFF] hover:text-white transition-colors"
-                            >
-                                {t('common.book')}
-                            </DropdownItem>
-                            <DropdownItem
-                                onClick={() => push('/history')}
-                                className="hover:bg-[#3C9DFF] hover:text-white transition-colors"
-                            >
-                                {t('common.find_booking')}
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-
-                    <NavbarItem>
-                        <Button 
-                            variant="flat" 
-                            className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white font-medium transition-all" 
-                            onClick={() => push('/car-rent')}
-                        >
-                            {'Rental Mobil'}
-                        </Button>
-                    </NavbarItem>
-
-                    <NavbarItem>
-                        <Button 
                             variant="solid" 
-                            className="bg-orange-500 text-white font-bold shadow-lg shadow-orange-500/30 hover:bg-orange-600 transition-all"
+                            className="bg-white text-[#3C9DFF] font-bold shadow-lg hover:bg-slate-100 transition-all"
                             onClick={onOpenLogin}
                         >
                             {t('profile.login')}
