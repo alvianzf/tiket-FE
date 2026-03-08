@@ -35,7 +35,7 @@ const AppNavbar = () => {
     return (
         <>
             <Navbar isBlurred={false} maxWidth="xl" classNames={{
-                base: "bg-[#476EB5]",
+                base: "bg-[#4267B2]",
                 content: "gap-4",
                 item: "data-[active=true]:text-white",
                 wrapper: "px-6 py-2"
