@@ -6,10 +6,15 @@
   --primary: #3c9dff;
   --secondary: #0ad1ff;
   --accent: #2f3033;
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.15);
-  --glass-blur: 12px;
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: 24px;
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}
+
+.bg-pattern {
+  background-color: #3c9dff;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30.012 36.326c5.584.093 11.168-1.574 15.684-4.832 1.348-.971 2.585-2.062 3.702-3.255-5.91-.741-11.82 1.258-15.684 4.832-.862.796-1.636 1.666-2.32 2.6-1.353-.974-2.593-2.068-3.714-3.265 5.91-.741 11.82 1.258 15.684 4.832.862.796 1.636 1.666 2.32 2.6' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
 body {

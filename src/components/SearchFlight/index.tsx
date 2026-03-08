@@ -95,8 +95,12 @@ const SearchFlight = () => {
                             onChange={(value) => setValue('date', moment(value).format('YYYY-MM-DD'))}
                         />
                     </div>
-                    <Button isIconOnly className="button-orange w-full lg:w-fit md:w-fit" onClick={handleSubmit(onSubmit)}>
-                        <IconSearch width={30} height={30}/>
+                    <Button 
+                        isIconOnly 
+                        className="bg-[#3C9DFF] text-white hover:bg-[#0AD1FF] transition-all shadow-lg shadow-[#3C9DFF]/30 w-full lg:w-[60px] h-[60px] rounded-2xl active:scale-95" 
+                        onClick={handleSubmit(onSubmit)}
+                    >
+                        <IconSearch width={24} height={24}/>
                     </Button> 
                 </div>
             </FormProvider>
