@@ -23,16 +23,16 @@ const FromInput = ({ items } : Props) => {
 
     return (
         <div className="w-full flex flex-col gap-2">
-            <p className="font-medium text-slate-800">{t('tickets.from')}</p>
+            <p className="font-medium text-slate-800/80">{t('tickets.from')}</p>
             <Autocomplete
                 aria-label={t('tickets.from')}
                 placeholder={t('tickets.from_placeholder')}
-                className="w-full lg:max-w-lg md:max-w-lg"
+                className="w-full"
                 variant="underlined"
-                startContent={<FaPlaneDeparture className="text-orange-500 mr-2" />}
+                startContent={<FaPlaneDeparture className="text-[#3C9DFF] mr-2" />}
                 classNames={{
-                    listbox: 'flex flex-row',
-                    popoverContent: 'w-fit border border-white/20 bg-white/80 backdrop-blur-md'
+                    listbox: 'flex flex-col',
+                    popoverContent: 'w-fit border border-white/20 bg-white/95 backdrop-blur-xl'
                 }}
                 listboxProps={{
                     classNames: {
@@ -51,7 +51,7 @@ const FromInput = ({ items } : Props) => {
                 isInvalid={!!errors?.from?.message}
             >
                 <AutocompleteSection title={t('tickets.popular_city')} classNames={{
-                    heading: 'text-orange text-base',
+                    heading: 'text-[#0AD1FF] text-base font-bold',
                     group: 'grid grid-cols-3 gap-2 min-w-[400px]'
                 }} hideSelectedIcon>
                      {handleContent()}
