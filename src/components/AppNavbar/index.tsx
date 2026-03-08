@@ -123,7 +123,7 @@ const AppNavbar = () => {
                                 {t('common.book')}
                             </DropdownItem>
                             <DropdownItem
-                                onClick={() => push('/ferry/find')}
+                                onClick={() => push('/history')}
                                 className="hover:bg-orange-500 hover:text-white transition-colors"
                             >
                                 {t('common.find_booking')}
