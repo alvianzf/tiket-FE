@@ -3,6 +3,7 @@ import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "../forms/useForm";
 import { Airport } from "@api/airports/types";
+import { FaPlaneArrival } from "react-icons/fa";
 
 interface Props {
     items: Airport[];
@@ -22,15 +23,16 @@ const DestinationInput = ({ items } : Props) => {
 
     return (
         <div className="w-full flex flex-col gap-2">
-            <p className="font-medium">{t('tickets.to')}</p>
+            <p className="font-medium text-slate-800">{t('tickets.to')}</p>
             <Autocomplete
                 aria-label={t('tickets.to')}
                 placeholder={t('tickets.to_placeholder')}
                 className="w-full lg:max-w-lg md:max-w-lg"
                 variant="underlined"
+                startContent={<FaPlaneArrival className="text-orange-500 mr-2" />}
                 classNames={{
                     listbox: 'flex flex-row',
-                    popoverContent: 'w-fit'
+                    popoverContent: 'w-fit border border-white/20 bg-white/80 backdrop-blur-md'
                 }}
                 listboxProps={{
                     classNames: {
@@ -50,7 +52,7 @@ const DestinationInput = ({ items } : Props) => {
             >
                 <AutocompleteSection title={t('tickets.popular_city')} classNames={{
                     heading: 'text-orange text-base',
-                    group: 'grid grid-cols-3 gap-2 min-w-[400px]'
+                    group: 'grid grid-cols-grid grid-cols-3 gap-2 min-w-[400px]'
                 }} hideSelectedIcon>
                      {handleContent()}
                 </AutocompleteSection>

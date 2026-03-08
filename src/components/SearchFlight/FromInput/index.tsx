@@ -3,6 +3,7 @@ import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "../forms/useForm";
 import { Airport } from "@api/airports/types";
+import { FaPlaneDeparture } from "react-icons/fa";
 
 interface Props {
     items: Airport[];
@@ -22,15 +23,16 @@ const FromInput = ({ items } : Props) => {
 
     return (
         <div className="w-full flex flex-col gap-2">
-            <p className="font-medium">{t('tickets.from')}</p>
+            <p className="font-medium text-slate-800">{t('tickets.from')}</p>
             <Autocomplete
                 aria-label={t('tickets.from')}
                 placeholder={t('tickets.from_placeholder')}
                 className="w-full lg:max-w-lg md:max-w-lg"
                 variant="underlined"
+                startContent={<FaPlaneDeparture className="text-orange-500 mr-2" />}
                 classNames={{
                     listbox: 'flex flex-row',
-                    popoverContent: 'w-fit'
+                    popoverContent: 'w-fit border border-white/20 bg-white/80 backdrop-blur-md'
                 }}
                 listboxProps={{
                     classNames: {

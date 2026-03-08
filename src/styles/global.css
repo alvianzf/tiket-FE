@@ -3,17 +3,18 @@
 @tailwind utilities;
 
 :root {
-  --primary: #2563eb;
-  --secondary: #4f46e5;
-  --glass-bg: rgba(255, 255, 255, 0.15);
-  --glass-border: rgba(255, 255, 255, 0.25);
-  --glass-blur: 16px;
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  --primary: #3c9dff;
+  --secondary: #0ad1ff;
+  --accent: #2f3033;
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-blur: 12px;
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
 }
 
 body {
   @apply bg-slate-50 text-slate-900 antialiased;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .glass-card {
@@ -43,7 +44,7 @@ body {
 }
 
 .bg-blue {
-  background: #1e40af; /* Deeper, more modern blue */
+  background: #3c9dff; /* Cornflowerblue Primary */
 }
 
 .btn-primary {
@@ -55,16 +56,17 @@ body {
 }
 
 .home-app {
-  background:
-    linear-gradient(rgba(30, 64, 175, 0.7), rgba(30, 64, 175, 0.7)),
+  background: linear-gradient(
+      rgba(60, 157, 255, 0.75),
+      rgba(10, 209, 255, 0.75)
+    ),
     url("/images/bg-image.jpg");
   background-size: cover;
   background-position: center;
 }
 
 .ferry-app {
-  background:
-    linear-gradient(rgba(30, 64, 175, 0.7), rgba(30, 64, 175, 0.7)),
+  background: linear-gradient(rgba(30, 64, 175, 0.7), rgba(30, 64, 175, 0.7)),
     url("/images/ferry-bg.jpg");
   background-size: cover;
   background-position: 0px 80%;

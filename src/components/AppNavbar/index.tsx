@@ -35,10 +35,10 @@ const AppNavbar = () => {
     return (
         <>
             <Navbar isBlurred={false} maxWidth="xl" classNames={{
-                base: "bg-transparent",
+                base: "bg-[#3C9DFF]",
                 content: "gap-4",
-                item: "data-[active=true]:text-primary",
-                wrapper: "px-6"
+                item: "data-[active=true]:text-white",
+                wrapper: "px-6 py-2"
             }}>
                 <NavbarBrand onClick={() => push('/')} className="cursor-pointer">
                     <Logo />
