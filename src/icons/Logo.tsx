@@ -11,7 +11,7 @@ const Logo = () => {
         >
             <defs>
                 <style>
-                    {`.cls-1{fill:url(#linear-gradient);}.cls-2{fill:#fff;}.cls-4{fill:url(#linear-gradient-3);}.cls-5{fill:url(#linear-gradient-2);}`}
+                    {`.cls-1{fill:url(#linear-gradient);}.cls-2{fill:#fff;}.cls-3{fill:#fff;}.cls-4{fill:url(#linear-gradient-3);}.cls-5{fill:url(#linear-gradient-2);}`}
                 </style>
                 <linearGradient id="linear-gradient" x1="66.62" y1="110.97" x2="154.76" y2="22.82" gradientUnits="userSpaceOnUse">
                     <stop offset="0" stopColor="#0ad1ff"/>
