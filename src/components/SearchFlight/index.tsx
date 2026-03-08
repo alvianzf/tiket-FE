@@ -84,7 +84,7 @@ const SearchFlight = () => {
     }
 
     return (
-        <div className="min-w-[70%] glass-card p-[30px] rounded-2xl shadow-2xl backdrop-blur-xl border border-white/20">
+        <div className="min-w-[70%] glass-card p-[30px] rounded-2xl shadow-2xl backdrop-blur-xl border border-white/10 bg-white/5">
             <FormProvider {...methods}>
                 <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap gap-4 items-center">
                     <FromInput 
@@ -103,7 +103,6 @@ const SearchFlight = () => {
                         />
                     </div>
                     <div className="w-full flex flex-col gap-2">
-                        <p className="font-medium">{t('tickets.set_class')}</p>
                         <Select
                             aria-label={t('tickets.set_class')}
                             placeholder={t('tickets.set_class')}
