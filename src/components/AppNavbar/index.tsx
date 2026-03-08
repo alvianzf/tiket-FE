@@ -36,33 +36,35 @@ const AppNavbar = () => {
         <>
             <Navbar isBlurred={false} maxWidth="xl" classNames={{
                 base: "bg-transparent",
-                content: "gap-1"
+                content: "gap-4",
+                item: "data-[active=true]:text-primary",
+                wrapper: "px-6"
             }}>
-                <NavbarBrand onClick={() => push('/')}>
+                <NavbarBrand onClick={() => push('/')} className="cursor-pointer">
                     <Logo />
                 </NavbarBrand>
                 <NavbarContent justify="end">
-                    <Dropdown className="w-fit min-w-fit">
+                    <Dropdown className="glass-card shadow-xl border-white/20">
                         <NavbarItem>
                             <DropdownTrigger>
                                 <Button
                                     disableRipple
-                                    className="bg-transparent data-[hover=true]:bg-transparent text-white min-w-fit"                   
-                                    radius="sm"
-                                    variant="light"
+                                    className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-slate-800 min-w-fit font-medium transition-all"                   
+                                    radius="lg"
+                                    variant="flat"
                                 >
                                     {language === 'id' ? 
                                         (
-                                            <ReactCountryFlag countryCode="ID" svg/>
+                                            <ReactCountryFlag countryCode="ID" svg className="rounded-sm"/>
                                         ) : (
-                                            <ReactCountryFlag countryCode="US" svg/>
+                                            <ReactCountryFlag countryCode="US" svg className="rounded-sm"/>
                                         )
                                     }
                                 </Button>
                             </DropdownTrigger>
                         </NavbarItem>
                         <DropdownMenu
-                            aria-label="ACME features"
+                            aria-label="Language"
                             className="w-fit"
                             itemClasses={{
                                 base: "gap-2",
@@ -87,104 +89,67 @@ const AppNavbar = () => {
                                     </DropdownItem>
                                 )
                             }
-                            
                         </DropdownMenu>
                     </Dropdown>
+
                     <NavbarItem>
-                        <Button variant="light" className="text-white" onClick={onOpenFind}>
+                        <Button 
+                            variant="flat" 
+                            className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-slate-800 font-medium transition-all" 
+                            onClick={onOpenFind}
+                        >
                             {t('home.find_booking_no')}
                         </Button>
                     </NavbarItem>
-                    <Dropdown>
+
+                    <Dropdown className="glass-card shadow-xl border-white/20">
                         <NavbarItem>
                             <DropdownTrigger>
                                 <Button
                                     disableRipple
-                                    className="p-0 bg-transparent data-[hover=true]:bg-transparent text-white"
-                                    radius="sm"
-                                    variant="light"
+                                    className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-slate-800 font-medium transition-all"
+                                    radius="lg"
+                                    variant="flat"
                                 >
                                     {t('home.ferry_ticket')}
                                 </Button>
                             </DropdownTrigger>
                         </NavbarItem>
-                        <DropdownMenu aria-label="ACME features">
+                        <DropdownMenu aria-label="Ferry Features">
                             <DropdownItem
                                 onClick={() => push('/ferry')}
+                                className="hover:bg-orange-500 hover:text-white transition-colors"
                             >
-                                Book
+                                {t('common.book')}
                             </DropdownItem>
                             <DropdownItem
                                 onClick={() => push('/ferry/find')}
+                                className="hover:bg-orange-500 hover:text-white transition-colors"
                             >
-                                Find Book
+                                {t('common.find_booking')}
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
+
                     <NavbarItem>
-                        <Button variant="light" className="text-white" onClick={() => push('/car-rent')}>
+                        <Button 
+                            variant="flat" 
+                            className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-slate-800 font-medium transition-all" 
+                            onClick={() => push('/car-rent')}
+                        >
                             {'Rental Mobil'}
                         </Button>
                     </NavbarItem>
-                    {/* <NavbarItem className="lg:flex">
-                        <Button variant="light" className="text-white" onClick={onOpenLogin}>
+
+                    <NavbarItem>
+                        <Button 
+                            variant="solid" 
+                            className="bg-orange-500 text-white font-bold shadow-lg shadow-orange-500/30 hover:bg-orange-600 transition-all"
+                            onClick={onOpenLogin}
+                        >
                             {t('profile.login')}
                         </Button>
                     </NavbarItem>
-                    <NavbarItem>
-                        <Button variant="flat" className="btn-register" onClick={onOpenRegister}>
-                            {t('profile.register')}
-                        </Button>
-                    </NavbarItem> */}
-                    {/* <Dropdown className="w-fit min-w-fit">
-                        <NavbarItem>
-                            <DropdownTrigger>
-                                <Button
-                                    disableRipple
-                                    className="bg-transparent data-[hover=true]:bg-transparent text-white min-w-fit"                   
-                                    radius="sm"
-                                    variant="light"
-                                >
-                                    {t('profile.title')}
-                                </Button>
-                            </DropdownTrigger>
-                        </NavbarItem>
-                        <DropdownMenu
-                            aria-label="ACME features"
-                            className="w-fit"
-                            itemClasses={{
-                                base: "gap-2",
-                            }}
-                        >
-                            <DropdownItem
-                                key="changeprofile"
-                                onClick={() => push('/profile/change')}
-                                startContent={<IconProfile width={14} height={14}/>}
-                            >
-                                {t('profile.change_profile')}
-                            </DropdownItem>
-                            <DropdownItem
-                                key="purchase"
-                                onClick={() => push('/profile/purchases')}
-                                startContent={<IconReceipt width={14} height={14} />}
-                            >
-                                {t('profile.purchase_title')}
-                            </DropdownItem>
-                            <DropdownItem
-                                key="order"
-                                onClick={() => push('/profile/orders')}
-                                startContent={<IconReceipt width={14} height={14} />}
-                            >
-                                {t('profile.order_title')}
-                            </DropdownItem>
-                            <DropdownItem
-                                key="logout"
-                                startContent={<IconLogout width={14} height={14} />}
-                            >
-                                {t('profile.logout')}
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown> */}
                 </NavbarContent>
             </Navbar>
 
