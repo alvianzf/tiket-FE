@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --primary: #3c9dff;
-  --secondary: #0ad1ff;
-  --accent: #2f3033;
+  --primary: #476EB5; /* Visual match for 'Cornflowerblue' block */
+  --secondary: #00D5FF; /* Visual match for 'Deepbluesky' block */
+  --accent: #2B2D31; /* Visual match for 'Darkslategrey' block */
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-blur: 24px;
@@ -49,7 +49,7 @@ body {
 }
 
 .bg-blue {
-  background: #3c9dff; /* Cornflowerblue Primary */
+  background: #476EB5; /* Visual Primary Match */
 }
 
 .btn-primary {
