@@ -1,6 +1,6 @@
 {
-    "id" : {
-        "home" : {
+    "id": {
+        "home": {
             "airlines_partners": "Mitra Maskapai Penerbangan",
             "airlines_partners_description": "Mitra Maskapai Domestik & Internasional",
             "payment_partners": "Mitra Pembayaran",
@@ -15,7 +15,9 @@
             "find_booking_no": "Cari No Booking",
             "ferry_ticket": "Tiket Feri",
             "ferry_partners": "Mitra Kapal Feri",
-            "ferry_partners_description": "Mitra Kapal Feri Domestik & Internasional"
+            "ferry_partners_description": "Mitra Kapal Feri Domestik & Internasional",
+            "find_booking_no": "Cari No Booking",
+            "ferry_ticket": "Tiket Feri"
         }
     }
 }

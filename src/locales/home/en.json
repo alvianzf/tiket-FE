@@ -1,6 +1,6 @@
 {
-    "en" : {
-        "home" : {
+    "en": {
+        "home": {
             "airlines_partners": "Airlines Partners",
             "airlines_partners_description": "Domestic & International Airlines Partners",
             "payment_partners": "Payment Partners",
@@ -15,7 +15,9 @@
             "find_booking_no": "Find Booking No",
             "ferry_ticket": "Ferry Ticket",
             "ferry_partners": "Ferry Partners",
-            "ferry_partners_description": "Domestic & International Ferry Partners"
+            "ferry_partners_description": "Domestic & International Ferry Partners",
+            "find_booking_no": "Find Booking No",
+            "ferry_ticket": "Ferry Ticket"
         }
     }
 }
