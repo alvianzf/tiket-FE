@@ -84,7 +84,7 @@ const SearchFlight = () => {
     }
 
     return (
-        <div className="min-w-[57%] bg-white p-[15px] rounded">
+        <div className="min-w-[70%] glass-card p-[30px] rounded-2xl shadow-2xl backdrop-blur-xl border border-white/20">
             <FormProvider {...methods}>
                 <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap gap-4 items-center">
                     <FromInput 

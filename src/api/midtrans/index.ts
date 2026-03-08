@@ -1,7 +1,7 @@
 import baseAPI, { handleDefaultError, handleDefaultSuccess } from "@api/baseApi";
 import { midtrans_snap_request, midtrans_snap_response } from "./types";
 
-const API_CREATE_MIDTRANS_TOKEN = '/api/create-midtrans-token';
+const API_CREATE_MIDTRANS_TOKEN = '/api/payment/midtrans';
 
 export const createMidtransToken = async (request: midtrans_snap_request) =>
     await baseAPI
