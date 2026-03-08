@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { parseDate } from "@internationalized/date";
 import moment from "moment";
 import { useRouter } from "next/router";
+import { FaUserTag } from "react-icons/fa";
 
 const SearchFlight = () => {
 
