@@ -3,21 +3,21 @@
         "home": {
             "flight": "Pesawat",
             "ferry": "Feri",
-            "airlines_partners": "Mitra Maskapai Penerbangan",
-            "airlines_partners_description": "Mitra Maskapai Domestik & Internasional",
-            "payment_partners": "Mitra Pembayaran",
-            "why_book_title": "Mengapa Memesan Dengan TiketQ",
-            "secure_transaction": "Transaksi Aman Dijamin",
-            "secure_transaction_description": "Keamanan dan privasi transaksi online Anda dilindungi oleh teknologi resmi RapidSSL. Terima konfirmasi instan dan tiket elektronik langsung di email Anda.",
-            "assistance_and_support": "Bantuan dan Dukungan",
-            "assistance_and_support_description": "Kami dapat membantu Anda mengetahui perubahan rencana perjalanan, penundaan penerbangan, pembatalan, atau keadaan yang tidak terduga.",
+            "airlines_partners": "Mitra Maskapai",
+            "airlines_partners_description": "Kami bermitra dengan maskapai domestik dan internasional terkemuka untuk memberikan Anda opsi penerbangan terbaik.",
+            "payment_partners": "Mitra Pembayaran Terpercaya",
+            "why_book_title": "Mengapa Memesan di TiketQ?",
+            "secure_transaction": "Transaksi Aman Terjamin",
+            "secure_transaction_description": "Transaksi Anda dilindungi oleh standar keamanan terkemuka. Terima konfirmasi instan dan tiket elektronik melalui email.",
+            "assistance_and_support": "Bantuan dan Dukungan 24/7",
+            "assistance_and_support_description": "Andalkan kami untuk setiap perubahan perjalanan, penundaan, atau dukungan kapan saja. Kami di sini untuk membantu Anda 24/7.",
             "various_payment_option": "Berbagai Opsi Pembayaran",
-            "various_payment_option_description": "Transaksi mudah dengan berbagai pilihan pembayaran mulai dari Transfer ATM, Kartu Kredit hingga Internet Banking.",
-            "booking_no": "No Booking",
-            "find_booking_no": "Cari No Booking",
+            "various_payment_option_description": "Pilih dari berbagai metode pembayaran termasuk transfer ATM, Kartu Kredit, dan Internet Banking.",
+            "booking_no": "Nomor Booking",
+            "find_booking_no": "Cari Pesanan Anda",
             "ferry_ticket": "Tiket Feri",
             "ferry_partners": "Mitra Kapal Feri",
-            "ferry_partners_description": "Mitra Kapal Feri Domestik & Internasional"
+            "ferry_partners_description": "Kami bermitra dengan operator feri domestik dan internasional terbaik untuk kenyamanan Anda."
         }
     }
 }

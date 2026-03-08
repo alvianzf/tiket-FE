@@ -96,9 +96,9 @@ const SearchFlight = () => {
                         />
                     </div>
                     <Button 
-                        className="bg-[#4267B2] text-white hover:bg-[#00D5FF] transition-all shadow-lg shadow-[#4267B2]/30 w-full lg:w-[200px] h-[60px] rounded-2xl active:scale-95 font-bold text-lg gap-2" 
+                        className="bg-[#4267B2] text-white hover:bg-[#00D5FF] transition-all shadow-lg shadow-[#4267B2]/30 w-full lg:w-[350px] h-[60px] rounded-2xl active:scale-95 font-bold text-xl gap-3" 
                         onClick={handleSubmit(onSubmit)}
-                        startContent={<IconSearch width={24} height={24}/>}
+                        startContent={<IconSearch width={28} height={28}/>}
                     >
                         {t('common.search')}
                     </Button> 
