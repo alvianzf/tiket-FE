@@ -8,7 +8,8 @@ const localeGroups = [
     'tickets',
     'checkout',
     'profile',
-    'form'
+    'form',
+    'common'
 ];
 
 const localeEnGroups = {};

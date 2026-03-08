@@ -1,0 +1,10 @@
+{
+  "id": {
+    "book": "Pesan",
+    "find_booking": "Cari Pesanan",
+    "home": "Beranda",
+    "back": "Kembali",
+    "submit": "Kirim",
+    "cancel": "Batal"
+  }
+}
