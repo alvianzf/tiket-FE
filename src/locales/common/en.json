@@ -1,12 +1,14 @@
 {
   "en": {
-    "book": "Book Now",
-    "find_booking": "Find Booking",
-    "search": "Search Flights",
-    "done": "Done",
-    "home": "Home",
-    "back": "Back",
-    "submit": "Submit",
-    "cancel": "Cancel"
+    "common": {
+      "book": "Book Now",
+      "find_booking": "Find Booking",
+      "search": "Search Flights",
+      "done": "Done",
+      "home": "Home",
+      "back": "Back",
+      "submit": "Submit",
+      "cancel": "Cancel"
+    }
   }
 }

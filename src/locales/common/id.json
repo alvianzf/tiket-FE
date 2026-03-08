@@ -1,12 +1,14 @@
 {
   "id": {
-    "book": "Pesan Sekarang",
-    "find_booking": "Cari Pesanan",
-    "search": "Cari Penerbangan",
-    "done": "Selesai",
-    "home": "Beranda",
-    "back": "Kembali",
-    "submit": "Kirim",
-    "cancel": "Batal"
+    "common": {
+      "book": "Pesan Sekarang",
+      "find_booking": "Cari Pesanan",
+      "search": "Cari Penerbangan",
+      "done": "Selesai",
+      "home": "Beranda",
+      "back": "Kembali",
+      "submit": "Kirim",
+      "cancel": "Batal"
+    }
   }
 }
