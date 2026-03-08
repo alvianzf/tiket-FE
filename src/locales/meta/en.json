@@ -1,13 +1,15 @@
 {
-    "en" : {
-        "meta" : {
-            "title": "Tiketq",
-            "flight_list_title": "Flight List",
-            "checkout_title": "Checkout",
-            "checkout_payment_title": "Payment",
-            "purchase_title": "Purchase List",
-            "order_title": "Order List",
-            "change_profile": "Change Profile"
+    "en": {
+        "meta": {
+            "title": "TiketQ | Your Ultimate Travel Companion",
+            "flight_list_title": "Select Your Flight",
+            "checkout_title": "Secure Checkout",
+            "checkout_payment_title": "Payment Settlement",
+            "purchase_title": "My Purchases",
+            "order_title": "My Orders",
+            "change_profile": "Profile Settings",
+            "order_summary": "Order Summary",
+            "get_eticket": "Download E-Ticket"
         }
     }
 }

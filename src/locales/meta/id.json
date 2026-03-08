@@ -1,13 +1,15 @@
 {
-    "id" : {
-        "meta" : {
-            "title": "Tiketq",
-            "flight_list_title": "Daftar Penerbangan",
-            "checkout_title": "Pemesanan",
-            "checkout_payment_title": "Pembayaran",
-            "purchase_title": "Daftar Pembelian",
-            "order_title": "Daftar Pesanan",
-            "change_profile": "Ubah Profil"
+    "id": {
+        "meta": {
+            "title": "TiketQ | Teman Perjalanan Terbaik Anda",
+            "flight_list_title": "Pilih Penerbangan Anda",
+            "checkout_title": "Checkout Aman",
+            "checkout_payment_title": "Penyelesaian Pembayaran",
+            "purchase_title": "Pembelian Saya",
+            "order_title": "Pesanan Saya",
+            "change_profile": "Pengaturan Profil",
+            "order_summary": "Ringkasan Pesanan",
+            "get_eticket": "Unduh E-Tiket"
         }
     }
 }
