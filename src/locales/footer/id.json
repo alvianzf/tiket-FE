@@ -1,6 +1,6 @@
 {
-    "id" : {
-        "footer" : {
+    "id": {
+        "footer": {
             "contact_us": "Hubungi Kami",
             "customer_service": "Layanan Pelanggan",
             "service_protection": "Perlindungan Layanan",
@@ -12,8 +12,8 @@
             "get_the_app": "Dapatkan Aplikasi",
             "android_app": "Android App",
             "iphone_app": "Iphone App",
-            "copyright": "Hak Cipta © 2018 tiketq.com Travel Pte Ltd Semua hak dilindungi undang-undang",
-            "company_name": "PT. INITIKETQUE | Batam, Indonesia"
+            "copyright": "Hak Cipta © 2026 tiketq.com Travel Pte Ltd Semua hak dilindungi undang-undang",
+            "company_name": "PT INI TIKET QUE | Indonesia"
         }
     }
 }

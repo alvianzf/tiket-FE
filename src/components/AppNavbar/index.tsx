@@ -88,7 +88,7 @@ const AppNavbar = () => {
                                         (
                                             <ReactCountryFlag countryCode="ID" svg className="rounded-full w-6 h-6 object-cover"/>
                                         ) : (
-                                            <ReactCountryFlag countryCode="US" svg className="rounded-full w-6 h-6 object-cover"/>
+                                            <ReactCountryFlag countryCode="GB" svg className="rounded-full w-6 h-6 object-cover"/>
                                         )
                                     }
                                 </Button>
@@ -107,7 +107,7 @@ const AppNavbar = () => {
                                         key="en"
                                         onClick={() => onHandleChangeLanguage('en')}
                                     >
-                                        <ReactCountryFlag countryCode="US" svg className="rounded-full w-6 h-6 object-cover"/>
+                                        <ReactCountryFlag countryCode="GB" svg className="rounded-full w-6 h-6 object-cover"/>
                                     </DropdownItem>
                                 ) : (
                                     <DropdownItem
