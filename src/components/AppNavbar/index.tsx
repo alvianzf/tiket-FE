@@ -49,7 +49,7 @@ const AppNavbar = () => {
                             <DropdownTrigger>
                                 <Button
                                     disableRipple
-                                    className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-slate-800 min-w-fit font-medium transition-all"                   
+                                    className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white min-w-fit font-medium transition-all"                   
                                     radius="lg"
                                     variant="flat"
                                 >
@@ -95,7 +95,7 @@ const AppNavbar = () => {
                     <NavbarItem>
                         <Button 
                             variant="flat" 
-                            className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-slate-800 font-medium transition-all" 
+                            className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white font-medium transition-all" 
                             onClick={onOpenFind}
                         >
                             {t('home.find_booking_no')}
@@ -107,7 +107,7 @@ const AppNavbar = () => {
                             <DropdownTrigger>
                                 <Button
                                     disableRipple
-                                    className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-slate-800 font-medium transition-all"
+                                    className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white font-medium transition-all"
                                     radius="lg"
                                     variant="flat"
                                 >
@@ -134,7 +134,7 @@ const AppNavbar = () => {
                     <NavbarItem>
                         <Button 
                             variant="flat" 
-                            className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-slate-800 font-medium transition-all" 
+                            className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white font-medium transition-all" 
                             onClick={() => push('/car-rent')}
                         >
                             {'Rental Mobil'}
