@@ -39,7 +39,7 @@ const SearchFlight = () => {
         () => {
             reset(DEFAULT_VALUES)
         },
-        []
+        [reset]
     );
 
     useEffect(
@@ -56,7 +56,7 @@ const SearchFlight = () => {
                 });
             }
         },
-        [isReady, from, to, date, adult, child, infant, push, classParams]
+        [isReady, from, to, date, adult, child, infant, classParams, reset]
     )
 
     const onSubmit = (data: FormProps) => {
@@ -96,11 +96,11 @@ const SearchFlight = () => {
                         />
                     </div>
                     <Button 
-                        className="bg-[#4267B2] text-white hover:bg-[#00D5FF] transition-all shadow-lg shadow-[#4267B2]/30 w-full lg:w-[350px] h-[60px] rounded-2xl active:scale-95 font-bold text-xl gap-3" 
+                        isIconOnly
+                        className="button-orange w-[60px] h-[60px] min-w-[60px] rounded-2xl active:scale-95 font-bold shadow-lg shadow-orange-500/30" 
                         onClick={handleSubmit(onSubmit)}
-                        startContent={<IconSearch width={28} height={28}/>}
                     >
-                        {t('common.search')}
+                        <IconSearch width={28} height={28}/>
                     </Button> 
                 </div>
             </FormProvider>

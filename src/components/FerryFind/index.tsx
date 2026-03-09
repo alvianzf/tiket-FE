@@ -1,5 +1,6 @@
 import { Button, Input } from "@nextui-org/react";
 import { useTranslation } from "react-i18next"
+import IconSearch from "@icons/IconSearch";
 
 const FerryFind = () => {
     const { t } = useTranslation();
@@ -41,8 +42,11 @@ const FerryFind = () => {
                     </div>
                 </div>
                 
-                <Button className="button-orange w-full h-14 text-lg font-bold shadow-lg shadow-orange-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                    {t('tickets.search')}
+                <Button 
+                    isIconOnly
+                    className="button-orange w-full h-14 text-lg font-bold shadow-lg shadow-orange-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                >
+                    <IconSearch width={28} height={28}/>
                 </Button> 
             </div>
         </div>
