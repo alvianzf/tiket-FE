@@ -139,8 +139,15 @@ const AppNavbar = () => {
                 </NavbarContent>
             </Navbar>
 
-            <Modal isOpen={isOpenLogin} onOpenChange={onOpenChangeLogin}>
-                <ModalContent>
+            <Modal 
+                isOpen={isOpenLogin} 
+                onOpenChange={onOpenChangeLogin}
+                backdrop="blur"
+                classNames={{
+                    backdrop: "bg-black/30 backdrop-blur-sm",
+                }}
+            >
+                <ModalContent className="glass-card border-white/20 bg-white/10 backdrop-blur-2xl shadow-2xl">
                     {() => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">{t('profile.login')}</ModalHeader>
@@ -152,8 +159,15 @@ const AppNavbar = () => {
                 </ModalContent>
             </Modal>
 
-            <Modal isOpen={isOpenRegister} onOpenChange={onOpenChangeRegister}>
-                <ModalContent>
+            <Modal 
+                isOpen={isOpenRegister} 
+                onOpenChange={onOpenChangeRegister}
+                backdrop="blur"
+                classNames={{
+                    backdrop: "bg-black/30 backdrop-blur-sm",
+                }}
+            >
+                <ModalContent className="glass-card border-white/20 bg-white/10 backdrop-blur-2xl shadow-2xl">
                     {() => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">{t('profile.register')}</ModalHeader>
@@ -165,8 +179,15 @@ const AppNavbar = () => {
                 </ModalContent>
             </Modal>
 
-            <Modal isOpen={isOpenFind} onOpenChange={onOpenChangeFind}>
-                <ModalContent>
+            <Modal 
+                isOpen={isOpenFind} 
+                onOpenChange={onOpenChangeFind}
+                backdrop="blur"
+                classNames={{
+                    backdrop: "bg-black/30 backdrop-blur-sm",
+                }}
+            >
+                <ModalContent className="glass-card border-white/20 bg-white/10 backdrop-blur-2xl shadow-2xl">
                     {() => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">{t('home.find_booking_no')}</ModalHeader>
