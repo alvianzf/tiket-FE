@@ -25,7 +25,10 @@ const AppNavbar = () => {
     const { isOpen: isOpenFind, onOpen: onOpenFind, onOpenChange: onOpenChangeFind } = useDisclosure();
 
 
-    const { push } = useRouter();
+    const { push, pathname } = useRouter();
+
+    const isFlightActive = pathname === '/';
+    const isFerryActive = pathname === '/ferry';
 
     const onHandleChangeLanguage = (lang: 'id' | 'en') => {
         i18n.changeLanguage(lang)
@@ -44,20 +47,28 @@ const AppNavbar = () => {
                     <Logo />
                 </NavbarBrand>
                 <NavbarContent justify="end">
-                    <NavbarItem>
+                    <NavbarItem isActive={isFlightActive}>
                         <Button 
                             variant="flat" 
-                            className="bg-transparent text-white font-medium hover:bg-white/10 transition-all border-none"
+                            className={`font-medium transition-all border-none ${
+                                isFlightActive 
+                                ? "bg-white/20 text-white shadow-inner" 
+                                : "bg-transparent text-white/80 hover:bg-white/10 hover:text-white"
+                            }`}
                             onClick={() => push('/')}
                         >
                             {t('home.flight')}
                         </Button>
                     </NavbarItem>
 
-                    <NavbarItem>
+                    <NavbarItem isActive={isFerryActive}>
                         <Button 
                             variant="flat" 
-                            className="bg-transparent text-white font-medium hover:bg-white/10 transition-all border-none"
+                            className={`font-medium transition-all border-none ${
+                                isFerryActive 
+                                ? "bg-white/20 text-white shadow-inner" 
+                                : "bg-transparent text-white/80 hover:bg-white/10 hover:text-white"
+                            }`}
                             onClick={() => push('/ferry')}
                         >
                             {t('home.ferry')}
