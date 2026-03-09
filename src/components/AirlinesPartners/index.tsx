@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Image, Skeleton } from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import { useQueryGetAirlines } from '@queries/airlines';
 
@@ -29,22 +29,20 @@ const AirlinesPartners = () => {
     }
 
     return (
-        <div className="flex flex-col lg:w-6/12 md:w-6/12 gap-6 sm:w-full w-full glass-card p-8 bg-white/10">
-            <div className="flex flex-col items-center text-center space-y-2">
-                <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+        <div className="flex flex-col gap-4 items-center">
+            <div className="flex flex-col items-center text-center space-y-1">
+                <p className="text-lg font-medium text-slate-700">
                     {t('home.airlines_partners')}
-                </h3>
-                <p className="text-slate-500 max-w-md">
+                </p>
+                <p className="text-xs text-slate-500 max-w-xs">
                     {t('home.airlines_partners_description')}
                 </p>
             </div>
             
-            <div className="flex flex-row gap-4 flex-wrap justify-center items-center">
+            <div className="flex flex-row gap-3 flex-wrap justify-center items-center">
                 {isFetching ? (
-                    Array.from({ length: 8 }).map((_, i) => (
-                        <Card key={i} className="w-16 h-16 glass-card border-none bg-white/20">
-                            <Skeleton className="rounded-lg h-full w-full" />
-                        </Card>
+                    Array.from({ length: 5 }).map((_, i) => (
+                        <div key={i} className="w-12 h-12 rounded-lg bg-white/30 animate-pulse" />
                     ))
                 ) : (
                     airlines?.data?.map((airline: AirlineData, index: number) => {
@@ -54,14 +52,14 @@ const AirlinesPartners = () => {
                         return (
                             <div 
                                 key={index} 
-                                className="w-16 h-16 p-2 glass-card hover:scale-110 transition-transform cursor-pointer flex items-center justify-center bg-white/30"
+                                className="w-14 h-14 p-2 transition-transform hover:scale-110 cursor-pointer flex items-center justify-center"
                             >
                                 <Image 
-                                    width={48} 
-                                    height={48} 
+                                    width={40} 
+                                    height={40} 
                                     src={url} 
                                     alt={airline.airlineName}
-                                    className="object-contain"
+                                    className="object-contain filter grayscale hover:grayscale-0 transition-all"
                                 />
                             </div>
                         );

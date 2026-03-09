@@ -25,7 +25,7 @@ const LoginForm = () => {
                     startContent={<FaLock className="text-[#4267B2] mr-2" />}
                 />
             </div>
-            <Button color="primary" variant="solid" className="w-full rounded-sm bg-[#ff5a00] border-[#ff5a00] text-white">
+            <Button color="primary" variant="solid" className="w-full rounded-xl bg-[#ff5a00] border-[#ff5a00] text-white">
                 {t('profile.login')}
             </Button>
             <Button color="primary" variant="light" className="w-full rounded-sm">

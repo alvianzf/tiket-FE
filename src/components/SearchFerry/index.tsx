@@ -7,6 +7,7 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useQueryFerryRoutes } from "../../queries/ferry";
 import IconSearch from "@icons/IconSearch";
+import { FaShip } from "react-icons/fa";
 
 const SearchFerry = () => {
     const { t } = useTranslation();
@@ -91,11 +92,8 @@ const SearchFerry = () => {
                         <Select
                             label={t('tickets.departure')}
                             placeholder={t('tickets.departure_placeholder')}
-                            variant="flat"
-                            classNames={{
-                                trigger: "bg-white/50 backdrop-blur-md border border-white/40 shadow-sm",
-                                label: "text-slate-600 font-medium",
-                            }}
+                            variant="underlined"
+                            startContent={<FaShip className="text-[#4267B2] mr-2" />}
                             selectedKeys={departurePort ? [departurePort] : []}
                             onSelectionChange={(keys) => {
                                 const selected = Array.from(keys)[0] as string;
@@ -115,11 +113,8 @@ const SearchFerry = () => {
                     <Select
                         label={t('tickets.destination')}
                         placeholder={t('tickets.destination_placeholder')}
-                        variant="flat"
-                        classNames={{
-                            trigger: "bg-white/50 backdrop-blur-md border border-white/40 shadow-sm",
-                            label: "text-slate-600 font-medium",
-                        }}
+                        variant="underlined"
+                        startContent={<FaShip className="text-[#4267B2] mr-2" />}
                         selectedKeys={destinationPort ? [destinationPort] : []}
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         onSelectionChange={(keys: any) => setDestinationPort(Array.from(keys)[0] as string)}
@@ -136,11 +131,11 @@ const SearchFerry = () => {
                         <div className="w-full">
                             <DatePicker 
                                 label={t('tickets.departured_date')}
-                                variant="flat"
+                                variant="underlined"
                                 classNames={{
                                     calendarContent: "bg-white/90 backdrop-blur-xl",
-                                    inputWrapper: "bg-white/50 backdrop-blur-md border border-white/40 shadow-sm",
                                 }}
+                                showMonthAndYearPickers
                                 value={departureDate}
                                 onChange={setDepartureDate}
                                 minValue={parseDate(moment().format('YYYY-MM-DD'))}
@@ -151,11 +146,11 @@ const SearchFerry = () => {
                             <div className="w-full">
                                 <DatePicker 
                                     label={t('tickets.return_date')}
-                                    variant="flat"
+                                    variant="underlined"
                                     classNames={{
                                         calendarContent: "bg-white/90 backdrop-blur-xl",
-                                        inputWrapper: "bg-white/50 backdrop-blur-md border border-white/40 shadow-sm",
                                     }}
+                                    showMonthAndYearPickers
                                     value={returnDate}
                                     onChange={setReturnDate}
                                     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,31 +1,37 @@
 # ✈️ TiketQ Frontend
 
-TiketQ is a modern, premium web application for booking flights and ferries. It features a sleek glassmorphism UI, smooth Framer Motion animations, and robust error handling.
+TiketQ is a modern, premium web application for booking flights and ferries. It features a state-of-the-art **TiketQ Premium Design System**, characterized by deep aesthetic depth, unified branding, and high-performance interactions.
 
-> **Note:** Real application screenshots are intended to be placed below. Due to system browser automation limits at the time of writing, please capture and place your snapshots here.
+### ✨ Key Features & Design Philosophy
+
+- **TiketQ Premium UI**: A cohesive "Glassmorphism" aesthetic with 75% opacity white glass modals, backdrop blurs, and frosted card containers (`backdrop-blur-2xl`).
+- **Standardized Input System**: A unified form experience using the `underlined` variant across all booking, profile, and checkout flows, complete with intelligent iconography (`FaShip`, `FaPlane`, `FaTicketAlt`).
+- **Unified Branding**: Consistent action-driven color palette (e.g., TiketQ Orange `#ff5a00` for primary CTA buttons) and synchronized "Mitra" (Partner) sections across Flight and Ferry modules.
+- **Premium User Experience**: Micro-animations powered by **Framer Motion**, skeleton loading states, and a fully responsive layout.
 
 ### 📸 Application Snapshots
-*(Place `landing_page.png` and `history_lookup.png` in the `/public/docs/` folder to display here)*
+
+_(Place `landing_page.png` and `history_lookup.png` in the `/public/docs/` folder to display here)_
 
 ![Landing Page](./public/docs/landing_page.png)
 ![History Lookup](./public/docs/history_lookup.png)
 
-
 ## 🚀 Tech Stack
 
 - **Framework:** [Next.js 14](https://nextjs.org/) (React 18)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/) with Glassmorphism aesthetics
-- **UI Components:** [NextUI v2](https://nextui.org/)
+- **UI Components:** [NextUI v2](https://nextui.org/) (Customized with Underlined & Glass styles)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) with custom Glassmorphism utilities
 - **Animations:** [Framer Motion](https://www.framer.com/motion/)
-- **State/Query Management:** [React Query v5](https://tanstack.com/query/latest)
+- **State Management:** [React Query v5](https://tanstack.com/query/latest)
 - **HTTP Client:** [Axios](https://axios-http.com/)
-- **Notifications:** [React Toastify](https://fkhadra.github.io/react-toastify/)
+- **Internationalization:** [react-i18next](https://react.i18next.com/)
 
 ---
 
 ## 🛠️ Local Development
 
 1. **Clone the repository:**
+
    ```bash
    git clone git@github.com:alvianzf/tiket-FE.git
    cd tiket-FE
@@ -33,12 +39,14 @@ TiketQ is a modern, premium web application for booking flights and ferries. It 
 
 2. **Install dependencies:**
    Make sure you are using `npm` (Yarn is discouraged to prevent conflicting resolutions).
+
    ```bash
    npm install
    ```
 
 3. **Set up Environment Variables:**
    Create a `.env` file based on the local configuration:
+
    ```env
    NEXT_PUBLIC_API_URL=http://localhost:3001/api
    ```
@@ -56,6 +64,7 @@ TiketQ is a modern, premium web application for booking flights and ferries. It 
 Follow this guide to securely expose your Next.js application to the internet using Nginx as a reverse proxy and PM2 as a process manager.
 
 ### 1. Prerequisites
+
 Ensure you have Node.js (v18+), npm, Nginx, and PM2 installed on your Ubuntu server.
 
 ```bash
@@ -70,6 +79,7 @@ sudo npm install -g pm2
 ```
 
 ### 2. Build the Application
+
 Navigate to your project directory on the server, install dependencies, and build the Next.js production bundle.
 
 ```bash
@@ -79,6 +89,7 @@ npm run build
 ```
 
 ### 3. Start with PM2
+
 Use PM2 to run the Next.js application in the background so it automatically restarts if the server crashes or reboots.
 
 ```bash
@@ -91,6 +102,7 @@ pm2 startup
 ```
 
 ### 4. Configure Nginx
+
 Create a new server block configuration for Nginx to proxy HTTP requests from port 80 to your Next.js app running on port 3000.
 
 ```bash
@@ -111,7 +123,7 @@ server {
         proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
-        
+
         # Security headers
         add_header X-Frame-Options "SAMEORIGIN";
         add_header X-XSS-Protection "1; mode=block";
@@ -134,6 +146,7 @@ sudo systemctl restart nginx
 ```
 
 ### 5. Secure with SSL (Optional but Recommended)
+
 Use Certbot to automatically provision and install Let's Encrypt SSL certificates.
 
 ```bash
