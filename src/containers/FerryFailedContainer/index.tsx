@@ -56,7 +56,7 @@ const FerryFailedContainer = () => {
                     <CardBody>
                     <div className="flex flex-col text-center gap-8">
                         <div className="m-auto">
-                            <Image src="/images/payment-failed.png" width={200} height={200}/>
+                            <Image src="/images/payment-failed.png" width={200} height={200} alt="Payment Failed"/>
                         </div>
                         <p className="text-orange text-lg font-medium">{t('checkout.payment_failed')}</p>
                         <Button className={"button-orange"}>

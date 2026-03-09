@@ -25,7 +25,7 @@ const CheckoutContainer = () => {
             return;
         }
 
-    }, [isReady, from, to, date, adult, child, infant, push, classParams]);
+    }, [isReady, from, to, date, adult, child, push, classParams, code]);
 
     const { data: flights, isFetching } = useQuerySearchFlights({
         request: {
@@ -44,12 +44,12 @@ const CheckoutContainer = () => {
     const flightData = flightDatas.find((flight) => flight.searchId === code);
 
     useEffect(() => {
-        if (!isFetching && !flightData) {
+        if (!isReady && !isFetching && !flightData) {
             push('/');
 
             return;
         }
-    },[isFetching, flightData])
+    },[isReady, isFetching, flightData, push])
 
     return (
         <div className="flex flex-wrap justify-center my-10">

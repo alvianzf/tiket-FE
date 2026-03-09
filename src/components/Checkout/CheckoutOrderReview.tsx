@@ -60,23 +60,23 @@ const CheckoutOrderReview = () => {
                         </div>
                         <div className="flex flex-col gap-4">
                             <p className="text-lg font-medium">{t('checkout.detail_traveler')}</p>
-                            {adultFields.map((_field, index) => (
+                            {adultFields.map((field, index) => (
                                 <CheckoutOrderReviewPassenger 
+                                    key={field.adultPassengerKey}
                                     fullname={`${watch(`adultPassengers.${index}.firstname`)} ${watch(`adultPassengers.${index}.lastname`)}`} 
                                     date_of_birth={`${watch(`adultPassengers.${index}.date_of_birth`)}`} index={index+1} />
-
                             ))}
-                            {childFields.map((_field, index) => (
+                            {childFields.map((field, index) => (
                                 <CheckoutOrderReviewPassenger 
+                                    key={field.childPassengerKey}
                                     fullname={`${watch(`childPassengers.${index}.firstname`)} ${watch(`childPassengers.${index}.lastname`)}`} 
                                     date_of_birth={`${watch(`childPassengers.${index}.date_of_birth`)}`} index={index+1} />
-
                             ))}
-                            {infantFields.map((_field, index) => (
+                            {infantFields.map((field, index) => (
                                 <CheckoutOrderReviewPassenger 
+                                    key={field.infantPassengerKey}
                                     fullname={`${watch(`infantPassengers.${index}.firstname`)} ${watch(`infantPassengers.${index}.lastname`)}`} 
                                     date_of_birth={`${watch(`infantPassengers.${index}.date_of_birth`)}`} index={index+1} />
-
                             ))}
                         </div>
                     </div>

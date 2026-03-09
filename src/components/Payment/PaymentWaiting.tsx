@@ -31,7 +31,7 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
                 })
             }
         },
-        []
+        [query, push]
     )
 
     const total = parseInt(flight?.data?.nominal ?? '0');
@@ -73,7 +73,7 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
                 }
             }
         },
-        []
+        [query.payment]
     )
     
 

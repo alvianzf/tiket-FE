@@ -1,10 +1,12 @@
 
-import { Button, Card, CardBody, Image, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from "@nextui-org/react";
+import { Button, Image, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 
 interface Props {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     flightData?: any[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ferryData?: any[];
 }
 

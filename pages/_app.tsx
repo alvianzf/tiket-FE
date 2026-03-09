@@ -31,9 +31,15 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
                             {({ reset }) => (
                                 <ErrorBoundary
                                     fallbackRender={({ error, resetErrorBoundary }) => (
-                                        <div>
-                                            {error}
-                                            {resetErrorBoundary}
+                                        <div className="flex flex-col items-center justify-center min-h-screen p-10 text-center gap-4">
+                                            <h1 className="text-2xl font-bold text-red-600">Something went wrong</h1>
+                                            <p className="text-slate-600">{error.message}</p>
+                                            <button 
+                                                className="px-6 py-2 bg-primary text-white rounded-lg"
+                                                onClick={resetErrorBoundary}
+                                            >
+                                                Try again
+                                            </button>
                                         </div>
                                     )}
                                     onReset={reset}

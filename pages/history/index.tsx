@@ -11,6 +11,7 @@ import OrderContainer from "@containers/OrderContainer";
 const FindBookingPage: NextPageWithLayout = () => {
     const { t } = useTranslation('common');
     const [email, setEmail] = useState("");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [bookings, setBookings] = useState<any>(null);
 
     const historyMutation = useMutation({

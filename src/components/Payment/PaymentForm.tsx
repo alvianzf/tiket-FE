@@ -168,7 +168,7 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
                 }
             });
         }
-    }, []);
+    }, [push]);
 
     const total = parseInt(flight?.data?.nominal ?? '0');
 

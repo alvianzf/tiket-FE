@@ -1,4 +1,5 @@
-import { FerryRoute, FerrySector, FerryTrip, FerryBooking } from "../../types/ferry";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FerryRoute, FerrySector, FerryTrip, FerryBooking } from "../../types/travel";
 import baseApi from "../baseApi";
 
 export const API_FERRY_SECTORS = '/api/ferry/master/sectors';

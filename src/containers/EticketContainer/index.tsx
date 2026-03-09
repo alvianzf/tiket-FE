@@ -91,7 +91,7 @@ const EticketContainer = () => {
                         </div>
                         
                         {data?.data.status === 'ISSUED' && (
-                            <Button className="button-orange rounded-2xl px-10 h-14 font-bold text-lg shadow-xl shadow-orange-500/40 hover:scale-105 transition-all w-full md:w-auto" onClick={() => openBase64NewTab(data?.data.tiket_pdf ?? '')}>
+                            <Button bgColor="orange" className="button-orange rounded-2xl px-10 h-14 font-bold text-lg shadow-xl shadow-orange-500/40 hover:scale-105 transition-all w-full md:w-auto" onClick={() => openBase64NewTab(data?.data.tiket_pdf ?? '')}>
                                 <span className="mr-2">📄</span> {t('checkout.get_eticket')}
                             </Button>
                         )}
