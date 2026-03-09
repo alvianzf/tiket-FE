@@ -136,7 +136,7 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                     backdrop: "bg-black/30 backdrop-blur-sm",
                 }}
             >
-                <ModalContent className="glass-card border-white/20 bg-white/10 backdrop-blur-2xl shadow-2xl">
+                <ModalContent className="glass-card border-white/50 bg-white/50 backdrop-blur-2xl shadow-2xl">
                 {(onClose) => (
                     <>
                     <ModalHeader className="flex flex-col gap-1">{t('checkout.confirm_order')}</ModalHeader>

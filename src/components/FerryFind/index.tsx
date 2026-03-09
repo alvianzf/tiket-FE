@@ -1,6 +1,7 @@
 import { Button, Input } from "@nextui-org/react";
 import { useTranslation } from "react-i18next"
 import IconSearch from "@icons/IconSearch";
+import { FaTicketAlt, FaIdCard } from "react-icons/fa";
 
 const FerryFind = () => {
     const { t } = useTranslation();
@@ -20,10 +21,10 @@ const FerryFind = () => {
                         <label className="text-sm font-semibold text-slate-700 ml-1">{t('common.booking_no') || 'Booking No.'}</label>
                         <Input 
                             type="text" 
-                            variant="flat" 
+                            variant="underlined" 
                             placeholder="e.g. BZK12345"
+                            startContent={<FaTicketAlt className="text-[#4267B2] mr-2" />}
                             classNames={{
-                                inputWrapper: "bg-white/60 backdrop-blur-md border border-white/40 shadow-sm hover:bg-white/80 transition-all h-12",
                                 input: "text-slate-800 font-medium"
                             }}
                         />
@@ -32,10 +33,10 @@ const FerryFind = () => {
                         <label className="text-sm font-semibold text-slate-700 ml-1">{t('common.passport_no') || 'Passport No.'}</label>
                         <Input 
                             type="text" 
-                            variant="flat" 
+                            variant="underlined" 
                             placeholder="e.g. A1234567"
+                            startContent={<FaIdCard className="text-[#4267B2] mr-2" />}
                             classNames={{
-                                inputWrapper: "bg-white/60 backdrop-blur-md border border-white/40 shadow-sm hover:bg-white/80 transition-all h-12",
                                 input: "text-slate-800 font-medium"
                             }}
                         />

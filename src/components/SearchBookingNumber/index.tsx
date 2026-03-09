@@ -3,6 +3,7 @@ import useForm, { FormProps } from "./forms/useForm";
 import { FormProvider } from "react-hook-form";
 import { Button, Input } from "@nextui-org/react";
 import { useMutation } from "react-query";
+import { FaTicketAlt } from "react-icons/fa";
 import { checkBookFlight } from "@api/bookFlight";
 import { useRouter } from "next/router";
 
@@ -51,14 +52,14 @@ const SearchBookingNumber = ({ onOpenChangeFind } : Props) => {
                     <p>{t('home.booking_no')}</p>
                     <Input
                         type="text"
-                        variant="bordered"
+                        variant="underlined"
                         defaultValue={booking_no}
                         onValueChange={(value) => setValue('booking_no', value)}
                         errorMessage={errors?.booking_no?.message}
                         isInvalid={!!errors?.booking_no}
                         disabled={isLoading}
+                        startContent={<FaTicketAlt className="text-[#4267B2] mr-2" />}
                         classNames={{
-                            inputWrapper: "rounded-none",
                             mainWrapper: "w-full"
                         }}
                     />

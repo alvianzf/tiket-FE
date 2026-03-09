@@ -17,19 +17,18 @@ const PersonalDataForm = () => {
             <CardBody>
                 <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-2">
-                        <p>{t('profile.fullname')}</p>
-                        <Input type="text" variant={"bordered"} />
+                        <p className="font-medium text-slate-700">{t('profile.fullname')}</p>
+                        <Input type="text" variant="underlined" placeholder="Enter full name" />
                     </div>
                     <div className="flex flex-row gap-4">
                         <div className="flex flex-col gap-2 w-[48%]">
-                            <p>{t('profile.date_of_birth')}</p>
+                            <p className="font-medium text-slate-700">{t('profile.date_of_birth')}</p>
                             <DatePicker variant="underlined" />
                         </div>
                         <div className="flex flex-col gap-2 w-[50%]">
-                            <p>{t('profile.gender')}</p>
+                            <p className="font-medium text-slate-700">{t('profile.gender')}</p>
                             <Select
-                                variant="bordered"
-                                radius="sm" 
+                                variant="underlined"
                                 placeholder={t('profile.choose_gender')}
                             >
                                 {genderOptions.map((item) => (
@@ -42,8 +41,8 @@ const PersonalDataForm = () => {
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
-                        <p>{t('profile.city_of_residence')}</p>
-                        <Input type="text" variant={"bordered"} />
+                        <p className="font-medium text-slate-700">{t('profile.city_of_residence')}</p>
+                        <Input type="text" variant="underlined" placeholder="Enter city" />
                     </div>
                 </div>
             </CardBody>

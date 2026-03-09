@@ -29,20 +29,16 @@ const FerryPassenger = () => {
                             <p>{'Passport No.'}</p>
                             <Input
                                 type="text"
-                                variant="bordered"
-                                classNames={{
-                                    inputWrapper: "rounded-none",
-                                    mainWrapper: "w-full"
-                                }}
+                                variant="underlined"
+                                placeholder="Enter Passport No."
                             />
                         </div>
                         <div className="flex flex-col gap-1">
                             <p>{'Name ( As in a Passport )'}</p>
                             <div className="flex flex-row gap-2 w-full">
                                 <Select
-                                    className="w-[20%]"
-                                    variant="bordered"
-                                    radius="sm"
+                                    className="w-[25%]"
+                                    variant="underlined"
                                     selectionMode="single"
                                     placeholder={t('checkout.choose')}
                                 >
@@ -55,11 +51,9 @@ const FerryPassenger = () => {
                                 </Select>
                                 <Input
                                     type="text"
-                                    variant="bordered"
-                                    classNames={{
-                                        inputWrapper: "rounded-none",
-                                        mainWrapper: "w-full"
-                                    }}
+                                    variant="underlined"
+                                    placeholder="Enter Full Name"
+                                    className="grow"
                                 />
                             </div>
                         </div>
@@ -81,8 +75,7 @@ const FerryPassenger = () => {
                             <p>{'Issuing Country'}</p>
                             <Select
                                 className="w-full"
-                                variant="bordered"
-                                radius="sm"
+                                variant="underlined"
                                 selectionMode="single"
                                 placeholder={t('checkout.choose')}
                             >
@@ -99,8 +92,7 @@ const FerryPassenger = () => {
                                 <div className="flex flex-row gap-1">
                                     <Select
                                         className="w-full"
-                                        variant="bordered"
-                                        radius="sm"
+                                        variant="underlined"
                                         selectionMode="single"
                                         placeholder={'Day'}
                                     >
@@ -110,8 +102,7 @@ const FerryPassenger = () => {
                                     </Select>
                                     <Select
                                         className="w-full"
-                                        variant="bordered"
-                                        radius="sm"
+                                        variant="underlined"
                                         selectionMode="single"
                                         placeholder={'Month'}
                                     >
@@ -121,8 +112,7 @@ const FerryPassenger = () => {
                                     </Select>
                                     <Select
                                         className="w-full"
-                                        variant="bordered"
-                                        radius="sm"
+                                        variant="underlined"
                                         selectionMode="single"
                                         placeholder={'Year'}
                                     >

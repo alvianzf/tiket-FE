@@ -12,12 +12,12 @@ const ContactForm = () => {
             <CardBody>
                 <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-2">
-                        <p>{t('profile.email')}</p>
-                        <Input type="text" variant={"bordered"} />
+                        <p className="font-medium text-slate-700">{t('profile.email')}</p>
+                        <Input type="text" variant="underlined" placeholder="Enter email address" />
                     </div>
                     <div className="flex flex-col gap-2">
-                        <p>{t('profile.phone_number')}</p>
-                        <Input type="text" variant={"bordered"} />
+                        <p className="font-medium text-slate-700">{t('profile.phone_number')}</p>
+                        <Input type="text" variant="underlined" placeholder="Enter phone number" />
                     </div>
                 </div>
             </CardBody>
