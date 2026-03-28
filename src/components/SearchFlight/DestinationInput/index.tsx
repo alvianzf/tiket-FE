@@ -17,6 +17,7 @@ const DestinationInput = ({ items } : Props) => {
 
     const sections = [
         {
+            key: 'popular_city',
             title: t('tickets.popular_city'),
             children: items
         }
@@ -53,6 +54,7 @@ const DestinationInput = ({ items } : Props) => {
             >
                 {(section) => (
                     <AutocompleteSection 
+                        key={section.key}
                         title={section.title} 
                         items={section.children}
                         classNames={{
