@@ -7,7 +7,7 @@ const HomeContainer = () => {
 
     return (
         <>
-            <div className="flex flex-wrap justify-center min-h-[400px] home-app">
+            <div className="flex flex-wrap justify-center min-h-[400px] home-app relative z-30">
                 <div className="flex flex-wrap justify-center items-center w-full py-[40px] mx-[40px] lg:mx-0 md:mx-[40px] sm:mx-[40px]">
                     <SearchFlight />
                 </div>
