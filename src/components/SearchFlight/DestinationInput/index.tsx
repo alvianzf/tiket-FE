@@ -15,6 +15,13 @@ const DestinationInput = ({ items } : Props) => {
 
     const { setValue, watch, formState: { errors }} = useFormContext<FormProps>();
 
+    const sections = [
+        {
+            title: t('tickets.popular_city'),
+            children: items
+        }
+    ];
+
     return (
         <div className="w-full flex flex-col gap-2">
             <p className="font-medium text-slate-800/80">{t('tickets.to')}</p>
@@ -42,17 +49,25 @@ const DestinationInput = ({ items } : Props) => {
                 selectedKey={watch('to') || null}
                 errorMessage={errors?.to?.message}
                 isInvalid={!!errors?.to?.message}
+                items={sections}
             >
-                <AutocompleteSection title={t('tickets.popular_city')} classNames={{
-                    heading: 'text-[#00D5FF] text-base font-bold',
-                    group: 'grid grid-cols-2 md:grid-cols-3 gap-2 w-full'
-                }} hideSelectedIcon>
-                     {items.map((item) => (
-                        <AutocompleteItem key={item.code} textValue={item.name}>
-                            {item.name}
-                        </AutocompleteItem>
-                     ))}
-                </AutocompleteSection>
+                {(section) => (
+                    <AutocompleteSection 
+                        title={section.title} 
+                        items={section.children}
+                        classNames={{
+                            heading: 'text-[#00D5FF] text-base font-bold',
+                            group: 'grid grid-cols-2 md:grid-cols-3 gap-2 w-full'
+                        }} 
+                        hideSelectedIcon
+                    >
+                         {(item: Airport) => (
+                            <AutocompleteItem key={item.code} textValue={item.name}>
+                                {item.name}
+                            </AutocompleteItem>
+                         )}
+                    </AutocompleteSection>
+                )}
             </Autocomplete>
         </div>
     )

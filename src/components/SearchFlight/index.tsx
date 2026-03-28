@@ -113,8 +113,12 @@ const SearchFlight = () => {
                             aria-label={t('tickets.departured_date')} 
                             variant="underlined"
                             minValue={parseDate(moment().format('YYYY-MM-DD'))}
-                            value={parseDate(watch('date'))}
-                            onChange={(value) => setValue('date', moment(value).format('YYYY-MM-DD'))}
+                            value={watch('date') ? parseDate(watch('date')) : null}
+                            onChange={(value) => {
+                                if (value) {
+                                    setValue('date', value.toString());
+                                }
+                            }}
                         />
                     </div>
                     <Button 
