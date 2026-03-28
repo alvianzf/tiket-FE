@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
+import { NextPageWithLayout } from "@interfaces/common";
+import { AppLayout } from "@layouts";
 import { getCarById } from '@api/carRental';
 import { CarPhoto } from '@api/carRental/types';
 import { 
@@ -34,7 +36,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
 import 'swiper/css/free-mode';
 
-const CarDetailPage = () => {
+const CarDetailPage: NextPageWithLayout = () => {
     const router = useRouter();
     const { id, date } = router.query;
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
@@ -321,5 +323,7 @@ const CarDetailPage = () => {
         </div>
     );
 };
+
+CarDetailPage.getLayout = (page) => <AppLayout>{page}</AppLayout>;
 
 export default CarDetailPage;
