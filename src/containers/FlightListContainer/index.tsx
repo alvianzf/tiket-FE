@@ -14,6 +14,12 @@ import { useTranslation } from "react-i18next"
 const FlightListContainer = () => {
     const { query, isReady, push } = useRouter();
     const [isOpen, setOpen] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     const handleOpen = () => setOpen(true);
     const { t } = useTranslation();
 
@@ -85,7 +91,7 @@ const FlightListContainer = () => {
 
 
 
-    const totalPassenger = parseInt(adult) + parseInt(child) + parseInt(infant);
+    const totalPassengerCount = (parseInt(adult) || 0) + (parseInt(child) || 0) + (parseInt(infant) || 0);
 
     const handleSelect = (flightCode: string) => () => {
         push({
@@ -122,13 +128,13 @@ const FlightListContainer = () => {
                                         <div className="flex flex-row gap-2">
                                             <p>{date}</p>
                                             <p>|</p>
-                                            <p>{t('tickets.passenger', { count: totalPassenger })}</p>
+                                            <p>{!isMounted ? "..." : t('tickets.passenger', { count: totalPassengerCount })}</p>
                                             <p>|</p>
                                             <p>{classParams}</p>
                                         </div>
                                     </div>
                                     <div className="flex w-[10%] justify-end">
-                                        <Button isIconOnly className="button-orange" onClick={handleOpen}>
+                                        <Button isIconOnly className="button-orange font-bold shadow-lg shadow-orange-500/30 hover:scale-105 transition-all" onClick={handleOpen}>
                                             <IconSearch width={30} height={30}/>
                                         </Button> 
                                     </div>

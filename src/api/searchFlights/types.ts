@@ -54,13 +54,27 @@ export interface Flight {
     searchId: string;
 }
 
-export const getPrice = (f: Flight) => {
-    const firstSegmentClasses = f.classes?.[0];
-    const firstClass = firstSegmentClasses?.[0];
-    if (!firstClass || firstClass.price === undefined || firstClass.price === null) return null;
+export const getPrice = (f: Flight): number | null => {
+    if (!f.classes || f.classes.length === 0) return null;
     
-    const p = Number(firstClass.price);
-    return (p && !isNaN(p) && p > 0) ? p : null;
+    let total = 0;
+    let hasValidPrice = false;
+
+    // Sum the first class's price from every segment
+    f.classes.forEach(segmentClasses => {
+        const firstClass = segmentClasses?.[0];
+        if (firstClass && firstClass.price !== undefined && firstClass.price !== null) {
+            const rawPrice = firstClass.price as string | number;
+            const p = typeof rawPrice === 'string' ? parseFloat(rawPrice.replace(/[^0-9]/g, '')) : Number(rawPrice);
+            
+            if (!isNaN(p)) {
+                total += p;
+                hasValidPrice = true;
+            }
+        }
+    });
+    
+    return hasValidPrice ? total : null;
 };
 
 export interface GetFlightRequest {
