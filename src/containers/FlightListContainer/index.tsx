@@ -67,9 +67,8 @@ const FlightListContainer = () => {
             .filter(flight => {
                 const airlineMatch = selectedAirlines.length === 0 || selectedAirlines.includes(flight.airlineName);
                 
-                // User requested: "change transit wording to direct if isTransit: true"
-                // Assuming isTransit: true means Direct and isTransit: false means Transit for this specific logic
-                const isDirect = flight.isTransit; 
+                // standard transit logic: isTransit true means Transit, false means Direct
+                const isDirect = !flight.isTransit; 
                 const transitMatch = transitFilter === 'all' || 
                                      (transitFilter === 'direct' && isDirect) ||
                                      (transitFilter === 'transit' && !isDirect);
@@ -77,12 +76,13 @@ const FlightListContainer = () => {
                 return airlineMatch && transitMatch;
             })
             .sort((a, b) => {
-                const getPrice = (f: Flight) => f.classes?.reduce((acc: number, c: FlightClass) => acc + (c.price || 0), 0) || 0;
+                const getPrice = (f: Flight) => Math.min(...(f.classes?.map((c: FlightClass) => c.price || Infinity) || [Infinity]));
                 const priceA = getPrice(a);
                 const priceB = getPrice(b);
                 return sortOrder === 'low' ? priceA - priceB : priceB - priceA;
             });
     }, [flightDatas, selectedAirlines, sortOrder, transitFilter]);
+
 
 
     const totalPassenger = parseInt(adult) + parseInt(child) + parseInt(infant);
