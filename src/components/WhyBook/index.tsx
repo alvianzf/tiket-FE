@@ -1,3 +1,4 @@
+import NextImage from "next/image";
 import { useTranslation } from "react-i18next";
 
 const WhyBook = () => {
@@ -45,7 +46,7 @@ const WhyBook = () => {
                     {features.map((feature, index) => (
                         <div key={index} className="glass-card p-8 bg-white/10 border-white/20 hover:bg-white/15 hover:scale-105 transition-all text-center space-y-6 group shadow-xl">
                             <div className={`w-24 h-24 ${feature.bgColor} rounded-3xl flex items-center justify-center mx-auto ${feature.hoverIconBg} group-hover:rotate-6 transition-all duration-500 shadow-inner`}>
-                                <img 
+                                <NextImage 
                                     src={feature.icon} 
                                     alt={feature.title} 
                                     width={60} 
