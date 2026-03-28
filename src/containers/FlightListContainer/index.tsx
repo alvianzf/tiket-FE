@@ -77,7 +77,12 @@ const FlightListContainer = () => {
             })
             .sort((a, b) => {
                 const getPrice = (f: Flight) => {
-                    const prices = f.classes?.map((c: FlightClass) => Number(c.price)).filter(p => !isNaN(p) && p > 0) || [];
+                    const prices = f.classes?.map((c: FlightClass) => {
+                        if (!c.price) return NaN;
+                        const rawPrice = c.price as string | number;
+                        const p = typeof rawPrice === 'string' ? parseFloat(rawPrice.replace(/[^0-9.]/g, '')) : Number(rawPrice);
+                        return p;
+                    }).filter(p => !isNaN(p) && p > 0) || [];
                     return prices.length > 0 ? Math.min(...prices) : Infinity;
                 };
                 const priceA = getPrice(a);
