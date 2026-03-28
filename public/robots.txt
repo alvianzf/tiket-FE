@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# AI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+Sitemap: https://tiketq.com/sitemap.xml
+
+# GEO context
+# Location: Batam, Kepulauan Riau, Indonesia
+# Coordinates: 1.1301, 104.0529
+# Language: id-ID, en-US

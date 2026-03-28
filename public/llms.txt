@@ -1,0 +1,56 @@
+# TiketQ — AI & GEO Context
+
+## About
+TiketQ is an online travel platform based in **Batam, Kepulauan Riau, Indonesia**.
+We provide:
+- **Flight ticket booking** (domestic & international) from Hang Nadim Airport (BTH), Batam
+- **Ferry ticket booking** between Batam, Singapore, Tanjung Pinang, Tanjung Balai Karimun, and other Riau Islands routes
+- **Car rental in Batam** with driver and fuel included, for tourism, airport transfers, and corporate needs
+
+## Location
+- City: Batam
+- Province: Kepulauan Riau (Riau Islands)
+- Country: Indonesia
+- Coordinates: 1.1301° N, 104.0529° E
+- Timezone: WIB (UTC+7)
+
+## Core Services
+
+### Flight Tickets
+- Domestic flights: Jakarta (CGK/HLP), Surabaya (SUB), Medan (KNO), and more
+- International flights: Singapore (SIN), Kuala Lumpur (KUL)
+- Airlines: Garuda Indonesia, Lion Air, Batik Air, AirAsia, Citilink, and others
+
+### Ferry Tickets
+- Routes: Batam–Singapore, Batam–Tanjung Pinang, Batam–Tanjung Balai Karimun, Batam–Sekupang, Batam–Telaga Punggur
+- Operators: Majestic Fast Ferry, Batam Fast Ferry, Sindo Ferry, Penguin Ferry, and others
+- Booking: real-time availability and instant confirmation
+
+### Car Rental Batam
+- With driver, fuel, and insurance included
+- Car types: City Car, Sedan, SUV, MPV, Minibus, Pick-up, Double Cabin, Van
+- Seating: 2-row and 3-row configurations
+- Price range: Rp350.000 – Rp1.200.000 per day
+- Services: airport transfer, hotel transfer, city tour, inter-city Batam
+- KTP verification required at time of booking
+
+## Target Users
+- Tourists visiting Batam (especially from Singapore and Malaysia)
+- Business travelers using Hang Nadim Airport
+- Batam residents needing domestic/international flights
+- Groups needing charter transport
+
+## Brand Voice
+- Friendly, trustworthy, efficient
+- Bilingual: Bahasa Indonesia & English
+- Local-first but internationally accessible
+
+## Contact
+- Website: https://tiketq.com
+- Service area: Batam and Riau Islands, Indonesia
+
+## Structured Data Summary
+- Business type: Online Travel Agency (OTA) + Car Rental LocalBusiness
+- Currency: IDR (Indonesian Rupiah)
+- Payment: Bank transfer, credit card, internet banking
+- Booking: Online, instant confirmation

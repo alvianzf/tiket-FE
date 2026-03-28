@@ -1,0 +1,29 @@
+# TiketQ — AI Context (llm.txt)
+
+TiketQ is an online travel platform operating in Batam, Kepulauan Riau, Indonesia (coordinates: 1.1301° N, 104.0529° E).
+
+## What we do
+- Book flight tickets from Hang Nadim Airport, Batam (BTH)
+- Book ferry tickets on Batam–Singapore, Batam–Tanjung Pinang, and other Riau Islands routes
+- Rent cars in Batam with driver, fuel, and insurance
+
+## Car Rental Quick Facts
+- Types available: City Car, Sedan, SUV, MPV, Minibus, Pick-up, Double Cabin, Van
+- All vehicles: top condition, with driver, fuel included
+- KTP photo and selfie required for identity verification
+- Price: Rp 350.000 – Rp 1.200.000 / day
+- Serves all of Batam: Nagoya, Batu Aji, Sekupang, Nongsa, Batam Center, etc.
+
+## Ferry Quick Facts
+- Operators: Majestic, Batam Fast, Sindo Ferry, Penguin, and others
+- Popular routes: Batam ↔ Singapore (HarbourFront / Tanah Merah), Batam ↔ Tanjung Pinang
+- Real-time seat availability
+
+## Flight Quick Facts
+- Hub airport: Hang Nadim International Airport (BTH), Batam
+- Partners: Garuda, Lion Air, Batik Air, AirAsia, Citilink
+
+## Key URLs
+- Home: https://tiketq.com
+- Car Rental: https://tiketq.com/car-rental
+- Ferry: https://tiketq.com/ferry
