@@ -98,15 +98,14 @@ const CarDetailPage = () => {
     }).format(Number(car.pricePerDay));
 
     return (
-        <div className="min-h-screen bg-white pb-40 pt-28 relative">
-            {/* Main Content Area */}
-            <div className="max-w-[800px] mx-auto px-6">
-                {/* Breadcrumbs & Back Button */}
-                <div className="flex items-center justify-between mb-10">
+        <div className="min-h-screen bg-slate-50 pb-32 pt-28 relative">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Header & Breadcrumbs */}
+                <div className="flex items-center justify-between mb-8">
                     <Breadcrumbs 
                         underline="hover"
                         classNames={{
-                            list: "bg-white/50 backdrop-blur-md px-5 py-2.5 rounded-full border border-slate-200 shadow-sm"
+                            list: "bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm"
                         }}
                     >
                         <BreadcrumbItem href="/">Home</BreadcrumbItem>
@@ -117,193 +116,195 @@ const CarDetailPage = () => {
                         isIconOnly 
                         variant="flat" 
                         onPress={handleBack}
-                        className="bg-white shadow-md border border-slate-200 hover:bg-slate-50 transition-colors"
+                        className="bg-white shadow-sm border border-slate-200 text-slate-600 hover:bg-slate-100"
                     >
-                        <ArrowLeft size={20} />
+                        <ArrowLeft size={18} />
                     </Button>
                 </div>
-                
-                <div className="flex flex-col gap-12">
-                    {/* Media / Gallery Section */}
-                    <div className="space-y-6">
-                        <Swiper
-                            spaceBetween={12}
-                            navigation={true}
-                            thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
-                            modules={[FreeMode, Navigation, Thumbs, Pagination]}
-                            className="aspect-video w-full rounded-[3rem] overflow-hidden shadow-2xl border border-slate-100"
-                            pagination={{ clickable: true }}
-                        >
-                            {(car.photos && car.photos.length > 0 ? car.photos : [{ url: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80' }]).map((photo: Partial<CarPhoto>, index: number) => (
-                                <SwiperSlide key={photo.id || index} onClick={() => handlePhotoClick(photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80')}>
-                                    <div className="relative w-full aspect-video cursor-zoom-in group">
-                                        <Image 
-                                            src={photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80'} 
-                                            alt={car.name || 'Vehicle Photo'} 
-                                            fill 
-                                            className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                            priority={index === 0}
-                                            unoptimized
-                                        />
-                                        <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors" />
-                                    </div>
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
 
-                        {/* Thumbnails Swiper */}
-                        {(car.photos && car.photos.length > 1) && (
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+                    {/* Left Column: Gallery & Details */}
+                    <div className="lg:col-span-8 flex flex-col gap-8">
+                        {/* Gallery */}
+                        <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-200 flex flex-col gap-4">
                             <Swiper
-                                onSwiper={setThumbsSwiper}
-                                spaceBetween={14}
-                                slidesPerView={4}
-                                freeMode={true}
-                                watchSlidesProgress={true}
-                                modules={[FreeMode, Navigation, Thumbs]}
-                                className="h-28 px-2"
+                                spaceBetween={10}
+                                navigation={true}
+                                thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+                                modules={[FreeMode, Navigation, Thumbs, Pagination]}
+                                className="aspect-[16/9] w-full rounded-2xl overflow-hidden"
+                                pagination={{ clickable: true }}
                             >
-                                {car.photos.map((photo: CarPhoto, index: number) => (
-                                    <SwiperSlide key={photo.id || index} className="rounded-2xl overflow-hidden cursor-pointer border-3 border-transparent data-[thumb-active=true]:border-yellow-400 shadow-md transition-all">
-                                        <div className="relative w-full h-full">
+                                {(car.photos && car.photos.length > 0 ? car.photos : [{ url: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80' }]).map((photo: Partial<CarPhoto>, index: number) => (
+                                    <SwiperSlide key={photo.id || index} onClick={() => handlePhotoClick(photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80')}>
+                                        <div className="relative w-full h-full cursor-zoom-in group">
                                             <Image 
                                                 src={photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80'} 
-                                                alt={`${car.name || 'Vehicle'} thumbnail ${index}`} 
+                                                alt={car.name || 'Vehicle Photo'} 
                                                 fill 
-                                                className="object-cover"
+                                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                                priority={index === 0}
                                                 unoptimized
                                             />
                                         </div>
                                     </SwiperSlide>
                                 ))}
                             </Swiper>
-                        )}
-                    </div>
 
-                    {/* Header Details Info Card */}
-                    <div className="bg-white border-2 border-slate-100 p-8 md:p-12 rounded-[3.5rem] flex flex-col gap-8 shadow-xl shadow-slate-200/50 relative">
-                        <div className="flex items-center gap-3">
-                            <Chip color="success" variant="solid" size="sm" className="font-black px-4 bg-green-500">TERSEDIA</Chip>
-                            <Chip size="sm" className="bg-slate-100 text-slate-800 font-black px-4 border-none uppercase tracking-widest">{car.type}</Chip>
+                            {/* Thumbnails */}
+                            {(car.photos && car.photos.length > 1) && (
+                                <Swiper
+                                    onSwiper={setThumbsSwiper}
+                                    spaceBetween={10}
+                                    slidesPerView={5}
+                                    freeMode={true}
+                                    watchSlidesProgress={true}
+                                    modules={[FreeMode, Navigation, Thumbs]}
+                                    className="h-20"
+                                >
+                                    {car.photos.map((photo: CarPhoto, index: number) => (
+                                        <SwiperSlide key={photo.id || index} className="rounded-xl overflow-hidden cursor-pointer border-2 border-transparent data-[thumb-active=true]:border-orange-500 transition-colors">
+                                            <div className="relative w-full h-full">
+                                                <Image 
+                                                    src={photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80'} 
+                                                    alt={`${car.name || 'Vehicle'} thumbnail ${index}`} 
+                                                    fill 
+                                                    className="object-cover"
+                                                    unoptimized
+                                                />
+                                            </div>
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            )}
                         </div>
-                        <div className="flex flex-wrap items-end justify-between gap-8">
-                            <div className="space-y-3">
-                                <h1 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tighter leading-none">{car.name}</h1>
-                                <div className="flex items-baseline gap-2">
-                                    <span className="text-4xl font-black text-orange-600">{formattedPrice}</span>
-                                    <span className="text-slate-400 font-bold uppercase text-sm tracking-[0.2em]">/ per hari</span>
-                                </div>
-                            </div>
-                            <Button 
-                                size="lg"
-                                className="bg-yellow-400 text-slate-900 font-black h-20 px-14 rounded-[2rem] shadow-2xl shadow-yellow-400/30 hover:bg-yellow-500 hover:scale-105 active:scale-95 transition-all text-2xl border-4 border-white"
-                                onPress={handleRent}
-                            >
-                                Sewa Sekarang
-                            </Button>
-                        </div>
-                    </div>
 
-                    <Divider className="bg-slate-100 h-[2px]" />
-
-                    {/* Description & Features Stack */}
-                    <div className="space-y-16">
-                        <div className="space-y-6">
-                            <h2 className="text-3xl font-black text-slate-900 flex items-center gap-4">
-                                <div className="w-2 h-10 bg-yellow-400 rounded-full" />
-                                Tentang Kendaraan
-                            </h2>
+                        {/* Description Section */}
+                        <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200">
+                            <h2 className="text-2xl font-bold text-slate-900 mb-6">Tentang Kendaraan</h2>
                             <div 
-                                className="prose prose-slate max-w-none text-slate-600 leading-relaxed rich-description text-xl"
+                                className="prose prose-slate max-w-none text-slate-600 leading-relaxed"
                                 dangerouslySetInnerHTML={{ __html: car.description || '<p>Tidak ada deskripsi tersedia untuk kendaraan ini.</p>' }}
                             />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-8">
-                            <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 flex flex-col gap-4 shadow-inner">
-                                <div className="flex items-center gap-3 text-slate-400 text-sm font-black uppercase tracking-[0.2em]">
-                                    <Users size={20} className="text-yellow-500" />
-                                    Kapasitas
-                                </div>
-                                <span className="text-slate-900 text-2xl font-black">{car.rows} Baris Kursi</span>
-                            </div>
-                            <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 flex flex-col gap-4 shadow-inner">
-                                <div className="flex items-center gap-3 text-slate-400 text-sm font-black uppercase tracking-[0.2em]">
-                                    <Settings size={20} className="text-yellow-500" />
-                                    Transmisi
-                                </div>
-                                <span className="text-slate-900 text-2xl font-black">{car.transmission || 'Otomatis'}</span>
-                            </div>
-                        </div>
-
-                        <div className="space-y-8">
-                            <h2 className="text-3xl font-black text-slate-900 flex items-center gap-4">
-                                <div className="w-2 h-10 bg-yellow-400 rounded-full" />
-                                Fitur Utama
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                {(car.features ?? ['Full AC', 'Media Hub', 'Professional Driver']).map((feature, i) => (
-                                    <div key={i} className="flex items-center gap-5 p-6 rounded-3xl bg-white border-2 border-slate-50 shadow-sm text-slate-800 font-black hover:border-yellow-200 transition-all cursor-default">
-                                        <div className="w-12 h-12 rounded-2xl bg-yellow-50 flex items-center justify-center text-yellow-600 shadow-sm">
-                                            <ShieldCheck size={24} />
+                        {/* Features Section */}
+                        <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 mb-10">
+                            <h2 className="text-2xl font-bold text-slate-900 mb-6">Fasilitas & Fitur</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {(car.features ?? ['AC Dingin', 'Kabin Bersih', 'Driver Ramah']).map((feature, i) => (
+                                    <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 text-slate-700 font-medium">
+                                        <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 shrink-0">
+                                            <ShieldCheck size={20} />
                                         </div>
                                         {feature}
                                     </div>
                                 ))}
                             </div>
                         </div>
+                    </div>
 
-                        {/* High-Impact Trust / CTA Card */}
-                        <div className="bg-slate-900 rounded-[4rem] p-12 md:p-16 text-white flex flex-col items-center text-center gap-8 shadow-3xl shadow-slate-900/40 relative overflow-hidden group mb-20">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-400/5 rounded-full -mr-32 -mt-32 blur-[100px] group-hover:bg-yellow-400/10 transition-all animate-pulse" />
-                            <div className="space-y-4 relative z-10">
-                                <p className="text-yellow-400 font-black uppercase tracking-[0.3em] text-sm">TiketQ Premium Service</p>
-                                <h3 className="text-4xl md:text-5xl font-black tracking-tighter italic">Solusi Perjalanan Terbaik di Batam</h3>
+                    {/* Right Column: Sticky Booking Card */}
+                    <div className="lg:col-span-4 z-10">
+                        {/* Hidden on mobile, visible on lg */}
+                        <div className="hidden lg:flex sticky top-28 bg-white p-8 rounded-3xl shadow-lg border border-slate-200 flex-col gap-6 w-full">
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-2">
+                                    <Chip color="success" variant="flat" size="sm" className="font-semibold border-none">Tersedia</Chip>
+                                    <Chip variant="flat" size="sm" className="bg-slate-100 text-slate-600 border-none font-semibold">{car.type}</Chip>
+                                </div>
+                                <h1 className="text-3xl font-bold text-slate-900 leading-tight">{car.name}</h1>
+                                
+                                <div className="flex items-baseline gap-2 pt-2">
+                                    <span className="text-3xl font-bold text-orange-600">{formattedPrice}</span>
+                                    <span className="text-slate-500 font-medium whitespace-nowrap">/ hari</span>
+                                </div>
                             </div>
-                            <p className="text-slate-400 max-w-xl text-xl leading-relaxed relative z-10">Kami memastikan setiap unit dalam kondisi prima untuk menjamin keamanan dan kenyamanan maksimal selama perjalanan Anda.</p>
+                            
+                            <Divider className="bg-slate-100" />
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="flex flex-col gap-1 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                                    <div className="flex items-center gap-2 text-slate-500 text-xs font-semibold uppercase tracking-wider">
+                                        <Users size={16} />
+                                        Kapasitas
+                                    </div>
+                                    <span className="text-slate-900 font-bold">{car.rows} Baris</span>
+                                </div>
+                                <div className="flex flex-col gap-1 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                                    <div className="flex items-center gap-2 text-slate-500 text-xs font-semibold uppercase tracking-wider">
+                                        <Settings size={16} />
+                                        Transmisi
+                                    </div>
+                                    <span className="text-slate-900 font-bold">{car.transmission || 'Otomatis'}</span>
+                                </div>
+                            </div>
+
                             <Button 
                                 size="lg"
-                                className="bg-yellow-400 text-slate-900 font-black h-20 px-20 rounded-[2rem] shadow-[0_20px_50px_rgba(250,204,21,0.3)] hover:bg-yellow-500 transition-all text-2xl relative z-10 scale-110 md:scale-125 my-6"
+                                className="w-full bg-orange-600 text-white font-bold h-14 rounded-xl shadow-md hover:bg-orange-700 transition-colors mt-2"
                                 onPress={handleRent}
                             >
-                                Pesan Sekarang
+                                Sewa Sekarang
                             </Button>
+
+                            <div className="flex flex-col gap-2 mt-4 text-sm text-slate-500 text-center">
+                                <p>⭐ Dilengkapi asuransi dasar</p>
+                                <p>✅ Bebas biaya pembatalan 24 jam</p>
+                            </div>
+                        </div>
+
+                        {/* Mobile Title (visible only on small) - helps layout when Sticky card is hidden */}
+                        <div className="lg:hidden bg-white p-6 rounded-3xl shadow-sm border border-slate-200 mt-0 mb-6 space-y-4">
+                            <div className="flex items-center gap-2">
+                                <Chip color="success" variant="flat" size="sm" className="font-semibold border-none">Tersedia</Chip>
+                                <Chip variant="flat" size="sm" className="bg-slate-100 text-slate-600 border-none font-semibold">{car.type}</Chip>
+                            </div>
+                            <h1 className="text-2xl font-bold text-slate-900 leading-tight">{car.name}</h1>
+                            
+                            <div className="flex items-baseline gap-2 pb-2">
+                                <span className="text-2xl font-bold text-orange-600">{formattedPrice}</span>
+                                <span className="text-slate-500 font-medium text-sm">/ hari</span>
+                            </div>
+                            <Divider className="bg-slate-100" />
+                            <div className="grid grid-cols-2 gap-3 pt-2">
+                                <div className="flex items-center gap-2 text-slate-700 text-sm font-medium">
+                                    <Users size={16} className="text-slate-400" />
+                                    {car.rows} Baris
+                                </div>
+                                <div className="flex items-center gap-2 text-slate-700 text-sm font-medium">
+                                    <Settings size={16} className="text-slate-400" />
+                                    {car.transmission || 'Otomatis'}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <style jsx global>{`
-                .rich-description p { margin-bottom: 1.5rem; }
-                .rich-description ul, .rich-description ol { margin-bottom: 1.5rem; padding-left: 2rem; }
-                .rich-description li { margin-bottom: 0.75rem; }
-                .rich-description h1, .rich-description h2, .rich-description h3 { 
-                    color: #0f172a; 
-                    font-weight: 900; 
-                    margin-top: 2rem;
-                    margin-bottom: 1rem;
-                    letter-spacing: -0.025em;
-                }
+                .rich-description p { margin-bottom: 1rem; }
+                .rich-description ul, .rich-description ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+                .rich-description li { margin-bottom: 0.5rem; }
                 .swiper-button-next, .swiper-button-prev {
-                    background: white;
-                    width: 56px;
-                    height: 56px;
-                    border-radius: 20px;
-                    color: #0f172a;
-                    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-                    transition: all 0.3s;
+                    background: rgba(255, 255, 255, 0.9);
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 50%;
+                    color: #475569;
+                    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+                    transition: background 0.2s;
                 }
                 .swiper-button-next:hover, .swiper-button-prev:hover {
-                    transform: scale(1.1);
-                    background: #fef08a;
+                    background: white;
+                    color: #ea580c;
                 }
                 .swiper-button-next:after, .swiper-button-prev:after {
-                    font-size: 1.5rem;
-                    font-weight: 900;
+                    font-size: 1.25rem;
+                    font-weight: bold;
                 }
                 .swiper-pagination-bullet-active {
-                    background: #facc15 !important;
-                    width: 24px !important;
-                    border-radius: 12px !important;
+                    background: #ea580c !important;
                 }
             `}</style>
 
@@ -323,7 +324,7 @@ const CarDetailPage = () => {
                     {(onClose) => (
                         <ModalBody onClick={onClose} className="cursor-zoom-out p-4">
                             {selectedPhoto && (
-                                <div className="relative w-full h-[85vh] rounded-[3rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)]">
+                                <div className="relative w-full h-[85vh] rounded-[2rem] overflow-hidden">
                                     <Image 
                                         src={selectedPhoto} 
                                         alt="Full Vehicle View" 
@@ -338,22 +339,21 @@ const CarDetailPage = () => {
                 </ModalContent>
             </Modal>
 
-            {/* High-Visibility Sticky Bottom Bar */}
-            <div className="fixed bottom-0 inset-x-0 z-50 bg-slate-900/95 backdrop-blur-2xl border-t border-slate-800 py-6 px-8 shadow-[0_-25px_60px_-15px_rgba(0,0,0,0.6)]">
-                <div className="max-w-[800px] mx-auto flex items-center justify-between gap-8">
-                    <div className="flex flex-col gap-2">
-                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] leading-none">{car?.name}</span>
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-3xl font-black text-white leading-none">{formattedPrice}</span>
-                            <span className="text-xs text-yellow-400 font-black tracking-widest leading-none">/HARI</span>
+            {/* Mobile Sticky Bottom Bar (Visible only on smaller screens) */}
+            <div className="lg:hidden fixed bottom-0 inset-x-0 z-50 bg-white border-t border-slate-200 py-3 px-5 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
+                <div className="w-full flex items-center justify-between gap-4">
+                    <div className="flex flex-col">
+                        <span className="text-xs text-slate-500 font-semibold">{car?.name}</span>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-xl font-bold text-orange-600">{formattedPrice}</span>
                         </div>
                     </div>
                     <Button 
-                        size="lg"
-                        className="bg-yellow-400 text-slate-900 font-black h-16 px-16 rounded-3xl shadow-[0_15px_40px_rgba(250,204,21,0.3)] hover:bg-yellow-500 hover:scale-105 active:scale-95 transition-all text-xl"
+                        size="md"
+                        className="bg-orange-600 text-white font-bold h-11 px-8 rounded-xl shadow-md active:scale-95"
                         onPress={handleRent}
                     >
-                        Sewa Sekarang
+                        Sewa
                     </Button>
                 </div>
             </div>
