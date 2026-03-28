@@ -1,4 +1,3 @@
-
 export interface Airport {
     code: string;
     name: string;
@@ -6,11 +5,6 @@ export interface Airport {
     group: "Internasional" | "Domestik";
 }
 
-export interface GetAirportsResponse {
-    msg: string;
-    data: Airport[];
-}
+export type GetAirportsResponse = Airport[];
 
-export interface GetSearchAirportsResponse {
-    data: Airport[];
-}
+export type GetSearchAirportsResponse = Airport[];
