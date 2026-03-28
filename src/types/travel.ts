@@ -35,8 +35,11 @@ export interface FerryPassenger {
 
 export interface FerryBooking {
   id: string;
-  bookingCode: string;
-  totalAmount: number;
+  bookingNo: string;
+  totalPrice: number;
   status: string;
+  departureDate?: string;
+  contactEmail?: string;
+  contactMobileNumber?: string;
   passengers: FerryPassenger[];
 }

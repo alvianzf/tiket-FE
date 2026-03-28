@@ -147,6 +147,7 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
     };
 
     useEffect(() => {
+        if (!isMidtransLoaded) return;
         const token = localStorage.getItem('midtransToken');
         if (token && window.snap) {
             window.snap.pay(token, {
@@ -168,7 +169,7 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
                 }
             });
         }
-    }, [push]);
+    }, [push, isMidtransLoaded]);
 
     const total = parseInt(flight?.data?.nominal ?? '0');
 

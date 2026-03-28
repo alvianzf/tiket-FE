@@ -1,11 +1,38 @@
 import { Button, Card, CardBody } from "@nextui-org/react"
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next"
+import { FerryTrip } from "@interfaces/travel";
 
-const FerryCard = () => {
+interface Props {
+    trip: FerryTrip;
+    embarkation: string;
+    destination: string;
+    tripdate: string;
+}
+
+const FerryCard = ({ trip, embarkation, destination, tripdate }: Props) => {
     const { t } = useTranslation();
-
     const { push } = useRouter();
+
+    const formattedPrice = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: trip.currency || "IDR",
+        maximumFractionDigits: 0,
+    }).format(trip.price ?? 0);
+
+    const handleOrder = () => {
+        push({
+            pathname: '/ferry/passenger',
+            query: {
+                tripID: trip.tripID,
+                embarkation,
+                destination,
+                tripdate,
+                vesselName: trip.vesselName,
+                price: trip.price,
+            }
+        });
+    };
 
     return (
         <Card className="px-4 w-full">
@@ -24,26 +51,28 @@ const FerryCard = () => {
                     </div>
                     <div className="flex w-[65%]">
                         <div className="flex flex-col gap-1 w-full">
+                            <span className="text-[16px] font-bold text-slate-600">{trip.vesselName}</span>
                             <div className="flex flex-row gap-4 items-center justify-between w-full">
-                                <span className="text-[22px] font-bold">BC Ferry Terminal</span>
-                                <hr className="border-1 border-black w-[50%]" />
-                                <span className="text-[22px] font-bold">Harbourfront</span>
+                                <span className="text-[18px] font-bold">{embarkation}</span>
+                                <hr className="border-1 border-black w-[30%]" />
+                                <span className="text-[18px] font-bold">{destination}</span>
                             </div>
-                            <div className="flex flex-row gap-4 justify-between w-full">
-                                <span className="text-[18px]">Batam</span>
-                                <span className="text-[18px] font-bold">18:00 WIB</span>
-                                <span className="text-[18px]">Singapore</span>
+                            <div className="flex flex-row gap-4 justify-between w-full text-slate-500 text-[14px]">
+                                <span>{trip.departureTime}</span>
+                                <span>{trip.arrivalTime}</span>
+                            </div>
+                            <div className="flex flex-row gap-1 text-sm text-slate-500">
+                                <span>{trip.availableSeats} {t('tickets.seats_available')}</span>
                             </div>
                         </div>
                     </div>
                     <div className="flex w-[15%]">
-                        <div className="flex flex-row gap-2">
-                            <span className="text-[28px] font-bold">654K</span>
-                            <span className="text-[18px]">IDR</span>
+                        <div className="flex flex-col gap-0">
+                            <span className="text-[22px] font-bold text-orange-600">{formattedPrice}</span>
                         </div>
                     </div>
                     <div className="flex w-[10%]">
-                        <Button className="button-orange w-full" onClick={() => push('/ferry/passenger')}>
+                        <Button className="button-orange w-full" onClick={handleOrder}>
                             {t('tickets.order')}
                         </Button>
                     </div>
