@@ -3,7 +3,7 @@ import NextImage from "next/image";
 import moment from "moment";
 import Button from "@components/Button";
 import { Card, CardBody, Image } from "@nextui-org/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 interface Props {
@@ -15,6 +15,11 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
 
     const { t } = useTranslation();
     const [extended, setExtended] = useState<boolean>(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const handleExtended = () => {
         setExtended((prevState) => !prevState);
@@ -57,7 +62,9 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
                             <div className="flex flex-row gap-3">
                             </div>
                             <p className="text-xl text-orange font-medium">
-                                {`${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(minPrice)} / Org`}
+                                {!isMounted ? "" : (isFinite(minPrice) ? 
+                                    `${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(minPrice)} / Org` : 
+                                    "Harga Tidak Tersedia")}
                             </p>
                         </div>
                         <div className="flex flex-row gap-6 items-center justify-center w-full lg:w-[35%] md:w-[35%]">
