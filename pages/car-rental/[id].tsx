@@ -132,8 +132,8 @@ const CarDetailPage = () => {
                                     <SwiperSlide key={photo.id || index}>
                                         <div className="relative w-full h-full">
                                             <Image 
-                                                src={photo.url} 
-                                                alt={car.name} 
+                                                src={photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80'} 
+                                                alt={car.name || 'Vehicle Photo'} 
                                                 fill 
                                                 className="object-cover"
                                                 priority={index === 0}
@@ -159,8 +159,8 @@ const CarDetailPage = () => {
                                         <SwiperSlide key={photo.id || index} className="rounded-2xl overflow-hidden cursor-pointer border-2 border-transparent data-[thumb-active=true]:border-orange-500">
                                             <div className="relative w-full h-full">
                                                 <Image 
-                                                    src={photo.url} 
-                                                    alt={`${car.name} thumbnail ${index}`} 
+                                                    src={photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80'} 
+                                                    alt={`${car.name || 'Vehicle'} thumbnail ${index}`} 
                                                     fill 
                                                     className="object-cover"
                                                     unoptimized
