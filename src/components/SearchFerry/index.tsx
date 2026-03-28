@@ -24,7 +24,7 @@ const SearchFerry = () => {
 
     const departurePorts = useMemo(() => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const data = routesData as any;
+        const data = (routesData as any)?.data;
         if (!data?.records) return [];
         const ports = new Map();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,7 +36,7 @@ const SearchFerry = () => {
 
     const availableDestinations = useMemo(() => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const data = routesData as any;
+        const data = (routesData as any)?.data;
         if (!data?.records || !departurePort) return [];
         return data.records
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

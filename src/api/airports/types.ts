@@ -5,6 +5,11 @@ export interface Airport {
     group: "Internasional" | "Domestik";
 }
 
-export type GetAirportsResponse = Airport[];
+export interface GetAirportsResponse {
+    message: string;
+    data: Airport[];
+}
 
-export type GetSearchAirportsResponse = Airport[];
+export interface GetSearchAirportsResponse {
+    data: Airport[];
+}

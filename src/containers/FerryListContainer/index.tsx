@@ -19,7 +19,7 @@ const FerryListContainer = () => {
     );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const tripList: any[] = (trips as any) ?? [];
+    const tripList: any[] = (trips as any)?.data ?? [];
 
     return (
         <div className="flex flex-col gap-8 w-full items-center justify-center">

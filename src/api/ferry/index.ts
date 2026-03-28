@@ -10,17 +10,17 @@ export const API_FERRY_BOOKING_DETAILS = (id: string) => `/api/ferry/booking/${i
 export const API_FERRY_SUBMIT_BOOKING = '/api/ferry/booking/submit';
 export const API_FERRY_GET_BOOKING = (id: string) => `/api/ferry/booking/${id}`;
 
-export const getFerrySectors = async (): Promise<FerrySector[]> => {
+export const getFerrySectors = async (): Promise<{ message: string, data: FerrySector[] }> => {
   const response = await baseApi.get(API_FERRY_SECTORS);
   return response.data;
 };
 
-export const getFerryRoutes = async (params: { searchString?: string; sectorID?: string; pageIndex?: number; pageSize?: number }): Promise<FerryRoute[]> => {
+export const getFerryRoutes = async (params: { searchString?: string; sectorID?: string; pageIndex?: number; pageSize?: number }): Promise<{ message: string, data: FerryRoute[] }> => {
   const response = await baseApi.get(API_FERRY_ROUTES, { params });
   return response.data;
 };
 
-export const searchFerryTrips = async (params: { embarkation: string; destination: string; tripdate: string }): Promise<FerryTrip[]> => {
+export const searchFerryTrips = async (params: { embarkation: string; destination: string; tripdate: string }): Promise<{ message: string, data: FerryTrip[] }> => {
   const response = await baseApi.get(API_FERRY_SEARCH_TRIPS, { params });
   return response.data;
 };

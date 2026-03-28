@@ -81,9 +81,9 @@ const SearchFlight = () => {
             <FormProvider {...methods}>
                 <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap gap-4 items-center">
                     <FromInput 
-                        items={airports?.filter((item) => item.group === 'Domestik') ?? []}
+                        items={airports?.data?.filter((item) => item.group === 'Domestik') ?? []}
                     />
-                    <DestinationInput items={airports?.filter((item) => item.group === 'Domestik') ?? []}/>
+                    <DestinationInput items={airports?.data?.filter((item) => item.group === 'Domestik') ?? []}/>
                     <PassengerInput />
                     <div className="w-full flex flex-col gap-2">
                         <p className="font-medium">{t('tickets.departured_date')}</p>

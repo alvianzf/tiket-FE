@@ -27,12 +27,12 @@ export interface CarResult {
 }
 
 export interface CarSearchResponse {
-    status: number;
+    message: string;
     data: CarResult[];
     total: number;
 }
 
 export interface CarTypesResponse {
-    status: number;
+    message: string;
     data: string[];
 }

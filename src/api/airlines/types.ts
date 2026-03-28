@@ -4,4 +4,7 @@ export interface AirLine {
     airlineName: string;
 }
 
-export type GetAirLinesResponse = AirLine[];
+export interface GetAirLinesResponse {
+    message: string;
+    data: AirLine[];
+}
