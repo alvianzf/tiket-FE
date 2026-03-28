@@ -13,3 +13,8 @@ export const getCarTypes = async (): Promise<CarTypesResponse> => {
     const response = await baseApi.get(API_CAR_TYPES);
     return response.data;
 };
+
+export const getCarById = async (id: string | number): Promise<CarSearchResponse['data'][0]> => {
+    const response = await baseApi.get(`/api/car-rental/cars/${id}`);
+    return response.data.data;
+};

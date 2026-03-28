@@ -26,8 +26,19 @@ const CarCard = ({ car, date }: Props) => {
         });
     };
 
+    const handleViewDetails = () => {
+        push({
+            pathname: `/car-rental/${car.id}`,
+            query: { date: date ?? '' }
+        });
+    };
+
     return (
-        <Card className="w-[calc(25%-12px)] mb-5 glass-card border border-white/20 bg-white/30 backdrop-blur-xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+        <Card 
+            isPressable
+            className="w-[calc(25%-12px)] mb-5 glass-card border border-white/20 bg-white/30 backdrop-blur-xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" 
+            onPress={handleViewDetails}
+        >
             <CardBody>
                 <div className="flex flex-col gap-4">
                     {/* Photo */}
