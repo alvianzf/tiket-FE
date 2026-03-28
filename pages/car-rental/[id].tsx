@@ -237,14 +237,18 @@ const CarDetailPage: NextPageWithLayout = () => {
                             Tentang Kendaraan
                         </h2>
                         <div 
-                            className="prose prose-slate max-w-none text-slate-600 leading-relaxed rich-description text-lg"
-                            dangerouslySetInnerHTML={{ __html: car.description || '<p>Tidak ada deskripsi tersedia untuk kendaraan ini.</p>' }}
+                            className="prose prose-slate max-w-none text-slate-600 leading-relaxed rich-description text-lg break-words overflow-hidden"
+                            dangerouslySetInnerHTML={{ __html: (car.description || '<p>Tidak ada deskripsi tersedia untuk kendaraan ini.</p>').replace(/&nbsp;/g, ' ') }}
                         />
                     </div>
                 </div>
             </div>
 
             <style jsx global>{`
+                .rich-description {
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                }
                 .rich-description p { margin-bottom: 1rem; }
                 .rich-description ul, .rich-description ol { margin-bottom: 1rem; padding-left: 1.5rem; }
                 .rich-description li { margin-bottom: 0.5rem; }
