@@ -100,8 +100,7 @@ const CarDetailPage: NextPageWithLayout = () => {
 
     return (
         <div className="min-h-screen bg-slate-50 pb-32 pt-28 relative">
-            {/* Centered Container with max-w-[800px] to ensure ample horizontal space */}
-            <div className="max-w-[800px] mx-auto px-6 sm:px-8">
+            <div className="max-w-4xl mx-auto w-full px-4 sm:px-6">
                 
                 {/* Header & Breadcrumbs */}
                 <div className="flex items-center justify-between mb-8">
@@ -133,12 +132,12 @@ const CarDetailPage: NextPageWithLayout = () => {
                             navigation={true}
                             thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
                             modules={[FreeMode, Navigation, Thumbs, Pagination]}
-                            className="aspect-[16/9] w-full rounded-2xl overflow-hidden"
+                            className="w-full h-[300px] sm:h-[400px] md:h-[450px] rounded-2xl overflow-hidden"
                             pagination={{ clickable: true }}
                         >
                             {(car.photos && car.photos.length > 0 ? car.photos : [{ url: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80' }]).map((photo: Partial<CarPhoto>, index: number) => (
                                 <SwiperSlide key={photo.id || index} onClick={() => handlePhotoClick(photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80')}>
-                                    <div className="relative w-full aspect-[16/9] md:aspect-video cursor-zoom-in group">
+                                    <div className="relative w-full h-full cursor-zoom-in group">
                                         <Image 
                                             src={photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80'} 
                                             alt={car.name || 'Vehicle Photo'} 
@@ -161,11 +160,11 @@ const CarDetailPage: NextPageWithLayout = () => {
                                 freeMode={true}
                                 watchSlidesProgress={true}
                                 modules={[FreeMode, Navigation, Thumbs]}
-                                className="h-20"
+                                className="w-full h-[80px]"
                             >
                                 {car.photos.map((photo: CarPhoto, index: number) => (
                                     <SwiperSlide key={photo.id || index} className="rounded-xl overflow-hidden cursor-pointer border-2 border-transparent data-[thumb-active=true]:border-orange-500 transition-colors">
-                                        <div className="relative w-full h-[80px]">
+                                        <div className="relative w-full h-full">
                                             <Image 
                                                 src={photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80'} 
                                                 alt={`${car.name || 'Vehicle'} thumbnail ${index}`} 
@@ -304,7 +303,7 @@ const CarDetailPage: NextPageWithLayout = () => {
 
             {/* Always-visible Sticky Bottom Bar for booking CTA */}
             <div className="fixed bottom-0 inset-x-0 z-50 bg-white border-t border-slate-200 py-4 px-6 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
-                <div className="max-w-[800px] mx-auto w-full flex items-center justify-between gap-6">
+                <div className="max-w-4xl mx-auto w-full flex items-center justify-between gap-6">
                     <div className="flex flex-col hidden sm:flex">
                         <span className="text-xs text-slate-500 font-semibold">{car?.name}</span>
                         <div className="flex items-baseline gap-1">
