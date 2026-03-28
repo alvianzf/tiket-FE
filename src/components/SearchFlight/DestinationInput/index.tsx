@@ -35,7 +35,7 @@ const DestinationInput = ({ items, isLoading } : Props) => {
                 startContent={<FaPlaneArrival className="text-[#4267B2] mr-2" />}
                 classNames={{
                     listbox: 'flex flex-col',
-                    popoverContent: 'w-[350px] border border-white/20 bg-white/95 backdrop-blur-xl'
+                    popoverContent: 'w-[350px] md:w-[800px] border border-white/20 bg-white/95 backdrop-blur-xl'
                 }}
                 listboxProps={{
                     classNames: {
@@ -52,6 +52,7 @@ const DestinationInput = ({ items, isLoading } : Props) => {
                 errorMessage={errors?.to?.message}
                 isInvalid={!!errors?.to?.message}
                 isLoading={isLoading}
+                isVirtualized={false}
                 items={sections}
             >
                 {(section) => (
@@ -61,7 +62,7 @@ const DestinationInput = ({ items, isLoading } : Props) => {
                         items={section.children}
                         classNames={{
                             heading: 'text-[#00D5FF] text-base font-bold pl-2',
-                            group: 'flex flex-col w-full'
+                            group: 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 w-full'
                         }} 
                         hideSelectedIcon
                     >
