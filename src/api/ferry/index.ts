@@ -35,7 +35,7 @@ export const addFerryPassenger = async (bookingId: string, data: any): Promise<a
   return response.data;
 };
 
-export const submitFerryBooking = async (data: { id: string; emailConfirmation: string; remarks: string }): Promise<any> => {
+export const submitFerryBooking = async (data: { id: string; emailConfirmation: string; remarks?: string }): Promise<any> => {
   const response = await baseApi.post(API_FERRY_SUBMIT_BOOKING, data);
   return response.data;
 };
