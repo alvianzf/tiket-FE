@@ -1,5 +1,5 @@
-
 import { Button, Image, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from "@nextui-org/react";
+import NextImage from "next/image";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 
@@ -31,6 +31,7 @@ const OrderContainer = ({ flightData = [], ferryData = [] } : Props) => {
                                 <div className="relative group">
                                     <div className="absolute inset-0 bg-blue-400/20 rounded-full blur-2xl group-hover:bg-blue-400/30 transition-all duration-500"></div>
                                     <Image 
+                                        as={NextImage}
                                         src="/images/no-orders.png" 
                                         width={350} 
                                         height={350} 

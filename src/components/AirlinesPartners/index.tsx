@@ -1,5 +1,6 @@
 import React from "react";
 import { Image } from "@nextui-org/react";
+import NextImage from "next/image";
 import { useTranslation } from "react-i18next";
 import { useQueryGetAirlines } from '@queries/airlines';
 
@@ -55,6 +56,7 @@ const AirlinesPartners = () => {
                                 className="w-14 h-14 p-2 transition-transform hover:scale-110 cursor-pointer flex items-center justify-center"
                             >
                                 <Image 
+                                    as={NextImage}
                                     width={40} 
                                     height={40} 
                                     src={url} 

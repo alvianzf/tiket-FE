@@ -1,4 +1,7 @@
 {
+    "common": {
+        "all": "All"
+    },
     "en": {
         "tickets": {
             "filter": "Refine Results",

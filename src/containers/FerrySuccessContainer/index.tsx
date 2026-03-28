@@ -1,4 +1,5 @@
 import { Button, Card, CardBody, Image } from "@nextui-org/react";
+import NextImage from "next/image"
 import { useTranslation } from "react-i18next";
 
 const FerrySuccessContainer = () => {
@@ -56,7 +57,7 @@ const FerrySuccessContainer = () => {
                     <CardBody>
                         <div className="flex flex-col text-center gap-8">
                             <div className="m-auto">
-                                <Image src="/images/payment-success.png" width={200} height={200} alt="Payment Success"/>
+                                <Image as={NextImage} src="/images/payment-success.png" width={200} height={200} alt="Payment Success"/>
                             </div>
                             <p className="text-orange text-lg font-medium">{t('checkout.payment_received')}</p>
                             <p>{t('checkout.order_no', { no : '00001' })}</p>

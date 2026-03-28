@@ -76,11 +76,15 @@ const FlightListContainer = () => {
                 return airlineMatch && transitMatch;
             })
             .sort((a, b) => {
-                const getPrice = (f: Flight) => Math.min(...(f.classes?.map((c: FlightClass) => c.price || Infinity) || [Infinity]));
+                const getPrice = (f: Flight) => {
+                    const prices = f.classes?.map((c: FlightClass) => Number(c.price)).filter(p => !isNaN(p) && p > 0) || [];
+                    return prices.length > 0 ? Math.min(...prices) : Infinity;
+                };
                 const priceA = getPrice(a);
                 const priceB = getPrice(b);
                 return sortOrder === 'low' ? priceA - priceB : priceB - priceA;
             });
+
     }, [flightDatas, selectedAirlines, sortOrder, transitFilter]);
 
 
@@ -110,7 +114,7 @@ const FlightListContainer = () => {
                     {isOpen ? (
                         <SearchFlight />
                     ) : (
-                        <div className="min-w-[50%] bg-white p-[15px] rounded items-center">
+                        <div className="min-w-[50%] bg-white p-[15px] rounded items-center shadow-sm">
                             <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap gap-4 items-center">
                                 <div className="flex flex-row gap-3 justify-between w-full items-center">
                                     <div className="flex flex-col gap-2 w-[89%]">
@@ -132,9 +136,10 @@ const FlightListContainer = () => {
                                             <IconSearch width={30} height={30}/>
                                         </Button> 
                                     </div>
-                                </div>                 
+                                </div>
                             </div>
                         </div>
+
                     )}
                 </div>
             </div>

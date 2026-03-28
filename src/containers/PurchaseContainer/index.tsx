@@ -1,4 +1,5 @@
 import { Button, Image } from "@nextui-org/react";
+import NextImage from "next/image";
 import { useTranslation } from "react-i18next";
 
 const PurchaseContainer = () => {
@@ -21,6 +22,7 @@ const PurchaseContainer = () => {
                             <div className="relative group">
                                 <div className="absolute inset-0 bg-blue-400/20 rounded-full blur-2xl group-hover:bg-blue-400/30 transition-all duration-500"></div>
                                 <Image 
+                                    as={NextImage}
                                     src="/images/no-purchases.png" 
                                     width={350} 
                                     height={350} 

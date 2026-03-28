@@ -1,4 +1,7 @@
 {
+    "common": {
+        "all": "Semua"
+    },
     "id": {
         "tickets": {
             "filter": "Saring Hasil",
