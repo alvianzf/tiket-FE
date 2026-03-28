@@ -71,11 +71,18 @@ const FlightFilter = ({
             </p>
             {airlinesData.length > 0 ? (
               <CheckboxGroup
-                value={selectedAirlines}
-                onValueChange={onAirlinesChange}
+                value={selectedAirlines.length === 0 ? ["all"] : selectedAirlines}
+                onValueChange={(values) => {
+                  if (values.includes("all") && selectedAirlines.length !== 0) {
+                    onAirlinesChange([]);
+                  } else {
+                    onAirlinesChange(values.filter(v => v !== "all"));
+                  }
+                }}
                 size="sm"
                 color="warning"
               >
+                <Checkbox value="all">{t('common.all') || 'Semua Maskapai'}</Checkbox>
                 {airlinesData.map((airline) => (
                   <Checkbox key={airline.key} value={airline.key}>
                     {airline.label}
@@ -83,6 +90,7 @@ const FlightFilter = ({
                 ))}
               </CheckboxGroup>
             ) : (
+
               <p className="text-xs text-gray-400 italic">No airlines available</p>
             )}
           </div>
