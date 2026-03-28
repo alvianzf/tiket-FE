@@ -5,6 +5,7 @@ import DestinationInput from "./DestinationInput";
 import PassengerInput from "./PassengerInput";
 import IconSearch from "@icons/IconSearch";
 import { useQueryGetAirports } from "@queries/airports";
+import { Airport } from "@api/airports/types";
 import { FormProvider } from "react-hook-form";
 import useForm, { DEFAULT_VALUES, FormProps } from "./forms/useForm";
 import { useEffect } from "react";
@@ -18,9 +19,27 @@ const SearchFlight = () => {
 
     const { push, query, isReady } = useRouter();
 
-    const { data: airports } = useQueryGetAirports({
+    const { data: airportsResponse } = useQueryGetAirports({
         enabled: true
     });
+
+    // Extremely robust extraction to handle any nesting { data: { data: [] } } or { data: [] } or []
+    // Extremely robust extraction to handle any nesting
+    const airports = (() => {
+        if (!airportsResponse) return [];
+        if (Array.isArray(airportsResponse)) return airportsResponse;
+        
+        // Check for nested 'data' property (standardized or legacy wrapper)
+        const possibleArray = airportsResponse.data;
+        if (Array.isArray(possibleArray)) return possibleArray;
+        
+        // Check for double nesting (standardized wrapper containing legacy { data: [] })
+        if (possibleArray && typeof possibleArray === 'object' && Array.isArray((possibleArray as { data?: Airport[] }).data)) {
+            return (possibleArray as { data: Airport[] }).data;
+        }
+        
+        return [];
+    })();
 
     const methods = useForm();
 
@@ -76,14 +95,17 @@ const SearchFlight = () => {
         }
     }
 
+    const filteredAirports = airports?.filter((item: Airport) => item.group === 'Domestik');
+    const items = (filteredAirports && filteredAirports.length > 0) ? filteredAirports : airports;
+
     return (
         <div className="min-w-[70%] glass-card p-[30px] rounded-2xl shadow-2xl backdrop-blur-xl border border-white/10 bg-white/5">
             <FormProvider {...methods}>
                 <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap gap-4 items-center">
                     <FromInput 
-                        items={airports?.data?.filter((item) => item.group === 'Domestik') ?? []}
+                        items={items}
                     />
-                    <DestinationInput items={airports?.data?.filter((item) => item.group === 'Domestik') ?? []}/>
+                    <DestinationInput items={items}/>
                     <PassengerInput />
                     <div className="w-full flex flex-col gap-2">
                         <p className="font-medium">{t('tickets.departured_date')}</p>

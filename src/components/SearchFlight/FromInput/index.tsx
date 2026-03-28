@@ -15,12 +15,6 @@ const FromInput = ({ items } : Props) => {
 
     const { setValue, watch, formState: { errors }} = useFormContext<FormProps>();
 
-    const handleContent = () => {
-        return items.map((item) => (
-            <AutocompleteItem value={item.code} key={`${item.code}`}>{`${item.name}`}</AutocompleteItem>
-        ))
-    }
-
     return (
         <div className="w-full flex flex-col gap-2">
             <p className="font-medium text-slate-800/80">{t('tickets.from')}</p>
@@ -32,7 +26,7 @@ const FromInput = ({ items } : Props) => {
                 startContent={<FaPlaneDeparture className="text-[#4267B2] mr-2" />}
                 classNames={{
                     listbox: 'flex flex-col',
-                    popoverContent: 'w-fit border border-white/20 bg-white/95 backdrop-blur-xl'
+                    popoverContent: 'w-[450px] border border-white/20 bg-white/95 backdrop-blur-xl'
                 }}
                 listboxProps={{
                     classNames: {
@@ -40,21 +34,24 @@ const FromInput = ({ items } : Props) => {
                         base: 'w-full'
                     }
                 }}
-                defaultItems={items}
-                selectedKey={watch('from')}
                 onSelectionChange={(key) => {
                     if(key && typeof key === 'string') {
                         setValue('from', key)
                     }
                 }}
+                selectedKey={watch('from') || null}
                 errorMessage={errors?.from?.message}
                 isInvalid={!!errors?.from?.message}
             >
                 <AutocompleteSection title={t('tickets.popular_city')} classNames={{
                     heading: 'text-[#00D5FF] text-base font-bold',
-                    group: 'grid grid-cols-3 gap-2 min-w-[400px]'
+                    group: 'grid grid-cols-2 md:grid-cols-3 gap-2 w-full'
                 }} hideSelectedIcon>
-                     {handleContent()}
+                     {items.map((item) => (
+                        <AutocompleteItem key={item.code} textValue={item.name}>
+                            {item.name}
+                        </AutocompleteItem>
+                     ))}
                 </AutocompleteSection>
             </Autocomplete>
         </div>
