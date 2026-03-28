@@ -13,8 +13,8 @@ const FerrySuccessContainer = () => {
                         <div className="flex flex-row items-center w-full gap-2">
                             <div className="flex flex-col items-center gap-1 w-[20%]">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#4267b2" width="20px" height="20px" viewBox="0 0 512 512" stroke="#4267b2">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"/>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <g id="SVGRepo_bgCarrier" strokeWidth="0"/>
+                                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"/>
                                     <g id="SVGRepo_iconCarrier">
                                         <path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm80 248c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80z"/>
                                     </g>
@@ -26,8 +26,8 @@ const FerrySuccessContainer = () => {
                             </div>
                             <div className="flex flex-col items-center w-[20%]">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#4267b2" width="20px" height="20px" viewBox="0 0 512 512" stroke="#4267b2">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"/>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <g id="SVGRepo_bgCarrier" strokeWidth="0"/>
+                                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"/>
                                     <g id="SVGRepo_iconCarrier">
                                         <path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm80 248c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80z"/>
                                     </g>
@@ -39,8 +39,8 @@ const FerrySuccessContainer = () => {
                             </div>
                             <div className="flex flex-col items-center w-[20%]">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#4267b2" width="20px" height="20px" viewBox="0 0 512 512" stroke="#4267b2">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"/>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <g id="SVGRepo_bgCarrier" strokeWidth="0"/>
+                                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"/>
                                     <g id="SVGRepo_iconCarrier">
                                         <path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm80 248c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80z"/>
                                     </g>

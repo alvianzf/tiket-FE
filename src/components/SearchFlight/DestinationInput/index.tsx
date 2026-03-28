@@ -7,9 +7,10 @@ import { FaPlaneArrival } from "react-icons/fa";
 
 interface Props {
     items: Airport[];
+    isLoading?: boolean;
 }
 
-const DestinationInput = ({ items } : Props) => {
+const DestinationInput = ({ items, isLoading } : Props) => {
 
     const { t } = useTranslation();
 
@@ -34,7 +35,7 @@ const DestinationInput = ({ items } : Props) => {
                 startContent={<FaPlaneArrival className="text-[#4267B2] mr-2" />}
                 classNames={{
                     listbox: 'flex flex-col',
-                    popoverContent: 'w-[450px] border border-white/20 bg-white/95 backdrop-blur-xl'
+                    popoverContent: 'w-[350px] border border-white/20 bg-white/95 backdrop-blur-xl'
                 }}
                 listboxProps={{
                     classNames: {
@@ -50,6 +51,7 @@ const DestinationInput = ({ items } : Props) => {
                 selectedKey={watch('to') || null}
                 errorMessage={errors?.to?.message}
                 isInvalid={!!errors?.to?.message}
+                isLoading={isLoading}
                 items={sections}
             >
                 {(section) => (
@@ -58,14 +60,21 @@ const DestinationInput = ({ items } : Props) => {
                         title={section.title} 
                         items={section.children}
                         classNames={{
-                            heading: 'text-[#00D5FF] text-base font-bold',
-                            group: 'grid grid-cols-2 md:grid-cols-3 gap-2 w-full'
+                            heading: 'text-[#00D5FF] text-base font-bold pl-2',
+                            group: 'flex flex-col w-full'
                         }} 
                         hideSelectedIcon
                     >
                          {(item: Airport) => (
-                            <AutocompleteItem key={item.code} textValue={item.name}>
-                                {item.name}
+                            <AutocompleteItem 
+                                key={item.code} 
+                                textValue={item.name}
+                                className="text-black data-[hover=true]:bg-[#4267B2] data-[hover=true]:text-white transition-colors"
+                            >
+                                <div className="flex flex-col">
+                                    <span className="font-bold">{item.code}</span>
+                                    <span className="text-tiny opacity-80">{item.name}</span>
+                                </div>
                             </AutocompleteItem>
                          )}
                     </AutocompleteSection>

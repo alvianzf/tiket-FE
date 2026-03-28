@@ -8,7 +8,7 @@ import { useQueryGetAirports } from "@queries/airports";
 import { Airport } from "@api/airports/types";
 import { FormProvider } from "react-hook-form";
 import useForm, { DEFAULT_VALUES, FormProps } from "./forms/useForm";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { parseDate } from "@internationalized/date";
 import moment from "moment";
 import { useRouter } from "next/router";
@@ -19,7 +19,9 @@ const SearchFlight = () => {
 
     const { push, query, isReady } = useRouter();
 
-    const { data: airportsResponse } = useQueryGetAirports({
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const { data: airportsResponse, isFetching: isAirportsLoading } = useQueryGetAirports({
         enabled: true
     });
 
@@ -80,6 +82,7 @@ const SearchFlight = () => {
 
     const onSubmit = (data: FormProps) => {
         if(data) {
+            setIsSubmitting(true);
             push({
                 pathname: '/flights',
                 query: {
@@ -91,6 +94,8 @@ const SearchFlight = () => {
                     infant: data.infant,
                     class: data.class
                 }
+            }).finally(() => {
+                setIsSubmitting(false);
             });
         }
     }
@@ -104,8 +109,12 @@ const SearchFlight = () => {
                 <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap gap-4 items-center">
                     <FromInput 
                         items={items}
+                        isLoading={isAirportsLoading}
                     />
-                    <DestinationInput items={items}/>
+                    <DestinationInput 
+                        items={items}
+                        isLoading={isAirportsLoading}
+                    />
                     <PassengerInput />
                     <div className="w-full flex flex-col gap-2">
                         <p className="font-medium">{t('tickets.departured_date')}</p>
@@ -122,11 +131,12 @@ const SearchFlight = () => {
                         />
                     </div>
                     <Button 
-                        isIconOnly
-                        className="button-orange w-[60px] h-[60px] min-w-[60px] rounded-2xl active:scale-95 font-bold shadow-lg shadow-orange-500/30" 
-                        onClick={handleSubmit(onSubmit)}
+                        isIconOnly={!isSubmitting}
+                        isLoading={isSubmitting}
+                        className="button-orange h-[60px] min-w-[60px] rounded-2xl active:scale-95 font-bold shadow-lg shadow-orange-500/30" 
+                        onPress={() => handleSubmit(onSubmit)()}
                     >
-                        <IconSearch width={28} height={28}/>
+                        {!isSubmitting && <IconSearch width={28} height={28}/>}
                     </Button> 
                 </div>
             </FormProvider>
