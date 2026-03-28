@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { reserveFerryBooking } from "@api/ferry";
+import { reserveFerryBooking, submitFerryBooking } from "@api/ferry";
 
 interface PassengerData {
     title: string;
@@ -91,6 +91,12 @@ const FerryPassengerContainer = () => {
             const booking = await reserveFerryBooking(payload);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const bookingNo = (booking as any)?.bookingNo ?? (booking as any)?.id;
+
+            // Submit the booking immediately after reservation (backend flow requirement)
+            await submitFerryBooking({
+                id: bookingNo,
+                emailConfirmation: contactEmail,
+            });
 
             push({
                 pathname: '/ferry/payment',
