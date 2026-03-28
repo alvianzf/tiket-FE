@@ -138,7 +138,7 @@ const CarDetailPage: NextPageWithLayout = () => {
                         >
                             {(car.photos && car.photos.length > 0 ? car.photos : [{ url: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80' }]).map((photo: Partial<CarPhoto>, index: number) => (
                                 <SwiperSlide key={photo.id || index} onClick={() => handlePhotoClick(photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80')}>
-                                    <div className="relative w-full h-full cursor-zoom-in group">
+                                    <div className="relative w-full aspect-[16/9] md:aspect-video cursor-zoom-in group">
                                         <Image 
                                             src={photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80'} 
                                             alt={car.name || 'Vehicle Photo'} 
@@ -165,7 +165,7 @@ const CarDetailPage: NextPageWithLayout = () => {
                             >
                                 {car.photos.map((photo: CarPhoto, index: number) => (
                                     <SwiperSlide key={photo.id || index} className="rounded-xl overflow-hidden cursor-pointer border-2 border-transparent data-[thumb-active=true]:border-orange-500 transition-colors">
-                                        <div className="relative w-full h-full">
+                                        <div className="relative w-full h-[80px]">
                                             <Image 
                                                 src={photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80'} 
                                                 alt={`${car.name || 'Vehicle'} thumbnail ${index}`} 
