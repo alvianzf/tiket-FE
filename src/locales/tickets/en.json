@@ -1,9 +1,8 @@
 {
-    "common": {
-        "all": "All"
-    },
     "en": {
         "tickets": {
+            "all": "All",
+            "all_airlines": "All Airlines",
             "filter": "Refine Results",
             "highest_price": "Highest Fare First",
             "lowest_price": "Best Value (Lowest)",

@@ -1,9 +1,8 @@
 {
-    "common": {
-        "all": "Semua"
-    },
     "id": {
         "tickets": {
+            "all": "Semua",
+            "all_airlines": "Semua Maskapai",
             "filter": "Saring Hasil",
             "highest_price": "Harga Tertinggi",
             "lowest_price": "Harga Terbaik (Terendah)",

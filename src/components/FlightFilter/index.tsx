@@ -56,7 +56,7 @@ const FlightFilter = ({
               size="sm"
               color="warning"
             >
-              <Radio value="all">{t('common.all') || 'Semua'}</Radio>
+              <Radio value="all">{t('tickets.all') || 'Semua'}</Radio>
               <Radio value="direct">{t('tickets.direct')}</Radio>
               <Radio value="transit">{t('tickets.transit', { number: 1 }).replace('%{number}', '1') || 'Transit'}</Radio>
             </RadioGroup>
@@ -82,7 +82,7 @@ const FlightFilter = ({
                 size="sm"
                 color="warning"
               >
-                <Checkbox value="all">{t('common.all') || 'Semua Maskapai'}</Checkbox>
+                <Checkbox value="all">{t('tickets.all_airlines') || 'Semua Maskapai'}</Checkbox>
                 {airlinesData.map((airline) => (
                   <Checkbox key={airline.key} value={airline.key}>
                     {airline.label}
