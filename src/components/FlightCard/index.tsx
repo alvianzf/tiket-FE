@@ -43,7 +43,7 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
             const p = typeof rawPrice === 'string' ? parseFloat(rawPrice.replace(/[^0-9.]/g, '')) : Number(rawPrice);
             return p;
         }).filter(p => !isNaN(p) && p > 0) || [];
-        return prices.length > 0 ? Math.min(...prices) : Infinity;
+        return prices.length > 0 ? Math.min(...prices) : null;
     };
     
     const minPrice = getPrice(flight);
@@ -61,7 +61,7 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
                             <div className="flex flex-row gap-3">
                             </div>
                             <p className="text-xl text-orange font-medium">
-                                {!isMounted ? "" : (isFinite(minPrice) ? 
+                                {!isMounted ? "" : (minPrice !== null && Number.isFinite(minPrice) && minPrice > 0 ? 
                                     `${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(minPrice)} / Org` : 
                                     "Harga Tidak Tersedia")}
                             </p>
