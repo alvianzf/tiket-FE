@@ -69,7 +69,7 @@ const CarCard = ({ car, date }: Props) => {
                         {/* Buttons Group */}
                         <div className="flex flex-col gap-2 mt-1">
                             <Button
-                                className="button-orange w-full font-black h-11"
+                                className="bg-yellow-400 text-slate-900 w-full font-black h-11"
                                 onPress={handleRent}
                             >
                                 Sewa Sekarang
