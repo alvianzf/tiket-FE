@@ -33,8 +33,8 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
 
     const minPrice = Math.min(...(flight.classes?.map((c) => Number(c.price)).filter(p => !isNaN(p) && p > 0) || [0]));
     return (
-        <Card className="flex flex-col overflow-hidden">
-            <CardBody onClick={handleExtended} className="p-0">
+        <Card className="flex flex-col h-auto">
+            <CardBody onClick={handleExtended} className="p-0 overflow-visible">
                 <div className="flex flex-col gap-8 p-4">
                     <div className="flex flex-row flex-wrap justify-between gap-5 items-center">
                         <div className="w-[35%] lg:w-[15%] md:w-[15%]">
