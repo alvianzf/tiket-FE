@@ -1,4 +1,4 @@
-import { Flight, FlightClass } from "@api/searchFlights/types"
+import { Flight } from "@api/searchFlights/types"
 import FlightCard from "@components/FlightCard"
 import FlightCardSkeleton from "@components/FlightCardSkeleton"
 import FlightFilter from "@components/FlightFilter"
@@ -77,13 +77,13 @@ const FlightListContainer = () => {
             })
             .sort((a, b) => {
                 const getPrice = (f: Flight) => {
-                    const prices = f.classes?.map((c: FlightClass) => {
-                        if (!c.price) return NaN;
-                        const rawPrice = c.price as string | number;
-                        const p = typeof rawPrice === 'string' ? parseFloat(rawPrice.replace(/[^0-9.]/g, '')) : Number(rawPrice);
-                        return p;
-                    }).filter(p => !isNaN(p) && p > 0) || [];
-                    return prices.length > 0 ? Math.min(...prices) : Infinity;
+                    const firstClass = f.classes?.[0];
+                    if (!firstClass || !firstClass.price) return Infinity;
+                    
+                    const rawPrice = firstClass.price as string | number;
+                    const p = typeof rawPrice === 'string' ? parseFloat(rawPrice.replace(/[^0-9]/g, '')) : Number(rawPrice);
+                    
+                    return (p && !isNaN(p) && p > 0) ? p : Infinity;
                 };
                 const priceA = getPrice(a);
                 const priceB = getPrice(b);
@@ -164,7 +164,11 @@ const FlightListContainer = () => {
                     <div className="flex flex-col gap-4 w-full">
                         {!isFetching && filteredAndSortedFlights && filteredAndSortedFlights.length > 0 && (
                             filteredAndSortedFlights.map((flight, index) => (
-                                <FlightCard flight={flight} key={index} handleSelect={handleSelect}/>
+                                <FlightCard 
+                                    flight={flight} 
+                                    key={index} 
+                                    handleSelect={handleSelect}
+                                />
                             ))
                         )}
                         {isFetching && (

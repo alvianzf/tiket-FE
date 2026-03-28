@@ -1,4 +1,4 @@
-import { Flight, FlightClass } from "@api/searchFlights/types";
+import { Flight } from "@api/searchFlights/types";
 import NextImage from "next/image";
 import Button from "@components/Button";
 import { Card, CardBody, Image } from "@nextui-org/react";
@@ -37,13 +37,13 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
     const destination = flight.detailTitle?.[flight.detailTitle.length - 1]?.destination ?? '';
 
     const getPrice = (f: Flight) => {
-        const prices = f.classes?.map((c: FlightClass) => {
-            if (!c.price) return NaN;
-            const rawPrice = c.price as string | number;
-            const p = typeof rawPrice === 'string' ? parseFloat(rawPrice.replace(/[^0-9.]/g, '')) : Number(rawPrice);
-            return p;
-        }).filter(p => !isNaN(p) && p > 0) || [];
-        return prices.length > 0 ? Math.min(...prices) : null;
+        const firstClass = f.classes?.[0];
+        if (!firstClass || !firstClass.price) return null;
+        
+        const rawPrice = firstClass.price as string | number;
+        const p = typeof rawPrice === 'string' ? parseFloat(rawPrice.replace(/[^0-9]/g, '')) : Number(rawPrice);
+        
+        return (p && !isNaN(p) && p > 0) ? p : null;
     };
     
     const minPrice = getPrice(flight);
