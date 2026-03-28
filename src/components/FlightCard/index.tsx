@@ -1,6 +1,5 @@
 import { Flight, FlightClass } from "@api/searchFlights/types";
 import NextImage from "next/image";
-import moment from "moment";
 import Button from "@components/Button";
 import { Card, CardBody, Image } from "@nextui-org/react";
 import { useState, useEffect } from "react";
@@ -141,31 +140,15 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
                                         </div>
 
                                         {/* Transit Spacer/Info */}
-                                        {index < (flight.detailTitle?.length || 0) - 1 && (() => {
-                                            const currentArrival = moment(detail.arrivalDate);
-                                            const nextDeparture = moment(flight.detailTitle[index + 1].departureDate);
-                                            const duration = moment.duration(nextDeparture.diff(currentArrival));
-                                            
-                                            const hours = Math.floor(duration.asHours());
-                                            const minutes = duration.minutes();
-                                            const transitTimeStr = `${hours}h ${minutes}m`;
-
-                                            return (
-                                                <div className="grid grid-cols-[100px_30px_1fr] gap-4">
-                                                    <div />
-                                                    <div className="h-12 w-[2px] bg-gray-100 flex items-center justify-center ml-[14px]">
-                                                        <div className="w-1 h-3 rounded-full bg-gray-200" />
-                                                    </div>
-                                                    <div className="flex items-center py-4">
-                                                        <div className="px-3 py-1 bg-orange-50 border border-orange-100 rounded-full">
-                                                            <p className="text-[10px] font-bold text-orange-600 uppercase tracking-widest">
-                                                                {`Transit ${transitTimeStr}`}
-                                                            </p>
-                                                        </div>
-                                                    </div>
+                                        {index < (flight.detailTitle?.length || 0) - 1 && (
+                                            <div className="grid grid-cols-[100px_30px_1fr] gap-4">
+                                                <div />
+                                                <div className="h-12 w-[2px] bg-gray-100 flex items-center justify-center ml-[14px]">
+                                                    <div className="w-1 h-3 rounded-full bg-gray-200" />
                                                 </div>
-                                            );
-                                        })()}
+                                                <div className="flex items-center py-4" />
+                                            </div>
+                                        )}
                                     </div>
                                 ))}
                             </div>
