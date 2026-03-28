@@ -28,7 +28,8 @@ const AppNavbar = () => {
     const { push, pathname } = useRouter();
 
     const isFlightActive = pathname === '/';
-    const isFerryActive = pathname === '/ferry';
+    const isFerryActive = pathname.startsWith('/ferry');
+    const isCarRentalActive = pathname.startsWith('/car-rental');
 
     const onHandleChangeLanguage = (lang: 'id' | 'en') => {
         i18n.changeLanguage(lang)
@@ -55,7 +56,7 @@ const AppNavbar = () => {
                                 ? "bg-white/20 text-white shadow-inner" 
                                 : "bg-transparent text-white/80 hover:bg-white/10 hover:text-white"
                             }`}
-                            onClick={() => push('/')}
+                            onPress={() => push('/')}
                         >
                             {t('home.flight')}
                         </Button>
@@ -69,9 +70,23 @@ const AppNavbar = () => {
                                 ? "bg-white/20 text-white shadow-inner" 
                                 : "bg-transparent text-white/80 hover:bg-white/10 hover:text-white"
                             }`}
-                            onClick={() => push('/ferry')}
+                            onPress={() => push('/ferry')}
                         >
                             {t('home.ferry')}
+                        </Button>
+                    </NavbarItem>
+
+                    <NavbarItem isActive={isCarRentalActive}>
+                        <Button 
+                            variant="flat" 
+                            className={`font-medium transition-all border-none ${
+                                isCarRentalActive 
+                                ? "bg-white/20 text-white shadow-inner" 
+                                : "bg-transparent text-white/80 hover:bg-white/10 hover:text-white"
+                            }`}
+                            onPress={() => push('/car-rental')}
+                        >
+                            {t('home.car_rental')}
                         </Button>
                     </NavbarItem>
 
@@ -79,7 +94,7 @@ const AppNavbar = () => {
                         <Button 
                             variant="flat" 
                             className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white font-medium transition-all" 
-                            onClick={onOpenFind}
+                            onPress={onOpenFind}
                         >
                             {t('common.find_booking')}
                         </Button>
@@ -117,7 +132,7 @@ const AppNavbar = () => {
                                     <DropdownItem
                                         key="en"
                                         className="p-1 min-w-0"
-                                        onClick={() => onHandleChangeLanguage('en')}
+                                        onPress={() => onHandleChangeLanguage('en')}
                                     >
                                         <div className="flex justify-center w-full">
                                             <ReactCountryFlag countryCode="GB" svg className="rounded-full w-6 h-6 object-cover"/>
@@ -127,7 +142,7 @@ const AppNavbar = () => {
                                     <DropdownItem
                                         key="id"
                                         className="p-1 min-w-0"
-                                        onClick={() => onHandleChangeLanguage('id')}
+                                        onPress={() => onHandleChangeLanguage('id')}
                                     >
                                         <div className="flex justify-center w-full">
                                             <ReactCountryFlag countryCode="ID" svg className="rounded-full w-6 h-6 object-cover"/>
@@ -142,7 +157,7 @@ const AppNavbar = () => {
                         <Button 
                             variant="solid" 
                             className="bg-[#ff5a00] text-white font-bold shadow-lg hover:bg-[#e65100] transition-all px-6"
-                            onClick={onOpenLogin}
+                            onPress={onOpenLogin}
                         >
                             {t('profile.login')}
                         </Button>

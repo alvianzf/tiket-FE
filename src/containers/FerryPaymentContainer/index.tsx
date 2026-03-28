@@ -7,7 +7,7 @@ import { Button, Card, CardBody, CardHeader, RadioGroup, Spinner } from "@nextui
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
-import { getFerryBooking, submitFerryBooking } from "@api/ferry";
+import { getFerryBooking } from "@api/ferry";
 import { createMidtransToken } from "@api/midtrans";
 import { toast } from "react-toastify";
 
@@ -74,14 +74,7 @@ const FerryPaymentContainer = () => {
 
         setIsProcessing(true);
         try {
-            // First: submit the booking to the upstream ferry API
-            await submitFerryBooking({
-                id: bookingNo,
-                emailConfirmation: contactEmail,
-                remarks: 'Booked via TiketQ',
-            });
-
-            // Then: get Midtrans token
+            // Get Midtrans token — booking was already submitted in the passenger step
             const orderId = `ferry-${bookingNo}-${Date.now()}`;
             const request = {
                 customer_details: {

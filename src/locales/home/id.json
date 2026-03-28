@@ -3,9 +3,11 @@
         "home": {
             "flight": "Pesawat",
             "ferry": "Feri",
+            "car_rental": "Sewa Mobil",
             "airlines_partners": "Mitra Maskapai",
             "airlines_partners_description": "Kami bermitra dengan maskapai domestik dan internasional terkemuka untuk memberikan Anda opsi penerbangan terbaik.",
             "payment_partners": "Mitra Pembayaran Terpercaya",
+            "payment_partners_description": "Kami mendukung berbagai metode pembayaran aman — mulai dari transfer bank dan kartu kredit hingga perbankan internet instan.",
             "why_book_title": "Mengapa Memesan di TiketQ?",
             "secure_transaction": "Transaksi Aman Terjamin",
             "secure_transaction_description": "Keamanan perjalanan Anda adalah prioritas utama kami. Kami menggunakan enkripsi kelas dunia dan gerbang pembayaran aman untuk memastikan ketenangan pikiran Anda.",

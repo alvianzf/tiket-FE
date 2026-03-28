@@ -3,9 +3,11 @@
         "home": {
             "flight": "Flight",
             "ferry": "Ferry",
+            "car_rental": "Car Rental",
             "airlines_partners": "Airlines Partners",
             "airlines_partners_description": "We partner with leading domestic and international airlines to give you the best flight options.",
             "payment_partners": "Trusted Payment Partners",
+            "payment_partners_description": "We support a wide range of secure payment methods — from bank transfers and credit cards to instant internet banking.",
             "why_book_title": "Why Book With TiketQ?",
             "secure_transaction": "Secure Transactions Guaranteed",
             "secure_transaction_description": "Your travel security is our top priority. We use world-class encryption and secure payment gateways to ensure your peace of mind.",
