@@ -218,12 +218,20 @@ const CarDetailPage = () => {
                         <div className="sticky top-32 space-y-6">
                             <Card className="border-none shadow-xl bg-white rounded-[2.5rem] overflow-hidden">
                                 <div className="p-8 space-y-8">
-                                    <div className="space-y-2">
+                                    <div className="space-y-4">
                                         <div className="flex items-center gap-2">
                                             <Chip color="success" variant="flat" size="sm" className="font-bold border-none">Tersedia</Chip>
                                             <Chip variant="flat" size="sm" className="bg-slate-100 text-slate-600 border-none">{car.type}</Chip>
                                         </div>
-                                        <h1 className="text-3xl font-extrabold text-slate-900 leading-tight">{car.name}</h1>
+                                        <div className="flex items-center justify-between">
+                                            <h1 className="text-3xl font-extrabold text-slate-900 leading-tight">{car.name}</h1>
+                                            <Button 
+                                                className="bg-orange-600 text-white font-black h-12 px-6 rounded-2xl shadow-lg shadow-orange-600/20"
+                                                onPress={handleRent}
+                                            >
+                                                Sewa Sekarang
+                                            </Button>
+                                        </div>
                                         <div className="flex items-baseline gap-1">
                                             <span className="text-3xl font-black text-orange-600">{formattedPrice}</span>
                                             <span className="text-slate-500 font-medium">/hari</span>
@@ -342,6 +350,26 @@ const CarDetailPage = () => {
                     )}
                 </ModalContent>
             </Modal>
+
+            {/* Sticky Booking Bar */}
+            <div className="fixed bottom-0 inset-x-0 z-50 bg-white/80 backdrop-blur-xl border-t border-slate-200 py-3 px-6 shadow-[0_-10px_25px_-5px_rgba(0,0,0,0.1)]">
+                <div className="max-w-[800px] mx-auto flex items-center justify-between gap-4">
+                    <div className="flex flex-col">
+                        <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{car.name}</span>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-lg font-black text-orange-600">{formattedPrice}</span>
+                            <span className="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">/hari</span>
+                        </div>
+                    </div>
+                    <Button 
+                        size="lg"
+                        className="bg-orange-600 text-white font-black h-12 px-10 rounded-2xl shadow-lg shadow-orange-600/30"
+                        onPress={handleRent}
+                    >
+                        Sewa
+                    </Button>
+                </div>
+            </div>
         </div>
     );
 };
