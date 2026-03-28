@@ -10,7 +10,11 @@ import {
     Divider,
     Breadcrumbs,
     BreadcrumbItem,
-    Chip
+    Chip,
+    useDisclosure,
+    Modal,
+    ModalContent,
+    ModalBody
 } from "@nextui-org/react";
 import { 
     Users, 
@@ -39,6 +43,13 @@ const CarDetailPage = () => {
     const router = useRouter();
     const { id, date } = router.query;
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+
+    const handlePhotoClick = (url: string) => {
+        setSelectedPhoto(url);
+        onOpen();
+    };
 
     const { data: car, isLoading, error } = useQuery(
         ['car', id],
@@ -91,8 +102,8 @@ const CarDetailPage = () => {
     }).format(Number(car.pricePerDay));
 
     return (
-        <div className="min-h-screen bg-slate-50/50 pb-20 pt-28">
-            <div className="max-w-7xl mx-auto px-6">
+        <div className="min-h-screen bg-white pb-20 pt-28">
+            <div className="max-w-[800px] mx-auto px-6">
                 {/* Breadcrumbs & Back Button */}
                 <div className="flex items-center justify-between mb-8">
                     <Breadcrumbs 
@@ -114,8 +125,8 @@ const CarDetailPage = () => {
                         <ArrowLeft size={20} />
                     </Button>
                 </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                
+                <div className="space-y-10">
                     {/* Left Column: Media & Description */}
                     <div className="lg:col-span-2 space-y-8">
                         {/* Swiper Gallery */}
@@ -129,8 +140,8 @@ const CarDetailPage = () => {
                                 pagination={{ clickable: true }}
                             >
                                 {(car.photos && car.photos.length > 0 ? car.photos : [{ url: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80' }]).map((photo: Partial<CarPhoto>, index: number) => (
-                                    <SwiperSlide key={photo.id || index}>
-                                        <div className="relative w-full h-full">
+                                    <SwiperSlide key={photo.id || index} onClick={() => handlePhotoClick(photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80')}>
+                                        <div className="relative w-full aspect-square md:aspect-video cursor-zoom-in">
                                             <Image 
                                                 src={photo.url || 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80'} 
                                                 alt={car.name || 'Vehicle Photo'} 
@@ -203,7 +214,7 @@ const CarDetailPage = () => {
                     </div>
 
                     {/* Right Column: Booking & Stats */}
-                    <div className="lg:col-span-1">
+                    <div className="w-full">
                         <div className="sticky top-32 space-y-6">
                             <Card className="border-none shadow-xl bg-white rounded-[2.5rem] overflow-hidden">
                                 <div className="p-8 space-y-8">
@@ -251,12 +262,6 @@ const CarDetailPage = () => {
                                         >
                                             Sewa Sekarang
                                         </Button>
-                                    </div>
-
-                                    <div className="pt-2">
-                                        <p className="text-[10px] text-zinc-400 text-center uppercase tracking-widest font-bold">
-                                            * Harga sudah termasuk asuransi dasar
-                                        </p>
                                     </div>
                                 </div>
                             </Card>
@@ -308,6 +313,35 @@ const CarDetailPage = () => {
                     background: #ea580c !important;
                 }
             `}</style>
+
+            {/* Photo Modal */}
+            <Modal 
+                isOpen={isOpen} 
+                onOpenChange={onOpenChange} 
+                size="4xl" 
+                backdrop="blur" 
+                hideCloseButton
+                classNames={{
+                    base: "bg-transparent shadow-none border-none",
+                    body: "p-0",
+                }}
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <ModalBody onClick={onClose} className="cursor-zoom-out">
+                            {selectedPhoto && (
+                                <div className="relative w-full aspect-video md:aspect-auto h-auto max-h-[85vh] rounded-3xl overflow-hidden shadow-2xl">
+                                    <img 
+                                        src={selectedPhoto} 
+                                        alt="Full view" 
+                                        className="w-full h-full object-contain"
+                                    />
+                                </div>
+                            )}
+                        </ModalBody>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     );
 };
