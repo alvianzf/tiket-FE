@@ -61,7 +61,9 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
                             <div className="flex flex-col text-center">
                                 <p className="text-sm text-gray-400">{flight.duration}</p>
                                 <hr />
-                                <p className="text-sm text-gray-400">{'transit'}</p>
+                                <p className="text-sm text-gray-400">
+                                    {flight.isTransit ? t('tickets.direct') : t('tickets.transit', { number: 1 }).replace('%{number}', '1')}
+                                </p>
                             </div>
                             <div className="flex flex-col text-center">
                                 <p className="font-medium text-2xl">{arrivalTime}</p>

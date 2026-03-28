@@ -1,13 +1,14 @@
+import { Flight, FlightClass } from "@api/searchFlights/types"
 import FlightCard from "@components/FlightCard"
 import FlightCardSkeleton from "@components/FlightCardSkeleton"
-// import FlightFilter from "@components/FlightFilter"
+import FlightFilter from "@components/FlightFilter"
 import FlightNotAvailable from "@components/FlightNotAvailable"
 import SearchFlight from "@components/SearchFlight"
 import IconSearch from "@icons/IconSearch"
 import { Button } from "@nextui-org/react"
 import { useQuerySearchFlights } from "@queries/flights"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 const FlightListContainer = () => {
@@ -15,6 +16,11 @@ const FlightListContainer = () => {
     const [isOpen, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const { t } = useTranslation();
+
+    const [selectedAirlines, setSelectedAirlines] = useState<string[]>([]);
+    const [sortOrder, setSortOrder] = useState<string>('low');
+    const [transitFilter, setTransitFilter] = useState<string>('all');
+
 
     const from = query?.from as string;
     const to = query?.to as string;
@@ -49,7 +55,35 @@ const FlightListContainer = () => {
         enabled: !!(from && to && date && isReady && adult && child && infant && classParams)
     });
 
-    const flightDatas = flights?.data.flatMap((flight) => flight.flat()) ?? [];
+    const flightDatas = useMemo(() => flights?.data.flatMap((flight) => flight.flat()) ?? [], [flights]);
+
+    const airlinesData = useMemo(() => {
+        const uniqueAirlines = Array.from(new Set(flightDatas.map(f => f.airlineName)));
+        return uniqueAirlines.map(name => ({ key: name, label: name }));
+    }, [flightDatas]);
+
+    const filteredAndSortedFlights = useMemo(() => {
+        return flightDatas
+            .filter(flight => {
+                const airlineMatch = selectedAirlines.length === 0 || selectedAirlines.includes(flight.airlineName);
+                
+                // User requested: "change transit wording to direct if isTransit: true"
+                // Assuming isTransit: true means Direct and isTransit: false means Transit for this specific logic
+                const isDirect = flight.isTransit; 
+                const transitMatch = transitFilter === 'all' || 
+                                     (transitFilter === 'direct' && isDirect) ||
+                                     (transitFilter === 'transit' && !isDirect);
+                
+                return airlineMatch && transitMatch;
+            })
+            .sort((a, b) => {
+                const getPrice = (f: Flight) => f.classes?.reduce((acc: number, c: FlightClass) => acc + (c.price || 0), 0) || 0;
+                const priceA = getPrice(a);
+                const priceB = getPrice(b);
+                return sortOrder === 'low' ? priceA - priceB : priceB - priceA;
+            });
+    }, [flightDatas, selectedAirlines, sortOrder, transitFilter]);
+
 
     const totalPassenger = parseInt(adult) + parseInt(child) + parseInt(infant);
 
@@ -104,12 +138,22 @@ const FlightListContainer = () => {
                     )}
                 </div>
             </div>
-            <div className="flex flex-wrap justify-center my-10 mx-[40px] lg:mx-0 md:mx-[40px]">
-                <div className="flex flex-col gap-8 w-full max-w-[1024px]">
-                    {/* <FlightFilter /> */}
-                    <div className="flex flex-col gap-4">
-                        {!isFetching && flightDatas && flightDatas.length > 0 && (
-                            flightDatas.map((flight, index) => (
+            <div className="flex flex-wrap justify-center my-10 mx-[20px] lg:mx-0 md:mx-[20px]">
+                <div className="flex flex-row flex-wrap lg:flex-nowrap gap-8 w-full max-w-[1280px]">
+                    <div className="w-full lg:w-[300px] flex-shrink-0">
+                        <FlightFilter 
+                            selectedAirlines={selectedAirlines}
+                            onAirlinesChange={setSelectedAirlines}
+                            selectedSort={sortOrder}
+                            onSortChange={setSortOrder}
+                            selectedTransit={transitFilter}
+                            onTransitChange={setTransitFilter}
+                            airlinesData={airlinesData}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-4 w-full">
+                        {!isFetching && filteredAndSortedFlights && filteredAndSortedFlights.length > 0 && (
+                            filteredAndSortedFlights.map((flight, index) => (
                                 <FlightCard flight={flight} key={index} handleSelect={handleSelect}/>
                             ))
                         )}
@@ -120,7 +164,7 @@ const FlightListContainer = () => {
                             <FlightCardSkeleton />
                         </>
                         )}
-                        {!isFetching && !flights && (
+                        {!isFetching && filteredAndSortedFlights.length === 0 && (
                             <FlightNotAvailable />
                         )}
                     </div>

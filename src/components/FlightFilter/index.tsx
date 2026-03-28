@@ -1,119 +1,95 @@
-import Button from "@components/Button";
-import { Card, CardBody, Select, SelectItem } from "@nextui-org/react";
-import { useTranslation } from "react-i18next"
+import { Card, CardBody, Checkbox, CheckboxGroup, Radio, RadioGroup, Divider } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 
-const FlightFilter = () => {
-    const { t } = useTranslation();
-
-    const pricesData = [
-        { key: 'high', label: t('tickets.highest_price') },
-        { key: 'low', label: t('tickets.lowest_price') },
-        { key: 'best', label: t('tickets.best_time') },
-    ];
-
-    const airlinesData = [
-        { key: 'lion', label: 'Lion Air' },
-        { key: 'super', label: 'Super Jet' },
-        { key: 'citilink', label: 'Citilink' },
-        { key: 'garuda', label: 'Garuda Indonesia' },
-    ];
-
-    const transitsData = [
-        { key: 'direct', label: t('tickets.direct') },
-        { key: 'transit_1', label: t('tickets.transit', { number : 1 }) },
-        { key: 'transit_2', label: t('tickets.transit', { number : 2 }) },
-    ];
-
-    const luggagesData = [
-        { key: 'luggage', label: t('tickets.luggage') },
-        { key: 'non_luggage', label: t('tickets.non_luggage') },
-    ];
-
-    const classesData = [
-        { key: 'economy', label: t('tickets.economy') },
-        { key: 'business_class', label: t('tickets.business_class') },
-        { key: 'first_class', label: t('tickets.first_class') },
-    ];
-
-    return (
-        <div className="flex flex-col gap-3">
-            <p className="font-medium">{t('tickets.filter')}</p>
-            <Card>
-                <CardBody>
-                    <div className="flex flex-row flex-wrap lg:flex-nowrap md:flex-nowrap gap-3 justify-between">
-                        <Select 
-                            placeholder={t('tickets.price_placeholder')}
-                            className="w-full lg:max-w-xs md:max-w-xs"
-                            variant="bordered"
-                            radius="sm" 
-                        >
-                            {pricesData.map((item) => (
-                                <SelectItem key={item.key}>
-                                    {item.label}
-                                </SelectItem>
-                                ))
-                            }
-                        </Select>
-                        <Select 
-                            placeholder={t('tickets.airline_placeholder')}
-                            className="w-full lg:max-w-xs md:max-w-xs"
-                            variant="bordered"
-                            radius="sm" 
-                        >
-                            {airlinesData.map((item) => (
-                                <SelectItem key={item.key}>
-                                    {item.label}
-                                </SelectItem>
-                                ))
-                            }
-                        </Select>
-                        <Select 
-                            placeholder={t('tickets.transit_placeholder')}
-                            className="w-full lg:max-w-xs md:max-w-xs"
-                            variant="bordered"
-                            radius="sm" 
-                        >
-                            {transitsData.map((item) => (
-                                <SelectItem key={item.key}>
-                                    {item.label}
-                                </SelectItem>
-                                ))
-                            }
-                        </Select>
-                        <Select 
-                            placeholder={t('tickets.luggage_placeholder')}
-                            className="w-full lg:max-w-xs md:max-w-xs"
-                            variant="bordered"
-                            radius="sm" 
-                        >
-                            {luggagesData.map((item) => (
-                                <SelectItem key={item.key}>
-                                    {item.label}
-                                </SelectItem>
-                                ))
-                            }
-                        </Select>
-                        <Select 
-                            placeholder={t('tickets.class_placeholder')}
-                            className="w-full lg:max-w-xs md:max-w-xs"
-                            variant="bordered"
-                            radius="sm" 
-                        >
-                            {classesData.map((item) => (
-                                <SelectItem key={item.key}>
-                                    {item.label}
-                                </SelectItem>
-                                ))
-                            }
-                        </Select>
-                        <Button bgColor="blue" className="w-full lg:w-fit md:w-fit">
-                            {t('tickets.search')}
-                        </Button>
-                    </div>
-                </CardBody>
-            </Card>
-        </div>
-    )
+interface Props {
+  selectedAirlines: string[];
+  onAirlinesChange: (airlines: string[]) => void;
+  selectedSort: string;
+  onSortChange: (sort: string) => void;
+  selectedTransit: string;
+  onTransitChange: (transit: string) => void;
+  airlinesData: { key: string; label: string }[];
 }
 
-export default FlightFilter
+const FlightFilter = ({
+  selectedAirlines,
+  onAirlinesChange,
+  selectedSort,
+  onSortChange,
+  selectedTransit,
+  onTransitChange,
+  airlinesData
+}: Props) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="flex flex-col gap-3">
+      <p className="font-medium text-lg">{t('tickets.filter')}</p>
+      <Card shadow="sm">
+        <CardBody className="flex flex-col gap-6 p-5">
+          {/* Sorting by Price */}
+          <div className="flex flex-col gap-3">
+            <p className="font-semibold text-sm uppercase text-gray-500 tracking-wider">
+              {t('tickets.order')}
+            </p>
+            <RadioGroup
+              value={selectedSort}
+              onValueChange={onSortChange}
+              size="sm"
+              color="warning"
+            >
+              <Radio value="low">{t('tickets.lowest_price')}</Radio>
+              <Radio value="high">{t('tickets.highest_price')}</Radio>
+            </RadioGroup>
+          </div>
+
+          <Divider />
+
+          {/* Transit Filter */}
+          <div className="flex flex-col gap-3">
+            <p className="font-semibold text-sm uppercase text-gray-500 tracking-wider">
+              {t('tickets.transit_placeholder')}
+            </p>
+            <RadioGroup
+              value={selectedTransit}
+              onValueChange={onTransitChange}
+              size="sm"
+              color="warning"
+            >
+              <Radio value="all">{t('common.all') || 'Semua'}</Radio>
+              <Radio value="direct">{t('tickets.direct')}</Radio>
+              <Radio value="transit">{t('tickets.transit', { number: 1 }).replace('%{number}', '1') || 'Transit'}</Radio>
+            </RadioGroup>
+          </div>
+
+          <Divider />
+
+          {/* Airline Filter */}
+          <div className="flex flex-col gap-3">
+            <p className="font-semibold text-sm uppercase text-gray-500 tracking-wider">
+              {t('tickets.airline_placeholder')}
+            </p>
+            {airlinesData.length > 0 ? (
+              <CheckboxGroup
+                value={selectedAirlines}
+                onValueChange={onAirlinesChange}
+                size="sm"
+                color="warning"
+              >
+                {airlinesData.map((airline) => (
+                  <Checkbox key={airline.key} value={airline.key}>
+                    {airline.label}
+                  </Checkbox>
+                ))}
+              </CheckboxGroup>
+            ) : (
+              <p className="text-xs text-gray-400 italic">No airlines available</p>
+            )}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  );
+};
+
+export default FlightFilter;
