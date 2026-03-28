@@ -1,4 +1,4 @@
-import { Flight } from "@api/searchFlights/types"
+import { getPrice } from "@api/searchFlights/types"
 import FlightCard from "@components/FlightCard"
 import FlightCardSkeleton from "@components/FlightCardSkeleton"
 import FlightFilter from "@components/FlightFilter"
@@ -76,17 +76,8 @@ const FlightListContainer = () => {
                 return airlineMatch && transitMatch;
             })
             .sort((a, b) => {
-                const getPrice = (f: Flight) => {
-                    const firstClass = f.classes?.[0];
-                    if (!firstClass || !firstClass.price) return Infinity;
-                    
-                    const rawPrice = firstClass.price as string | number;
-                    const p = typeof rawPrice === 'string' ? parseFloat(rawPrice.replace(/[^0-9]/g, '')) : Number(rawPrice);
-                    
-                    return (p && !isNaN(p) && p > 0) ? p : Infinity;
-                };
-                const priceA = getPrice(a);
-                const priceB = getPrice(b);
+                const priceA = getPrice(a) ?? Infinity;
+                const priceB = getPrice(b) ?? Infinity;
                 return sortOrder === 'low' ? priceA - priceB : priceB - priceA;
             });
 

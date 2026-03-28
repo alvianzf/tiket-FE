@@ -40,7 +40,7 @@ export interface DetailTitle {
 }
 
 export interface Flight {
-    classes: FlightClass[];
+    classes: FlightClass[][];
     title: string;
     isTransit: boolean;
     detailTitle: DetailTitle[];
@@ -53,6 +53,15 @@ export interface Flight {
     airlineCode: string;
     searchId: string;
 }
+
+export const getPrice = (f: Flight) => {
+    const firstSegmentClasses = f.classes?.[0];
+    const firstClass = firstSegmentClasses?.[0];
+    if (!firstClass || firstClass.price === undefined || firstClass.price === null) return null;
+    
+    const p = Number(firstClass.price);
+    return (p && !isNaN(p) && p > 0) ? p : null;
+};
 
 export interface GetFlightRequest {
     departure: string;

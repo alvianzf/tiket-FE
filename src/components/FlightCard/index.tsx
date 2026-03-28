@@ -4,6 +4,7 @@ import Button from "@components/Button";
 import { Card, CardBody, Image } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { getPrice } from "@api/searchFlights/types";
 
 interface Props {
     flight: Flight;
@@ -36,16 +37,6 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
     const origin = flight.detailTitle?.[0]?.origin ?? '';
     const destination = flight.detailTitle?.[flight.detailTitle.length - 1]?.destination ?? '';
 
-    const getPrice = (f: Flight) => {
-        const firstClass = f.classes?.[0];
-        if (!firstClass || !firstClass.price) return null;
-        
-        const rawPrice = firstClass.price as string | number;
-        const p = typeof rawPrice === 'string' ? parseFloat(rawPrice.replace(/[^0-9]/g, '')) : Number(rawPrice);
-        
-        return (p && !isNaN(p) && p > 0) ? p : null;
-    };
-    
     const minPrice = getPrice(flight);
     return (
         <Card className="flex flex-col h-auto">
