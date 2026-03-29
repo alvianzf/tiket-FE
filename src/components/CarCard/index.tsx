@@ -63,7 +63,8 @@ const CarCard = ({ car, date }: Props) => {
                         <div className="flex flex-col gap-0.5">
                             <p className="text-xl font-bold text-slate-800 line-clamp-1">{car.name}</p>
                             <p className="text-[11px] text-slate-500 uppercase tracking-wider font-bold">{car.type} · {car.rows} Baris · {car.transmission}</p>
-                            <p className="text-lg text-orange-600 font-black mt-1">{formattedPrice}<span className="text-xs font-normal text-slate-400"> / hari</span></p>
+                            <p className="text-sm font-semibold text-slate-500 line-through decoration-slate-400">Rp {(Number(car.pricePerDay) * 1.2).toLocaleString("id-ID")}</p>
+                            <p className="text-lg text-orange-600 font-black mt-1">{formattedPrice}<span className="text-xs font-normal text-slate-400 capitalize"> / {car.pricingDuration || 'Hari'}</span></p>
                         </div>
 
                         {/* Buttons Group */}

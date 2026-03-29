@@ -16,6 +16,7 @@ const CarRentalForm = ({ car, date }: Props) => {
     const [fullName, setFullName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
+    const [rentalDays, setRentalDays] = useState(1);
     const [ktpImage, setKtpImage] = useState<File | null>(null);
     const [ktpSelfie, setKtpSelfie] = useState<File | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,6 +38,7 @@ const CarRentalForm = ({ car, date }: Props) => {
             formData.append('carId', String(car.id));
             formData.append('carName', car.name);
             formData.append('date', date);
+            formData.append('rentalDays', String(rentalDays));
             formData.append('fullName', fullName);
             formData.append('phone', phone);
             formData.append('email', email);
@@ -56,9 +58,13 @@ const CarRentalForm = ({ car, date }: Props) => {
         }
     };
 
+    const totalPrice = Number(car.pricePerDay) * rentalDays;
     const formattedPrice = new Intl.NumberFormat("id-ID", {
         style: "currency", currency: "IDR", maximumFractionDigits: 0
     }).format(Number(car.pricePerDay));
+    const formattedTotalPrice = new Intl.NumberFormat("id-ID", {
+        style: "currency", currency: "IDR", maximumFractionDigits: 0
+    }).format(totalPrice);
 
     const UploadArea = ({
         label, subtitle, file, inputRef, icon, onChange
@@ -86,11 +92,40 @@ const CarRentalForm = ({ car, date }: Props) => {
     return (
         <div className="flex flex-col gap-6 w-full max-w-[700px] mx-auto px-4 py-8">
             {/* Car summary */}
-            <div className="glass-card p-6 rounded-2xl border border-white/20 bg-white/30 backdrop-blur-xl shadow-xl">
-                <h2 className="text-xl font-bold text-slate-800">{car.name}</h2>
-                <p className="text-slate-500 text-sm">{car.type} · {car.rows} rows · {car.transmission}</p>
-                <p className="text-orange-600 font-bold text-lg mt-2">{formattedPrice} / day</p>
-                {date && <p className="text-slate-500 text-sm mt-1">Rental date: <span className="font-semibold">{date}</span></p>}
+            <div className="glass-card p-6 rounded-2xl border border-white/20 bg-white/30 backdrop-blur-xl shadow-xl flex flex-col gap-3">
+                <div>
+                    <h2 className="text-xl font-bold text-slate-800">{car.name}</h2>
+                    <p className="text-slate-500 text-sm">{car.type} · {car.rows} Baris · {car.transmission}</p>
+                </div>
+                
+                <div className="flex flex-col gap-1.5 pt-3 border-t border-slate-200">
+                    <div className="flex items-center justify-between">
+                        <span className="text-slate-500 font-medium">Tanggal Sewa</span>
+                        <span className="text-slate-800 font-bold">{date || '-'}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <span className="text-slate-500 font-medium">Durasi Sewa</span>
+                        <div className="flex items-center gap-2">
+                            <input 
+                                type="number" 
+                                min="1" 
+                                max="30"
+                                className="w-16 border rounded-lg bg-white px-2 py-1 text-center font-bold text-orange-600 outline-none focus:border-orange-400"
+                                value={rentalDays} 
+                                onChange={(e) => setRentalDays(Math.max(1, parseInt(e.target.value) || 1))} 
+                            />
+                            <span className="text-slate-800 font-bold capitalize">{car.pricingDuration || 'Hari'}</span>
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <span className="text-slate-500 font-medium">Harga / {car.pricingDuration || 'Hari'}</span>
+                        <span className="text-slate-800 font-bold">{formattedPrice}</span>
+                    </div>
+                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-dashed border-slate-300">
+                        <span className="text-slate-800 font-bold text-lg">Total Pembayaran</span>
+                        <span className="text-orange-600 font-bold text-2xl">{formattedTotalPrice}</span>
+                    </div>
+                </div>
             </div>
 
             {/* Personal details */}
