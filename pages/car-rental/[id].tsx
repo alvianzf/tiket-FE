@@ -210,6 +210,14 @@ const CarDetailPage: NextPageWithLayout = () => {
                                 <span className="text-slate-900 font-bold">{car.transmission || 'Otomatis'}</span>
                             </div>
                         </div>
+
+                        <Button 
+                            size="lg"
+                            className="w-full bg-orange-600 text-white font-bold h-14 rounded-xl shadow-[0_10px_20px_rgba(234,88,12,0.2)] hover:bg-orange-700 hover:-translate-y-0.5 active:translate-y-0 transition-all mt-4 text-lg"
+                            onPress={handleRent}
+                        >
+                            Sewa Sekarang
+                        </Button>
                     </div>
 
                     {/* Features Section */}
