@@ -178,7 +178,7 @@ const CarDetailPage: NextPageWithLayout = () => {
                             
                             <div className="flex items-baseline gap-2 pt-2 pb-4 border-b border-slate-100">
                                 <span className="text-3xl font-bold text-orange-600">{formattedPrice}</span>
-                                <span className="text-slate-500 font-medium whitespace-nowrap">/ hari</span>
+                                <span className="text-slate-500 font-medium whitespace-nowrap capitalize">/ {car.pricingDuration || 'Hari'}</span>
                             </div>
                         </div>
 
