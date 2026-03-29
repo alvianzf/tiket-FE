@@ -69,7 +69,7 @@ const CarCard = ({ car, date }: Props) => {
                         {/* Buttons Group */}
                         <div className="flex flex-col gap-2 mt-1">
                             <Button
-                                className="bg-yellow-400 text-slate-900 w-full font-black h-11"
+                                className="bg-orange-600 text-white w-full font-bold h-11 shadow-[0_5px_15px_rgba(234,88,12,0.2)] hover:bg-orange-700 hover:-translate-y-0.5 active:translate-y-0 transition-all"
                                 onPress={handleRent}
                             >
                                 Sewa Sekarang
