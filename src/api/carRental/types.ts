@@ -19,6 +19,7 @@ export interface CarResult {
     type: string;
     rows: number;
     pricePerDay: number | string;
+    pricingDuration?: string;
     transmission: string;
     features: string[];
     available: boolean;
