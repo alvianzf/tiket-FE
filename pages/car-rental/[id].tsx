@@ -7,8 +7,6 @@ import { CarPhoto } from '@api/carRental/types';
 import { 
     Button, 
     Skeleton, 
-    Breadcrumbs,
-    BreadcrumbItem,
     Chip,
     useDisclosure,
     Modal,
@@ -102,18 +100,8 @@ const CarDetailPage: NextPageWithLayout = () => {
         <div className="min-h-screen bg-slate-50 pb-32 pt-28 relative">
             <div className="max-w-4xl mx-auto w-full px-4 sm:px-6">
                 
-                {/* Header & Breadcrumbs */}
-                <div className="flex items-center justify-between mb-8">
-                    <Breadcrumbs 
-                        underline="hover"
-                        classNames={{
-                            list: "bg-white px-5 py-2.5 rounded-xl border border-slate-200 shadow-sm"
-                        }}
-                    >
-                        <BreadcrumbItem href="/">Home</BreadcrumbItem>
-                        <BreadcrumbItem href="/car-rental">Sewa Mobil</BreadcrumbItem>
-                        <BreadcrumbItem>{car.name}</BreadcrumbItem>
-                    </Breadcrumbs>
+                {/* Back Button */}
+                <div className="flex items-center mb-6">
                     <Button 
                         isIconOnly 
                         variant="flat" 
