@@ -1,22 +1,31 @@
+# *
 User-agent: *
 Allow: /
 
-# AI crawlers
+# GPTBot
 User-agent: GPTBot
 Allow: /
 
+# Google-Extended
 User-agent: Google-Extended
 Allow: /
 
+# Anthropic-AI
 User-agent: Anthropic-AI
 Allow: /
 
+# PerplexityBot
 User-agent: PerplexityBot
 Allow: /
 
+# ClaudeBot
 User-agent: ClaudeBot
 Allow: /
 
+# Host
+Host: https://tiketq.com
+
+# Sitemaps
 Sitemap: https://tiketq.com/sitemap.xml
 
 # GEO context
