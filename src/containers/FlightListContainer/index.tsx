@@ -10,6 +10,8 @@ import { useQuerySearchFlights } from "@queries/flights"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
+import { motion } from "framer-motion"
+import moment from "moment"
 
 const FlightListContainer = () => {
     const { query, isReady, push } = useRouter();
@@ -111,37 +113,50 @@ const FlightListContainer = () => {
 
     return (
         <>
-            <div className="flex flex-wrap justify-center min-h-[200px] home-app">
-                <div className="flex flex-wrap justify-center items-center w-full py-[40px]">
+            <div className="flex flex-wrap justify-center min-h-[220px] home-app relative z-30 pt-10">
+                <div className="flex flex-wrap justify-center items-center w-full py-[40px] px-4">
                     {isOpen ? (
-                        <SearchFlight />
+                        <motion.div 
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="w-full flex justify-center"
+                        >
+                            <SearchFlight />
+                        </motion.div>
                     ) : (
-                        <div className="min-w-[50%] bg-white p-[15px] rounded items-center shadow-sm">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="min-w-[50%] glass-card p-6 rounded-2xl shadow-xl backdrop-blur-3xl border border-white/20 bg-white/10"
+                        >
                             <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap gap-4 items-center">
                                 <div className="flex flex-row gap-3 justify-between w-full items-center">
-                                    <div className="flex flex-col gap-2 w-[89%]">
-                                        <div className="flex flex-row gap-2">
-                                            <p className="text-lg font-medium">{from ?? '-'}</p>
-                                            <p>{'-'}</p>
-                                            <p className="text-lg font-medium">{to ?? '-'}</p>
+                                    <div className="flex flex-col gap-1 w-[85%]">
+                                        <div className="flex flex-row gap-3 items-center">
+                                            <p className="text-2xl font-extrabold text-slate-800 tracking-tight">{from ?? '-'}</p>
+                                            <div className="h-0.5 w-6 bg-orange-500/50 rounded-full"></div>
+                                            <p className="text-2xl font-extrabold text-slate-800 tracking-tight">{to ?? '-'}</p>
                                         </div>
-                                        <div className="flex flex-row gap-2">
-                                            <p>{date}</p>
-                                            <p>|</p>
+                                        <div className="flex flex-row gap-3 text-slate-600/80 font-medium text-sm">
+                                            <p>{moment(date).format("ddd, DD MMM YYYY")}</p>
+                                            <p className="text-slate-300">•</p>
                                             <p>{!isMounted ? "..." : t('tickets.passenger', { count: totalPassengerCount })}</p>
-                                            <p>|</p>
-                                            <p>{classParams}</p>
+                                            <p className="text-slate-300">•</p>
+                                            <p className="capitalize">{classParams}</p>
                                         </div>
                                     </div>
-                                    <div className="flex w-[10%] justify-end">
-                                        <Button isIconOnly className="button-orange font-bold shadow-lg shadow-orange-500/30 hover:scale-105 transition-all" onClick={handleOpen}>
-                                            <IconSearch width={30} height={30}/>
+                                    <div className="flex w-[15%] justify-end">
+                                        <Button 
+                                            isIconOnly 
+                                            className="button-orange w-14 h-14 rounded-2xl shadow-xl shadow-orange-500/40" 
+                                            onClick={handleOpen}
+                                        >
+                                            <IconSearch width={24} height={24}/>
                                         </Button> 
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
+                        </motion.div>
                     )}
                 </div>
             </div>
@@ -158,7 +173,14 @@ const FlightListContainer = () => {
                             airlinesData={airlinesData}
                         />
                     </div>
-                    <div className="flex flex-col gap-4 w-full">
+                    <motion.div 
+                        initial="hidden"
+                        animate="visible"
+                        variants={{
+                            visible: { transition: { staggerChildren: 0.05 } }
+                        }}
+                        className="flex flex-col gap-4 w-full"
+                    >
                         {!isFetching && filteredAndSortedFlights && filteredAndSortedFlights.length > 0 && (
                             filteredAndSortedFlights.map((flight, index) => (
                                 <FlightCard 
@@ -178,7 +200,7 @@ const FlightListContainer = () => {
                         {!isFetching && filteredAndSortedFlights.length === 0 && (
                             <FlightNotAvailable />
                         )}
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </>

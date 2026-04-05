@@ -11,6 +11,8 @@ import { useMutation } from "react-query";
 import { bookFlight } from "@api/bookFlight";
 import buildRequest from "./forms/buildRequest";
 import { Flight } from "@api/searchFlights/types";
+import { motion, AnimatePresence } from "framer-motion";
+import { Info, CreditCard, ShieldCheck } from "lucide-react";
 
 export type Key = string | number;
 
@@ -99,57 +101,152 @@ const Checkout = ({ flightData, isLoading }: Props) => {
     }
 
     return (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-10">
             <FormProvider {...methods}>
-                <Tabs aria-label="Options" variant="underlined" selectedKey={selected} classNames={{
-                    cursor:"bg-[#ff5a00]",
-                    base: "justify-center"
-                }} onSelectionChange={handleSelectTab}>
-                    <Tab key="order" title={t('checkout.order')}>
-                        <CheckoutOrder />
-                    </Tab>
-                    <Tab key="review" title={t('checkout.review')}>
-                        <CheckoutOrderReview  />
-                    </Tab>
-                </Tabs>
-            </FormProvider>
-            {selected === 'order' && (
-                <Button bgColor={"orange"} className="min-w-40" onClick={() => handleSelectTab('review')} disabled={isLoading} isLoading={isLoading}>
-                    {t('checkout.continue')}
-                </Button>
-            )}
-            {selected === 'review' && (
-                <div className="flex flex-col gap-5">
-                    <Button bgColor={"orange"} className="min-w-40" disabled={isMutating} isLoading={isMutating} onClick={onOpen}>
-                        {t('checkout.continue_payment')}
-                    </Button>
-                    <BaseButton color="primary" variant="light" disabled={isMutating} isLoading={isMutating} onClick={() => setSelected('order')}>
-                        {t('checkout.back')}
-                    </BaseButton>
+                <div className="flex justify-center">
+                    <Tabs 
+                        aria-label="Checkout Steps" 
+                        variant="underlined" 
+                        selectedKey={selected} 
+                        classNames={{
+                            cursor:"bg-[#ff5a00] h-1 rounded-full",
+                            base: "justify-center",
+                            tabList: "gap-12 border-b border-white/10 pb-0",
+                            tab: "max-w-fit px-0 h-14",
+                            tabContent: "group-data-[selected=true]:text-[#ff5a00] font-black uppercase tracking-[0.2em] text-xs"
+                        }} 
+                        onSelectionChange={handleSelectTab}
+                    >
+                        <Tab 
+                            key="order" 
+                            title={
+                                <div className="flex items-center gap-2">
+                                    <Info size={14} className="mb-0.5" />
+                                    <span>{t('checkout.order')}</span>
+                                </div>
+                            }
+                        >
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 20 }}
+                                className="pt-8"
+                            >
+                                <CheckoutOrder />
+                            </motion.div>
+                        </Tab>
+                        <Tab 
+                            key="review" 
+                            title={
+                                <div className="flex items-center gap-2">
+                                    <ShieldCheck size={14} className="mb-0.5" />
+                                    <span>{t('checkout.review')}</span>
+                                </div>
+                            }
+                        >
+                            <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                className="pt-8"
+                            >
+                                <CheckoutOrderReview  />
+                            </motion.div>
+                        </Tab>
+                    </Tabs>
                 </div>
-            )}
+            </FormProvider>
+
+            <AnimatePresence mode="wait">
+                {selected === 'order' && (
+                    <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="flex justify-center mt-4"
+                    >
+                        <Button 
+                            bgColor={"orange"} 
+                            className="h-14 px-16 text-lg font-bold shadow-xl shadow-orange-500/30 rounded-2xl min-w-64" 
+                            onClick={() => handleSelectTab('review')} 
+                            disabled={isLoading} 
+                            isLoading={isLoading}
+                        >
+                            {t('checkout.continue')}
+                        </Button>
+                    </motion.div>
+                )}
+                {selected === 'review' && (
+                    <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="flex flex-col items-center gap-4 mt-4"
+                    >
+                        <Button 
+                            bgColor={"orange"} 
+                            className="h-14 px-16 text-lg font-bold shadow-xl shadow-orange-500/30 rounded-2xl min-w-64" 
+                            disabled={isMutating} 
+                            isLoading={isMutating} 
+                            onClick={onOpen}
+                        >
+                            <CreditCard className="mr-2" size={20} />
+                            {t('checkout.continue_payment')}
+                        </Button>
+                        <BaseButton 
+                            variant="light" 
+                            className="font-bold text-slate-400 hover:text-slate-600 transition-colors tracking-widest uppercase text-xs"
+                            disabled={isMutating} 
+                            isLoading={isMutating} 
+                            onClick={() => setSelected('order')}
+                        >
+                            {t('checkout.back')}
+                        </BaseButton>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <Modal 
                 isOpen={isOpen} 
                 onOpenChange={onOpenChange}
                 backdrop="blur"
                 classNames={{
-                    backdrop: "bg-black/30 backdrop-blur-sm",
+                    backdrop: "bg-black/30 backdrop-blur-md",
+                    wrapper: "z-[9999]",
+                    base: "glass-card bg-white/70 backdrop-blur-3xl border-none shadow-2xl rounded-[40px] overflow-hidden p-4",
                 }}
             >
-                <ModalContent className="glass-card border-white/75 bg-white/75 backdrop-blur-2xl shadow-2xl">
+                <ModalContent>
                 {(onClose) => (
                     <>
-                    <ModalHeader className="flex flex-col gap-1">{t('checkout.confirm_order')}</ModalHeader>
-                    <ModalBody>
-                        <p> 
-                        {t('checkout.confirm_order_desc')}
+                    <ModalHeader className="flex flex-col gap-2 pt-8">
+                        <div className="bg-orange-500/10 w-16 h-16 rounded-3xl flex items-center justify-center mb-2">
+                            <ShieldCheck size={32} className="text-[#ff5a00]" />
+                        </div>
+                        <h2 className="text-2xl font-black text-slate-800 tracking-tight">{t('checkout.confirm_order')}</h2>
+                    </ModalHeader>
+                    <ModalBody className="pb-8">
+                        <p className="text-slate-500 font-medium leading-relaxed"> 
+                            {t('checkout.confirm_order_desc')}
                         </p>
                     </ModalBody>
-                    <ModalFooter>
-                        <BaseButton color="danger" variant="light" disabled={isMutating} isLoading={isMutating} onClick={onClose}>
+                    <ModalFooter className="flex flex-col md:flex-row gap-3 pt-0 pb-8">
+                        <BaseButton 
+                            variant="flat" 
+                            className="font-bold rounded-2xl h-12 flex-1 bg-slate-100 text-slate-500"
+                            disabled={isMutating} 
+                            isLoading={isMutating} 
+                            onClick={onClose}
+                        >
                             {t('checkout.cancel')}
                         </BaseButton>
-                        <Button bgColor={"orange"} className="min-w-40" disabled={isMutating} isLoading={isMutating} onClick={handleSubmit(onSubmit)}>
+                        <Button 
+                            bgColor={"orange"} 
+                            className="h-12 px-8 font-bold shadow-lg shadow-orange-500/30 rounded-2xl flex-1" 
+                            disabled={isMutating} 
+                            isLoading={isMutating} 
+                            onClick={handleSubmit(onSubmit)}
+                        >
                             {t('checkout.continue_payment')}
                         </Button>
                     </ModalFooter>

@@ -2,6 +2,7 @@ import Checkout from "@components/Checkout"
 import { useQuerySearchFlights } from "@queries/flights";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { motion } from "framer-motion";
 
 const CheckoutContainer = () => {
 
@@ -52,10 +53,15 @@ const CheckoutContainer = () => {
     },[isReady, isFetching, flightData, push])
 
     return (
-        <div className="flex flex-wrap justify-center my-10">
-            <div className="flex flex-col gap-8 w-full px-5 max-w-[1024px]">
+        <div className="flex flex-wrap justify-center my-16">
+            <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="flex flex-col gap-10 w-full px-5 max-w-[1024px]"
+            >
                 <Checkout flightData={flightData} isLoading={isFetching} />
-            </div>
+            </motion.div>
         </div>
     )
 }
