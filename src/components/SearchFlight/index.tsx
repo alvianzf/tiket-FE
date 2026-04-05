@@ -104,9 +104,9 @@ const SearchFlight = () => {
     const items = (filteredAirports && filteredAirports.length > 0) ? filteredAirports : airports;
 
     return (
-        <div className="min-w-[70%] glass-card p-[30px] rounded-2xl shadow-2xl backdrop-blur-xl border border-white/10 bg-white/5">
+        <div className="min-w-[70%] glass-card p-8 md:p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] backdrop-blur-3xl border border-white/20 bg-white/10">
             <FormProvider {...methods}>
-                <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap gap-4 items-center">
+                <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap gap-6 items-end">
                     <FromInput 
                         items={items}
                         isLoading={isAirportsLoading}
@@ -117,10 +117,12 @@ const SearchFlight = () => {
                     />
                     <PassengerInput />
                     <div className="w-full flex flex-col gap-2">
-                        <p className="font-medium">{t('tickets.departured_date')}</p>
+                        <p className="font-medium text-slate-800/80">{t('tickets.departured_date')}</p>
                         <DatePicker 
                             aria-label={t('tickets.departured_date')} 
                             variant="underlined"
+                            color="warning"
+                            className="w-full"
                             minValue={parseDate(moment().format('YYYY-MM-DD'))}
                             value={watch('date') ? parseDate(watch('date')) : null}
                             onChange={(value) => {
@@ -133,10 +135,10 @@ const SearchFlight = () => {
                     <Button 
                         isIconOnly={!isSubmitting}
                         isLoading={isSubmitting}
-                        className="button-orange h-[60px] min-w-[60px] rounded-2xl active:scale-95 font-bold shadow-lg shadow-orange-500/30" 
+                        className="button-orange h-[56px] min-w-[56px] rounded-2xl shadow-xl shadow-orange-500/40" 
                         onPress={() => handleSubmit(onSubmit)()}
                     >
-                        {!isSubmitting && <IconSearch width={28} height={28}/>}
+                        {!isSubmitting && <IconSearch width={24} height={24}/>}
                     </Button> 
                 </div>
             </FormProvider>

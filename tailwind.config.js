@@ -12,11 +12,15 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#3C9DFF",
-          dark: "#0AD1FF",
+          DEFAULT: "#ff5a00",
+          dark: "#e65100",
         },
-        secondary: "#0AD1FF",
+        secondary: "#FFD700",
         accent: "#2F3033",
+        orange: {
+          500: "#ff5a00",
+          600: "#e65100",
+        },
         cornflower: "#3C9DFF",
         deepbluesky: "#0AD1FF",
         darkslategrey: "#2F3033",

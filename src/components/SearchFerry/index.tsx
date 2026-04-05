@@ -68,19 +68,19 @@ const SearchFerry = () => {
     };
 
     return (
-        <div className="min-w-[320px] max-w-[400px] glass-card p-6 shadow-2xl">
+        <div className="min-w-[320px] max-w-[420px] glass-card p-8 shadow-[0_20px_50px_rgba(0,0,0,0.15)] backdrop-blur-3xl border border-white/20 bg-white/10 rounded-3xl">
             <div className="flex flex-col gap-6 w-full">
-                <div className="flex flex-row gap-2 bg-slate-200/30 p-1 rounded-xl">
+                <div className="flex flex-row gap-2 bg-white/10 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md">
                     <Button 
                         size="sm"
-                        className={`grow rounded-lg transition-all ${type === 'one_way' ? 'bg-white shadow-sm text-orange-600 font-bold' : 'bg-transparent text-slate-600 hover:bg-white/50'}`} 
+                        className={`grow rounded-xl transition-all h-10 ${type === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`} 
                         onClick={() => setType('one_way')}
                     >
                         {t('tickets.one_way')}
                     </Button> 
                     <Button 
                         size="sm"
-                        className={`grow rounded-lg transition-all ${type === 'round_trip' ? 'bg-white shadow-sm text-orange-600 font-bold' : 'bg-transparent text-slate-600 hover:bg-white/50'}`} 
+                        className={`grow rounded-xl transition-all h-10 ${type === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`} 
                         onClick={() => setType('round_trip')}
                     >
                         {t('tickets.round_trip')}
@@ -93,7 +93,7 @@ const SearchFerry = () => {
                             label={t('tickets.departure')}
                             placeholder={t('tickets.departure_placeholder')}
                             variant="underlined"
-                            startContent={<FaShip className="text-[#4267B2] mr-2" />}
+                            startContent={<FaShip className="text-[#ff5a00] mr-2" />}
                             selectedKeys={departurePort ? [departurePort] : []}
                             onSelectionChange={(keys) => {
                                 const selected = Array.from(keys)[0] as string;
@@ -114,7 +114,7 @@ const SearchFerry = () => {
                         label={t('tickets.destination')}
                         placeholder={t('tickets.destination_placeholder')}
                         variant="underlined"
-                        startContent={<FaShip className="text-[#4267B2] mr-2" />}
+                        startContent={<FaShip className="text-[#ff5a00] mr-2" />}
                         selectedKeys={destinationPort ? [destinationPort] : []}
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         onSelectionChange={(keys: any) => setDestinationPort(Array.from(keys)[0] as string)}
@@ -163,7 +163,7 @@ const SearchFerry = () => {
 
                 <Button 
                     isIconOnly
-                    className="button-orange w-full h-12 text-lg font-bold shadow-orange-500/40 hover:scale-[1.02] active:scale-[0.98]" 
+                    className="button-orange w-full h-14 text-lg font-bold shadow-xl shadow-orange-500/40 rounded-2xl" 
                     onClick={handleSearch}
                     disabled={!departurePort || !destinationPort || !departureDate}
                 >

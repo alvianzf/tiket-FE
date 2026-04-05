@@ -3,7 +3,7 @@ import Head from "next/head";
 import { AppLayout } from "@layouts";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { Input, Button, Card, CardBody } from "@nextui-org/react";
+import { Input, Button, Card, CardBody, Skeleton } from "@nextui-org/react";
 import { useMutation } from "react-query";
 import axios from "axios";
 import OrderContainer from "@containers/OrderContainer";
@@ -40,35 +40,35 @@ const FindBookingPage: NextPageWithLayout = () => {
             <div className="max-w-[1024px] mx-auto">
                 {!bookings ? (
                     <div className="flex flex-col items-center justify-center min-h-[60vh]">
-                        <Card className="glass-card max-w-md w-full p-6 shadow-2xl">
+                        <Card className="glass-card max-md w-full p-8 shadow-[0_20px_50px_rgba(0,0,0,0.15)] backdrop-blur-3xl border border-white/20 bg-white/10 rounded-3xl">
                             <CardBody className="flex flex-col gap-6">
-                                <div className="text-center space-y-2">
-                                    <h1 className="text-3xl font-bold text-slate-800">
+                                <div className="text-center space-y-3">
+                                    <h1 className="text-4xl font-extrabold text-slate-800 tracking-tight">
                                         {t('find_booking', 'Find My Booking')}
                                     </h1>
-                                    <p className="text-slate-600">
+                                    <p className="text-slate-600/80 font-medium">
                                         Enter the email used during checkout to view your booking history.
                                     </p>
                                 </div>
 
-                                <form onSubmit={handleSearch} className="flex flex-col gap-4">
+                                <form onSubmit={handleSearch} className="flex flex-col gap-6">
                                     <Input 
                                         type="email" 
                                         label="Email Address" 
                                         placeholder="your@email.com" 
-                                        variant="bordered"
+                                        variant="underlined"
                                         size="lg"
+                                        color="warning"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
-                                        classNames={{
-                                            inputWrapper: "border-slate-200 focus-within:border-primary"
-                                        }}
+                                        className="text-lg"
                                     />
                                     <Button 
                                         type="submit" 
                                         color="primary" 
                                         size="lg" 
+                                        className="h-16 text-lg font-bold shadow-xl shadow-orange-500/40 rounded-2xl button-orange"
                                         isLoading={historyMutation.isLoading}
                                     >
                                         {t('submit', 'Search History')}
@@ -78,14 +78,14 @@ const FindBookingPage: NextPageWithLayout = () => {
                         </Card>
                     </div>
                 ) : (
-                    <div className="space-y-8 animate-in fade-in duration-500">
-                        <div className="flex justify-between items-center">
-                            <h1 className="text-3xl font-bold text-slate-800">
-                                Results for <span className="text-primary">{email}</span>
+                    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <h1 className="text-3xl font-extrabold text-slate-800">
+                                Results for <span className="text-[#ff5a00] bg-orange-500/10 px-3 py-1 rounded-lg">{email}</span>
                             </h1>
                             <Button 
                                 variant="flat" 
-                                color="primary" 
+                                className="bg-orange-500/10 text-[#ff5a00] hover:bg-orange-500/20 font-bold px-6 py-2 rounded-xl"
                                 onClick={() => {
                                     setBookings(null);
                                     setEmail("");
@@ -95,10 +95,19 @@ const FindBookingPage: NextPageWithLayout = () => {
                             </Button>
                         </div>
                         
-                        <OrderContainer 
-                            flightData={bookings.flights} 
-                            ferryData={bookings.ferries} 
-                        />
+                        {historyMutation.isLoading ? (
+                            <div className="space-y-6">
+                                <Skeleton className="w-full h-12 rounded-xl" />
+                                <Skeleton className="w-full h-64 rounded-2xl" />
+                                <Skeleton className="w-full h-12 rounded-xl" />
+                                <Skeleton className="w-full h-64 rounded-2xl" />
+                            </div>
+                        ) : (
+                            <OrderContainer 
+                                flightData={bookings?.flights} 
+                                ferryData={bookings?.ferries} 
+                            />
+                        )}
                     </div>
                 )}
             </div>
