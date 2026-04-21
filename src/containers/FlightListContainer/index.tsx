@@ -113,8 +113,8 @@ const FlightListContainer = () => {
 
     return (
         <>
-            <div className="flex flex-wrap justify-center min-h-[220px] home-app relative z-30 pt-10">
-                <div className="flex flex-wrap justify-center items-center w-full py-[40px] px-4">
+            <div className="flex flex-wrap justify-center min-h-[220px] home-app relative z-30 pt-10 px-4">
+                <div className="flex flex-wrap justify-center items-center w-full py-[40px]">
                     {isOpen ? (
                         <motion.div 
                             initial={{ opacity: 0, y: -20 }}
@@ -127,41 +127,39 @@ const FlightListContainer = () => {
                         <motion.div 
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="min-w-[50%] glass-card p-6 rounded-2xl shadow-xl backdrop-blur-3xl border border-white/20 bg-white/10"
+                            className="w-full lg:min-w-[50%] lg:w-auto glass-card p-5 md:p-6 rounded-2xl shadow-xl backdrop-blur-3xl border border-white/20 bg-white/10"
                         >
-                            <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap gap-4 items-center">
-                                <div className="flex flex-row gap-3 justify-between w-full items-center">
-                                    <div className="flex flex-col gap-1 w-[85%]">
-                                        <div className="flex flex-row gap-3 items-center">
-                                            <p className="text-2xl font-extrabold text-slate-800 tracking-tight">{from ?? '-'}</p>
-                                            <div className="h-0.5 w-6 bg-orange-500/50 rounded-full"></div>
-                                            <p className="text-2xl font-extrabold text-slate-800 tracking-tight">{to ?? '-'}</p>
-                                        </div>
-                                        <div className="flex flex-row gap-3 text-slate-600/80 font-medium text-sm">
-                                            <p>{moment(date).format("ddd, DD MMM YYYY")}</p>
-                                            <p className="text-slate-300">•</p>
-                                            <p>{!isMounted ? "..." : t('tickets.passenger', { count: totalPassengerCount })}</p>
-                                            <p className="text-slate-300">•</p>
-                                            <p className="capitalize">{classParams}</p>
-                                        </div>
+                            <div className="flex flex-row gap-4 items-center justify-between w-full">
+                                <div className="flex flex-col gap-1 flex-1">
+                                    <div className="flex flex-row gap-2 md:gap-3 items-center">
+                                        <p className="text-xl md:text-2xl font-extrabold text-slate-800 tracking-tight">{from ?? '-'}</p>
+                                        <div className="h-0.5 w-4 md:w-6 bg-orange-500/50 rounded-full"></div>
+                                        <p className="text-xl md:text-2xl font-extrabold text-slate-800 tracking-tight">{to ?? '-'}</p>
                                     </div>
-                                    <div className="flex w-[15%] justify-end">
-                                        <Button 
-                                            isIconOnly 
-                                            className="button-orange w-14 h-14 rounded-2xl shadow-xl shadow-orange-500/40" 
-                                            onClick={handleOpen}
-                                        >
-                                            <IconSearch width={24} height={24}/>
-                                        </Button> 
+                                    <div className="flex flex-wrap gap-x-3 gap-y-1 text-slate-600/80 font-medium text-xs md:text-sm">
+                                        <p>{moment(date).format("ddd, DD MMM YYYY")}</p>
+                                        <p className="text-slate-300 hidden md:block">•</p>
+                                        <p>{!isMounted ? "..." : t('tickets.passenger', { count: totalPassengerCount })}</p>
+                                        <p className="text-slate-300 hidden md:block">•</p>
+                                        <p className="capitalize">{classParams}</p>
                                     </div>
+                                </div>
+                                <div className="flex-shrink-0">
+                                    <Button 
+                                        isIconOnly 
+                                        className="button-orange w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl shadow-xl shadow-orange-500/40" 
+                                        onClick={handleOpen}
+                                    >
+                                        <IconSearch width={20} height={20}/>
+                                    </Button> 
                                 </div>
                             </div>
                         </motion.div>
                     )}
                 </div>
             </div>
-            <div className="flex flex-wrap justify-center my-10 mx-[20px] lg:mx-0 md:mx-[20px]">
-                <div className="flex flex-row flex-wrap lg:flex-nowrap gap-8 w-full max-w-[1280px]">
+            <div className="flex flex-wrap justify-center my-10 px-4">
+                <div className="flex flex-col lg:flex-row gap-8 w-full max-w-[1280px]">
                     <div className="w-full lg:w-[300px] flex-shrink-0">
                         <FlightFilter 
                             selectedAirlines={selectedAirlines}

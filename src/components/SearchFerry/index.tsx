@@ -68,22 +68,22 @@ const SearchFerry = () => {
     };
 
     return (
-        <div className="min-w-[320px] max-w-[420px] glass-card p-8 shadow-[0_20px_50px_rgba(0,0,0,0.15)] backdrop-blur-3xl border border-white/20 bg-white/10 rounded-3xl">
+        <div className="w-full lg:max-w-[420px] glass-card p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.15)] backdrop-blur-3xl border border-white/20 bg-white/10 rounded-3xl mx-auto">
             <div className="flex flex-col gap-6 w-full">
                 <div className="flex flex-row gap-2 bg-white/10 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md">
                     <Button 
                         size="sm"
-                        className={`grow rounded-xl transition-all h-10 ${type === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`} 
+                        className={`grow rounded-xl transition-all h-10 px-2 min-w-0 ${type === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`} 
                         onClick={() => setType('one_way')}
                     >
-                        {t('tickets.one_way')}
+                        <span className="truncate">{t('tickets.one_way')}</span>
                     </Button> 
                     <Button 
                         size="sm"
-                        className={`grow rounded-xl transition-all h-10 ${type === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`} 
+                        className={`grow rounded-xl transition-all h-10 px-2 min-w-0 ${type === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`} 
                         onClick={() => setType('round_trip')}
                     >
-                        {t('tickets.round_trip')}
+                        <span className="truncate">{t('tickets.round_trip')}</span>
                     </Button> 
                 </div>
 
@@ -162,12 +162,12 @@ const SearchFerry = () => {
                 </div>
 
                 <Button 
-                    isIconOnly
-                    className="button-orange w-full h-14 text-lg font-bold shadow-xl shadow-orange-500/40 rounded-2xl" 
+                    className="button-orange w-full h-14 text-lg font-bold shadow-xl shadow-orange-500/40 rounded-2xl flex items-center justify-center gap-2" 
                     onClick={handleSearch}
                     disabled={!departurePort || !destinationPort || !departureDate}
                 >
                     <IconSearch width={24} height={24}/>
+                    <span>{t('common.search_ferry')}</span>
                 </Button> 
             </div>
         </div>

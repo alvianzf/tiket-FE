@@ -5,7 +5,25 @@ import SearchBookingNumber from "@components/SearchBookingNumber";
 // import IconProfile from "@icons/IconProfile";
 // import IconReceipt from "@icons/IconReceipt";
 import Logo from "@icons/Logo";
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button, Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, DropdownTrigger, DropdownMenu, Dropdown, DropdownItem} from "@nextui-org/react";
+import { 
+    Navbar, 
+    NavbarBrand, 
+    NavbarContent, 
+    NavbarItem, 
+    Button, 
+    Modal, 
+    ModalContent, 
+    ModalHeader, 
+    ModalBody, 
+    useDisclosure, 
+    DropdownTrigger, 
+    DropdownMenu, 
+    Dropdown, 
+    DropdownItem,
+    NavbarMenuToggle,
+    NavbarMenu,
+    NavbarMenuItem
+} from "@nextui-org/react";
 import { useRouter } from "next/router";
 // import { useRouter } from "next/router";
 import { useState } from "react";
@@ -17,6 +35,7 @@ const AppNavbar = () => {
     const { t, i18n } = useTranslation();
 
     const [language, setLanguage] = useState<'id' | 'en'>('id');
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const { isOpen: isOpenLogin, onOpen: onOpenLogin, onOpenChange: onOpenChangeLogin } = useDisclosure();
 
@@ -36,60 +55,65 @@ const AppNavbar = () => {
         setLanguage(lang)
     }
 
+    const menuItems = [
+        { label: t('home.flight'), href: '/', isActive: isFlightActive },
+        { label: t('home.ferry'), href: '/ferry', isActive: isFerryActive },
+        { label: t('home.car_rental'), href: '/car-rental', isActive: isCarRentalActive },
+    ];
+
     return (
         <>
-            <Navbar isBlurred={false} maxWidth="xl" classNames={{
-                base: "bg-[#4267B2]",
-                content: "gap-4",
-                item: "data-[active=true]:text-white",
-                wrapper: "px-6 py-2"
-            }}>
-                <NavbarBrand onClick={() => push('/')} className="cursor-pointer">
-                    <Logo />
-                </NavbarBrand>
-                <NavbarContent justify="end">
-                    <NavbarItem isActive={isFlightActive}>
-                        <Button 
-                            variant="flat" 
-                            className={`font-medium transition-all border-none ${
-                                isFlightActive 
-                                ? "bg-white/20 text-white shadow-inner" 
-                                : "bg-transparent text-white/80 hover:bg-white/10 hover:text-white"
-                            }`}
-                            onPress={() => push('/')}
-                        >
-                            {t('home.flight')}
-                        </Button>
-                    </NavbarItem>
+            <Navbar 
+                isBlurred={false} 
+                maxWidth="xl" 
+                isMenuOpen={isMenuOpen}
+                onMenuOpenChange={setIsMenuOpen}
+                classNames={{
+                    base: "bg-[#4267B2]",
+                    content: "gap-4",
+                    item: "data-[active=true]:text-white",
+                    wrapper: "px-6 py-2"
+                }}
+            >
+                {/* Mobile Menu Toggle */}
+                <NavbarContent className="lg:hidden" justify="start">
+                    <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} className="text-white" />
+                </NavbarContent>
 
-                    <NavbarItem isActive={isFerryActive}>
-                        <Button 
-                            variant="flat" 
-                            className={`font-medium transition-all border-none ${
-                                isFerryActive 
-                                ? "bg-white/20 text-white shadow-inner" 
-                                : "bg-transparent text-white/80 hover:bg-white/10 hover:text-white"
-                            }`}
-                            onPress={() => push('/ferry')}
-                        >
-                            {t('home.ferry')}
-                        </Button>
-                    </NavbarItem>
+                {/* Logo - Desktop & Mobile */}
+                <NavbarContent className="hidden lg:flex" justify="start">
+                    <NavbarBrand onClick={() => push('/')} className="cursor-pointer">
+                        <Logo />
+                    </NavbarBrand>
+                </NavbarContent>
 
-                    <NavbarItem isActive={isCarRentalActive}>
-                        <Button 
-                            variant="flat" 
-                            className={`font-medium transition-all border-none ${
-                                isCarRentalActive 
-                                ? "bg-white/20 text-white shadow-inner" 
-                                : "bg-transparent text-white/80 hover:bg-white/10 hover:text-white"
-                            }`}
-                            onPress={() => push('/car-rental')}
-                        >
-                            {t('home.car_rental')}
-                        </Button>
-                    </NavbarItem>
+                <NavbarContent className="lg:hidden pr-3" justify="center">
+                    <NavbarBrand onClick={() => push('/')} className="cursor-pointer">
+                        <Logo />
+                    </NavbarBrand>
+                </NavbarContent>
 
+                {/* Desktop Menu */}
+                <NavbarContent className="hidden lg:flex gap-4" justify="center">
+                    {menuItems.map((item) => (
+                        <NavbarItem key={item.label} isActive={item.isActive}>
+                            <Button 
+                                variant="flat" 
+                                className={`font-medium transition-all border-none ${
+                                    item.isActive 
+                                    ? "bg-white/20 text-white shadow-inner" 
+                                    : "bg-transparent text-white/80 hover:bg-white/10 hover:text-white"
+                                }`}
+                                onPress={() => push(item.href)}
+                            >
+                                {item.label}
+                            </Button>
+                        </NavbarItem>
+                    ))}
+                </NavbarContent>
+
+                {/* Desktop Actions */}
+                <NavbarContent justify="end" className="hidden lg:flex">
                     <NavbarItem>
                         <Button 
                             variant="flat" 
@@ -163,6 +187,75 @@ const AppNavbar = () => {
                         </Button>
                     </NavbarItem>
                 </NavbarContent>
+
+                {/* Mobile Menu Content */}
+                <NavbarMenu className="bg-[#4267B2]/95 backdrop-blur-md pt-6 gap-4">
+                    {menuItems.map((item, index) => (
+                        <NavbarMenuItem key={`${item.label}-${index}`}>
+                            <Button
+                                fullWidth
+                                className={`justify-start text-lg font-semibold h-14 ${
+                                    item.isActive ? "bg-white/20 text-white" : "bg-transparent text-white/80"
+                                }`}
+                                variant="flat"
+                                onPress={() => {
+                                    push(item.href);
+                                    setIsMenuOpen(false);
+                                }}
+                            >
+                                {item.label}
+                            </Button>
+                        </NavbarMenuItem>
+                    ))}
+                    <div className="h-px bg-white/20 my-2" />
+                    <NavbarMenuItem>
+                        <Button 
+                            fullWidth
+                            variant="flat" 
+                            className="bg-white/10 text-white font-medium h-14 justify-start text-lg" 
+                            onPress={() => {
+                                onOpenFind();
+                                setIsMenuOpen(false);
+                            }}
+                        >
+                            {t('common.find_booking')}
+                        </Button>
+                    </NavbarMenuItem>
+                    <NavbarMenuItem>
+                        <div className="flex gap-4 items-center p-2">
+                            <p className="text-white/60 font-medium">{t('common.language')}</p>
+                            <Button
+                                className={`min-w-fit h-12 rounded-xl transition-all ${language === 'id' ? 'bg-white/20 border-white/40' : 'bg-transparent'}`}
+                                variant="flat"
+                                isIconOnly
+                                onPress={() => onHandleChangeLanguage('id')}
+                            >
+                                <ReactCountryFlag countryCode="ID" svg className="rounded-full w-6 h-6 object-cover"/>
+                            </Button>
+                            <Button
+                                className={`min-w-fit h-12 rounded-xl transition-all ${language === 'en' ? 'bg-white/20 border-white/40' : 'bg-transparent'}`}
+                                variant="flat"
+                                isIconOnly
+                                onPress={() => onHandleChangeLanguage('en')}
+                            >
+                                <ReactCountryFlag countryCode="GB" svg className="rounded-full w-6 h-6 object-cover"/>
+                            </Button>
+                        </div>
+                    </NavbarMenuItem>
+                    <NavbarMenuItem className="mt-4">
+                        <Button 
+                            fullWidth
+                            variant="solid" 
+                            className="bg-[#ff5a00] text-white font-bold h-14 text-xl shadow-lg"
+                            onPress={() => {
+                                onOpenLogin();
+                                setIsMenuOpen(false);
+                            }}
+                        >
+                            {t('profile.login')}
+                        </Button>
+                    </NavbarMenuItem>
+                </NavbarMenu>
             </Navbar>
 
             <Modal 

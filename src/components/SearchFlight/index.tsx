@@ -104,19 +104,25 @@ const SearchFlight = () => {
     const items = (filteredAirports && filteredAirports.length > 0) ? filteredAirports : airports;
 
     return (
-        <div className="min-w-[70%] glass-card p-8 md:p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] backdrop-blur-3xl border border-white/20 bg-white/10">
+        <div className="w-full lg:min-w-[70%] glass-card p-6 md:p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] backdrop-blur-3xl border border-white/20 bg-white/10 mx-auto">
             <FormProvider {...methods}>
-                <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap gap-6 items-end">
-                    <FromInput 
-                        items={items}
-                        isLoading={isAirportsLoading}
-                    />
-                    <DestinationInput 
-                        items={items}
-                        isLoading={isAirportsLoading}
-                    />
-                    <PassengerInput />
-                    <div className="w-full flex flex-col gap-2">
+                <div className="flex flex-col lg:flex-row gap-6 items-end w-full">
+                    <div className="w-full lg:flex-1">
+                        <FromInput 
+                            items={items}
+                            isLoading={isAirportsLoading}
+                        />
+                    </div>
+                    <div className="w-full lg:flex-1">
+                        <DestinationInput 
+                            items={items}
+                            isLoading={isAirportsLoading}
+                        />
+                    </div>
+                    <div className="w-full lg:w-auto">
+                        <PassengerInput />
+                    </div>
+                    <div className="w-full lg:flex-1 flex flex-col gap-2">
                         <p className="font-medium text-slate-800/80">{t('tickets.departured_date')}</p>
                         <DatePicker 
                             aria-label={t('tickets.departured_date')} 
@@ -135,10 +141,11 @@ const SearchFlight = () => {
                     <Button 
                         isIconOnly={!isSubmitting}
                         isLoading={isSubmitting}
-                        className="button-orange h-[56px] min-w-[56px] rounded-2xl shadow-xl shadow-orange-500/40" 
+                        className="button-orange h-[56px] w-full lg:min-w-[56px] lg:w-[56px] rounded-2xl shadow-xl shadow-orange-500/40" 
                         onPress={() => handleSubmit(onSubmit)()}
                     >
                         {!isSubmitting && <IconSearch width={24} height={24}/>}
+                        <span className="lg:hidden ml-2 font-bold">{t('common.search_flight')}</span>
                     </Button> 
                 </div>
             </FormProvider>

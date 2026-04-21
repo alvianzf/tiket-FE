@@ -2,7 +2,7 @@ import { useMetaTags } from "@hooks/common";
 import { NextPageWithLayout } from "@interfaces/common";
 import { buildSeoTags } from "@utils/common";
 import Head from "next/head";
-import { CheckoutLayout } from "@layouts";
+import { AppLayout } from "@layouts";
 import { useTranslation } from "react-i18next";
 import ConfirmPaymentContainer from "@containers/ConfirmPaymentContainer";
 
@@ -20,9 +20,9 @@ const CheckoutConfirmPaymentPage: NextPageWithLayout = () => {
 
 CheckoutConfirmPaymentPage.getLayout = (page) => {
     return (
-        <CheckoutLayout>
+        <AppLayout>
             {page}
-        </CheckoutLayout>
+        </AppLayout>
     )
 }
 

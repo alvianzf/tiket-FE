@@ -3,7 +3,10 @@
     "common": {
       "book": "Book Now",
       "find_booking": "Find Booking",
-      "search": "Search Flights",
+      "search": "Search",
+      "search_flight": "Search Flights",
+      "search_ferry": "Search Ferry",
+      "language": "Language",
       "done": "Done",
       "home": "Home",
       "back": "Back",

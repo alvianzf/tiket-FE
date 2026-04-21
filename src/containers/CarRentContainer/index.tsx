@@ -61,10 +61,10 @@ const CarRentContainer = () => {
                 </div>
 
                 {/* Glassmorphism search card */}
-                <div className="glass-card p-8 rounded-2xl shadow-2xl backdrop-blur-xl border border-white/10 bg-white/5 w-full max-w-3xl">
-                    <div className="flex flex-wrap gap-4 items-end">
+                <div className="glass-card p-6 md:p-8 rounded-2xl shadow-2xl backdrop-blur-xl border border-white/10 bg-white/5 w-full max-w-3xl">
+                    <div className="flex flex-col md:flex-row gap-6 items-end w-full">
                         {/* Date */}
-                        <div className="flex flex-col gap-1 flex-1 min-w-[160px]">
+                        <div className="flex flex-col gap-1 w-full md:flex-1">
                             <p className="text-white/80 text-sm font-medium">Rental Date</p>
                             <DatePicker
                                 aria-label="Rental Date"
@@ -73,11 +73,12 @@ const CarRentContainer = () => {
                                 value={parseDate(date)}
                                 onChange={(val) => { if (val) setDate(moment(val.toString()).format("YYYY-MM-DD")); }}
                                 classNames={{ input: "text-white", label: "text-white/80", innerWrapper: "text-white/80" }}
+                                className="w-full"
                             />
                         </div>
 
                         {/* Type */}
-                        <div className="flex flex-col gap-1 flex-1 min-w-[160px]">
+                        <div className="flex flex-col gap-1 w-full md:flex-1">
                             <p className="text-white/80 text-sm font-medium">Car Type</p>
                             <Select
                                 aria-label="Car Type"
@@ -85,6 +86,7 @@ const CarRentContainer = () => {
                                 selectedKeys={[type]}
                                 onSelectionChange={(keys) => setType(Array.from(keys)[0] as string)}
                                 classNames={{ value: "text-white", trigger: "text-white/80" }}
+                                className="w-full"
                             >
                                 {CAR_TYPES.map((t) => (
                                     <SelectItem key={t.key}>{t.label}</SelectItem>
@@ -93,7 +95,7 @@ const CarRentContainer = () => {
                         </div>
 
                         {/* Rows */}
-                        <div className="flex flex-col gap-1 flex-1 min-w-[120px]">
+                        <div className="flex flex-col gap-1 w-full md:flex-1">
                             <p className="text-white/80 text-sm font-medium">Seat Rows</p>
                             <Select
                                 aria-label="Seat Rows"
@@ -101,6 +103,7 @@ const CarRentContainer = () => {
                                 selectedKeys={[rows]}
                                 onSelectionChange={(keys) => setRows(Array.from(keys)[0] as string)}
                                 classNames={{ value: "text-white", trigger: "text-white/80" }}
+                                className="w-full"
                             >
                                 {ROW_OPTIONS.map((r) => (
                                     <SelectItem key={r.key}>{r.label}</SelectItem>
@@ -109,7 +112,7 @@ const CarRentContainer = () => {
                         </div>
 
                         <Button
-                            className="button-orange h-[48px] px-8 font-bold shadow-lg shadow-orange-500/30 rounded-xl"
+                            className="button-orange h-[48px] w-full md:w-auto md:px-8 font-bold shadow-lg shadow-orange-500/30 rounded-xl"
                             onPress={handleSearch}
                             isLoading={isLoading}
                         >

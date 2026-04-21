@@ -3,7 +3,10 @@
     "common": {
       "book": "Pesan Sekarang",
       "find_booking": "Cari Pesanan",
-      "search": "Cari Penerbangan",
+      "search": "Cari",
+      "search_flight": "Cari Penerbangan",
+      "search_ferry": "Cari Feri",
+      "language": "Pilihan Bahasa",
       "done": "Selesai",
       "home": "Beranda",
       "back": "Kembali",
