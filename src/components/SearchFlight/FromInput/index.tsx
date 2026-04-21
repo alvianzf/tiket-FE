@@ -32,7 +32,7 @@ const FromInput = ({ items, isLoading } : Props) => {
                 placeholder={t('tickets.from_placeholder')}
                 className="w-full"
                 variant="underlined"
-                startContent={<FaPlaneDeparture className="text-[#ff5a00] mr-2" />}
+                startContent={<FaPlaneDeparture className="text-primary mr-2" />}
                 classNames={{
                     listbox: 'flex flex-col',
                     popoverContent: 'w-[350px] md:w-[800px] glass-card bg-white/80'
@@ -61,7 +61,7 @@ const FromInput = ({ items, isLoading } : Props) => {
                         title={section.title} 
                         items={section.children}
                         classNames={{
-                            heading: 'text-[#ff5a00] text-base font-bold pl-2',
+                            heading: 'text-primary text-base font-bold pl-2',
                             group: 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 w-full'
                         }} 
                         hideSelectedIcon
@@ -70,7 +70,7 @@ const FromInput = ({ items, isLoading } : Props) => {
                             <AutocompleteItem 
                                 key={item.code} 
                                 textValue={item.name}
-                                className="text-black data-[hover=true]:bg-[#ff5a00] data-[hover=true]:text-white transition-colors"
+                                className="text-black data-[hover=true]:bg-primary data-[hover=true]:text-white transition-colors"
                             >
                                 <div className="flex flex-col">
                                     <span className="font-bold">{item.code}</span>

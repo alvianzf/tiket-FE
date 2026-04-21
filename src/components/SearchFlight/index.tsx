@@ -1,4 +1,5 @@
-import { Button, DatePicker } from "@nextui-org/react";
+import { DatePicker } from "@nextui-org/react";
+import Button from "@components/Button";
 import { useTranslation } from "react-i18next";
 import FromInput from "./FromInput";
 import DestinationInput from "./DestinationInput";
@@ -104,7 +105,7 @@ const SearchFlight = () => {
     const items = (filteredAirports && filteredAirports.length > 0) ? filteredAirports : airports;
 
     return (
-        <div className="w-full lg:min-w-[70%] glass-card p-6 md:p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] backdrop-blur-3xl border border-white/20 bg-white/10 mx-auto">
+        <div className="w-full lg:max-w-[1200px] glass-card p-8 md:p-10 border-white/30 backdrop-blur-3xl mx-auto">
             <FormProvider {...methods}>
                 <div className="flex flex-col lg:flex-row gap-6 items-end w-full">
                     <div className="w-full lg:flex-1">
@@ -141,7 +142,8 @@ const SearchFlight = () => {
                     <Button 
                         isIconOnly={!isSubmitting}
                         isLoading={isSubmitting}
-                        className="button-orange h-[56px] w-full lg:min-w-[56px] lg:w-[56px] rounded-2xl shadow-xl shadow-orange-500/40" 
+                        dsVariant="cta"
+                        className="h-[56px] w-full lg:min-w-[56px] lg:w-[56px] rounded-ds-md" 
                         onPress={() => handleSubmit(onSubmit)()}
                     >
                         {!isSubmitting && <IconSearch width={24} height={24}/>}

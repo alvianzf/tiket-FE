@@ -14,8 +14,8 @@ const PaymentFailed = () => {
             </div>
 
             <p className="text-orange text-lg font-medium">{t('checkout.payment_failed')}</p>
-            <Button bgColor={"orange"}>
-                {t('checkout.home')}
+            <Button dsVariant="cta" className="h-12 px-10 rounded-ds-sm shadow-md" onClick={() => window.location.href = '/'}>
+                 {t('profile.home')}
             </Button>
         </div>      
     )

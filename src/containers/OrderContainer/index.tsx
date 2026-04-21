@@ -1,4 +1,5 @@
-import { Button, Image, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from "@nextui-org/react";
+import { Image, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from "@nextui-org/react";
+import Button from "@components/Button";
 import NextImage from "next/image";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
@@ -23,14 +24,14 @@ const OrderContainer = ({ flightData = [], ferryData = [] } : Props) => {
                 className="flex flex-wrap justify-center my-10 min-h-[50vh] items-center"
             >
                 <div className="flex flex-col gap-8 w-full px-5 max-w-[1024px]">
-                    <div className="glass-card overflow-hidden bg-white/10 p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative border-white/20 rounded-3xl backdrop-blur-3xl">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
-                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl -ml-32 -mb-32"></div>
+                    <div className="glass-card overflow-hidden bg-white/85 p-8 md:p-12 shadow-lg relative border-white/75">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-cta/5 rounded-full blur-3xl -ml-32 -mb-32"></div>
                         
                         <div className="flex flex-col md:flex-row gap-12 items-center relative z-10">
                             <div className="w-full md:w-1/2 flex justify-center">
                                 <div className="relative group">
-                                    <div className="absolute inset-0 bg-orange-400/20 rounded-full blur-2xl group-hover:bg-orange-400/30 transition-all duration-500"></div>
+                                    <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-500"></div>
                                     <Image 
                                         as={NextImage}
                                         src="/images/no-orders.png" 
@@ -54,9 +55,9 @@ const OrderContainer = ({ flightData = [], ferryData = [] } : Props) => {
                                 
                                 <div className="pt-4">
                                     <Button 
-                                        color="primary" 
+                                        dsVariant="primary"
                                         size="lg"
-                                        className="button-orange h-16 px-10 text-lg font-bold shadow-xl shadow-orange-500/40 rounded-2xl"
+                                        className="h-14 px-10 rounded-ds-sm shadow-md"
                                         onClick={() => window.location.href = '/'}
                                     >
                                         {t('profile.home')}
@@ -79,16 +80,16 @@ const OrderContainer = ({ flightData = [], ferryData = [] } : Props) => {
             {flightData.length > 0 && (
                 <div className="space-y-6">
                     <div className="flex items-center gap-4">
-                        <div className="w-1.5 h-8 bg-orange-500 rounded-full"></div>
-                        <h3 className="text-2xl font-extrabold text-slate-800 tracking-tight">Flight Bookings</h3>
+                        <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                        <h3 className="text-2xl font-extrabold text-dark tracking-tight font-sans">Flight Bookings</h3>
                     </div>
-                    <Table aria-label="Flight bookings table" className="glass-card border-none shadow-xl bg-white/5 backdrop-blur-2xl rounded-3xl overflow-hidden">
+                    <Table aria-label="Flight bookings table" className="glass-card border-none shadow-md overflow-hidden">
                         <TableHeader>
-                            <TableColumn className="bg-orange-500/10 text-orange-700 font-bold py-5">BOOKING CODE</TableColumn>
-                            <TableColumn className="bg-orange-500/10 text-orange-700 font-bold py-5">ROUTE</TableColumn>
-                            <TableColumn className="bg-orange-500/10 text-orange-700 font-bold py-5">DATE</TableColumn>
-                            <TableColumn className="bg-orange-500/10 text-orange-700 font-bold py-5">TOTAL</TableColumn>
-                            <TableColumn className="bg-orange-500/10 text-orange-700 font-bold py-5 text-center">STATUS</TableColumn>
+                            <TableColumn className="bg-primary/5 text-primary font-bold py-5">BOOKING CODE</TableColumn>
+                            <TableColumn className="bg-primary/5 text-primary font-bold py-5">ROUTE</TableColumn>
+                            <TableColumn className="bg-primary/5 text-primary font-bold py-5">DATE</TableColumn>
+                            <TableColumn className="bg-primary/5 text-primary font-bold py-5">TOTAL</TableColumn>
+                            <TableColumn className="bg-primary/5 text-primary font-bold py-5 text-center">STATUS</TableColumn>
                         </TableHeader>
                         <TableBody>
                             {flightData.map((order) => (
@@ -112,16 +113,16 @@ const OrderContainer = ({ flightData = [], ferryData = [] } : Props) => {
             {ferryData.length > 0 && (
                 <div className="space-y-6">
                     <div className="flex items-center gap-4">
-                        <div className="w-1.5 h-8 bg-blue-500 rounded-full"></div>
-                        <h3 className="text-2xl font-extrabold text-slate-800 tracking-tight">Ferry Bookings</h3>
+                        <div className="w-1.5 h-8 bg-secondary rounded-full"></div>
+                        <h3 className="text-2xl font-extrabold text-dark tracking-tight font-sans">Ferry Bookings</h3>
                     </div>
-                    <Table aria-label="Ferry bookings table" className="glass-card border-none shadow-xl bg-white/5 backdrop-blur-2xl rounded-3xl overflow-hidden">
+                    <Table aria-label="Ferry bookings table" className="glass-card border-none shadow-md overflow-hidden">
                         <TableHeader>
-                            <TableColumn className="bg-blue-500/10 text-blue-700 font-bold py-5">BOOKING NO</TableColumn>
-                            <TableColumn className="bg-blue-500/10 text-blue-700 font-bold py-5">TERMINAL</TableColumn>
-                            <TableColumn className="bg-blue-500/10 text-blue-700 font-bold py-5">DATE</TableColumn>
-                            <TableColumn className="bg-blue-500/10 text-blue-700 font-bold py-5">TOTAL</TableColumn>
-                            <TableColumn className="bg-blue-500/10 text-blue-700 font-bold py-5 text-center">STATUS</TableColumn>
+                            <TableColumn className="bg-secondary/10 text-secondary-dark font-bold py-5">BOOKING NO</TableColumn>
+                            <TableColumn className="bg-secondary/10 text-secondary-dark font-bold py-5">TERMINAL</TableColumn>
+                            <TableColumn className="bg-secondary/10 text-secondary-dark font-bold py-5">DATE</TableColumn>
+                            <TableColumn className="bg-secondary/10 text-secondary-dark font-bold py-5">TOTAL</TableColumn>
+                            <TableColumn className="bg-secondary/10 text-secondary-dark font-bold py-5 text-center">STATUS</TableColumn>
                         </TableHeader>
                         <TableBody>
                             {ferryData.map((order) => (

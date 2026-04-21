@@ -200,7 +200,7 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
                 </Card>
             </div>
 
-            <Button bgColor={"orange"} isLoading={isLoading || isProcessing} disabled={isLoading || isProcessing || !isMidtransLoaded} onClick={handleOnPayment}>
+            <Button dsVariant="cta" isLoading={isLoading || isProcessing} disabled={isLoading || isProcessing || !isMidtransLoaded} onClick={handleOnPayment} className="w-full mt-6 h-14 text-lg">
                 {t('checkout.choose_payment')}
             </Button>
         </>

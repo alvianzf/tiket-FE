@@ -109,11 +109,11 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                         variant="underlined" 
                         selectedKey={selected} 
                         classNames={{
-                            cursor:"bg-[#ff5a00] h-1 rounded-full",
+                            cursor:"bg-cta h-1 rounded-full",
                             base: "justify-center",
-                            tabList: "gap-12 border-b border-white/10 pb-0",
+                            tabList: "gap-12 border-b border-primary/10 pb-0",
                             tab: "max-w-fit px-0 h-14",
-                            tabContent: "group-data-[selected=true]:text-[#ff5a00] font-black uppercase tracking-[0.2em] text-xs"
+                            tabContent: "group-data-[selected=true]:text-cta font-black uppercase tracking-[0.2em] text-xs"
                         }} 
                         onSelectionChange={handleSelectTab}
                     >
@@ -166,8 +166,8 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                         className="flex justify-center mt-4"
                     >
                         <Button 
-                            bgColor={"orange"} 
-                            className="h-14 px-16 text-lg font-bold shadow-xl shadow-orange-500/30 rounded-2xl min-w-64" 
+                            dsVariant="cta" 
+                            className="h-14 px-16 text-lg font-bold shadow-md rounded-ds-sm min-w-64" 
                             onClick={() => handleSelectTab('review')} 
                             disabled={isLoading} 
                             isLoading={isLoading}
@@ -184,8 +184,8 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                         className="flex flex-col items-center gap-4 mt-4"
                     >
                         <Button 
-                            bgColor={"orange"} 
-                            className="h-14 px-16 text-lg font-bold shadow-xl shadow-orange-500/30 rounded-2xl min-w-64" 
+                            dsVariant="cta" 
+                            className="h-14 px-16 text-lg font-bold shadow-md rounded-ds-sm min-w-64" 
                             disabled={isMutating} 
                             isLoading={isMutating} 
                             onClick={onOpen}
@@ -213,17 +213,17 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                 classNames={{
                     backdrop: "bg-black/30 backdrop-blur-md",
                     wrapper: "z-[9999]",
-                    base: "glass-card bg-white/70 backdrop-blur-3xl border-none shadow-2xl rounded-[40px] overflow-hidden p-4",
+                    base: "glass-card bg-white/95 backdrop-blur-3xl border-none shadow-2xl rounded-ds-lg overflow-hidden p-4",
                 }}
             >
                 <ModalContent>
                 {(onClose) => (
                     <>
                     <ModalHeader className="flex flex-col gap-2 pt-8">
-                        <div className="bg-orange-500/10 w-16 h-16 rounded-3xl flex items-center justify-center mb-2">
-                            <ShieldCheck size={32} className="text-[#ff5a00]" />
+                        <div className="bg-primary/10 w-16 h-16 rounded-ds-md flex items-center justify-center mb-2">
+                            <ShieldCheck size={32} className="text-primary" />
                         </div>
-                        <h2 className="text-2xl font-black text-slate-800 tracking-tight">{t('checkout.confirm_order')}</h2>
+                        <h2 className="text-2xl font-black text-dark tracking-tight">{t('checkout.confirm_order')}</h2>
                     </ModalHeader>
                     <ModalBody className="pb-8">
                         <p className="text-slate-500 font-medium leading-relaxed"> 
@@ -233,7 +233,7 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                     <ModalFooter className="flex flex-col md:flex-row gap-3 pt-0 pb-8">
                         <BaseButton 
                             variant="flat" 
-                            className="font-bold rounded-2xl h-12 flex-1 bg-slate-100 text-slate-500"
+                            className="font-bold rounded-ds-sm h-12 flex-1 bg-slate-100 text-slate-500"
                             disabled={isMutating} 
                             isLoading={isMutating} 
                             onClick={onClose}
@@ -241,8 +241,8 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                             {t('checkout.cancel')}
                         </BaseButton>
                         <Button 
-                            bgColor={"orange"} 
-                            className="h-12 px-8 font-bold shadow-lg shadow-orange-500/30 rounded-2xl flex-1" 
+                            dsVariant="cta" 
+                            className="h-12 px-8 font-bold shadow-md rounded-ds-sm flex-1" 
                             disabled={isMutating} 
                             isLoading={isMutating} 
                             onClick={handleSubmit(onSubmit)}

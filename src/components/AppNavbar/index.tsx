@@ -69,10 +69,10 @@ const AppNavbar = () => {
                 isMenuOpen={isMenuOpen}
                 onMenuOpenChange={setIsMenuOpen}
                 classNames={{
-                    base: "bg-[#4267B2]",
+                    base: "bg-primary shadow-lg",
                     content: "gap-4",
                     item: "data-[active=true]:text-white",
-                    wrapper: "px-6 py-2"
+                    wrapper: "max-w-[1200px] px-6 py-2"
                 }}
             >
                 {/* Mobile Menu Toggle */}
@@ -99,10 +99,11 @@ const AppNavbar = () => {
                         <NavbarItem key={item.label} isActive={item.isActive}>
                             <Button 
                                 variant="flat" 
-                                className={`font-medium transition-all border-none ${
+                                radius="sm"
+                                className={`font-semibold transition-all border-none ${
                                     item.isActive 
                                     ? "bg-white/20 text-white shadow-inner" 
-                                    : "bg-transparent text-white/80 hover:bg-white/10 hover:text-white"
+                                    : "bg-transparent text-white/80 hover:bg-white/15 hover:text-white"
                                 }`}
                                 onPress={() => push(item.href)}
                             >
@@ -180,7 +181,8 @@ const AppNavbar = () => {
                     <NavbarItem>
                         <Button 
                             variant="solid" 
-                            className="bg-[#ff5a00] text-white font-bold shadow-lg hover:bg-[#e65100] transition-all px-6"
+                            radius="sm"
+                            className="bg-cta text-white font-bold shadow-lg hover:bg-cta-dark hover:shadow-cta/30 transition-all px-8 active:scale-95"
                             onPress={onOpenLogin}
                         >
                             {t('profile.login')}
@@ -189,7 +191,7 @@ const AppNavbar = () => {
                 </NavbarContent>
 
                 {/* Mobile Menu Content */}
-                <NavbarMenu className="bg-[#4267B2]/95 backdrop-blur-md pt-6 gap-4">
+                <NavbarMenu className="bg-primary/95 backdrop-blur-md pt-6 gap-4">
                     {menuItems.map((item, index) => (
                         <NavbarMenuItem key={`${item.label}-${index}`}>
                             <Button
@@ -246,7 +248,8 @@ const AppNavbar = () => {
                         <Button 
                             fullWidth
                             variant="solid" 
-                            className="bg-[#ff5a00] text-white font-bold h-14 text-xl shadow-lg"
+                            radius="sm"
+                            className="bg-cta text-white font-bold h-14 text-xl shadow-lg active:scale-95"
                             onPress={() => {
                                 onOpenLogin();
                                 setIsMenuOpen(false);

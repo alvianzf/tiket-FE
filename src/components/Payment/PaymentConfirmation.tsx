@@ -30,7 +30,7 @@ const PaymentConfirmation = () => {
             <CardBody>
                 <div className="flex flex-col gap-5 text-center">
                     <p>{t('checkout.upload_description')}</p>
-                    <Button bgColor={"orange"} onClick={handleOnPayment}>
+                    <Button dsVariant={"cta"} onClick={handleOnPayment}>
                         {t('checkout.upload')}
                     </Button>
                 </div>

@@ -3,32 +3,34 @@
 @tailwind utilities;
 
 :root {
-  --primary: #ff5a00; /* Bright orange for TiketQ */
-  --secondary: #ffd700;
-  --accent: #2b2d31;
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --glass-blur: 32px;
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+  --primary: #4267b2;
+  --primary-light: #5a7ec4;
+  --primary-dark: #2f4f8a;
+  --secondary: #0ad1ff;
+  --orange: #ff5a00;
+  --dark: #2f3033;
+  --bg-base: #f0f4f8;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-blur: 24px;
 }
 
 .bg-pattern {
-  background-color: #3c9dff;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30.012 36.326c5.584.093 11.168-1.574 15.684-4.832 1.348-.971 2.585-2.062 3.702-3.255-5.91-.741-11.82 1.258-15.684 4.832-.862.796-1.636 1.666-2.32 2.6-1.353-.974-2.593-2.068-3.714-3.265 5.91-.741 11.82 1.258 15.684 4.832.862.796 1.636 1.666 2.32 2.6' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-color: var(--primary);
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30.012 36.326c5.584.093 11.168-1.574 15.684-4.832 1.348-.971 2.585-2.062 3.702-3.255-5.91-.741-11.82 1.258-15.684 4.832-.862.796-1.636 1.666-2.32 2.6-1.353-.974-2.593-2.068-3.714-3.265 5.91-.741 11.82 1.258 15.684 4.832.862.796 1.636 1.666 2.32 2.6' fill='%23ffffff' fill-opacity='0.06' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 antialiased bg-pattern;
-  font-family: "Montserrat", sans-serif;
+  @apply bg-[#f0f4f8] text-slate-900 antialiased font-sans;
 }
 
 .glass-card {
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  @apply rounded-2xl transition-all duration-300;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+  @apply rounded-ds-lg transition-all duration-300;
 }
 
 .glass-card-dark {
@@ -37,27 +39,17 @@ body {
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-  @apply rounded-2xl;
+  @apply rounded-ds-lg;
 }
 
 .glass-navbar {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  background: var(--primary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   @apply sticky top-0 z-50;
 }
 
-.bg-blue {
-  background: #4267b2; /* Official Primary Match */
-}
-
-.btn-primary {
-  @apply bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300;
-}
-
-.btn-secondary {
-  @apply bg-indigo-600 text-white hover:bg-indigo-700 transition-all duration-300;
+.btn-ds {
+  @apply font-bold rounded-ds-sm transition-all duration-200 active:scale-95;
 }
 
 .home-app {

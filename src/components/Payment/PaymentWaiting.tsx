@@ -131,11 +131,11 @@ const PaymentWaiting = ({ flight, isLoading } : Props) => {
                         <div className="flex flex-col gap-5">
                             <p>{t('checkout.once_payment_description')}</p>
                             {flight?.data.status === 'ISSUED' ? (
-                                <Button bgColor={"orange"} isLoading={isLoading} disabled={isLoading} onClick={handleGetTicket}>
+                                <Button dsVariant="cta" className="h-12 px-10 rounded-ds-sm shadow-md" isLoading={isLoading} disabled={isLoading} onClick={handleGetTicket}>
                                     {t('checkout.get_eticket')}
                                 </Button>
                             ) : (
-                                <Button bgColor={"orange"} isLoading={isLoading} disabled={isLoading} onClick={handleOnPayment}>
+                                <Button dsVariant="cta" className="h-12 px-10 rounded-ds-sm shadow-md" isLoading={isLoading} disabled={isLoading} onClick={handleOnPayment}>
                                     {t('checkout.already_payment')}
                                 </Button>
                             )}
