@@ -1,0 +1,2450 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TiketQ — Design System</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── CSS VARIABLES ── */
+      :root {
+        --primary: #4267b2;
+        --primary-light: #5a7ec4;
+        --primary-dark: #2f4f8a;
+        --secondary: #0ad1ff;
+        --secondary-dark: #00b3d9;
+        --orange: #ff5a00;
+        --orange-dark: #e65100;
+        --orange-light: #ff7a33;
+        --dark: #2f3033;
+        --dark-mid: #3d3f44;
+        --text-body: #1e2228;
+        --text-muted: #6b7280;
+        --text-light: #9ca3af;
+        --bg-base: #f0f4f8;
+        --bg-card: #ffffff;
+        --glass-bg: rgba(255, 255, 255, 0.05);
+        --glass-border: rgba(255, 255, 255, 0.18);
+        --glass-blur: 24px;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.07);
+        --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.14);
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px; /* rounded-2xl */
+        --radius-xl: 24px;
+        --radius-full: 9999px;
+        --font: "Montserrat", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font);
+        background: var(--bg-base);
+        color: var(--text-body);
+        line-height: 1.6;
+        font-size: 14px;
+      }
+
+      /* ── LAYOUT ── */
+      .page-header {
+        background: var(--primary);
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30.012 36.326c5.584.093 11.168-1.574 15.684-4.832 1.348-.971 2.585-2.062 3.702-3.255-5.91-.741-11.82 1.258-15.684 4.832-.862.796-1.636 1.666-2.32 2.6-1.353-.974-2.593-2.068-3.714-3.265 5.91-.741 11.82 1.258 15.684 4.832.862.796 1.636 1.666 2.32 2.6' fill='%23ffffff' fill-opacity='0.06' fill-rule='evenodd'/%3E%3C/svg%3E");
+        padding: 60px 48px 80px;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+      .page-header::after {
+        content: "";
+        position: absolute;
+        bottom: -40px;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: var(--bg-base);
+        clip-path: ellipse(55% 100% at 50% 100%);
+      }
+      .page-header h1 {
+        font-size: 42px;
+        font-weight: 900;
+        letter-spacing: -1.5px;
+      }
+      .page-header h1 span {
+        color: var(--secondary);
+      }
+      .page-header p {
+        margin-top: 8px;
+        font-size: 14px;
+        opacity: 0.75;
+        font-weight: 500;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      .page-header .badge-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 24px;
+        flex-wrap: wrap;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        border-radius: var(--radius-full);
+        padding: 5px 12px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+
+      .container {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 32px;
+      }
+      .section {
+        padding: 56px 0 16px;
+      }
+      .section-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--primary);
+        margin-bottom: 6px;
+      }
+      .section-heading {
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 32px;
+        letter-spacing: -0.5px;
+      }
+      .divider {
+        border: none;
+        border-top: 1px solid #e2e8f0;
+        margin: 12px 0 40px;
+      }
+
+      /* ── GRID ── */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+      }
+      .grid-4 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 16px;
+      }
+      .grid-5 {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+      }
+
+      /* ── TOKEN CARD ── */
+      .token-card {
+        background: var(--bg-card);
+        border-radius: var(--radius-md);
+        padding: 20px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid #eef0f4;
+      }
+      .token-label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--text-muted);
+        margin-bottom: 6px;
+      }
+      .token-value {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--dark);
+      }
+
+      /* ── COLOR SYSTEM ── */
+      .color-swatch {
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid #eef0f4;
+      }
+      .swatch-block {
+        height: 100px;
+      }
+      .swatch-info {
+        background: #fff;
+        padding: 14px 16px;
+      }
+      .swatch-name {
+        font-weight: 700;
+        font-size: 13px;
+        color: var(--dark);
+      }
+      .swatch-meta {
+        margin-top: 4px;
+      }
+      .swatch-hex {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+      .swatch-use {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text-light);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-top: 2px;
+      }
+
+      .conflict-tag {
+        display: inline-block;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 2px 7px;
+        border-radius: 4px;
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffc107;
+        margin-left: 6px;
+      }
+      .resolved-tag {
+        display: inline-block;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 2px 7px;
+        border-radius: 4px;
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #28a745;
+        margin-left: 6px;
+      }
+
+      /* ── TYPOGRAPHY ── */
+      .type-specimen {
+        background: #fff;
+        border-radius: var(--radius-md);
+        padding: 24px 28px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid #eef0f4;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .type-specimen .sample {
+        color: var(--dark);
+      }
+      .type-meta {
+        text-align: right;
+        min-width: 140px;
+      }
+      .type-meta .t-label {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+      .type-meta .t-spec {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--text-light);
+        margin-top: 2px;
+      }
+
+      /* ── BUTTONS ── */
+      .btn-showcase {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+      }
+      .ds-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-family: var(--font);
+        font-weight: 700;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        outline: none;
+        padding: 10px 24px;
+        border-radius: var(--radius-sm);
+        letter-spacing: 0.2px;
+        position: relative;
+        overflow: hidden;
+      }
+      .ds-btn::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0);
+        transition: background 0.2s;
+      }
+      .ds-btn:hover::after {
+        background: rgba(255, 255, 255, 0.12);
+      }
+      .ds-btn:active {
+        transform: scale(0.97);
+      }
+
+      .btn-primary-blue {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(66, 103, 178, 0.3);
+      }
+      .btn-primary-blue:hover {
+        background: var(--primary-dark);
+        box-shadow: 0 6px 20px rgba(66, 103, 178, 0.4);
+      }
+      .btn-cta-orange {
+        background: var(--orange);
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(255, 90, 0, 0.3);
+      }
+      .btn-cta-orange:hover {
+        background: var(--orange-dark);
+        box-shadow: 0 6px 20px rgba(255, 90, 0, 0.4);
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+      }
+      .btn-ghost:hover {
+        background: var(--primary);
+        color: #fff;
+      }
+      .btn-glass {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        padding: 10px 24px;
+        border-radius: var(--radius-sm);
+      }
+      .btn-glass:hover::after {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .btn-active-nav {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        border: none;
+      }
+      .btn-icon {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border-radius: var(--radius-full);
+      }
+
+      .btn-sm {
+        padding: 7px 16px;
+        font-size: 12px;
+      }
+      .btn-lg {
+        padding: 14px 32px;
+        font-size: 16px;
+      }
+
+      .glass-bg-demo {
+        background: var(--primary);
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30.012 36.326c5.584.093 11.168-1.574 15.684-4.832 1.348-.971 2.585-2.062 3.702-3.255-5.91-.741-11.82 1.258-15.684 4.832-.862.796-1.636 1.666-2.32 2.6' fill='%23ffffff' fill-opacity='0.07' fill-rule='evenodd'/%3E%3C/svg%3E");
+        border-radius: var(--radius-lg);
+        padding: 28px 24px;
+      }
+
+      /* ── CARDS ── */
+      .ds-card {
+        background: #fff;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+      }
+      .ds-card-glass {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border-radius: var(--radius-lg);
+      }
+      .ds-card-glass-dark {
+        background: rgba(17, 24, 39, 0.6);
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        border-radius: var(--radius-lg);
+      }
+
+      /* ── FLIGHT CARD ── */
+      .flight-card {
+        background: #fff;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        padding: 20px 24px;
+      }
+      .flight-card .airline-logo {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #e8f0fe, #c5d3f0);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 14px;
+        color: var(--primary);
+      }
+      .flight-route {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .flight-time {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--dark);
+      }
+      .flight-code {
+        font-size: 14px;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+      .flight-line {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+      .flight-duration {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+      .flight-track {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        gap: 2px;
+      }
+      .track-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        border: 2px solid var(--orange);
+        background: #fff;
+        flex-shrink: 0;
+      }
+      .track-dot.filled {
+        background: var(--orange);
+        border-color: var(--orange);
+      }
+      .track-dashed {
+        flex: 1;
+        border-top: 2px dashed #d1d5db;
+      }
+      .flight-stop {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .flight-price {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--orange);
+      }
+
+      /* ── SPACING ── */
+      .spacing-row {
+        display: flex;
+        align-items: flex-end;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .spacing-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .spacing-box {
+        background: var(--primary);
+        opacity: 0.2;
+        border-radius: 4px;
+        width: 100%;
+      }
+      .spacing-label {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--text-muted);
+        text-align: center;
+      }
+
+      /* ── RADIUS ── */
+      .radius-demo {
+        background: var(--primary);
+        width: 80px;
+        height: 80px;
+      }
+
+      /* ── SHADOWS ── */
+      .shadow-card {
+        background: #fff;
+        height: 80px;
+        border-radius: var(--radius-md);
+        margin-bottom: 4px;
+      }
+
+      /* ── INPUTS ── */
+      .ds-input-wrap {
+        position: relative;
+      }
+      .ds-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 6px;
+        display: block;
+      }
+      .ds-input {
+        width: 100%;
+        padding: 11px 14px;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid #e2e8f0;
+        font-family: var(--font);
+        font-size: 14px;
+        color: var(--dark);
+        background: #fff;
+        outline: none;
+        transition: all 0.2s;
+      }
+      .ds-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+      }
+      .ds-input.error {
+        border-color: #ef4444;
+      }
+      .ds-input::placeholder {
+        color: var(--text-light);
+      }
+      .error-msg {
+        font-size: 11px;
+        color: #ef4444;
+        margin-top: 4px;
+        font-weight: 500;
+      }
+
+      /* ── NAV PREVIEW ── */
+      .nav-preview {
+        background: var(--primary);
+        border-radius: var(--radius-lg);
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #fff;
+        font-weight: 800;
+        font-size: 18px;
+      }
+      .nav-items {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .nav-item {
+        padding: 7px 14px;
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      .nav-item.active {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+      .nav-cta {
+        background: var(--orange);
+        color: #fff;
+        padding: 8px 18px;
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      /* ── MODALS ── */
+      .modal-demo {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.75);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        padding: 28px;
+        max-width: 340px;
+      }
+      .modal-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 16px;
+      }
+
+      /* ── BADGES / PILLS ── */
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 12px;
+        border-radius: var(--radius-full);
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .pill-primary {
+        background: rgba(66, 103, 178, 0.1);
+        color: var(--primary);
+      }
+      .pill-success {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .pill-warning {
+        background: #fef9c3;
+        color: #713f12;
+      }
+      .pill-danger {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .pill-orange {
+        background: rgba(255, 90, 0, 0.1);
+        color: var(--orange);
+      }
+      .pill-glass {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(8px);
+      }
+
+      /* ── NOTES ── */
+      .note {
+        background: #eff6ff;
+        border-left: 3px solid var(--primary);
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        padding: 12px 16px;
+        font-size: 12px;
+        color: #1e3a8a;
+        margin-bottom: 12px;
+      }
+      .note.warn {
+        background: #fffbeb;
+        border-color: #f59e0b;
+        color: #92400e;
+      }
+
+      /* ── ICON GRID ── */
+      .icon-cell {
+        background: #fff;
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid #eef0f4;
+      }
+      .icon-cell span {
+        font-size: 10px;
+        color: var(--text-muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* FOOTER */
+      .ds-footer {
+        background: var(--dark);
+        color: rgba(255, 255, 255, 0.5);
+        text-align: center;
+        padding: 32px;
+        font-size: 12px;
+        margin-top: 64px;
+      }
+      .ds-footer strong {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 768px) {
+        .grid-4,
+        .grid-5 {
+          grid-template-columns: 1fr 1fr;
+        }
+        .grid-3 {
+          grid-template-columns: 1fr 1fr;
+        }
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .page-header h1 {
+          font-size: 28px;
+        }
+        .container {
+          padding: 0 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ════════════════════════════════════ HEADER ════════════════════════════════════ -->
+    <div class="page-header">
+      <div class="container">
+        <p>Design System</p>
+        <h1>Tiket<span>Q</span></h1>
+        <div class="badge-row">
+          <span class="badge">Next.js 14</span>
+          <span class="badge">TypeScript</span>
+          <span class="badge">Tailwind CSS</span>
+          <span class="badge">NextUI</span>
+          <span class="badge">Montserrat</span>
+          <span class="badge">i18n (id / en)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- ═══════════════════════ 1. COLOR SYSTEM ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">01 — Foundations</p>
+        <h2 class="section-heading">Color System</h2>
+
+        <div class="note warn">
+          <strong>Inconsistency resolved:</strong> The Tailwind config defined
+          <code>primary: #3C9DFF</code> but the actual Navbar, the CSS variable
+          <code>--primary</code>, and the <code>.bg-blue</code> utility all use
+          <code>#4267B2</code>. Since <code>#4267B2</code> is referenced more
+          across the codebase and matches the logo, it is the canonical primary.
+          Similarly, two near-identical dark values (<code>#2F3033</code> vs
+          <code>#2B2D31</code>) and two cyan values (<code>#0AD1FF</code> vs
+          <code>#00D5FF</code>) were resolved to the Tailwind config values.
+        </div>
+
+        <h3
+          style="
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 16px;
+          "
+        >
+          Primary Palette
+        </h3>
+        <div class="grid-4" style="margin-bottom: 28px">
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #4267b2"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">
+                Primary <span class="resolved-tag">canonical</span>
+              </div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">#4267B2</div>
+                <div class="swatch-use">Navbar · bg-blue · --primary</div>
+              </div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #2f4f8a"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">Primary Dark</div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">#2F4F8A</div>
+                <div class="swatch-use">Hover state for primary</div>
+              </div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #3c9dff"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">
+                Cornflower <span class="conflict-tag">deprecated</span>
+              </div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">#3C9DFF</div>
+                <div class="swatch-use">
+                  Tailwind primary.DEFAULT — replaced by #4267B2
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #0ad1ff"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">Secondary / Cyan</div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">#0AD1FF</div>
+                <div class="swatch-use">
+                  Accents · --secondary · deepbluesky
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3
+          style="
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 16px;
+          "
+        >
+          Action & Semantic
+        </h3>
+        <div class="grid-5" style="margin-bottom: 28px">
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #ff5a00"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">CTA Orange</div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">#FF5A00</div>
+                <div class="swatch-use">Primary CTA button · Login btn</div>
+              </div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #e65100"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">Orange Dark</div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">#E65100</div>
+                <div class="swatch-use">Hover of CTA</div>
+              </div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #2f3033"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">Dark Slate</div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">#2F3033</div>
+                <div class="swatch-use">accent · darkslategrey · --accent</div>
+              </div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #22c55e"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">Success</div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">Tailwind green-500</div>
+                <div class="swatch-use">Payment success</div>
+              </div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #ef4444"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">Error</div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">Tailwind red-500</div>
+                <div class="swatch-use">Payment failed · form errors</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3
+          style="
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 16px;
+          "
+        >
+          Neutrals
+        </h3>
+        <div class="grid-5">
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #f0f4f8"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">BG Base</div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">slate-50 #f0f4f8</div>
+                <div class="swatch-use">Page background</div>
+              </div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #e2e8f0"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">Border</div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">slate-200 #e2e8f0</div>
+                <div class="swatch-use">Dividers · Input borders</div>
+              </div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #6b7280"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">Text Muted</div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">gray-500 #6b7280</div>
+                <div class="swatch-use">Supporting text</div>
+              </div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-block" style="background: #1e2228"></div>
+            <div class="swatch-info">
+              <div class="swatch-name">Text Body</div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">slate-900 #1e2228</div>
+                <div class="swatch-use">Primary text</div>
+              </div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div
+              class="swatch-block"
+              style="background: #ffffff; border: 1px solid #e2e8f0"
+            ></div>
+            <div class="swatch-info">
+              <div class="swatch-name">Surface</div>
+              <div class="swatch-meta">
+                <div class="swatch-hex">#FFFFFF</div>
+                <div class="swatch-use">Cards · Modals · Inputs</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ═══════════════════════ 2. TYPOGRAPHY ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">02 — Foundations</p>
+        <h2 class="section-heading">Typography</h2>
+
+        <div class="note">
+          <strong>Font family:</strong> Montserrat (Google Fonts) — applied
+          globally on <code>body</code> via <code>globals.css</code>. Used at
+          all weights from 300–900. No fallback display font is defined.
+        </div>
+
+        <div class="type-specimen">
+          <div
+            class="sample"
+            style="
+              font-size: 40px;
+              font-weight: 900;
+              letter-spacing: -2px;
+              color: var(--dark);
+            "
+          >
+            Display / Hero
+          </div>
+          <div class="type-meta">
+            <div class="t-label">40px / 900</div>
+            <div class="t-spec">letter-spacing: -2px</div>
+          </div>
+        </div>
+        <div class="type-specimen">
+          <div
+            class="sample"
+            style="font-size: 26px; font-weight: 800; letter-spacing: -0.5px"
+          >
+            Section Heading
+          </div>
+          <div class="type-meta">
+            <div class="t-label">26px / 800</div>
+            <div class="t-spec">letter-spacing: -0.5px</div>
+          </div>
+        </div>
+        <div class="type-specimen">
+          <div class="sample" style="font-size: 22px; font-weight: 700">
+            Card Price / Time
+          </div>
+          <div class="type-meta">
+            <div class="t-label">22px / 700</div>
+            <div class="t-spec">text-2xl + font-bold</div>
+          </div>
+        </div>
+        <div class="type-specimen">
+          <div class="sample" style="font-size: 18px; font-weight: 600">
+            Sub-heading
+          </div>
+          <div class="type-meta">
+            <div class="t-label">18px / 600</div>
+            <div class="t-spec">text-xl / font-semibold</div>
+          </div>
+        </div>
+        <div class="type-specimen">
+          <div class="sample" style="font-size: 16px; font-weight: 500">
+            Card Title / Vessel Name
+          </div>
+          <div class="type-meta">
+            <div class="t-label">16px / 500</div>
+            <div class="t-spec">text-base / font-medium</div>
+          </div>
+        </div>
+        <div class="type-specimen">
+          <div class="sample" style="font-size: 14px; font-weight: 400">
+            Body / Default
+          </div>
+          <div class="type-meta">
+            <div class="t-label">14px / 400</div>
+            <div class="t-spec">text-sm / font-normal</div>
+          </div>
+        </div>
+        <div class="type-specimen">
+          <div
+            class="sample"
+            style="
+              font-size: 12px;
+              font-weight: 600;
+              letter-spacing: 2px;
+              text-transform: uppercase;
+              color: var(--primary);
+            "
+          >
+            LABEL / OVERLINE
+          </div>
+          <div class="type-meta">
+            <div class="t-label">11px / 700</div>
+            <div class="t-spec">tracking-widest + uppercase</div>
+          </div>
+        </div>
+        <div class="type-specimen">
+          <div
+            class="sample"
+            style="font-size: 10px; font-weight: 500; color: var(--text-muted)"
+          >
+            Caption / Helper text
+          </div>
+          <div class="type-meta">
+            <div class="t-label">10px / 500</div>
+            <div class="t-spec">text-xs / text-gray-500</div>
+          </div>
+        </div>
+        <div class="type-specimen">
+          <div
+            class="sample"
+            style="
+              font-family: var(--font-mono);
+              font-size: 12px;
+              color: var(--dark);
+            "
+          >
+            IDR 1.250.000 / Org
+          </div>
+          <div class="type-meta">
+            <div class="t-label">Mono — JetBrains</div>
+            <div class="t-spec">Prices, codes, tokens</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ═══════════════════════ 3. SPACING ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">03 — Foundations</p>
+        <h2 class="section-heading">Spacing Scale</h2>
+        <p
+          style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px"
+        >
+          Tailwind's 4px base unit. Key values extracted from component usage.
+        </p>
+        <div class="spacing-row">
+          <div class="spacing-item">
+            <div
+              class="spacing-box"
+              style="height: 4px; width: 44px; opacity: 0.4"
+            ></div>
+            <span class="spacing-label">1 (4px)</span>
+          </div>
+          <div class="spacing-item">
+            <div
+              class="spacing-box"
+              style="height: 8px; width: 44px; opacity: 0.45"
+            ></div>
+            <span class="spacing-label">2 (8px)</span>
+          </div>
+          <div class="spacing-item">
+            <div
+              class="spacing-box"
+              style="height: 12px; width: 44px; opacity: 0.5"
+            ></div>
+            <span class="spacing-label">3 (12px)</span>
+          </div>
+          <div class="spacing-item">
+            <div
+              class="spacing-box"
+              style="height: 16px; width: 44px; opacity: 0.55"
+            ></div>
+            <span class="spacing-label">4 (16px)</span>
+          </div>
+          <div class="spacing-item">
+            <div
+              class="spacing-box"
+              style="height: 20px; width: 44px; opacity: 0.6"
+            ></div>
+            <span class="spacing-label">5 (20px)</span>
+          </div>
+          <div class="spacing-item">
+            <div
+              class="spacing-box"
+              style="height: 24px; width: 44px; opacity: 0.65"
+            ></div>
+            <span class="spacing-label">6 (24px)</span>
+          </div>
+          <div class="spacing-item">
+            <div
+              class="spacing-box"
+              style="height: 32px; width: 44px; opacity: 0.7"
+            ></div>
+            <span class="spacing-label">8 (32px)</span>
+          </div>
+          <div class="spacing-item">
+            <div
+              class="spacing-box"
+              style="height: 40px; width: 44px; opacity: 0.75"
+            ></div>
+            <span class="spacing-label">10 (40px)</span>
+          </div>
+          <div class="spacing-item">
+            <div
+              class="spacing-box"
+              style="height: 48px; width: 44px; opacity: 0.8"
+            ></div>
+            <span class="spacing-label">12 (48px)</span>
+          </div>
+          <div class="spacing-item">
+            <div
+              class="spacing-box"
+              style="height: 56px; width: 44px; opacity: 0.85"
+            ></div>
+            <span class="spacing-label">14 (56px)</span>
+          </div>
+          <div class="spacing-item">
+            <div
+              class="spacing-box"
+              style="height: 64px; width: 44px; opacity: 0.9"
+            ></div>
+            <span class="spacing-label">16 (64px)</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ═══════════════════════ 4. BORDER RADIUS ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">04 — Foundations</p>
+        <h2 class="section-heading">Border Radius</h2>
+        <div class="grid-5">
+          <div class="token-card" style="text-align: center">
+            <div
+              style="
+                background: var(--primary);
+                width: 60px;
+                height: 60px;
+                border-radius: 4px;
+                margin: 0 auto 12px;
+              "
+            ></div>
+            <div class="token-label">sm</div>
+            <div class="token-value">4px — rounded-sm</div>
+            <div
+              style="font-size: 11px; color: var(--text-muted); margin-top: 4px"
+            >
+              Tags, small badges
+            </div>
+          </div>
+          <div class="token-card" style="text-align: center">
+            <div
+              style="
+                background: var(--primary);
+                width: 60px;
+                height: 60px;
+                border-radius: 8px;
+                margin: 0 auto 12px;
+              "
+            ></div>
+            <div class="token-label">md / default</div>
+            <div class="token-value">8px — rounded-lg</div>
+            <div
+              style="font-size: 11px; color: var(--text-muted); margin-top: 4px"
+            >
+              Buttons, inputs, token cards
+            </div>
+          </div>
+          <div class="token-card" style="text-align: center">
+            <div
+              style="
+                background: var(--primary);
+                width: 60px;
+                height: 60px;
+                border-radius: 12px;
+                margin: 0 auto 12px;
+              "
+            ></div>
+            <div class="token-label">lg</div>
+            <div class="token-value">12px — rounded-xl</div>
+            <div
+              style="font-size: 11px; color: var(--text-muted); margin-top: 4px"
+            >
+              Image containers, inner cards
+            </div>
+          </div>
+          <div class="token-card" style="text-align: center">
+            <div
+              style="
+                background: var(--primary);
+                width: 60px;
+                height: 60px;
+                border-radius: 16px;
+                margin: 0 auto 12px;
+              "
+            ></div>
+            <div class="token-label">xl (primary)</div>
+            <div class="token-value">16px — rounded-2xl</div>
+            <div
+              style="font-size: 11px; color: var(--text-muted); margin-top: 4px"
+            >
+              Cards, modals, glass panels
+            </div>
+          </div>
+          <div class="token-card" style="text-align: center">
+            <div
+              style="
+                background: var(--primary);
+                width: 60px;
+                height: 60px;
+                border-radius: 9999px;
+                margin: 0 auto 12px;
+              "
+            ></div>
+            <div class="token-label">full</div>
+            <div class="token-value">9999px — rounded-full</div>
+            <div
+              style="font-size: 11px; color: var(--text-muted); margin-top: 4px"
+            >
+              Pill buttons, avatar, icon btns
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ═══════════════════════ 5. SHADOWS ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">05 — Foundations</p>
+        <h2 class="section-heading">Elevation & Shadows</h2>
+        <div class="grid-4">
+          <div>
+            <div
+              class="shadow-card"
+              style="box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06)"
+            ></div>
+            <div class="token-label">sm</div>
+            <div class="token-value" style="font-size: 11px">shadow-sm</div>
+            <div style="font-size: 11px; color: var(--text-muted)">
+              Subtle lift, token cards
+            </div>
+          </div>
+          <div>
+            <div
+              class="shadow-card"
+              style="box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1)"
+            ></div>
+            <div class="token-label">md</div>
+            <div class="token-value" style="font-size: 11px">shadow-md</div>
+            <div style="font-size: 11px; color: var(--text-muted)">
+              Flight / Ferry cards
+            </div>
+          </div>
+          <div>
+            <div
+              class="shadow-card"
+              style="box-shadow: 0 16px 48px rgba(0, 0, 0, 0.14)"
+            ></div>
+            <div class="token-label">lg</div>
+            <div class="token-value" style="font-size: 11px">shadow-xl</div>
+            <div style="font-size: 11px; color: var(--text-muted)">
+              Modals, hover states
+            </div>
+          </div>
+          <div>
+            <div
+              class="shadow-card"
+              style="
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(24px);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+              "
+            ></div>
+            <div class="token-label">glass</div>
+            <div class="token-value" style="font-size: 11px">glass-card</div>
+            <div style="font-size: 11px; color: var(--text-muted)">
+              Glass morphism panels
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ═══════════════════════ 6. GLASS MORPHISM ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">06 — Foundations</p>
+        <h2 class="section-heading">Glass Morphism System</h2>
+        <p
+          style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px"
+        >
+          The app's signature visual treatment. Three named variants plus glass
+          navbar.
+        </p>
+
+        <div class="glass-bg-demo">
+          <div class="grid-3" style="gap: 16px">
+            <!-- Glass Light -->
+            <div>
+              <div class="ds-card-glass" style="padding: 20px">
+                <p
+                  style="
+                    color: #fff;
+                    font-weight: 700;
+                    font-size: 14px;
+                    margin-bottom: 6px;
+                  "
+                >
+                  .glass-card
+                </p>
+                <p style="color: rgba(255, 255, 255, 0.7); font-size: 12px">
+                  bg: rgba(255,255,255, 0.05)<br />blur: 24px<br />border:
+                  rgba(255,255,255, 0.1)<br />Used on: modals, overlays
+                </p>
+              </div>
+            </div>
+            <!-- Glass Dark -->
+            <div>
+              <div class="ds-card-glass-dark" style="padding: 20px">
+                <p
+                  style="
+                    color: #fff;
+                    font-weight: 700;
+                    font-size: 14px;
+                    margin-bottom: 6px;
+                  "
+                >
+                  .glass-card-dark
+                </p>
+                <p style="color: rgba(255, 255, 255, 0.6); font-size: 12px">
+                  bg: rgba(17,24,39, 0.6)<br />blur: 24px<br />shadow: 0 8px
+                  32px rgba(0,0,0,.3)<br />Used on: dark overlays
+                </p>
+              </div>
+            </div>
+            <!-- Glass White -->
+            <div>
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.85);
+                  backdrop-filter: blur(20px);
+                  border: 1px solid rgba(255, 255, 255, 0.75);
+                  border-radius: var(--radius-lg);
+                  padding: 20px;
+                "
+              >
+                <p
+                  style="
+                    color: var(--dark);
+                    font-weight: 700;
+                    font-size: 14px;
+                    margin-bottom: 6px;
+                  "
+                >
+                  .glass-card (modal)
+                </p>
+                <p style="color: var(--text-muted); font-size: 12px">
+                  bg: rgba(255,255,255, 0.85)<br />blur: 20px<br />border:
+                  rgba(255,255,255, .75)<br />Used on: Login / Register / Find
+                  modal
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px">
+          <div class="token-card">
+            <div class="token-label">CSS Variables</div>
+            <pre
+              style="
+                font-family: var(--font-mono);
+                font-size: 12px;
+                color: var(--dark);
+                margin-top: 8px;
+                line-height: 1.8;
+              "
+            >
+--glass-bg:     rgba(255, 255, 255, 0.05)
+--glass-border: rgba(255, 255, 255, 0.10)
+--glass-blur:   24px
+--glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.10)</pre
+            >
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ═══════════════════════ 7. BUTTONS ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">07 — Components</p>
+        <h2 class="section-heading">Button System</h2>
+
+        <div class="note">
+          Custom <code>&lt;Button bgColor="blue|orange"&gt;</code> wraps
+          NextUI's BaseButton. The two semantic colors map to utility classes
+          <code>.button-blue</code> and <code>.button-orange</code>.
+        </div>
+
+        <div class="grid-2" style="gap: 28px">
+          <!-- Primary -->
+          <div class="token-card">
+            <div class="token-label" style="margin-bottom: 14px">
+              Primary — Blue <code>.button-blue</code>
+            </div>
+            <div class="btn-showcase" style="margin-bottom: 16px">
+              <button class="ds-btn btn-primary-blue btn-sm">Small</button>
+              <button class="ds-btn btn-primary-blue">Default</button>
+              <button class="ds-btn btn-primary-blue btn-lg">Large</button>
+            </div>
+            <pre
+              style="
+                font-family: var(--font-mono);
+                font-size: 11px;
+                color: var(--text-muted);
+                line-height: 1.7;
+              "
+            >
+bg: #2563eb (blue-600)
+hover-bg: #1d4ed8 (blue-700)
+shadow: shadow-lg
+hover-shadow: shadow-blue-500/30
+active: scale-95</pre
+            >
+          </div>
+
+          <!-- CTA Orange -->
+          <div class="token-card">
+            <div class="token-label" style="margin-bottom: 14px">
+              CTA — Orange <code>.button-orange</code>
+            </div>
+            <div class="btn-showcase" style="margin-bottom: 16px">
+              <button class="ds-btn btn-cta-orange btn-sm">Small</button>
+              <button class="ds-btn btn-cta-orange">Default</button>
+              <button class="ds-btn btn-cta-orange btn-lg">Large</button>
+            </div>
+            <pre
+              style="
+                font-family: var(--font-mono);
+                font-size: 11px;
+                color: var(--text-muted);
+                line-height: 1.7;
+              "
+            >
+bg: #f97316 (orange-500)
+hover-bg: #ea580c (orange-600)
+shadow: shadow-lg
+hover-shadow: shadow-orange-500/30
+active: scale-95</pre
+            >
+          </div>
+        </div>
+
+        <div style="margin-top: 20px" class="grid-2" style="gap: 28px">
+          <!-- Navbar variants on dark bg -->
+          <div class="token-card">
+            <div class="token-label" style="margin-bottom: 14px">
+              Navbar Variants (on primary bg)
+            </div>
+            <div class="glass-bg-demo" style="border-radius: var(--radius-md)">
+              <div class="btn-showcase">
+                <button class="ds-btn btn-active-nav">Active Nav</button>
+                <button class="ds-btn btn-glass">Ghost Nav</button>
+                <button
+                  class="ds-btn"
+                  style="
+                    background: #ff5a00;
+                    color: #fff;
+                    font-weight: 700;
+                    padding: 10px 22px;
+                    border-radius: 8px;
+                  "
+                >
+                  Login CTA
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ghost + Icon -->
+          <div class="token-card">
+            <div class="token-label" style="margin-bottom: 14px">
+              Ghost & Icon Button
+            </div>
+            <div class="btn-showcase">
+              <button class="ds-btn btn-ghost">Outline</button>
+              <button class="ds-btn btn-primary-blue btn-icon">✈</button>
+              <button class="ds-btn btn-cta-orange btn-icon">⚓</button>
+              <button
+                class="ds-btn"
+                style="
+                  background: transparent;
+                  color: var(--text-muted);
+                  border: 1.5px solid #e2e8f0;
+                  border-radius: 8px;
+                  font-weight: 600;
+                "
+              >
+                Disabled
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ═══════════════════════ 8. CARDS ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">08 — Components</p>
+        <h2 class="section-heading">Card Patterns</h2>
+
+        <div class="grid-2" style="gap: 24px; margin-bottom: 24px">
+          <!-- Flight Card -->
+          <div>
+            <div class="token-label" style="margin-bottom: 10px">
+              Flight Card — <code>FlightCard</code>
+            </div>
+            <div class="flight-card">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 16px;
+                  flex-wrap: wrap;
+                "
+              >
+                <div class="airline-logo">GA</div>
+                <div style="flex: 1; min-width: 120px">
+                  <div
+                    style="
+                      font-size: 15px;
+                      font-weight: 600;
+                      color: var(--dark);
+                    "
+                  >
+                    Garuda Indonesia
+                  </div>
+                  <div class="flight-price" style="margin-top: 4px">
+                    Rp 1.250.000 / Org
+                  </div>
+                </div>
+                <div class="flight-route" style="flex: 2; min-width: 200px">
+                  <div style="text-align: center">
+                    <div class="flight-time">07:30</div>
+                    <div class="flight-code">CGK</div>
+                  </div>
+                  <div class="flight-line">
+                    <div class="flight-duration">2j 10m</div>
+                    <div class="flight-track">
+                      <div class="track-dot"></div>
+                      <div class="track-dashed"></div>
+                      <div class="track-dot filled"></div>
+                    </div>
+                    <div class="flight-stop">Direct</div>
+                  </div>
+                  <div style="text-align: center">
+                    <div class="flight-time">09:40</div>
+                    <div class="flight-code">BTH</div>
+                  </div>
+                </div>
+                <button
+                  class="ds-btn btn-cta-orange btn-sm"
+                  style="min-width: 90px"
+                >
+                  Pilih
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ferry Card -->
+          <div>
+            <div class="token-label" style="margin-bottom: 10px">
+              Ferry Card — <code>FerryCard</code>
+            </div>
+            <div class="flight-card">
+              <div style="display: flex; align-items: center; gap: 16px">
+                <div
+                  style="
+                    width: 50px;
+                    height: 50px;
+                    background: linear-gradient(135deg, #dbeafe, #93c5fd);
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 22px;
+                  "
+                >
+                  ⚓
+                </div>
+                <div style="flex: 1">
+                  <div
+                    style="
+                      font-size: 13px;
+                      font-weight: 700;
+                      color: var(--text-muted);
+                    "
+                  >
+                    KM BAHARI EXPRESS
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      font-size: 16px;
+                      font-weight: 700;
+                      margin-top: 4px;
+                    "
+                  >
+                    <span>Batam</span>
+                    <span style="font-size: 12px; color: #d1d5db">————</span>
+                    <span>Tanjung Balai</span>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      font-size: 12px;
+                      color: var(--text-muted);
+                      margin-top: 2px;
+                    "
+                  >
+                    <span>08:00</span><span>10:30</span>
+                  </div>
+                  <div
+                    style="
+                      font-size: 12px;
+                      color: var(--text-muted);
+                      margin-top: 2px;
+                    "
+                  >
+                    52 kursi tersedia
+                  </div>
+                </div>
+                <div style="text-align: right">
+                  <div
+                    style="
+                      font-size: 20px;
+                      font-weight: 700;
+                      color: var(--orange);
+                    "
+                  >
+                    Rp 85.000
+                  </div>
+                  <button
+                    class="ds-btn btn-cta-orange btn-sm"
+                    style="margin-top: 8px"
+                  >
+                    Pesan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Car Card -->
+        <div>
+          <div class="token-label" style="margin-bottom: 10px">
+            Car Card — <code>CarCard</code> (Glass variant)
+          </div>
+          <div
+            style="
+              background: linear-gradient(135deg, #3c9dff22, #4267b222);
+              border-radius: var(--radius-lg);
+              padding: 20px;
+            "
+          >
+            <div style="display: flex; gap: 16px; flex-wrap: wrap">
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.3);
+                  backdrop-filter: blur(24px);
+                  border: 1px solid rgba(255, 255, 255, 0.2);
+                  border-radius: var(--radius-lg);
+                  padding: 16px;
+                  flex: 1;
+                  min-width: 200px;
+                  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 120px;
+                    background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 40px;
+                    margin-bottom: 12px;
+                  "
+                >
+                  🚗
+                </div>
+                <div
+                  style="font-size: 14px; font-weight: 700; color: var(--dark)"
+                >
+                  Toyota Avanza
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: var(--text-muted);
+                    margin-top: 2px;
+                  "
+                >
+                  5 Penumpang · Manual
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 12px;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 16px;
+                      font-weight: 700;
+                      color: var(--orange);
+                    "
+                  >
+                    Rp 350.000<span
+                      style="
+                        font-size: 11px;
+                        color: var(--text-muted);
+                        font-weight: 400;
+                      "
+                      >/hari</span
+                    >
+                  </div>
+                  <button class="ds-btn btn-cta-orange btn-sm">Sewa</button>
+                </div>
+              </div>
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.3);
+                  backdrop-filter: blur(24px);
+                  border: 1px solid rgba(255, 255, 255, 0.2);
+                  border-radius: var(--radius-lg);
+                  padding: 16px;
+                  flex: 1;
+                  min-width: 200px;
+                  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 120px;
+                    background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 40px;
+                    margin-bottom: 12px;
+                  "
+                >
+                  🚙
+                </div>
+                <div
+                  style="font-size: 14px; font-weight: 700; color: var(--dark)"
+                >
+                  Honda HR-V
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: var(--text-muted);
+                    margin-top: 2px;
+                  "
+                >
+                  5 Penumpang · CVT
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 12px;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 16px;
+                      font-weight: 700;
+                      color: var(--orange);
+                    "
+                  >
+                    Rp 450.000<span
+                      style="
+                        font-size: 11px;
+                        color: var(--text-muted);
+                        font-weight: 400;
+                      "
+                      >/hari</span
+                    >
+                  </div>
+                  <button class="ds-btn btn-cta-orange btn-sm">Sewa</button>
+                </div>
+              </div>
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.3);
+                  backdrop-filter: blur(24px);
+                  border: 1px solid rgba(255, 255, 255, 0.2);
+                  border-radius: var(--radius-lg);
+                  padding: 16px;
+                  flex: 1;
+                  min-width: 200px;
+                  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    height: 120px;
+                    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 40px;
+                    margin-bottom: 12px;
+                  "
+                >
+                  🚐
+                </div>
+                <div
+                  style="font-size: 14px; font-weight: 700; color: var(--dark)"
+                >
+                  Daihatsu Xenia
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: var(--text-muted);
+                    margin-top: 2px;
+                  "
+                >
+                  7 Penumpang · Manual
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 12px;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 16px;
+                      font-weight: 700;
+                      color: var(--orange);
+                    "
+                  >
+                    Rp 320.000<span
+                      style="
+                        font-size: 11px;
+                        color: var(--text-muted);
+                        font-weight: 400;
+                      "
+                      >/hari</span
+                    >
+                  </div>
+                  <button class="ds-btn btn-cta-orange btn-sm">Sewa</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ═══════════════════════ 9. NAVIGATION ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">09 — Components</p>
+        <h2 class="section-heading">Navigation</h2>
+
+        <div class="token-label" style="margin-bottom: 10px">
+          AppNavbar — sticky, primary bg, glass modals
+        </div>
+        <div class="nav-preview">
+          <div class="nav-brand">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <circle cx="14" cy="14" r="14" fill="rgba(255,255,255,0.2)" />
+              <text
+                x="50%"
+                y="55%"
+                dominant-baseline="middle"
+                text-anchor="middle"
+                fill="white"
+                font-size="12"
+                font-family="Montserrat"
+                font-weight="900"
+              >
+                TQ
+              </text>
+            </svg>
+            TiketQ
+          </div>
+          <div class="nav-items">
+            <div class="nav-item active">✈ Penerbangan</div>
+            <div class="nav-item">⚓ Feri</div>
+            <div class="nav-item">🚗 Sewa Mobil</div>
+            <div
+              class="nav-item"
+              style="
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+              "
+            >
+              Cari Booking
+            </div>
+            <div
+              class="nav-item"
+              style="
+                padding: 7px 10px;
+                border-radius: 9999px;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+              "
+            >
+              🇮🇩
+            </div>
+            <div class="nav-cta">Masuk</div>
+          </div>
+        </div>
+
+        <div
+          style="margin-top: 20px; display: flex; gap: 16px; flex-wrap: wrap"
+        >
+          <div style="flex: 1; min-width: 280px">
+            <div class="token-label" style="margin-bottom: 10px">
+              Modal (glass white) — Login / Register / Find
+            </div>
+            <div class="modal-demo">
+              <div class="modal-title">Masuk</div>
+              <div>
+                <label class="ds-label">Email</label>
+                <input
+                  class="ds-input"
+                  placeholder="nama@email.com"
+                  style="margin-bottom: 12px"
+                />
+                <label class="ds-label">Kata Sandi</label>
+                <input
+                  class="ds-input"
+                  type="password"
+                  placeholder="••••••••"
+                />
+                <button
+                  class="ds-btn btn-primary-blue"
+                  style="width: 100%; margin-top: 16px"
+                >
+                  Masuk
+                </button>
+              </div>
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 280px">
+            <div class="token-label" style="margin-bottom: 10px">
+              CheckoutNavbar — minimal, white
+            </div>
+            <div
+              style="
+                background: #fff;
+                border-radius: var(--radius-lg);
+                padding: 16px 24px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                box-shadow: var(--shadow-sm);
+                border: 1px solid #eef0f4;
+              "
+            >
+              <div
+                style="font-size: 16px; font-weight: 800; color: var(--primary)"
+              >
+                TiketQ
+              </div>
+              <div style="display: flex; gap: 8px">
+                <div
+                  style="
+                    width: 28px;
+                    height: 28px;
+                    background: var(--primary);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #fff;
+                    font-size: 11px;
+                    font-weight: 700;
+                  "
+                >
+                  1
+                </div>
+                <div
+                  style="
+                    width: 3px;
+                    height: 3px;
+                    background: #d1d5db;
+                    border-radius: 50%;
+                    margin: 12px 2px;
+                  "
+                ></div>
+                <div
+                  style="
+                    width: 28px;
+                    height: 28px;
+                    background: #e2e8f0;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #6b7280;
+                    font-size: 11px;
+                    font-weight: 700;
+                  "
+                >
+                  2
+                </div>
+                <div
+                  style="
+                    width: 3px;
+                    height: 3px;
+                    background: #d1d5db;
+                    border-radius: 50%;
+                    margin: 12px 2px;
+                  "
+                ></div>
+                <div
+                  style="
+                    width: 28px;
+                    height: 28px;
+                    background: #e2e8f0;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #6b7280;
+                    font-size: 11px;
+                    font-weight: 700;
+                  "
+                >
+                  3
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ═══════════════════════ 10. FORM INPUTS ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">10 — Components</p>
+        <h2 class="section-heading">Form Inputs</h2>
+        <div class="grid-3">
+          <div class="token-card">
+            <div class="token-label" style="margin-bottom: 12px">
+              Text Input — Default
+            </div>
+            <label class="ds-label">From</label>
+            <input class="ds-input" placeholder="City or Airport" />
+            <div
+              style="font-size: 11px; color: var(--text-light); margin-top: 6px"
+            >
+              border: 1.5px solid #e2e8f0 → on focus: #4267B2 + ring
+            </div>
+          </div>
+          <div class="token-card">
+            <div class="token-label" style="margin-bottom: 12px">
+              Text Input — Error
+            </div>
+            <label class="ds-label">Destination</label>
+            <input class="ds-input error" value="Batam" />
+            <div class="error-msg">⚠ Destination cannot match origin</div>
+          </div>
+          <div class="token-card">
+            <div class="token-label" style="margin-bottom: 12px">
+              Select / Date Input
+            </div>
+            <label class="ds-label">Departure Date</label>
+            <input class="ds-input" type="date" value="2026-04-21" />
+            <div
+              style="font-size: 11px; color: var(--text-light); margin-top: 6px"
+            >
+              NextUI DatePicker / native fallback
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ═══════════════════════ 11. BADGES ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">11 — Components</p>
+        <h2 class="section-heading">Pills & Badges</h2>
+        <div
+          style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center"
+        >
+          <span class="pill pill-primary">✈ Penerbangan</span>
+          <span class="pill pill-orange">🔥 Best Price</span>
+          <span class="pill pill-success">✓ Confirmed</span>
+          <span class="pill pill-warning">⏳ Pending</span>
+          <span class="pill pill-danger">✗ Failed</span>
+          <div
+            style="
+              background: var(--primary);
+              padding: 10px 16px;
+              border-radius: var(--radius-md);
+              display: inline-flex;
+              gap: 8px;
+            "
+          >
+            <span class="pill pill-glass">🇮🇩 ID</span>
+            <span class="pill pill-glass">Transit</span>
+            <span class="pill pill-glass">Direct</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ═══════════════════════ 12. TOKENS TABLE ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">12 — Reference</p>
+        <h2 class="section-heading">Design Token Reference</h2>
+        <div class="token-card">
+          <table
+            style="width: 100%; border-collapse: collapse; font-size: 12px"
+          >
+            <thead>
+              <tr style="border-bottom: 2px solid #e2e8f0">
+                <th
+                  style="
+                    text-align: left;
+                    padding: 10px 12px;
+                    color: var(--text-muted);
+                    font-weight: 700;
+                    letter-spacing: 0.5px;
+                    font-size: 10px;
+                    text-transform: uppercase;
+                  "
+                >
+                  Token
+                </th>
+                <th
+                  style="
+                    text-align: left;
+                    padding: 10px 12px;
+                    color: var(--text-muted);
+                    font-weight: 700;
+                    letter-spacing: 0.5px;
+                    font-size: 10px;
+                    text-transform: uppercase;
+                  "
+                >
+                  Value
+                </th>
+                <th
+                  style="
+                    text-align: left;
+                    padding: 10px 12px;
+                    color: var(--text-muted);
+                    font-weight: 700;
+                    letter-spacing: 0.5px;
+                    font-size: 10px;
+                    text-transform: uppercase;
+                  "
+                >
+                  Tailwind Class
+                </th>
+                <th
+                  style="
+                    text-align: left;
+                    padding: 10px 12px;
+                    color: var(--text-muted);
+                    font-weight: 700;
+                    letter-spacing: 0.5px;
+                    font-size: 10px;
+                    text-transform: uppercase;
+                  "
+                >
+                  Usage
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #f1f5f9">
+                <td
+                  style="
+                    padding: 10px 12px;
+                    font-family: var(--font-mono);
+                    color: var(--primary);
+                  "
+                >
+                  --primary
+                </td>
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  #4267B2
+                </td>
+                <td style="padding: 10px 12px">bg-[#4267B2]</td>
+                <td style="padding: 10px 12px; color: var(--text-muted)">
+                  Navbar, primary actions
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9; background: #fafafa">
+                <td
+                  style="
+                    padding: 10px 12px;
+                    font-family: var(--font-mono);
+                    color: #0ad1ff;
+                  "
+                >
+                  --secondary
+                </td>
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  #0AD1FF
+                </td>
+                <td style="padding: 10px 12px">text-secondary</td>
+                <td style="padding: 10px 12px; color: var(--text-muted)">
+                  Logo accent, highlights
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9">
+                <td
+                  style="
+                    padding: 10px 12px;
+                    font-family: var(--font-mono);
+                    color: var(--orange);
+                  "
+                >
+                  CTA Orange
+                </td>
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  #FF5A00
+                </td>
+                <td style="padding: 10px 12px">
+                  button-orange / bg-orange-500
+                </td>
+                <td style="padding: 10px 12px; color: var(--text-muted)">
+                  All primary CTAs, prices
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9; background: #fafafa">
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  Blue Button
+                </td>
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  #2563EB
+                </td>
+                <td style="padding: 10px 12px">button-blue / bg-blue-600</td>
+                <td style="padding: 10px 12px; color: var(--text-muted)">
+                  Secondary actions
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9">
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  --accent / Dark
+                </td>
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  #2F3033
+                </td>
+                <td style="padding: 10px 12px">bg-accent</td>
+                <td style="padding: 10px 12px; color: var(--text-muted)">
+                  Dark surfaces, icon fills
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9; background: #fafafa">
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  Card Radius
+                </td>
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  16px
+                </td>
+                <td style="padding: 10px 12px">rounded-2xl</td>
+                <td style="padding: 10px 12px; color: var(--text-muted)">
+                  Cards, modals, glass panels
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9">
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  Button Radius
+                </td>
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  8px
+                </td>
+                <td style="padding: 10px 12px">rounded-lg</td>
+                <td style="padding: 10px 12px; color: var(--text-muted)">
+                  Buttons, inputs
+                </td>
+              </tr>
+              <tr style="background: #fafafa">
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  Font
+                </td>
+                <td style="padding: 10px 12px; font-family: var(--font-mono)">
+                  Montserrat
+                </td>
+                <td style="padding: 10px 12px">font-sans (overridden)</td>
+                <td style="padding: 10px 12px; color: var(--text-muted)">
+                  All text globally
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════ 13. PAGE BACKGROUNDS ═══════════════════════ -->
+      <div class="section">
+        <p class="section-title">13 — Foundations</p>
+        <h2 class="section-heading">Page Background Themes</h2>
+        <div class="grid-3">
+          <div class="token-card" style="padding: 0; overflow: hidden">
+            <div
+              style="
+                height: 100px;
+                background: #3c9dff
+                  url(&quot;data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30.012 36.326c5.584.093 11.168-1.574 15.684-4.832' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E&quot;)
+                  center;
+              "
+            ></div>
+            <div style="padding: 14px 16px">
+              <div class="swatch-name">.bg-pattern</div>
+              <div class="swatch-hex" style="margin-top: 4px">
+                #3c9dff + SVG wave overlay
+              </div>
+              <div class="swatch-use">Body background (home, flight pages)</div>
+            </div>
+          </div>
+          <div class="token-card" style="padding: 0; overflow: hidden">
+            <div
+              style="
+                height: 100px;
+                background: linear-gradient(to bottom, #1e3a6e, #2a4f9c);
+              "
+            ></div>
+            <div style="padding: 14px 16px">
+              <div class="swatch-name">.home-app</div>
+              <div class="swatch-hex" style="margin-top: 4px">
+                url("/images/bg-image.jpg")
+              </div>
+              <div class="swatch-use">Home hero section</div>
+            </div>
+          </div>
+          <div class="token-card" style="padding: 0; overflow: hidden">
+            <div
+              style="
+                height: 100px;
+                background: linear-gradient(to bottom, #1a365d, #2c5282);
+              "
+            ></div>
+            <div style="padding: 14px 16px">
+              <div class="swatch-name">.ferry-app</div>
+              <div class="swatch-hex" style="margin-top: 4px">
+                url("/images/ferry-bg.jpg") 0px 80%
+              </div>
+              <div class="swatch-use">Ferry hero section</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds-footer">
+      <strong>TiketQ Design System</strong> · Generated from source:
+      <code>github.com/alvianzf/tiket-FE</code> · Stack: Next.js · Tailwind CSS
+      · NextUI · Montserrat
+    </div>
+  </body>
+</html>
