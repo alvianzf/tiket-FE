@@ -33,19 +33,19 @@ const CheckoutOrderInfant = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                 >
-                    <Card className="glass-card border-none bg-white/10 backdrop-blur-3xl shadow-xl rounded-[32px] overflow-hidden">
-                        <CardHeader className="flex items-center gap-3 p-8 pb-4">
-                            <div className="w-10 h-10 rounded-2xl bg-orange-500/10 flex items-center justify-center">
-                                <Baby size={20} className="text-[#ff5a00]" />
+                    <Card className="glass-card shadow-md overflow-hidden">
+                        <CardHeader className="flex items-center gap-3 p-5 md:p-8 pb-3 md:pb-4">
+                            <div className="w-10 h-10 rounded-ds-md bg-primary/10 flex items-center justify-center shrink-0">
+                                <Baby size={20} className="text-primary" />
                             </div>
                             <span className="text-lg font-black text-slate-800 tracking-tight">
                                 {t('checkout.infant', { count: index+1 })}
                             </span>
                         </CardHeader>
-                        <Divider className="bg-white/10 mx-8 w-auto" />
-                        <CardBody className="p-8 pt-6">
-                            <div className="flex flex-col gap-8 w-full">
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <Divider className="bg-white/10 mx-5 md:mx-8 w-auto" />
+                        <CardBody className="p-5 md:p-8 pt-4 md:pt-6">
+                            <div className="flex flex-col gap-5 md:gap-8 w-full">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
                                     <Select
                                         label={t('checkout.choose')}
                                         labelPlacement="outside"
@@ -57,9 +57,9 @@ const CheckoutOrderInfant = () => {
                                         isInvalid={!!errors?.infantPassengers?.[index]?.call}
                                         onChange={(e) => setValue(`infantPassengers.${index}.call`, e.target.value)}
                                         classNames={{
-                                            label: "font-black uppercase tracking-[0.2em] text-slate-400 text-[10px]",
+                                            label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
                                             trigger: "h-10 min-h-unit-10",
-                                            value: "font-bold text-slate-700",
+                                            value: "font-semibold text-dark",
                                         }}
                                     >
                                         {options.map((item) => (
@@ -80,13 +80,13 @@ const CheckoutOrderInfant = () => {
                                             errorMessage={errors?.infantPassengers?.[index]?.firstname?.message}
                                             isInvalid={!!errors?.infantPassengers?.[index]?.firstname}
                                             classNames={{
-                                                label: "font-black uppercase tracking-[0.2em] text-slate-400 text-[10px]",
-                                                input: "font-bold text-slate-700",
+                                                label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
+                                                input: "font-semibold text-dark",
                                             }}
                                         />
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
                                     <Input
                                         type="text"
                                         label={t('checkout.last_name')}
@@ -98,8 +98,8 @@ const CheckoutOrderInfant = () => {
                                         errorMessage={errors?.infantPassengers?.[index]?.lastname?.message}
                                         isInvalid={!!errors?.infantPassengers?.[index]?.lastname}
                                         classNames={{
-                                            label: "font-black uppercase tracking-[0.2em] text-slate-400 text-[10px]",
-                                            input: "font-bold text-slate-700",
+                                            label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
+                                            input: "font-semibold text-dark",
                                         }}
                                     />
                                     <DatePicker
@@ -112,8 +112,8 @@ const CheckoutOrderInfant = () => {
                                         isInvalid={!!errors?.infantPassengers?.[index]?.date_of_birth}
                                         defaultValue={watch(`infantPassengers.${index}.date_of_birth`) ? parseDate(watch(`infantPassengers.${index}.date_of_birth`)) : null}
                                         classNames={{
-                                            label: "font-black uppercase tracking-[0.2em] text-slate-400 text-[10px]",
-                                            input: "font-bold text-slate-700",
+                                            label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
+                                            input: "font-mono font-semibold text-dark",
                                         }}
                                     />
                                 </div>

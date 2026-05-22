@@ -13,3 +13,10 @@ export const checkBookFlight = async (code: string) =>
     await baseAPI.get<GetBookFlightResponse>(API_CHECK_BOOK_FLIGHT(code))
         .then(handleDefaultSuccess)
         .catch(handleDefaultError);
+
+const API_PROCESS_FLIGHT_PAYMENT = '/api/flight/payment';
+
+export const processFlightPayment = async (request: { bookingCode: string; nominal: number | string }) =>
+    await baseAPI.post(API_PROCESS_FLIGHT_PAYMENT, request)
+        .then(handleDefaultSuccess)
+        .catch(handleDefaultError);

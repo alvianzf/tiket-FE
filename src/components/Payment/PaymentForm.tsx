@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { createMidtransToken } from "@api/midtrans";
 import { midtrans_snap_request } from "@api/midtrans/types";
+import { processFlightPayment } from "@api/bookFlight";
 
 const MIDTRANS_CLIENT_KEY = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
 
@@ -87,7 +88,7 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
 
             let token = localStorage.getItem('midtransToken');
             if (!token) {
-                const orderId = `order-id-${Math.round((new Date()).getTime() / 1000)}`;
+                const orderId = `ORDER-${flight?.data?.bookingCode}-${Math.round((new Date()).getTime() / 1000)}`;
                 const grossAmount = total;
 
                 const request: midtrans_snap_request = {
@@ -117,9 +118,19 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
 
             if (window.snap) {
                 window.snap.pay(token as string, {
-                    onSuccess: function (result: SnapResult) {
+                    onSuccess: async function (result: SnapResult) {
                         console.log('success', result);
-                        push('/checkout/payment/success');
+                        try {
+                            if (flight?.data?.bookingCode) {
+                                await processFlightPayment({ bookingCode: flight.data.bookingCode, nominal: total });
+                            }
+                        } catch (e) {
+                            console.error('Failed to issue ticket', e);
+                        }
+                        push({
+                            pathname: '/checkout/payment/success',
+                            query: { bookingno: flight?.data?.bookingCode }
+                        });
                     },
                     onPending: function (result: SnapResult) {
                         console.log('pending', result);
@@ -151,10 +162,20 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
         const token = localStorage.getItem('midtransToken');
         if (token && window.snap) {
             window.snap.pay(token, {
-                onSuccess: function (result: SnapResult) {
+                onSuccess: async function (result: SnapResult) {
                     console.log('success', result);
                     localStorage.removeItem('midtransToken');
-                    push('/checkout/payment/success');
+                    try {
+                        if (flight?.data?.bookingCode) {
+                            await processFlightPayment({ bookingCode: flight.data.bookingCode, nominal: total });
+                        }
+                    } catch (e) {
+                        console.error('Failed to issue ticket', e);
+                    }
+                    push({
+                        pathname: '/checkout/payment/success',
+                        query: { bookingno: flight?.data?.bookingCode }
+                    });
                 },
                 onPending: function (result: SnapResult) {
                     console.log('pending', result);

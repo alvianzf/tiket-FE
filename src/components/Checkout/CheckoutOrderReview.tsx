@@ -56,16 +56,16 @@ const CheckoutOrderReview = () => {
                 {/* Contact Summary */}
                 <motion.div variants={itemVariants} className="flex flex-col gap-6">
                     <div className="flex items-center gap-3">
-                        <div className="w-1.5 h-6 bg-[#ff5a00] rounded-full"></div>
-                        <p className="text-xl font-extrabold text-slate-800 tracking-tight">{t('checkout.order_section_title')}</p>
+                        <div className="w-1.5 h-6 bg-primary rounded-full"></div>
+                        <p className="text-xl font-extrabold text-dark tracking-tight">{t('checkout.order_section_title')}</p>
                     </div>
 
-                    <Card className="glass-card border-none bg-white/10 backdrop-blur-3xl shadow-xl rounded-[32px] overflow-hidden">
+                    <Card className="glass-card shadow-md overflow-hidden">
                         <CardHeader className="flex items-center gap-3 p-8 pb-4">
-                            <div className="w-10 h-10 rounded-2xl bg-orange-500/10 flex items-center justify-center">
-                                <ClipboardCheck size={20} className="text-[#ff5a00]" />
+                            <div className="w-10 h-10 rounded-ds-md bg-primary/10 flex items-center justify-center">
+                                <ClipboardCheck size={20} className="text-primary" />
                             </div>
-                            <span className="text-lg font-black text-slate-800 tracking-tight">
+                            <span className="text-lg font-bold text-dark tracking-tight">
                                 {watch('firstname')} {watch('lastname')}
                             </span>
                         </CardHeader>
@@ -73,21 +73,21 @@ const CheckoutOrderReview = () => {
                         <CardBody className="p-8 pt-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="flex items-center gap-4 group">
-                                    <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center group-hover:bg-orange-500/10 transition-colors">
-                                        <Mail size={18} className="text-slate-400 group-hover:text-[#ff5a00]" />
+                                    <div className="w-12 h-12 rounded-ds-md bg-slate-100 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                                        <Mail size={18} className="text-slate-400 group-hover:text-primary" />
                                     </div>
                                     <div className="flex flex-col">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-0.5">{t('checkout.email')}</p>
-                                        <p className="font-bold text-slate-700">{watch('email') || '-'}</p>
+                                        <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-sans mb-0.5">{t('checkout.email')}</p>
+                                        <p className="font-semibold text-dark">{watch('email') || '-'}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-4 group">
-                                    <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center group-hover:bg-orange-500/10 transition-colors">
-                                        <Phone size={18} className="text-slate-400 group-hover:text-[#ff5a00]" />
+                                    <div className="w-12 h-12 rounded-ds-md bg-slate-100 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                                        <Phone size={18} className="text-slate-400 group-hover:text-primary" />
                                     </div>
                                     <div className="flex flex-col">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-0.5">{t('checkout.phone_no')}</p>
-                                        <p className="font-bold text-slate-700">{watch('phone') || '-'}</p>
+                                        <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-sans mb-0.5">{t('checkout.phone_no')}</p>
+                                        <p className="font-mono font-semibold text-dark">{watch('phone') || '-'}</p>
                                     </div>
                                 </div>
                             </div>
@@ -98,8 +98,8 @@ const CheckoutOrderReview = () => {
                 {/* Travelers Summary */}
                 <motion.div variants={itemVariants} className="flex flex-col gap-6">
                     <div className="flex items-center gap-3">
-                        <div className="w-1.5 h-6 bg-[#ff5a00] rounded-full"></div>
-                        <p className="text-xl font-extrabold text-slate-800 tracking-tight">{t('checkout.detail_traveler')}</p>
+                        <div className="w-1.5 h-6 bg-primary rounded-full"></div>
+                        <p className="text-xl font-extrabold text-dark tracking-tight">{t('checkout.detail_traveler')}</p>
                     </div>
 
                     <div className="flex flex-col gap-4">

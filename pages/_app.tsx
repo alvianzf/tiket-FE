@@ -1,7 +1,7 @@
 import { defaultQueryOption } from "@api/baseApi";
 import { AppPropsWithLayout } from "@interfaces/common";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Hydrate, QueryClient, QueryClientProvider, QueryErrorResetBoundary } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { NextUIProvider } from "@nextui-org/react";
 import { I18nProvider } from "@react-aria/i18n";
 import "@styles/global.css"
+import io from 'socket.io-client';
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
     const { t, i18n } = useTranslation();
@@ -18,6 +19,19 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
     // Match NextUI DatePicker locale to i18n language
     const locale = i18n.language === 'en' ? 'en-GB' : 'id-ID';
+
+    useEffect(() => {
+        // Connect to the backend socket server
+        const socket = io(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3001');
+        
+        socket.on('connect', () => {
+            socket.emit('visitor_connected');
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
 
     return (
         <I18nProvider locale={locale}>

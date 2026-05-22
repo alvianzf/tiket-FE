@@ -17,20 +17,20 @@ const CheckoutOrder = () => {
         <div className="flex flex-col gap-12">
             <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-6 bg-orange-500 rounded-full"></div>
-                    <p className="text-xl font-extrabold text-slate-800 tracking-tight">{t('checkout.order_section_title')}</p>
+                    <div className="w-1.5 h-6 bg-primary rounded-full"></div>
+                    <p className="text-xl font-extrabold text-dark tracking-tight">{t('checkout.order_section_title')}</p>
                 </div>
                 
-                <Card className="glass-card border-none bg-white/10 backdrop-blur-3xl shadow-xl rounded-[32px] overflow-hidden">
-                    <CardHeader className="flex flex-col items-start gap-1 p-8 pb-4">
+                <Card className="glass-card shadow-md overflow-hidden">
+                    <CardHeader className="flex flex-col items-start gap-1 p-5 md:p-8 pb-3 md:pb-4">
                         <div className="flex items-center gap-2 text-slate-400 font-black uppercase tracking-[0.2em] text-xs">
                             <FileText size={14} />
                             <span>{t('checkout.order_section_description')}</span>
                         </div>
                     </CardHeader>
-                    <Divider className="bg-white/10 mx-8 w-auto" />
-                    <CardBody className="p-8 pt-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                    <Divider className="bg-white/10 mx-5 md:mx-8 w-auto" />
+                    <CardBody className="p-5 md:p-8 pt-4 md:pt-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 w-full">
                             <Input
                                 type="text"
                                 label={t('checkout.name_middle_name')}
@@ -43,8 +43,8 @@ const CheckoutOrder = () => {
                                 isInvalid={!!errors?.firstname}
                                 startContent={<User size={18} className="text-slate-400 mr-2" />}
                                 classNames={{
-                                    label: "font-black uppercase tracking-[0.2em] text-slate-400 text-[10px]",
-                                    input: "font-bold text-slate-700",
+                                    label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
+                                    input: "font-semibold text-dark",
                                 }}
                             />
                             <Input
@@ -59,8 +59,8 @@ const CheckoutOrder = () => {
                                 isInvalid={!!errors?.lastname}
                                 startContent={<User size={18} className="text-slate-400 mr-2" />}
                                 classNames={{
-                                    label: "font-black uppercase tracking-[0.2em] text-slate-400 text-[10px]",
-                                    input: "font-bold text-slate-700",
+                                    label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
+                                    input: "font-semibold text-dark",
                                 }}
                             />
                             <Input
@@ -75,8 +75,8 @@ const CheckoutOrder = () => {
                                 isInvalid={!!errors?.phone}
                                 startContent={<Phone size={18} className="text-slate-400 mr-2" />}
                                 classNames={{
-                                    label: "font-black uppercase tracking-[0.2em] text-slate-400 text-[10px]",
-                                    input: "font-bold text-slate-700",
+                                    label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
+                                    input: "font-mono font-semibold text-dark",
                                 }}
                             />
                             <Input
@@ -91,8 +91,8 @@ const CheckoutOrder = () => {
                                 isInvalid={!!errors?.email}
                                 startContent={<Mail size={18} className="text-slate-400 mr-2" />}
                                 classNames={{
-                                    label: "font-black uppercase tracking-[0.2em] text-slate-400 text-[10px]",
-                                    input: "font-bold text-slate-700",
+                                    label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
+                                    input: "font-semibold text-dark",
                                 }}
                             />
                         </div>
@@ -102,8 +102,8 @@ const CheckoutOrder = () => {
 
             <div className="flex flex-col gap-8">
                 <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-6 bg-orange-500 rounded-full"></div>
-                    <p className="text-xl font-extrabold text-slate-800 tracking-tight">{t('checkout.detail_traveler')}</p>
+                    <div className="w-1.5 h-6 bg-primary rounded-full"></div>
+                    <p className="text-xl font-extrabold text-dark tracking-tight">{t('checkout.detail_traveler')}</p>
                 </div>
                 
                 <div className="flex flex-col gap-6">
