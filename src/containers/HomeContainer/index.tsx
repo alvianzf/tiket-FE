@@ -9,7 +9,7 @@ const HomeContainer = () => {
     return (
         <>
         <div className="relative">
-            <div className="flex flex-wrap justify-center min-h-[500px] bg-pattern home-app relative z-30 pt-24 pb-32">
+            <div className="flex flex-wrap justify-center min-h-[500px] bg-pattern home-app relative z-50 pt-24 pb-32">
                 <motion.div 
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}

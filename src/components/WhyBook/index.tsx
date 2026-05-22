@@ -36,7 +36,7 @@ const WhyBook = () => {
             
             <div className="flex flex-col w-full gap-16 max-w-[1280px] px-6 relative z-10">
                 <div className="text-center space-y-4">
-                    <h2 className="text-4xl font-bold text-white tracking-tight">
+                    <h2 className="text-4xl font-bold text-slate-800 tracking-tight">
                         {t('home.why_book_title')}
                     </h2>
                     <div className="w-24 h-1 bg-secondary mx-auto rounded-full shadow-[0_0_10px_rgba(0,213,255,0.5)]"></div>
@@ -44,21 +44,21 @@ const WhyBook = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                     {features.map((feature, index) => (
-                        <div key={index} className="glass-card p-8 bg-white/10 border-white/20 hover:bg-white/15 hover:scale-105 transition-all text-center space-y-6 group shadow-xl">
+                        <div key={index} className="glass-card p-8 bg-white border-slate-100 hover:scale-105 transition-all text-center space-y-6 group shadow-xl hover:shadow-2xl">
                             <div className={`w-24 h-24 ${feature.bgColor} rounded-3xl flex items-center justify-center mx-auto ${feature.hoverIconBg} group-hover:rotate-6 transition-all duration-500 shadow-inner`}>
                                 <NextImage 
                                     src={feature.icon} 
                                     alt={feature.title} 
                                     width={60} 
                                     height={60} 
-                                    className="group-hover:brightness-0 group-hover:invert transition-all duration-300 drop-shadow-lg"
+                                    className="group-hover:brightness-0 group-hover:invert transition-all duration-300 drop-shadow-sm"
                                 />
                             </div>
                             <div className="space-y-3">
-                                <h3 className="text-2xl font-bold text-white group-hover:text-secondary transition-colors">
+                                <h3 className="text-2xl font-bold text-slate-800 group-hover:text-secondary transition-colors">
                                     {feature.title}
                                 </h3>
-                                <p className="text-white/80 leading-relaxed font-light text-lg">
+                                <p className="text-slate-600 leading-relaxed font-light text-lg">
                                     {feature.description}
                                 </p>
                             </div>

@@ -7,7 +7,7 @@ const ShipContainer = () => {
     return (
         <>
         <div className="flex flex-col min-h-screen">
-            <div className="flex flex-wrap justify-center min-h-[500px] ferry-app relative overflow-hidden">
+            <div className="flex flex-wrap justify-center min-h-[500px] ferry-app relative z-30">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/20 z-0"></div>
                 <div className="flex flex-wrap justify-center lg:justify-end items-center w-full py-12 px-6 lg:px-20 relative z-10 max-w-[1440px]">
                     <div className="animate-fade-in-up">

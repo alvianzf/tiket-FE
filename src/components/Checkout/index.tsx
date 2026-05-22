@@ -101,17 +101,17 @@ const Checkout = ({ flightData, isLoading }: Props) => {
     }
 
     return (
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-10 w-full">
             <FormProvider {...methods}>
-                <div className="flex justify-center">
+                <div className="flex w-full">
                     <Tabs 
                         aria-label="Checkout Steps" 
                         variant="underlined" 
                         selectedKey={selected} 
                         classNames={{
                             cursor:"bg-cta h-1 rounded-full",
-                            base: "justify-center",
-                            tabList: "gap-12 border-b border-primary/10 pb-0",
+                            base: "w-full",
+                            tabList: "gap-12 border-b border-primary/10 pb-0 w-full",
                             tab: "max-w-fit px-0 h-14",
                             tabContent: "group-data-[selected=true]:text-cta font-black uppercase tracking-[0.2em] text-xs"
                         }} 

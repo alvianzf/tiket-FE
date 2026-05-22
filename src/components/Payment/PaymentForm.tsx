@@ -192,7 +192,7 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
                 }
             });
         }
-    }, [push, isMidtransLoaded, flight?.data?.bookingCode, total]);
+    }, [push, isMidtransLoaded, flight, total]);
 
     return (
         <>

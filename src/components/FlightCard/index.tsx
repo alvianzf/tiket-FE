@@ -52,7 +52,7 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
                                 <div className="flex flex-col gap-1">
                                     <p className="text-lg font-extrabold text-dark tracking-tight leading-tight">{flight.airlineName}</p>
                                     <p className="text-xl md:text-2xl text-cta font-mono font-bold tracking-tighter">
-                                        {!isMounted ? "" : (minPrice !== null && Number.isFinite(minPrice) && minPrice > 0 ? 
+                                        {!isMounted ? "" : (minPrice !== null && Number.isFinite(minPrice) && minPrice >= 0 ? 
                                             `${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(minPrice)}` : 
                                             "Harga Tidak Tersedia")}
                                         <span className="text-[10px] font-sans font-medium text-slate-500 ml-1">/ Org</span>
