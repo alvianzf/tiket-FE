@@ -76,18 +76,19 @@ const AppNavbar = () => {
                 }}
             >
                 {/* Mobile Menu Toggle */}
-                <NavbarContent className="lg:hidden" justify="start">
-                    <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} className="text-white" />
+                <NavbarContent className="lg:hidden relative z-20" justify="start">
+                    <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} className="text-white relative z-30" />
                 </NavbarContent>
 
-                {/* Logo - Desktop & Mobile */}
-                <NavbarContent className="hidden lg:flex" justify="start">
+                {/* Mobile Logo centered absolutely */}
+                <div className="absolute left-1/2 -translate-x-1/2 lg:hidden z-10 py-2 flex items-center h-full">
                     <NavbarBrand onClick={() => push('/')} className="cursor-pointer">
                         <Logo />
                     </NavbarBrand>
-                </NavbarContent>
+                </div>
 
-                <NavbarContent className="lg:hidden pr-3" justify="center">
+                {/* Logo - Desktop */}
+                <NavbarContent className="hidden lg:flex" justify="start">
                     <NavbarBrand onClick={() => push('/')} className="cursor-pointer">
                         <Logo />
                     </NavbarBrand>
