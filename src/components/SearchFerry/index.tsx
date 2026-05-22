@@ -102,6 +102,7 @@ const SearchFerry = () => {
                                 }
                             }}
                             isLoading={isLoadingRoutes}
+                            popoverProps={{ classNames: { content: "z-[9999]" }, placement: "bottom" }}
                         >
                             {departurePorts.map((port: any) => (
                                 <AutocompleteItem key={port.code} value={port.code} className="capitalize">
@@ -125,6 +126,7 @@ const SearchFerry = () => {
                                 }
                             }}
                             isDisabled={!departurePort}
+                            popoverProps={{ classNames: { content: "z-[9999]" }, placement: "bottom" }}
                         >
                             {availableDestinations.map((port: any) => (
                                 <AutocompleteItem key={port.code} value={port.code} className="capitalize">

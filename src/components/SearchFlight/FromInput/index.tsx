@@ -35,8 +35,9 @@ const FromInput = ({ items, isLoading } : Props) => {
                 startContent={<FaPlaneDeparture className="text-primary mr-2" />}
                 classNames={{
                     listbox: 'flex flex-col',
-                    popoverContent: 'w-[350px] md:w-[800px] glass-card bg-white/80'
+                    popoverContent: 'w-[350px] md:w-[800px] glass-card bg-white/80 z-[9999]'
                 }}
+                popoverProps={{ className: "z-[9999]" }}
                 listboxProps={{
                     classNames: {
                         list: "flex flex-col gap-3",
