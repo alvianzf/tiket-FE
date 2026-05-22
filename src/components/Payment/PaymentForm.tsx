@@ -157,6 +157,8 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
         }
     };
 
+    const total = parseInt(flight?.data?.nominal ?? '0');
+
     useEffect(() => {
         if (!isMidtransLoaded) return;
         const token = localStorage.getItem('midtransToken');
@@ -190,9 +192,7 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
                 }
             });
         }
-    }, [push, isMidtransLoaded]);
-
-    const total = parseInt(flight?.data?.nominal ?? '0');
+    }, [push, isMidtransLoaded, flight?.data?.bookingCode, total]);
 
     return (
         <>

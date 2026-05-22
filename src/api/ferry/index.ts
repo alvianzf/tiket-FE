@@ -42,5 +42,5 @@ export const submitFerryBooking = async (data: { id: string; emailConfirmation: 
 
 export const getFerryBooking = async (id: string): Promise<FerryBooking> => {
   const response = await baseApi.get(API_FERRY_GET_BOOKING(id));
-  return response.data;
+  return response.data?.data ?? response.data;
 };
