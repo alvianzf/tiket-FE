@@ -73,6 +73,10 @@ const FlightListContainer = () => {
     const filteredAndSortedFlights = useMemo(() => {
         return flightDatas
             .filter(flight => {
+                // Exclude flights with no valid pricing (0, null, NaN)
+                const price = getPrice(flight);
+                if (price === null) return false;
+
                 const airlineMatch = selectedAirlines.length === 0 || selectedAirlines.includes(flight.airlineName);
                 
                 // standard transit logic: isTransit true means Transit, false means Direct

@@ -57,24 +57,22 @@ export interface Flight {
 export const getPrice = (f: Flight): number | null => {
     if (!f.classes || f.classes.length === 0) return null;
     
-    let total = 0;
-    let hasValidPrice = false;
+    // For transit flights, the first segment carries the total bundled price.
+    // Connecting segments have price=0 by design (included in the first leg).
+    // For direct flights, there's only one segment.
+    // Strategy: use the first segment's price as the base fare.
+    const firstSegmentClasses = f.classes[0];
+    const firstClass = firstSegmentClasses?.[0];
 
-    // Sum the first class's price from every segment
-    f.classes.forEach(segmentClasses => {
-        const firstClass = segmentClasses?.[0];
-        if (firstClass && firstClass.price !== undefined && firstClass.price !== null) {
-            const rawPrice = firstClass.price as string | number;
-            const p = typeof rawPrice === 'string' ? parseFloat(rawPrice.replace(/[^0-9]/g, '')) : Number(rawPrice);
-            
-            if (!isNaN(p)) {
-                total += p;
-                hasValidPrice = true;
-            }
-        }
-    });
-    
-    return hasValidPrice ? total : null;
+    if (!firstClass || firstClass.price === undefined || firstClass.price === null) return null;
+
+    const rawPrice = firstClass.price as string | number;
+    const price = typeof rawPrice === 'string' ? parseFloat(rawPrice.replace(/[^0-9]/g, '')) : Number(rawPrice);
+
+    // Return null for 0, NaN, or negative prices — these flights have no valid pricing
+    if (!Number.isFinite(price) || price <= 0) return null;
+
+    return price;
 };
 
 export interface GetFlightRequest {
