@@ -1,8 +1,11 @@
 import React from "react";
-import { Image } from "@nextui-org/react";
-import NextImage from "next/image";
 import { useTranslation } from "react-i18next";
 import { useQueryGetAirlines } from '@queries/airlines';
+import LionAir from "@icons/LionAir";
+import Garuda from "@icons/Garuda";
+import Citilink from "@icons/Citilink";
+import Sriwijaya from "@icons/Sriwijaya";
+import BatikAir from "@icons/BatikAir";
 
 interface AirlineData {
     airlineCode: string;
@@ -16,17 +19,22 @@ const AirlinesPartners = () => {
         enabled: true
     });
 
-    const imageUrl = (code: string) => {
-        const baseUrl = 'http://117.102.64.238:1212/assets/maskapai';
-        const mapping: Record<string, string> = {
-            'LIO': 'TPJT.png',
-            'GAR': 'TPGA.png',
-            'CIT': 'TPQG.png',
-            'PLA': 'TPIP.png',
-            'SRI': 'TPSJ.png'
-        };
-        
-        return mapping[code] ? `${baseUrl}/${mapping[code]}` : '';
+    const getAirlineIcon = (code: string) => {
+        switch (code) {
+            case 'LIO':
+                return <LionAir width={90} height={30} />;
+            case 'GAR':
+                return <Garuda width={90} height={28} />;
+            case 'CIT':
+                return <Citilink width={95} height={24} />;
+            case 'SRI':
+                return <Sriwijaya width={90} height={28} />;
+            case 'PLA':
+            case 'BTK':
+                return <BatikAir width={90} height={30} />;
+            default:
+                return null;
+        }
     }
 
     return (
@@ -40,29 +48,23 @@ const AirlinesPartners = () => {
                 </p>
             </div>
             
-            <div className="flex flex-row gap-3 flex-wrap justify-center items-center">
+            <div className="flex flex-row gap-8 flex-wrap justify-center items-center mt-4">
                 {isFetching ? (
                     Array.from({ length: 5 }).map((_, i) => (
-                        <div key={i} className="w-12 h-12 rounded-lg bg-white/30 animate-pulse" />
+                        <div key={i} className="w-24 h-10 rounded-lg bg-white/30 animate-pulse" />
                     ))
                 ) : (
                     airlines?.data?.map((airline: AirlineData, index: number) => {
-                        const url = imageUrl(airline.airlineCode);
-                        if (!url) return null;
+                        const icon = getAirlineIcon(airline.airlineCode);
+                        if (!icon) return null;
                         
                         return (
                             <div 
                                 key={index} 
-                                className="w-14 h-14 p-2 transition-transform hover:scale-110 cursor-pointer flex items-center justify-center"
+                                className="w-28 h-12 transition-all duration-300 hover:scale-110 cursor-pointer flex items-center justify-center filter grayscale hover:grayscale-0 opacity-70 hover:opacity-100"
+                                title={airline.airlineName}
                             >
-                                <Image 
-                                    as={NextImage}
-                                    width={40} 
-                                    height={40} 
-                                    src={url} 
-                                    alt={airline.airlineName}
-                                    className="object-contain filter grayscale hover:grayscale-0 transition-all"
-                                />
+                                {icon}
                             </div>
                         );
                     })
