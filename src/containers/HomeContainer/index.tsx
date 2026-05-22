@@ -21,7 +21,7 @@ const HomeContainer = () => {
                 <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#f0f4f8] to-transparent z-10" />
             </div>
             
-            <div className="flex flex-wrap justify-center -mt-16 relative z-40 px-6 mb-24">
+            <div className="flex flex-wrap justify-center relative z-10 px-6 py-12">
                 <motion.div 
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
