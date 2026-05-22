@@ -183,7 +183,7 @@ const AppNavbar = () => {
                             variant="solid" 
                             radius="sm"
                             className="bg-cta text-white font-bold shadow-lg hover:bg-cta-dark hover:shadow-cta/30 transition-all px-8 active:scale-95"
-                            onPress={onOpenLogin}
+                            onPress={() => window.open('https://dashboard.tiketq.com', '_blank')}
                         >
                             {t('profile.login')}
                         </Button>
@@ -251,7 +251,7 @@ const AppNavbar = () => {
                             radius="sm"
                             className="bg-cta text-white font-bold h-14 text-xl shadow-lg active:scale-95"
                             onPress={() => {
-                                onOpenLogin();
+                                window.open('https://dashboard.tiketq.com', '_blank');
                                 setIsMenuOpen(false);
                             }}
                         >
