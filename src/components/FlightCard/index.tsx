@@ -77,7 +77,7 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
                                     <p className="text-[9px] md:text-[10px] font-black text-cta/80 uppercase tracking-widest text-center truncate w-full">
                                         {(!flight.isTransit || (flight.detailTitle?.length ?? 0) <= 1) 
                                             ? t('tickets.direct') 
-                                            : t('tickets.transit', { number: flight.detailTitle.length - 1 }).replace('%{number}', (flight.detailTitle.length - 1).toString())
+                                            : t('tickets.transit', { number: flight.detailTitle.length - 1 })
                                         }
                                     </p>
                                 </div>

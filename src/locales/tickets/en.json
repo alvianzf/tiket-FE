@@ -8,7 +8,7 @@
             "lowest_price": "Best Value (Lowest)",
             "best_time": "Optimal Timing",
             "direct": "Non-Stop",
-            "transit": "%{number} Stop(s)",
+            "transit": "{{number}} Stop(s)",
             "luggage": "Checked Baggage Included",
             "non_luggage": "Carry-on Only",
             "economy": "Economy Class",
@@ -38,7 +38,7 @@
             "infant_desc": "Under Age 2",
             "popular_city": "Top Destinations",
             "done": "Confirm Selection",
-            "passenger": "%{count} Traveler(s)",
+            "passenger": "{{count}} Traveler(s)",
             "passenger_nationalitty": "Traveler Nationality",
             "departure": "Departure",
             "departure_placeholder": "Where are you leaving from?",
@@ -50,7 +50,10 @@
             "order": "Begin Reservation",
             "select_schedule": "Choose Schedule",
             "ordering_details": "Review & Complete",
-            "payment": "Finalize Payment"
+            "payment": "Finalize Payment",
+            "seats_available": "{{count}} seats available",
+            "ferry_name": "Vessel Name",
+            "price": "Total Price"
         }
     }
 }

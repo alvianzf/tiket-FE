@@ -95,7 +95,7 @@ const FerryCard = ({ trip, embarkation, destination, tripdate }: Props) => {
                             <div className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full w-fit backdrop-blur-sm border border-white/10">
                                 <Users size={14} className="text-slate-400" />
                                 <span className="text-xs font-black text-slate-600 uppercase tracking-widest leading-none">
-                                    {trip.availableSeats} {t('tickets.seats_available')}
+                                    {t('tickets.seats_available', { count: trip.availableSeats })}
                                 </span>
                             </div>
                         </div>

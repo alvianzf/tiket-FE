@@ -68,7 +68,7 @@ const FlightFilter = ({
             >
               <Radio value="all" className="data-[selected=true]:text-orange-600 font-bold">{t('tickets.all') || 'Semua'}</Radio>
               <Radio value="direct" className="data-[selected=true]:text-orange-600 font-bold">{t('tickets.direct')}</Radio>
-              <Radio value="transit" className="data-[selected=true]:text-orange-600 font-bold">{t('tickets.transit', { number: 1 }).replace('%{number}', '1') || 'Transit'}</Radio>
+              <Radio value="transit" className="data-[selected=true]:text-orange-600 font-bold">{t('tickets.transit', { number: 1 }) || 'Transit'}</Radio>
             </RadioGroup>
           </div>
 
