@@ -40,8 +40,13 @@ export const handleDefaultError = <T>(error: DefaultError<T>) => {
 };
 
 const baseAPI = axios.create({
-    baseURL: getApiUrl(),
     timeout: 90_000, // Only wait for 90 seconds
+});
+
+// Dynamically resolve baseURL at request time (not at module load/SSR time)
+baseAPI.interceptors.request.use((config) => {
+    config.baseURL = getApiUrl();
+    return config;
 });
 
 baseAPI.interceptors.response.use(
