@@ -4,7 +4,12 @@ import { toast } from 'react-toastify';
 
 
 export const getApiUrl = () => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    let apiUrl = '';
+    try {
+        apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    } catch (e) {
+        // Safe fallback if 'process' is not defined globally in the browser
+    }
     
     if (typeof window !== 'undefined') {
         const hostname = window.location.hostname;
@@ -37,12 +42,6 @@ export const handleDefaultError = <T>(error: DefaultError<T>) => {
 const baseAPI = axios.create({
     baseURL: getApiUrl(),
     timeout: 90_000, // Only wait for 90 seconds
-});
-
-// Dynamically set baseURL on every outgoing request to support runtime environment changes
-baseAPI.interceptors.request.use((config) => {
-    config.baseURL = getApiUrl();
-    return config;
 });
 
 baseAPI.interceptors.response.use(
