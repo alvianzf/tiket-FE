@@ -1,6 +1,7 @@
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tab, Tabs, Button as BaseButton, useDisclosure } from "@nextui-org/react"
 import { useTranslation } from "react-i18next"
 import CheckoutOrder from "./CheckoutOrder";
+import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import CheckoutOrderReview from "./CheckoutOrderReview";
 import { FormProvider } from "react-hook-form";
@@ -87,11 +88,13 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                         bookingno: data.data.bookingCode
                     }
                 })
-                return
+                return;
             }
+            toast.error(data.msg || "Failed to create flight booking. Please try again.");
         },
-        onError: () => {
-            // Handle error
+        onError: (err: unknown) => {
+            const error = err as { message?: string };
+            toast.error(error?.message || "Failed to create flight booking. Please try again.");
         }
     })
 
