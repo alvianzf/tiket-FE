@@ -25,10 +25,10 @@ export interface PassengerResponse {
 }
 
 interface Buyer {
+    name?: string;
     telp_number: string;
     mobile_number: string;
     email: string;
-    name?: string;
 }
 
 export interface GetBookFlightResponse {

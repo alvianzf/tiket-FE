@@ -24,17 +24,11 @@ function formatDate(inputDate: string | number | Date) {
 
 const buildRequest = (data: FormProps): GetBookFlightRequest => {
 
-    const passengers: string[] = [];
-    const dateofbirths: string[] = [];
-
-    data.adultPassengers.map((adult) => passengers.push(`${adult.call}. ${adult.firstname} ${adult.lastname}`));
-    data.childPassengers.map((child) => passengers.push(`${child.call}. ${child.firstname} ${child.lastname}`));
-    data.infantPassengers.map((infant) => passengers.push(`${infant.call}. ${infant.firstname} ${infant.lastname}`));
-
-    data.adultPassengers.map((adult) => dateofbirths.push(adult.date_of_birth));
-    data.childPassengers.map((child) => dateofbirths.push(child.date_of_birth));
-    data.infantPassengers.map((infant) => dateofbirths.push(infant.date_of_birth));
-    
+    // Build buyer name from first adult passenger
+    const firstAdult = data.adultPassengers[0];
+    const buyerName = firstAdult
+        ? `${firstAdult.call}. ${firstAdult.firstname} ${firstAdult.lastname}`.trim()
+        : '';
 
     return {
         searchId: data.searchId,
@@ -42,6 +36,7 @@ const buildRequest = (data: FormProps): GetBookFlightRequest => {
         child: data.child.toString(),
         infant: data.infant.toString(),
         buyer: {
+            name: buyerName,
             telp_number: data.phone,
             mobile_number: data.phone,
             email: data.email
