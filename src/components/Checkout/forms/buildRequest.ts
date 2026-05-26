@@ -2,8 +2,10 @@ import { GetBookFlightRequest } from "@api/bookFlight/types";
 import { FormProps } from "./useForm";
 
 function formatDate(inputDate: string | number | Date) {
+    if (!inputDate) return '';
     // Create a new Date object from the input date string
     const date = new Date(inputDate);
+    if (isNaN(date.getTime())) return '';
     
     // Extract the necessary parts of the date (month, day, year)
     const month = date.getMonth() + 1; // getMonth() returns 0-11, so we add 1
@@ -49,19 +51,34 @@ const buildRequest = (data: FormProps): GetBookFlightRequest => {
                 title: adult.call,
                 first_name: adult.firstname,
                 last_name: adult.lastname,
-                date_of_birth: formatDate(adult.date_of_birth)
+                date_of_birth: formatDate(adult.date_of_birth),
+                nationality: '',
+                passport_number: '',
+                passport_issue_date: '',
+                passport_expiry_date: '',
+                passport_issuing_country: ''
             })),
-            childrens: data.childPassengers.map((child) => ({
+            children: data.childPassengers.map((child) => ({
                 title: child.call,
                 first_name: child.firstname,
                 last_name: child.lastname,
-                date_of_birth: formatDate(child.date_of_birth)
+                date_of_birth: formatDate(child.date_of_birth),
+                nationality: '',
+                passport_number: '',
+                passport_issue_date: '',
+                passport_expiry_date: '',
+                passport_issuing_country: ''
             })),
             infants: data.infantPassengers.map((infant) => ({
                 title: infant.call,
                 first_name: infant.firstname,
                 last_name: infant.lastname,
-                date_of_birth: formatDate(infant.date_of_birth)
+                date_of_birth: formatDate(infant.date_of_birth),
+                nationality: '',
+                passport_number: '',
+                passport_issue_date: '',
+                passport_expiry_date: '',
+                passport_issuing_country: ''
             }))
         }
     }

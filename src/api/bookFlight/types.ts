@@ -73,7 +73,7 @@ export interface GetBookFlightRequest {
     buyer: Buyer;
     passengers: {
         adults: PassengerRequest[];
-        childrens: PassengerRequest[];
+        children: PassengerRequest[];
         infants: PassengerRequest[];
     }
 }
