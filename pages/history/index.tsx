@@ -7,6 +7,7 @@ import { Input, Button, Card, CardBody, Skeleton } from "@nextui-org/react";
 import { useMutation } from "react-query";
 import axios from "axios";
 import OrderContainer from "@containers/OrderContainer";
+import { getApiUrl } from "@api/baseApi";
 
 const FindBookingPage: NextPageWithLayout = () => {
     const { t } = useTranslation('common');
@@ -16,7 +17,7 @@ const FindBookingPage: NextPageWithLayout = () => {
 
     const historyMutation = useMutation({
         mutationFn: async (searchEmail: string) => {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/history?email=${searchEmail}`);
+            const response = await axios.get(`${getApiUrl()}/api/history?email=${searchEmail}`);
             return response.data;
         },
         onSuccess: (data) => {

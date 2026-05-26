@@ -1,4 +1,4 @@
-import { defaultQueryOption } from "@api/baseApi";
+import { defaultQueryOption, getApiUrl } from "@api/baseApi";
 import { AppPropsWithLayout } from "@interfaces/common";
 import Head from "next/head";
 import { useState, useEffect } from "react";
@@ -21,19 +21,8 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     const locale = i18n.language === 'en' ? 'en-GB' : 'id-ID';
 
     useEffect(() => {
-        // Connect to the backend socket server
-        let apiUrl = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3001';
-
-        // Dynamically fallback to production API if we are running in the browser on production domains
-        if (typeof window !== 'undefined') {
-            const hostname = window.location.hostname;
-            const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.') || hostname.startsWith('10.');
-            
-            // If the bundled API URL points to localhost but the browser is on a production domain, auto-correct to the production API origin
-            if (!isLocal && (apiUrl.includes('localhost') || apiUrl.includes('127.0.0.1'))) {
-                apiUrl = 'https://api.tiketq.com';
-            }
-        }
+        // Connect to the backend socket server using unified dynamic API URL resolution
+        const apiUrl = getApiUrl();
 
         let socketUrl = 'http://localhost:3001';
         try {

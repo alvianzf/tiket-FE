@@ -3,6 +3,21 @@ import { DefaultError, DefaultSuccess } from "./types";
 import { toast } from 'react-toastify';
 
 
+export const getApiUrl = () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    
+    if (typeof window !== 'undefined') {
+        const hostname = window.location.hostname;
+        const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.') || hostname.startsWith('10.');
+        
+        if (isLocal) {
+            return 'http://localhost:3001';
+        }
+    }
+    
+    return apiUrl || 'https://api.tiketq.com';
+};
+
 export const defaultQueryOption = {
     defaultOptions: {
         queries: {
@@ -20,8 +35,14 @@ export const handleDefaultError = <T>(error: DefaultError<T>) => {
 };
 
 const baseAPI = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    baseURL: getApiUrl(),
     timeout: 90_000, // Only wait for 90 seconds
+});
+
+// Dynamically set baseURL on every outgoing request to support runtime environment changes
+baseAPI.interceptors.request.use((config) => {
+    config.baseURL = getApiUrl();
+    return config;
 });
 
 baseAPI.interceptors.response.use(
