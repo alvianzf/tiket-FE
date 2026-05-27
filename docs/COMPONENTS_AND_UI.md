@@ -1,18 +1,46 @@
-# Components & UI Architecture
+# UI Architecture & Component Map
 
-The frontend is built primarily with **Next.js**, utilizing **NextUI** components powered by **TailwindCSS**.
+**AI Context Note:** This document provides the explicit directory mapping of the frontend React components. When tasked with modifying a specific page or UI element, use this map to navigate the repository.
 
-## Directory Structure
+## The Navigation Bug Rule
 
-- `/src/components`: Reusable UI elements (Buttons, Navbars, ChatBot widgets).
-- `/src/containers`: High-level page wrappers representing entire views (e.g., `HomeContainer`, `EticketContainer`, `SearchFlightContainer`).
-- `/src/layouts`: Layout components that wrap pages (including the main `AppNavbar` and `Footer`).
-- `/src/styles`: Global CSS and Tailwind directives.
+**CRITICAL RULE FOR AI:** Do not use `onClick` handlers combined with state modifications on `<Link>` components, nor `onPress={() => router.push()}` on NextUI `<Button>` components.
 
-## Styling Guidelines
+**Correct:**
 
-We heavily utilize Tailwind utility classes. For complex components with interactive states (like the glass-morphism cards in the flight search forms), we use `backdrop-blur`, custom `bg-primary/10` opacity classes, and extensive micro-animations via `framer-motion`.
+```tsx
+<Button as={Link} href="/about">About</Button>
+<Link href="/about">About</Link>
+```
 
-## Navigation
+## Directory Map
 
-Navigation is handled seamlessly using Next.js native `<Link>` component and `useRouter`. Components inside `AppNavbar` listen to route changes (`pathname`) to automatically close mobile menus gracefully.
+### `/src/components` (Reusable UI Elements)
+
+These components are stateless or contain localized state. They do not fetch data.
+
+- `AppNavbar`: The main navigation header.
+- `Footer`: The global footer.
+- `ChatBot`: The Socket.io powered AI assistant widget.
+- `SearchFlight`: The flight search form logic.
+- `SearchFerry`: The ferry search form logic.
+- `CarRentalForm`: Form for car rentals.
+- `FlightCard`, `FerryCard`, `CarCard`: Display UI for search results.
+- `PersonalDataForm`, `ContactForm`: Booking input fields.
+- `LoginForm`, `RegisterForm`: Authentication modals.
+
+### `/src/containers` (Page-Level Views)
+
+These components wrap entire pages, invoke `react-query` hooks, and handle side effects.
+
+- `HomeContainer`: Landing page.
+- `FlightListContainer`, `FerryListContainer`: Search result pages.
+- `EticketContainer`: Display page for flight e-tickets. Listens to Socket.io for updates.
+- `FerrySuccessContainer`: Display page for ferry e-tickets.
+- `CheckoutContainer`, `PaymentContainer`: Multi-step payment workflows.
+- `ChangeProfileContainer`: User profile management.
+
+### `/src/layouts` (Wrappers)
+
+- `AppLayout.tsx`: Standard layout containing `AppNavbar` and `Footer`.
+- `CheckoutLayout.tsx`: Minimized layout used during payment to prevent user distraction.

@@ -1,23 +1,142 @@
-# State Management & Queries
+# State Management — React Query Hook Registry & Rules
 
-We use **React Query** (`react-query`) exclusively for handling server state and data fetching.
+**AI Context Note:** This document specifies the exact hook signatures derived from reading the `/src/queries` source files. Do not write raw axios calls in components.
 
-## Setup
+---
 
-Custom hooks are located in `/src/queries`. Each major domain has its own query hooks (e.g., `useQueryCheckBookFlight`).
+## The Golden Rule: No `refetchInterval`
 
-## Real-Time Invalidation
+```typescript
+// ❌ NEVER DO THIS — causes full-page spinner to re-mount every 30s
+const { data } = useQuery(key, fetcher, { refetchInterval: 30_000 });
 
-To avoid aggressive polling (like `refetchInterval`), we utilize **Socket.io**.
+// ✅ CORRECT — use Socket.io to trigger refetch on real events
+const { data, refetch } = useQuery(key, fetcher, { enabled });
+```
 
-1. Components establish a socket connection on mount (e.g., `EticketContainer`).
-2. They listen for specific domain events, such as `booking:update`.
-3. When the socket event matches the component's context (e.g. `payload.bookingNo === bookingno`), we manually call the `refetch()` function exposed by React Query. This guarantees our UI represents the server's real-time state seamlessly without unnecessary network requests.
+---
 
-## Internationalization (i18n)
+## `useQueryCheckBookFlight` — Full Signature
 
-Client-side translations are managed by `react-i18next`.
+**File:** `/src/queries/bookFlight/useQueryCheckBookFlight.ts`
 
-- JSON language files are stored in `/src/locales/`.
-- Usage: `const { t } = useTranslation();`
-- Strings are grouped into files like `common.json`, `checkout.json`, and nested under the language keys (`en`, `id`).
+```typescript
+interface Props {
+  enabled?: boolean;
+  onSuccess?: (response: GetBookFlightResponse) => void;
+  request: string; // The booking code (e.g. "ABCDEF")
+}
+
+// Internal query key shape
+interface CheckBookQueryKeys {
+  key: string; // GET_CHECK_BOOK_FLIGHT constant
+  payload: string; // The booking code
+}
+
+const useQueryCheckBookFlight = ({ enabled, onSuccess, request }: Props) => {
+  const queryKeys: CheckBookQueryKeys[] = [
+    { key: GET_CHECK_BOOK_FLIGHT, payload: request },
+  ];
+
+  const { data, isFetching, error, refetch } = useQuery(
+    queryKeys,
+    ({ queryKey: [{ payload }] }) => checkBookFlight(payload), // calls GET /api/flight/book-info/:payload
+    { enabled, onSuccess },
+  );
+
+  return { isFetching, data, queryKeys, error, refetch };
+};
+```
+
+---
+
+## Eticket Real-Time Pattern (`EticketContainer`)
+
+The `EticketContainer` is the reference implementation for Socket.io + React Query integration.
+
+```typescript
+// EticketContainer/index.tsx
+const { data, isFetching, refetch } = useQueryCheckBookFlight({
+  enabled: !!bookingno,
+  request: bookingno,
+});
+
+useEffect(() => {
+  if (!bookingno) return;
+
+  const apiUrl = getApiUrl();
+  let socketUrl = "http://localhost:3001";
+  try {
+    const urlObj = new URL(apiUrl);
+    socketUrl = urlObj.origin;
+  } catch (e) {
+    socketUrl = apiUrl;
+  }
+
+  const socket = io(socketUrl);
+  socket.on("booking:update", (payload: { bookingNo: string }) => {
+    // Only refetch if this socket event is for THIS booking
+    if (payload.bookingNo === bookingno) {
+      refetch();
+    }
+  });
+
+  return () => {
+    socket.disconnect();
+  };
+}, [bookingno, refetch]);
+```
+
+---
+
+## Ferry Query Hooks
+
+**File:** `/src/queries/ferry/index.ts`
+
+```typescript
+// Returns available sectors (origin/destination) for the SearchFerry form dropdown
+export const useQueryFerrySectors = () => { ... }
+
+// Returns ferry routes, filterable by sectorID
+export const useQueryFerryRoutes = (params: {
+    searchString?: string;
+    sectorID?: string;
+    pageIndex?: number;
+    pageSize?: number;
+}) => { ... }
+
+// Returns available trip schedules (used to populate search results)
+export const useQuerySearchFerryTrips = (params: {
+    embarkation: string;
+    destination: string;
+    tripdate: string; // YYYYMMDD format
+}, options?: any) => { ... }
+```
+
+---
+
+## Form Validation Pattern
+
+All forms use `react-hook-form` + `@hookform/resolvers/yup`:
+
+```typescript
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const schema = yup.object().shape({
+  firstName: yup.string().required("First name is required"),
+  email: yup.string().email("Invalid email").required(),
+  passportNumber: yup.string().optional(),
+});
+
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm({
+  resolver: yupResolver(schema),
+});
+```
+
+**Never** use raw `useState` for complex multi-field forms.
