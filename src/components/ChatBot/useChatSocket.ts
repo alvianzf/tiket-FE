@@ -16,7 +16,13 @@ export type Message = {
 };
 
 export const useChatSocket = () => {
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            id: 'initial',
+            role: 'assistant',
+            content: "Halo! Silakan ketik rute pencarian tiket yang Anda inginkan (contoh: 'Tiket kapal dari Batam ke Singapura besok').\n\nJika Anda butuh bantuan lebih lanjut atau ingin menyampaikan keluhan, cukup ketik **'Customer Service'** kapan saja."
+        }
+    ]);
     const [isTyping, setIsTyping] = useState(false);
     const socketRef = useRef<Socket | null>(null);
     const sessionIdRef = useRef<string>(`session-${Math.random().toString(36).substring(2, 9)}`);
