@@ -224,6 +224,9 @@ Phone: [Phone Number]`}
             }
             return (
                 <div className="flex flex-col gap-2 mt-2 w-full">
+                    {data.options && data.options.map((flight: Record<string, unknown>, i: number) => (
+                        <InteractiveResultCard key={i} item={flight} type={type} label={`Option ${i+1}`} sendMessage={sendMessage} />
+                    ))}
                     {data.cheapest && (
                         <InteractiveResultCard item={data.cheapest} type={type} label="Cheapest" sendMessage={sendMessage} />
                     )}
