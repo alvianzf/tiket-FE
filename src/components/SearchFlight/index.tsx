@@ -15,12 +15,16 @@ import moment from "moment";
 import { useRouter } from "next/router";
 
 const SearchFlight = () => {
-
+    const [mounted, setMounted] = useState(false);
     const { t } = useTranslation();
 
     const { push, query, isReady } = useRouter();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const { data: airportsResponse, isFetching: isAirportsLoading } = useQueryGetAirports({
         enabled: true
@@ -103,6 +107,14 @@ const SearchFlight = () => {
 
     const filteredAirports = airports?.filter((item: Airport) => item.group === 'Domestik');
     const items = (filteredAirports && filteredAirports.length > 0) ? filteredAirports : airports;
+
+    if (!mounted) {
+        return (
+            <div className="w-full lg:max-w-[1200px] glass-card p-8 md:p-10 border-white/30 backdrop-blur-3xl mx-auto animate-pulse h-[136px] flex items-center justify-center">
+                <div className="w-full h-12 bg-white/10 rounded-xl" />
+            </div>
+        );
+    }
 
     return (
         <div className="w-full lg:max-w-[1200px] glass-card p-8 md:p-10 border-white/30 backdrop-blur-3xl mx-auto">

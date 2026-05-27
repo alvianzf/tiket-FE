@@ -3,16 +3,21 @@ import { Button, DatePicker, Autocomplete, AutocompleteItem } from "@nextui-org/
 import { parseDate } from "@internationalized/date";
 import moment from "moment";
 import { useTranslation } from "react-i18next"
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useQueryFerryRoutes } from "../../queries/ferry";
 import IconSearch from "@icons/IconSearch";
 import { FaShip } from "react-icons/fa";
 
 const SearchFerry = () => {
+    const [mounted, setMounted] = useState(false);
     const { t } = useTranslation();
     const [type, setType] = useState<'one_way' | 'round_trip'>('one_way');
     const [departurePort, setDeparturePort] = useState<string>("");
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
     const [destinationPort, setDestinationPort] = useState<string>("");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [departureDate, setDepartureDate] = useState<any>(parseDate(moment().format('YYYY-MM-DD')));
@@ -66,6 +71,14 @@ const SearchFerry = () => {
 
         push(`/ferry/list?${params.toString()}`);
     };
+
+    if (!mounted) {
+        return (
+            <div className="w-full lg:max-w-[1024px] glass-card p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.15)] backdrop-blur-3xl border border-white/20 bg-white/10 rounded-3xl mx-auto animate-pulse h-[136px] flex items-center justify-center">
+                <div className="w-full h-12 bg-white/10 rounded-xl" />
+            </div>
+        );
+    }
 
     return (
         <div className="w-full lg:max-w-[1024px] glass-card p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.15)] backdrop-blur-3xl border border-white/20 bg-white/10 rounded-3xl mx-auto">

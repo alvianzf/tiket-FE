@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CarCard from "@components/CarCard";
 import { Button, DatePicker, Select, SelectItem, Spinner } from "@nextui-org/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { searchCars } from "@api/carRental";
 import { CarResult } from "@api/carRental/types";
 import { parseDate, getLocalTimeZone, today } from "@internationalized/date";
@@ -27,12 +27,17 @@ const ROW_OPTIONS = [
 ];
 
 const CarRentContainer = () => {
+    const [mounted, setMounted] = useState(false);
     const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
     const [type, setType] = useState("all");
     const [rows, setRows] = useState("");
     const [cars, setCars] = useState<CarResult[]>([]);
     const [isSearched, setIsSearched] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleSearch = async () => {
         setIsLoading(true);
@@ -46,6 +51,17 @@ const CarRentContainer = () => {
             setIsLoading(false);
         }
     };
+
+    if (!mounted) {
+        return (
+            <div className="flex flex-col gap-0 w-full items-center justify-center animate-pulse">
+                <div className="w-full home-app flex flex-col items-center justify-center py-16 px-4 gap-8">
+                    <div className="h-10 w-48 bg-white/10 rounded-xl" />
+                    <div className="glass-card p-6 md:p-8 rounded-2xl border border-white/10 bg-white/5 w-full max-w-3xl h-24" />
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col gap-0 w-full items-center justify-center">
