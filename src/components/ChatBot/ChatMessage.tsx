@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Message } from './useChatSocket';
 import { Card, CardBody, Snippet, Button } from '@nextui-org/react';
-// import Image removed
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface ChatMessageProps {
     message: Message;
@@ -138,7 +139,20 @@ Phone: [Phone Number]`}
                             }
                         `}
                     >
-                        {message.content}
+                        <ReactMarkdown 
+                            remarkPlugins={[remarkGfm]}
+                            className="markdown-body"
+                            components={{
+                                table: ({...props}) => <table className="min-w-full text-sm divide-y divide-slate-700 mt-2 mb-2" {...props} />,
+                                thead: ({...props}) => <thead className="bg-slate-900/50" {...props} />,
+                                th: ({...props}) => <th className="px-3 py-2 font-bold text-left text-orange-400 uppercase tracking-wider border-b border-slate-700" {...props} />,
+                                td: ({...props}) => <td className="px-3 py-2 whitespace-nowrap border-b border-slate-700/50" {...props} />,
+                                p: ({...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                                strong: ({...props}) => <strong className="font-bold text-orange-300" {...props} />
+                            }}
+                        >
+                            {message.content}
+                        </ReactMarkdown>
                     </div>
                 )}
                 {renderToolResult()}
