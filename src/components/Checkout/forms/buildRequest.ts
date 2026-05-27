@@ -22,6 +22,24 @@ function formatDate(inputDate: string | number | Date) {
     return formattedDate;
 }
 
+/**
+ * Normalise a phone number to the local Indonesian format (08...)
+ * expected by the flight provider.
+ *
+ * Examples:
+ *   628123456789  → 08123456789
+ *   +628123456789 → 08123456789
+ *   08123456789   → 08123456789  (already correct)
+ *   8123456789    → 08123456789
+ */
+function normalizePhone(phone: string): string {
+    if (!phone) return phone;
+    const digits = phone.replace(/\D/g, ''); // strip spaces, dashes, plus signs
+    if (digits.startsWith('62')) return '0' + digits.slice(2);
+    if (digits.startsWith('0')) return digits;
+    return '0' + digits;
+}
+
 const buildRequest = (data: FormProps): GetBookFlightRequest => {
 
     // Build buyer name from first adult passenger
@@ -37,8 +55,8 @@ const buildRequest = (data: FormProps): GetBookFlightRequest => {
         infant: data.infant.toString(),
         buyer: {
             name: buyerName,
-            telp_number: data.phone,
-            mobile_number: data.phone,
+            telp_number: normalizePhone(data.phone),
+            mobile_number: normalizePhone(data.phone),
             email: data.email
         },
         passengers: {
