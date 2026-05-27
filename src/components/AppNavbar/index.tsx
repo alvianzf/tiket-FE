@@ -26,7 +26,7 @@ import {
 } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactCountryFlag from "react-country-flag";
 import { useTranslation } from "react-i18next";
 
@@ -44,11 +44,15 @@ const AppNavbar = () => {
     const { isOpen: isOpenFind, onOpen: onOpenFind, onOpenChange: onOpenChangeFind } = useDisclosure();
 
 
-    const { push, pathname } = useRouter();
+    const { pathname } = useRouter();
 
     const isFlightActive = pathname === '/';
     const isFerryActive = pathname.startsWith('/ferry');
     const isCarRentalActive = pathname.startsWith('/car-rental');
+
+    useEffect(() => {
+        setIsMenuOpen(false);
+    }, [pathname]);
 
     const onHandleChangeLanguage = (lang: 'id' | 'en') => {
         i18n.changeLanguage(lang)
@@ -82,7 +86,7 @@ const AppNavbar = () => {
 
                 {/* Mobile Logo centered absolutely */}
                 <div className="absolute left-1/2 -translate-x-1/2 lg:hidden z-10 py-2 flex items-center h-full">
-                    <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-center">
+                    <Link href="/" className="flex items-center">
                         <NavbarBrand className="cursor-pointer">
                             <Logo />
                         </NavbarBrand>
@@ -103,6 +107,8 @@ const AppNavbar = () => {
                     {menuItems.map((item) => (
                         <NavbarItem key={item.label} isActive={item.isActive}>
                             <Button 
+                                as={Link}
+                                href={item.href}
                                 variant="flat" 
                                 radius="sm"
                                 className={`font-semibold transition-all border-none ${
@@ -110,7 +116,6 @@ const AppNavbar = () => {
                                     ? "bg-white/20 text-white shadow-inner" 
                                     : "bg-transparent text-white/80 hover:bg-white/15 hover:text-white"
                                 }`}
-                                onPress={() => push(item.href)}
                             >
                                 {item.label}
                             </Button>
@@ -204,7 +209,6 @@ const AppNavbar = () => {
                         <NavbarMenuItem key={`${item.label}-${index}`}>
                             <Link
                                 href={item.href}
-                                onClick={() => setIsMenuOpen(false)}
                                 className={`flex items-center w-full px-5 text-lg font-semibold h-14 rounded-xl transition-all ${
                                     item.isActive 
                                     ? "bg-white/20 text-white font-bold shadow-inner" 
