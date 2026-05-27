@@ -41,14 +41,21 @@ const FlightListContainer = () => {
     useEffect(() => {
         if (!isReady) return;
 
-        if (!from || !to || !date || !adult || !child || !classParams) {
-            push('/');
+        if (from && to && date && adult && child !== undefined && classParams) {
+            // All params present — close the re-search form
+            setOpen(false);
             return;
         }
 
-        if (from && to && date && isReady && adult && child && infant && classParams) {
-            setOpen(false);
-        }
+        // Defer the redirect by one tick so transient empty-param states
+        // (e.g. SearchFlight mounting with DEFAULT_VALUES before URL restore)
+        // don't trigger a false redirect.
+        const timer = setTimeout(() => {
+            if (!from || !to || !date || !adult || !classParams) {
+                push('/');
+            }
+        }, 0);
+        return () => clearTimeout(timer);
     }, [isReady, from, to, date, adult, child, infant, push, classParams]);
 
     const { data: flights, isFetching } = useQuerySearchFlights({
