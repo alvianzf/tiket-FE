@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Message } from './useChatSocket';
-import { Card, CardBody, Snippet } from '@nextui-org/react';
-import Image from 'next/image';
+import { Card, CardBody, Snippet, Button } from '@nextui-org/react';
+// import Image removed
 
 interface ChatMessageProps {
     message: Message;
@@ -9,6 +9,36 @@ interface ChatMessageProps {
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
     const isUser = message.role === 'user';
+    const [isLoadingPayment, setIsLoadingPayment] = useState(false);
+
+    const handlePayment = async (token: string) => {
+        setIsLoadingPayment(true);
+        if (typeof window === 'undefined') return;
+
+        if (!window.snap) {
+            await new Promise((resolve) => {
+                const script = document.createElement('script');
+                script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
+                // Note: requires NEXT_PUBLIC_MIDTRANS_CLIENT_KEY in frontend env
+                script.setAttribute('data-client-key', process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || '');
+                script.onload = resolve;
+                document.body.appendChild(script);
+            });
+        }
+        
+        setIsLoadingPayment(false);
+
+        if (window.snap) {
+            window.snap.pay(token, {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onSuccess: (result: any) => console.log('Payment success', result),
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onPending: (result: any) => console.log('Payment pending', result),
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onError: (result: any) => console.error('Payment error', result)
+            });
+        }
+    };
 
     const renderToolResult = () => {
         if (!message.toolResult) return null;
@@ -42,16 +72,17 @@ Phone: [Phone Number]`}
             return (
                 <Card className="mt-2 bg-white text-black w-full">
                     <CardBody className="flex flex-col items-center gap-3">
-                        <p className="font-bold text-blue-600">QRIS Payment</p>
-                        <p className="text-sm text-center">Scan this QR code to pay <b>Rp {data.amount?.toLocaleString('id-ID')}</b> for booking <b>{data.bookingCode}</b></p>
+                        <p className="font-bold text-blue-600">Complete Payment</p>
+                        <p className="text-sm text-center">Please complete your payment of <b>Rp {data.amount?.toLocaleString('id-ID')}</b> for booking <b>{data.bookingCode}</b></p>
                         
-                        {data.qrUrl ? (
-                            <Image src={data.qrUrl} alt="QRIS Code" width={192} height={192} className="border rounded-lg" />
-                        ) : (
-                            <div className="w-48 h-48 bg-slate-200 flex items-center justify-center rounded-lg">
-                                <p className="text-slate-500">Generating QR...</p>
-                            </div>
-                        )}
+                        <Button 
+                            color="primary" 
+                            className="w-full font-bold shadow-md h-12"
+                            isLoading={isLoadingPayment}
+                            onClick={() => handlePayment(data.token)}
+                        >
+                            Pay via Midtrans
+                        </Button>
                     </CardBody>
                 </Card>
             );
