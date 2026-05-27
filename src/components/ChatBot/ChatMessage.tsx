@@ -139,10 +139,10 @@ Phone: [Phone Number]`}
                             }
                         `}
                     >
-                        <ReactMarkdown 
-                            remarkPlugins={[remarkGfm]}
-                            className="markdown-body"
-                            components={{
+                        <div className="markdown-body">
+                            <ReactMarkdown 
+                                remarkPlugins={[remarkGfm]}
+                                components={{
                                 table: ({...props}) => <table className="min-w-full text-sm divide-y divide-slate-700 mt-2 mb-2" {...props} />,
                                 thead: ({...props}) => <thead className="bg-slate-900/50" {...props} />,
                                 th: ({...props}) => <th className="px-3 py-2 font-bold text-left text-orange-400 uppercase tracking-wider border-b border-slate-700" {...props} />,
@@ -152,7 +152,8 @@ Phone: [Phone Number]`}
                             }}
                         >
                             {message.content}
-                        </ReactMarkdown>
+                            </ReactMarkdown>
+                        </div>
                     </div>
                 )}
                 {renderToolResult()}
