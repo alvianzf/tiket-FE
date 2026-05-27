@@ -116,19 +116,34 @@ const ChatBot = () => {
                 )}
             </AnimatePresence>
 
-            {/* Floating Button */}
-            <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsOpen(!isOpen)}
-                className={`w-14 h-14 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(249,115,22,0.3)] text-white transition-colors duration-300 ${
-                    isOpen 
-                        ? 'bg-slate-800 hover:bg-slate-700' 
-                        : 'bg-gradient-to-br from-primary to-orange-500 hover:shadow-[0_0_25px_rgba(249,115,22,0.5)]'
-                }`}
-            >
-                {isOpen ? <X size={24} /> : <MessageCircle size={28} />}
-            </motion.button>
+            {/* Floating Button & Tooltip */}
+            <div className="flex items-center gap-3">
+                <AnimatePresence>
+                    {!isOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: 20 }}
+                            className="bg-white text-slate-800 text-sm font-bold px-4 py-2 rounded-2xl rounded-br-none shadow-lg border border-slate-200 whitespace-nowrap"
+                        >
+                            Pesan tiket via AI, tanya apa saja! ✨
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+                
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setIsOpen(!isOpen)}
+                    className={`w-14 h-14 shrink-0 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(249,115,22,0.3)] text-white transition-colors duration-300 ${
+                        isOpen 
+                            ? 'bg-slate-800 hover:bg-slate-700' 
+                            : 'bg-gradient-to-br from-primary to-orange-500 hover:shadow-[0_0_25px_rgba(249,115,22,0.5)]'
+                    }`}
+                >
+                    {isOpen ? <X size={24} /> : <MessageCircle size={28} />}
+                </motion.button>
+            </div>
         </div>
     );
 };
