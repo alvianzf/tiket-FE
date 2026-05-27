@@ -164,8 +164,8 @@ const SearchFlight = () => {
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
                     </div>
                     <div>
-                        <p className="text-white font-bold text-sm md:text-base">Malas isi form? Pakai TiketQ AI Assistant!</p>
-                        <p className="text-white/80 text-xs md:text-sm">Klik widget chat di pojok kanan bawah dan ketik <span className="font-mono bg-black/20 px-1 py-0.5 rounded">&quot;Tiket pesawat Batam ke Jakarta besok&quot;</span></p>
+                        <p className="text-slate-800 font-bold text-sm md:text-base">Malas isi form? Pakai TiketQ AI Assistant!</p>
+                        <p className="text-slate-600 text-xs md:text-sm mt-1">Klik widget chat di pojok kanan bawah dan ketik <span className="font-mono bg-orange-500/10 text-orange-700 px-1.5 py-0.5 rounded border border-orange-500/20">&quot;Tiket pesawat Batam ke Jakarta besok&quot;</span></p>
                     </div>
                 </div>
             </div>
