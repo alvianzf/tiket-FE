@@ -12,6 +12,8 @@ import { I18nProvider } from "@react-aria/i18n";
 import "@styles/global.css"
 import io from 'socket.io-client';
 
+import ChatBot from '@components/ChatBot';
+
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
     const { t, i18n } = useTranslation();
     const getLayout = Component.getLayout ?? ((page) => page);
@@ -71,6 +73,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
                                 >
                                     <ReactQueryDevtools initialIsOpen={false} />
                                     {getLayout(<Component {...pageProps}/>)}
+                                    <ChatBot />
                                 </ErrorBoundary>
                             )}
                         </QueryErrorResetBoundary>
