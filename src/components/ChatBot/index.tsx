@@ -4,8 +4,10 @@ import ChatMessage from './ChatMessage';
 import { Button, Input } from '@nextui-org/react';
 import { MessageCircle, X, Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const ChatBot = () => {
+    const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const { messages, isTyping, sendMessage } = useChatSocket();
@@ -126,7 +128,7 @@ const ChatBot = () => {
                             exit={{ opacity: 0, x: 20 }}
                             className="bg-white text-slate-800 text-sm font-bold px-4 py-2 rounded-2xl rounded-br-none shadow-lg border border-slate-200 whitespace-nowrap"
                         >
-                            Pesan tiket via AI, tanya apa saja! ✨
+                            {t('common.ai_bubble')}
                         </motion.div>
                     )}
                 </AnimatePresence>

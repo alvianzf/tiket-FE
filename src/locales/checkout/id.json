@@ -52,7 +52,8 @@
             "adult": "Dewasa (x%{count})",
             "child": "Anak (x%{count})",
             "infant": "Balita (x%{count})",
-            "choose": "Pilih Opsi"
+            "choose": "Pilih Opsi",
+            "download_ticket": "Unduh Tiket"
         }
     }
 }

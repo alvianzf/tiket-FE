@@ -52,7 +52,8 @@
             "adult": "Adult (x%{count})",
             "child": "Child (x%{count})",
             "infant": "Infant (x%{count})",
-            "choose": "Select Option"
+            "choose": "Select Option",
+            "download_ticket": "Download Ticket"
         }
     }
 }

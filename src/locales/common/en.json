@@ -11,7 +11,14 @@
       "home": "Home",
       "back": "Back",
       "submit": "Submit",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "ai_promo_title": "Try TiketQ AI Assistant Now",
+      "ai_promo_desc_footer": "Book flight and ferry tickets as easily as chatting with a friend.",
+      "ai_promo_banner_title": "Too lazy to fill out forms? Use TiketQ AI Assistant!",
+      "ai_promo_banner_desc": "Click the chat widget in the bottom right corner and type",
+      "ai_promo_banner_example_flight": "Flight ticket from Batam to Jakarta tomorrow",
+      "ai_promo_banner_example_ferry": "Ferry ticket from Batam to Singapore tomorrow",
+      "ai_bubble": "Book tickets via AI, ask anything! ✨"
     }
   }
 }
