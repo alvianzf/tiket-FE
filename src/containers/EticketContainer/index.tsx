@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Button from '@components/Button';
 import { useTranslation } from "react-i18next";
+import io from 'socket.io-client';
+import { getApiUrl } from '@api/baseApi';
 
 const EticketContainer = () => {
 
@@ -24,10 +26,34 @@ const EticketContainer = () => {
         },
     )
 
-    const { data, isFetching } = useQueryCheckBookFlight({
+    const { data, isFetching, refetch } = useQueryCheckBookFlight({
         enabled: !!bookingno,
         request: bookingno
     });
+
+    useEffect(() => {
+        if (!bookingno) return;
+
+        const apiUrl = getApiUrl();
+        let socketUrl = 'http://localhost:3001';
+        try {
+            const urlObj = new URL(apiUrl);
+            socketUrl = urlObj.origin;
+        } catch (e) {
+            socketUrl = apiUrl;
+        }
+
+        const socket = io(socketUrl);
+        socket.on('booking:update', (payload: { bookingNo: string }) => {
+            if (payload.bookingNo === bookingno) {
+                refetch();
+            }
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, [bookingno, refetch]);
 
     const passengers: PassengerResponse[] = [];
 
