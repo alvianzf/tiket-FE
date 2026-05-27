@@ -8,7 +8,7 @@ import IconSearch from "@icons/IconSearch";
 import { useQueryGetAirports } from "@queries/airports";
 import { Airport } from "@api/airports/types";
 import { FormProvider } from "react-hook-form";
-import useForm, { DEFAULT_VALUES, FormProps } from "./forms/useForm";
+import useForm, { FormProps } from "./forms/useForm";
 import { useEffect, useState } from "react";
 import { parseDate } from "@internationalized/date";
 import moment from "moment";
@@ -60,13 +60,6 @@ const SearchFlight = () => {
     const child = query?.child as unknown as string;
     const infant = query?.infant as unknown as string;
     const classParams = query?.class as unknown as string;
-
-    useEffect(
-        () => {
-            reset(DEFAULT_VALUES)
-        },
-        [reset]
-    );
 
     useEffect(
         () => {
