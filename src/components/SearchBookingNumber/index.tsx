@@ -31,9 +31,12 @@ const SearchBookingNumber = ({ onOpenChangeFind } : Props) => {
                     query: {
                         bookingno: data.data.bookingCode
                     }
-                })
+                }).then(() => {
+                    onOpenChangeFind();
+                });
+            } else {
+                onOpenChangeFind();
             }
-            onOpenChangeFind();
         },
         onError: () => {
             onOpenChangeFind();
