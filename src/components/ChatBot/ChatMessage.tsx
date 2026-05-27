@@ -35,7 +35,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onPending: (result: any) => console.log('Payment pending', result),
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onError: (result: any) => console.error('Payment error', result)
+                onError: (result: any) => console.error('Payment error', result),
+                onClose: () => console.log('Payment popup closed')
             });
         }
     };
