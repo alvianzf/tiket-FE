@@ -1,6 +1,6 @@
 # State Management — React Query Hook Registry & Rules
 
-**AI Context Note:** This document specifies the exact hook signatures derived from reading the `/src/queries` source files. Do not write raw axios calls in components.
+This document governs how server state is fetched and synchronized in `tiket-FE`. It establishes the golden rule against using `refetchInterval` (polling), explains why the Eticket page uses Socket.io-triggered manual refetches instead, and provides the full implementation of the `useQueryCheckBookFlight` hook including its exact input interface and all return values. It also catalogs every React Query hook in the `/src/queries` directory by domain (ferry, flights, airports, bookFlight) with their parameter signatures, and documents the required `react-hook-form` + `yup` validation pattern used across all booking forms. Do not add new data-fetching logic to a component without consulting this document first.
 
 ---
 

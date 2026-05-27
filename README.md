@@ -1,6 +1,6 @@
 # TiketQ Frontend (tiket-FE)
 
-**AI Context Note:** This document provides explicit tech stack versions and environment configurations to ensure AI agents do not introduce deprecated or incompatible patterns.
+The consumer-facing Next.js 14 web application for TiketQ — a travel booking platform serving flights, ferries, and car rentals. Built with React 18, NextUI, Tailwind CSS, and React Query. Handles the full booking lifecycle from search and passenger data entry through Midtrans payment and e-ticket display. This README provides the exact dependency versions, required environment variables, and setup commands needed to run the application locally.
 
 ## Tech Stack & Versions
 

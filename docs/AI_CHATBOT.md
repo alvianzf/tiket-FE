@@ -1,6 +1,6 @@
 # AI Chatbot — Full Implementation Blueprint
 
-**AI Context Note:** This document is derived from reading `useChatSocket.ts` and `ChatMessage.tsx` directly. It contains exact TypeScript types, complete hook implementation, and the full render logic for every tool result card type.
+This document covers the complete technical implementation of the TiketQ AI Assistant feature — from the frontend Socket.io hook to the backend agentic loop. It includes the exact TypeScript types for every message and tool result, the full `useChatSocket` hook implementation, and a card-by-card breakdown of how `ChatMessage.tsx` renders each tool result type (flight cards, ferry cards, payment UI, booking summaries, and the customer service card). Anyone reading this document should be able to reproduce the chatbot end-to-end without opening the source files.
 
 ---
 

@@ -1,6 +1,6 @@
 # UI Architecture & Component Map
 
-**AI Context Note:** This document provides the explicit directory mapping of the frontend React components. When tasked with modifying a specific page or UI element, use this map to navigate the repository.
+This document defines the structural rules and directory conventions for the `tiket-FE` frontend application. It maps every component in `/src/components`, every container in `/src/containers`, and every layout in `/src/layouts` to its specific role and responsibility. It also documents the strict navigation pattern required by Next.js 14 and NextUI — specifically why `onClick`-based routing causes a known double-click bug and what the correct `<Button as={Link}>` pattern is. Any developer adding a new page, component, or navigation element must read this document first.
 
 ## The Navigation Bug Rule
 
