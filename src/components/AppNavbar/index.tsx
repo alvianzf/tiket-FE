@@ -69,7 +69,7 @@ const AppNavbar = () => {
                 isMenuOpen={isMenuOpen}
                 onMenuOpenChange={setIsMenuOpen}
                 classNames={{
-                    base: "bg-primary shadow-lg",
+                    base: "bg-primary shadow-lg z-[999]",
                     content: "gap-4",
                     item: "data-[active=true]:text-white",
                     wrapper: "max-w-[1200px] px-6 py-2"
