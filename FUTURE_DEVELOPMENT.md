@@ -1,0 +1,67 @@
+# TiketQ Frontend (tiket-FE) — Possible Future Development
+
+This document serves as an exhaustive future development roadmap and technical implementation plan specifically for the consumer-facing Next.js frontend application (`tiket-FE`). It details key functional updates, styling enhancements, performance optimizations, and integration steps to guide engineering teams in implementing new features in a consistent manner. It serves as a single source of truth for the frontend product roadmap and technical debt.
+
+---
+
+## Consumer Frontend Engineering Checklist
+
+### Booking Flows
+
+- [ ] **Round-trip flight booking** — The current `SearchFlight` form has a one-way-only flow. The `POST /api/flight/search` payload already supports `returnDate`; the UI needs a return date picker and a combined results/checkout view.
+- [ ] **Multi-city / stopover flights** — Support for booking itineraries with more than two legs.
+- [ ] **Infant and child seat selection** — Currently `children` and `infants` are passed to the API but no per-passenger class/seat UI exists.
+- [ ] **Ferry return trip booking** — `FerryBooking` model already has `returnDate`. The UI needs a round-trip toggle in `SearchFerry`.
+- [ ] **Seat map selection** — Interactive seat picker before confirming flight/ferry bookings.
+- [ ] **Add-on baggage selection** — Extra baggage options per passenger at checkout.
+
+### User Account & Profile
+
+- [ ] **My Bookings page** — Authenticated users should see a history of their `Transaction` records, linked by email. Requires a `GET /api/auth/bookings` backend endpoint.
+- [ ] **Booking cancellation flow** — UI and backend logic to cancel `PENDING` bookings and optionally trigger Midtrans refunds.
+- [ ] **E-ticket resend by email** — Button on the Eticket page to re-trigger the email service (`emailService.js`).
+- [ ] **Profile edit page** — The `ChangeProfileContainer` exists but may be incomplete. Fully wire up password change and username update to `PUT /api/auth/users/:id`.
+- [ ] **Social login (Google/Facebook)** — Integrate Firebase Auth or a similar OAuth provider.
+
+### Search & Discovery
+
+- [ ] **Flight price calendar** — A month-view calendar showing the cheapest available price per day (leverages `search_cheapest_flight_in_range` backend query logic adapted for UI).
+- [ ] **Live price alerts** — Email/push notification when a route drops below a user-defined price threshold.
+- [ ] **Popular routes section** — Static or dynamically pulled popular/frequently booked routes displayed on the homepage.
+- [ ] **Flexible date search** — "I'm flexible" mode that searches ±3 days from the selected date.
+
+### Car Rental Flow
+
+- [ ] **Complete car rental booking flow** — `CarRentalForm` and `CarRentContainer` exist but the end-to-end payment and confirmation flow needs to be verified and completed.
+- [ ] **Car availability calendar** — Show blocked/available dates for each car based on existing `CarRentalRequest` records.
+- [ ] **Driver license upload** — Add KTP/SIM upload step to the frontend booking form (backend already has `ktpImage` and `ktpSelfie` fields).
+
+### Performance & User Experience (UX)
+
+- [ ] **Progressive Web App (PWA)** — Add `next-pwa` with a service worker and manifest to enable offline e-ticket access.
+- [ ] **Skeleton loading states** — `FlightCardSkeleton` component exists; extend the pattern to ferry and car rental result lists.
+- [ ] **Image optimization** — Audit all `<img>` tags and replace with Next.js `<Image>` for automatic WebP conversion and lazy loading.
+- [ ] **Infinite scroll on flight results** — Replace the current pagination/static list with a virtual scroll for large result sets.
+- [ ] **Error boundary improvements** — `react-error-boundary` is installed; add granular boundaries around each container, not just at the app level.
+
+### Internationalization (i18n)
+
+- [ ] **Complete i18n coverage** — Audit all hardcoded English/Indonesian strings. Any text not in `en.json` / `id.json` must be extracted to the locale files.
+- [ ] **Language selector persistence** — Store the user's selected language preference in `localStorage` so it persists across sessions.
+- [ ] **Add additional languages** — Malay (`ms`) and Mandarin (`zh`) for broader ASEAN reach.
+
+### Chatbot UI & Support
+
+- [ ] **Proactive booking suggestions** — Chatbot suggests trips based on user's past bookings or search history.
+- [ ] **Voice input** — Integrate Web Speech API for hands-free chatbot interaction on mobile.
+- [ ] **Chatbot feedback loop** — Thumbs up/down on AI responses to log quality metrics.
+
+---
+
+## Infrastructure & Cross-Cutting Features (FE Relevance)
+
+- [ ] **Unified monorepo tooling** — Set up a Turborepo or Nx workspace at the `/tiketq/` root for shared scripts and dependency management.
+- [ ] **Shared TypeScript types package** — Extract shared types (Transaction, Booking, Passenger) into a local `@tiketq/types` package consumable by both `tiket-FE` and `tiket-admin`.
+- [ ] **Docker Compose for local dev** — Support single `docker-compose.yml` at root to spin up frontend along with database, redis, backend, and admin.
+- [ ] **CDN for static assets** — Serve Next.js static files and PDF assets via Cloudflare or AWS CloudFront.
+- [ ] **GDPR/Privacy compliance** — Add data deletion endpoint/request in UI (`DELETE /api/auth/me`) and cookie consent banner.
