@@ -72,7 +72,7 @@ const ChatBot = () => {
                             )}
                             
                             {messages.map((msg) => (
-                                <ChatMessage key={msg.id} message={msg} />
+                                <ChatMessage key={msg.id} message={msg} sendMessage={sendMessage} />
                             ))}
                             
                             {isTyping && (
