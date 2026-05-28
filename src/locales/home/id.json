@@ -19,7 +19,21 @@
             "find_booking_no": "Cari Pesanan Anda",
             "ferry_ticket": "Tiket Feri",
             "ferry_partners": "Mitra Kapal Feri",
-            "ferry_partners_description": "Kami bermitra dengan operator feri domestik dan internasional terbaik untuk kenyamanan Anda."
+            "ferry_partners_description": "Kami bermitra dengan operator feri domestik dan internasional terbaik untuk kenyamanan Anda.",
+            "no_commitment_title": "Pemesanan Praktis, Tanpa Komitmen",
+            "no_commitment_subtitle": "Tanpa registrasi, tanpa akun, tanpa langganan. Hanya pencarian dan pemesanan langsung yang lancar.",
+            "no_signups_title": "Tanpa Perlu Daftar",
+            "no_signups_desc": "Lewati pembuatan kata sandi yang rumit, verifikasi email, dan konfigurasi profil. Kami percaya pada perencanaan perjalanan langsung — masukkan detail Anda, selesaikan pembayaran, dan amankan tiket Anda secara instan.",
+            "zero_commitment_title": "Tanpa Komitmen Tersembunyi",
+            "zero_commitment_desc": "Tanpa biaya berulang, tanpa tekanan, dan tanpa jebakan langganan. TiketQ memberi Anda kebebasan penuh untuk mencari, menelusuri, dan memesan persis saat Anda butuhkan, tanpa ikatan apa pun.",
+            "privacy_first_title": "Standar Privasi Utama",
+            "privacy_first_desc": "Kami menghargai jejak digital Anda. Detail Anda diproses dengan aman menggunakan saluran aman standar industri, dan digunakan secara ketat hanya untuk menerbitkan pas naik pesawat atau feri Anda.",
+            "spam_free_title": "Jaminan 100% Bebas Spam",
+            "spam_free_desc": "Kami sangat membenci kotak masuk yang berantakan seperti halnya Anda. Kami menjamin bahwa detail kontak Anda tidak akan pernah dijual atau digunakan untuk buletin tanpa henti. Anda hanya mendapatkan yang penting: e-tiket Anda.",
+            "ai_integration_title": "Malas isi formulir? Pesan Lewat AI Assistant!",
+            "ai_integration_desc": "Klik balon obrolan di pojok kanan bawah dan pesan instan tanpa registrasi sama sekali. Cukup ketik rencana perjalanan Anda seperti:",
+            "ai_integration_example_1": "Tiket pesawat Batam ke Jakarta besok",
+            "ai_integration_example_2": "Tiket kapal Feri Batam ke Singapura Senin depan"
         }
     }
 }

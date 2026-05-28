@@ -19,7 +19,21 @@
             "find_booking_no": "Find Your Booking",
             "ferry_ticket": "Ferry Tickets",
             "ferry_partners": "Ferry Partners",
-            "ferry_partners_description": "We partner with top domestic and international ferry operators for your convenience."
+            "ferry_partners_description": "We partner with top domestic and international ferry operators for your convenience.",
+            "no_commitment_title": "Hassle-Free Booking, Zero Commitment",
+            "no_commitment_subtitle": "No sign-ups, no accounts, no subscriptions. Just seamless, direct search and booking.",
+            "no_signups_title": "Zero Sign-ups Required",
+            "no_signups_desc": "Skip the tedious password creation, email verification, and profile configuration. We believe in direct travel planning — enter your details, complete payment, and secure your ticket instantly.",
+            "zero_commitment_title": "No Hidden Commitments",
+            "zero_commitment_desc": "No recurring costs, no pressure, and no subscription traps. TiketQ gives you complete freedom to search, browse, and book exactly when you need to, with no strings attached.",
+            "privacy_first_title": "Privacy-First Standards",
+            "privacy_first_desc": "We value your digital footprint. Your details are processed safely using industry-standard secure channels, and are used strictly to issue your flight or ferry boarding passes.",
+            "spam_free_title": "100% Spam-Free Experience",
+            "spam_free_desc": "We despise cluttered inboxes as much as you do. We guarantee that your contact details will never be sold or used for relentless newsletters. You only get what's critical: your e-tickets.",
+            "ai_integration_title": "Too lazy to fill out forms? Book via AI Assistant!",
+            "ai_integration_desc": "Click the chat bubble in the bottom-right corner and book instantly with zero sign-up friction. Just type your plans like:",
+            "ai_integration_example_1": "Flight from Batam to Jakarta tomorrow",
+            "ai_integration_example_2": "Ferry from Batam to Singapore next Monday"
         }
     }
 }

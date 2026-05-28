@@ -2,6 +2,7 @@ import AirlinesPartners from "@components/AirlinesPartners"
 import PaymentPartners from "@components/PaymentPartners"
 import SearchFlight from "@components/SearchFlight";
 import WhyBook from "@components/WhyBook";
+import NoCommitment from "@components/NoCommitment";
 import { motion } from "framer-motion";
 
 const HomeContainer = () => {
@@ -41,6 +42,7 @@ const HomeContainer = () => {
         </div>
 
             <WhyBook />
+            <NoCommitment />
         </>
     )
 }

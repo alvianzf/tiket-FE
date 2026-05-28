@@ -2,6 +2,7 @@ import FerryFind from "@components/FerryFind";
 import FerryPartners from "@components/FerryPartners"
 import PaymentPartners from "@components/PaymentPartners"
 import WhyBook from "@components/WhyBook";
+import NoCommitment from "@components/NoCommitment";
 
 const FerryFindContainer = () => {
     return (
@@ -29,6 +30,7 @@ const FerryFindContainer = () => {
             </div>
             
             <WhyBook />
+            <NoCommitment />
         </div>
         </>
     )
