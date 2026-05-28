@@ -35,7 +35,7 @@ const ChatBot = () => {
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-[999] flex flex-col items-end">
+        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999] flex flex-col items-end max-w-[calc(100vw-2rem)] sm:max-w-none">
             <AnimatePresence>
                 {isOpen && (
                     <motion.div 
@@ -43,7 +43,7 @@ const ChatBot = () => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="mb-4 w-[350px] sm:w-[400px] h-[550px] max-h-[80vh] flex flex-col overflow-hidden rounded-2xl shadow-2xl bg-[#0f172a] border border-slate-700/50 backdrop-blur-xl"
+                        className="mb-4 w-[calc(100vw-2rem)] sm:w-[400px] h-[500px] sm:h-[550px] max-h-[80vh] flex flex-col overflow-hidden rounded-2xl shadow-2xl bg-[#0f172a] border border-slate-700/50 backdrop-blur-xl"
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-800">
@@ -126,7 +126,7 @@ const ChatBot = () => {
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: 20 }}
-                            className="bg-white text-slate-800 text-sm font-bold px-4 py-2 rounded-2xl rounded-br-none shadow-lg border border-slate-200 whitespace-nowrap"
+                            className="bg-white text-slate-800 text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl rounded-br-none shadow-lg border border-slate-200 max-w-[180px] sm:max-w-none whitespace-normal sm:whitespace-nowrap text-right"
                         >
                             {t('common.ai_bubble')}
                         </motion.div>
