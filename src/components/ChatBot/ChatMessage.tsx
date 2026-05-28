@@ -20,7 +20,7 @@ const InteractiveResultCard = ({ item, type, label, sendMessage }: any) => {
 
     const handleConfirm = () => {
         if (sendMessage) {
-            sendMessage(`I want to book the ${label} ${isFlight ? 'flight' : 'ferry'} (${item.airline || item.ferryName}) departing at ${item.departTime} for ${adults} Adult(s), ${children} Child(ren), and ${infants} Infant(s).`);
+            sendMessage(`I want to book the ${label} ${isFlight ? 'flight' : 'ferry'} (${item.airline || item.ferryName}) departing at ${item.departTime}${isFlight && item.departDate ? ` on ${item.departDate}` : ''} for ${adults} Adult(s), ${children} Child(ren), and ${infants} Infant(s).`);
         }
     };
 
@@ -28,9 +28,16 @@ const InteractiveResultCard = ({ item, type, label, sendMessage }: any) => {
         <Card className="mt-2 bg-slate-800 text-white w-full border border-slate-700 overflow-visible transition-all">
             <CardBody className="p-3 cursor-pointer" onClick={() => setExpanded(!expanded)}>
                 <div className="flex justify-between items-start mb-2">
-                    <span className="px-2 py-0.5 bg-orange-500/20 text-orange-400 text-[10px] uppercase font-bold rounded tracking-wider">
-                        ★ {label}
-                    </span>
+                    <div className="flex gap-2">
+                        <span className="px-2 py-0.5 bg-orange-500/20 text-orange-400 text-[10px] uppercase font-bold rounded tracking-wider">
+                            ★ {label}
+                        </span>
+                        {isFlight && item.departDate && (
+                            <span className="px-2 py-0.5 bg-slate-900 text-slate-300 text-[10px] font-bold rounded tracking-wider">
+                                {item.departDate}
+                            </span>
+                        )}
+                    </div>
                     <span className="font-mono font-bold text-emerald-400 text-sm">
                         Rp {item.price?.toLocaleString('id-ID')}
                     </span>
