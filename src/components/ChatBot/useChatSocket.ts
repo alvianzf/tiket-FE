@@ -3,7 +3,7 @@ import io, { Socket } from 'socket.io-client';
 import { getApiUrl } from '@api/baseApi';
 
 export type ToolResultData = {
-    type: 'booking_form' | 'qris_payment' | 'booking_summary';
+    type: 'booking_form' | 'qris_payment' | 'booking_summary' | 'flight_results' | 'ferry_results' | 'customer_service_card';
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any; 
 };

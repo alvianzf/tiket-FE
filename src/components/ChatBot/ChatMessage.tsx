@@ -106,10 +106,16 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, sendMessage }) => {
 
         if (!window.snap) {
             await new Promise((resolve) => {
+                const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || '';
+                const isProduction = clientKey && !clientKey.startsWith('SB-');
+                const scriptSrc = isProduction 
+                    ? 'https://app.midtrans.com/snap/snap.js'
+                    : 'https://app.sandbox.midtrans.com/snap/snap.js';
+
                 const script = document.createElement('script');
-                script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
+                script.src = scriptSrc;
                 // Note: requires NEXT_PUBLIC_MIDTRANS_CLIENT_KEY in frontend env
-                script.setAttribute('data-client-key', process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || '');
+                script.setAttribute('data-client-key', clientKey);
                 script.onload = resolve;
                 document.body.appendChild(script);
             });

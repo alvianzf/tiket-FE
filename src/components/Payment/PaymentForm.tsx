@@ -51,9 +51,14 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
     const { push } = useRouter();
 
     useEffect(() => {
+        const isProduction = MIDTRANS_CLIENT_KEY && !MIDTRANS_CLIENT_KEY.startsWith('SB-');
+        const scriptSrc = isProduction 
+            ? 'https://app.midtrans.com/snap/snap.js'
+            : 'https://app.sandbox.midtrans.com/snap/snap.js';
+
         const loadMidtransScript = async () => {
             const script = document.createElement('script');
-            script.src = `https://app.sandbox.midtrans.com/snap/snap.js`;
+            script.src = scriptSrc;
             script.setAttribute('data-client-key', MIDTRANS_CLIENT_KEY || '');
             document.body.appendChild(script);
 
@@ -65,7 +70,7 @@ const PaymentForm = ({ isLoading, flight }: Props) => {
         loadMidtransScript();
 
         return () => {
-            const script = document.querySelector('script[src="https://app.sandbox.midtrans.com/snap/snap.js"]');
+            const script = document.querySelector(`script[src="${scriptSrc}"]`);
             if (script) {
                 script.remove();
             }
