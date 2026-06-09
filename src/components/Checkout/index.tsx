@@ -56,7 +56,6 @@ const Checkout = ({ flightData, isLoading }: Props) => {
             call: '',
             date_of_birth: '',
             cabinClass: 'economy',
-            baggageKg: 0,
             ...(withLapInfant ? { isLapInfant: false } : {})
         }));
     };

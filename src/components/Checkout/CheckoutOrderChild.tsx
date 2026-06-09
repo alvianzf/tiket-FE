@@ -134,23 +134,6 @@ const CheckoutOrderChild = () => {
                                         <SelectItem key="economy" value="economy">{t('checkout.economy')}</SelectItem>
                                         <SelectItem key="business" value="business">{t('checkout.business')}</SelectItem>
                                     </Select>
-                                    <Select
-                                        label={t('checkout.baggage')}
-                                        labelPlacement="outside"
-                                        variant="underlined"
-                                        selectionMode="single"
-                                        selectedKeys={[String(watch(`childPassengers.${index}.baggageKg`) ?? 0)]}
-                                        onChange={(e) => setValue(`childPassengers.${index}.baggageKg`, Number(e.target.value))}
-                                        classNames={{
-                                            label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
-                                            trigger: "h-10 min-h-unit-10",
-                                            value: "font-semibold text-dark",
-                                        }}
-                                    >
-                                        <SelectItem key="0" value="0">{t('checkout.carry_on_only')}</SelectItem>
-                                        <SelectItem key="20" value="20">{t('checkout.baggage_20kg')}</SelectItem>
-                                        <SelectItem key="30" value="30">{t('checkout.baggage_30kg')}</SelectItem>
-                                    </Select>
                                 </div>
                             </div>
                         </CardBody>

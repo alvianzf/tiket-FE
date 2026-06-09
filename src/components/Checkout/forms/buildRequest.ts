@@ -70,8 +70,7 @@ const buildRequest = (data: FormProps): GetBookFlightRequest => {
                 passport_issue_date: '',
                 passport_expiry_date: '',
                 passport_issuing_country: '',
-                cabin_class: adult.cabinClass || 'economy',
-                baggage_kg: adult.baggageKg ?? 0
+                cabin_class: adult.cabinClass || 'economy'
             })),
             children: data.childPassengers.map((child) => ({
                 title: child.call,
@@ -83,8 +82,7 @@ const buildRequest = (data: FormProps): GetBookFlightRequest => {
                 passport_issue_date: '',
                 passport_expiry_date: '',
                 passport_issuing_country: '',
-                cabin_class: child.cabinClass || 'economy',
-                baggage_kg: child.baggageKg ?? 0
+                cabin_class: child.cabinClass || 'economy'
             })),
             infants: data.infantPassengers.map((infant) => ({
                 title: infant.call,
@@ -97,7 +95,6 @@ const buildRequest = (data: FormProps): GetBookFlightRequest => {
                 passport_expiry_date: '',
                 passport_issuing_country: '',
                 cabin_class: infant.isLapInfant ? 'lap' : (infant.cabinClass || 'economy'),
-                baggage_kg: 0,
                 is_lap_infant: infant.isLapInfant ?? false
             }))
         }

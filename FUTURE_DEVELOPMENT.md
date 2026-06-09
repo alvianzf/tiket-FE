@@ -10,10 +10,10 @@ This document serves as an exhaustive future development roadmap and technical i
 
 - [x] **Round-trip flight booking** — Added One Way / Round Trip toggle to `SearchFlight`; return date picker; `FlightListContainer` shows two result sections for round trips with sequential outbound/return selection.
 - [x] **Multi-city / stopover flights** — Multi-City tab in `SearchFlight` with up to 4 segments; `FlightListContainer` shows per-segment results in sequence; navigates to checkout with all booking codes.
-- [x] **Infant and child seat selection** — Cabin class selector (Economy/Business) added to adult, child, infant checkout forms; lap infant toggle on infant form; baggage selector on adult and child forms.
+- [x] **Infant and child seat selection** — Cabin class selector (Economy/Business) added to adult, child, infant checkout forms; lap infant toggle on infant form.
 - [x] **Ferry return trip booking** — `FerryListContainer` handles `type=round_trip`: shows outbound trips first, then return trips after selection; `FerryPassengerContainer` passes `returnDate` to booking API.
 - [ ] **Seat map selection** — Not supported by provider APIs (only `availableSeats` count returned, no layout data).
-- [x] **Add-on baggage selection** — Carry-on / +20kg / +30kg selector per adult and child passenger at checkout; priced as TiketQ service fee (provider API does not support baggage reservation).
+- [ ] **Add-on baggage selection** — Baggage is purchased at the airport/check-in counter, not via OTA. Out of scope.
 
 ### User Account & Profile
 
