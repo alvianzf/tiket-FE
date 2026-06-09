@@ -5,9 +5,10 @@ import moment from "moment";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Plane, Ship, Car, Calendar, MapPin, Users, CreditCard, ExternalLink, AlertTriangle, Clock } from "lucide-react";
-import { useState } from "react";
-import baseAPI from "@api/baseApi";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { searchFlights } from "@api/searchFlights";
+import { getPrice } from "@api/searchFlights/types";
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,47 +36,74 @@ const isDeparturePassed = (departureDate?: string) => {
     return moment(departureDate).isBefore(moment(), "day");
 };
 
-// --- Flight booking card with live verify-before-pay ---
+// --- Flight booking card — searches live availability on mount ---
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const FlightBookingCard = ({ order }: { order: any }) => {
     const { push } = useRouter();
-    const [verifying, setVerifying] = useState(false);
-    const [verifyError, setVerifyError] = useState<string | null>(null);
 
     const isPaid = order.payment_status === true;
     const departed = isDeparturePassed(order.departureDate);
     const isExpired = !isPaid && departed;
 
-    const handleVerifyAndPay = async () => {
-        setVerifying(true);
-        setVerifyError(null);
-        try {
-            const res = await baseAPI.get(`/api/flight/book-info/${order.bookingCode}`);
-            const data = res.data;
-            if (data?.rc === "00" && data?.data?.bookingCode) {
-                push(`/eticket?bookingno=${order.bookingCode}`);
-            } else {
-                setVerifyError("This booking is no longer valid with the airline. Please make a new booking.");
+    // null = not yet checked, true = available, false = unavailable
+    const [available, setAvailable] = useState<boolean | null>(null);
+    const [checking, setChecking] = useState(false);
+    const [currentPrice, setCurrentPrice] = useState<number | null>(null);
+
+    useEffect(() => {
+        if (isPaid || isExpired || !order.origin || !order.destination || !order.departureDate) return;
+
+        const check = async () => {
+            setChecking(true);
+            try {
+                const depDate = moment(order.departureDate).format("YYYYMMDD");
+                const adultCount = Math.max(1, (order.passengers?.filter((p: { isLapInfant?: boolean }) => !p.isLapInfant).length) || 1);
+                const result = await searchFlights({
+                    departure: order.origin,
+                    arrival: order.destination,
+                    departureDate: depDate,
+                    adult: adultCount,
+                    child: 0,
+                    infant: 0,
+                });
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const flights = (result?.data ?? []).flatMap((f: any) => f.flat());
+                if (flights.length > 0) {
+                    setAvailable(true);
+                    const prices = flights.map((f: Parameters<typeof getPrice>[0]) => getPrice(f)).filter((p): p is number => p !== null);
+                    if (prices.length > 0) setCurrentPrice(Math.min(...prices));
+                } else {
+                    setAvailable(false);
+                }
+            } catch {
+                setAvailable(false);
+            } finally {
+                setChecking(false);
             }
-        } catch {
-            setVerifyError("Could not verify booking. Please try again or contact support.");
-        } finally {
-            setVerifying(false);
-        }
-    };
+        };
+
+        check();
+    // only run once per card
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [order.bookingCode]);
+
+    const bookedPrice = parseFloat(order.totalSales || order.nominal || "0");
+    const priceChanged = currentPrice !== null && Math.abs(currentPrice - bookedPrice) > 1000;
 
     return (
         <motion.div
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             className={`glass-card backdrop-blur-xl border rounded-2xl p-6 shadow-md transition-shadow ${
-                isExpired ? "bg-slate-50/50 border-slate-200/40 opacity-70" : "bg-white/70 border-white/40 hover:shadow-lg"
+                isExpired || available === false
+                    ? "bg-slate-50/50 border-slate-200/40 opacity-70"
+                    : "bg-white/70 border-white/40 hover:shadow-lg"
             }`}
         >
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div className="flex flex-col gap-3 flex-1">
                     <div className="flex items-center gap-3 flex-wrap">
-                        <span className={`font-mono font-black text-lg tracking-wider ${isExpired ? "text-slate-400" : "text-[#ff5a00]"}`}>
+                        <span className={`font-mono font-black text-lg tracking-wider ${isExpired || available === false ? "text-slate-400" : "text-[#ff5a00]"}`}>
                             {order.bookingCode}
                         </span>
                         <Chip
@@ -95,7 +123,7 @@ const FlightBookingCard = ({ order }: { order: any }) => {
                         <span className={`flex items-center gap-1.5 ${departed && !isPaid ? "text-red-500 font-semibold" : ""}`}>
                             {departed && !isPaid ? <AlertTriangle size={14} /> : <Calendar size={14} className="text-slate-400" />}
                             <span>{order.departureDate ? moment(order.departureDate).format("DD MMM YYYY") : moment(order.book_date).format("DD MMM YYYY")}</span>
-                            {departed && !isPaid && <span className="text-xs">(passed)</span>}
+                            {departed && !isPaid && <span className="text-xs ml-1">(passed)</span>}
                         </span>
                         {order.passengers?.length > 0 && (
                             <span className="flex items-center gap-1.5">
@@ -106,14 +134,26 @@ const FlightBookingCard = ({ order }: { order: any }) => {
                         <span className="flex items-center gap-1.5">
                             <CreditCard size={14} className="text-slate-400" />
                             <span className="font-bold text-slate-800">
-                                IDR {parseFloat(order.totalSales || order.nominal || "0").toLocaleString("id-ID")}
+                                IDR {bookedPrice.toLocaleString("id-ID")}
                             </span>
                         </span>
                     </div>
-                    {verifyError && (
-                        <div className="flex items-start gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3 mt-1">
-                            <AlertTriangle size={15} className="text-red-500 mt-0.5 shrink-0" />
-                            <p className="text-red-600 text-xs font-medium leading-relaxed">{verifyError}</p>
+
+                    {!isPaid && !isExpired && available === true && priceChanged && currentPrice !== null && (
+                        <div className="flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 mt-1">
+                            <AlertTriangle size={14} className="text-amber-500 mt-0.5 shrink-0" />
+                            <p className="text-amber-700 text-xs font-medium">
+                                Current price on this route: <strong>IDR {currentPrice.toLocaleString("id-ID")}</strong>. Your booking was locked at the original price.
+                            </p>
+                        </div>
+                    )}
+
+                    {!isPaid && !isExpired && available === false && (
+                        <div className="flex items-start gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5 mt-1">
+                            <AlertTriangle size={14} className="text-red-500 mt-0.5 shrink-0" />
+                            <p className="text-red-600 text-xs font-medium">
+                                No flights found on this route for the departure date. This booking may no longer be valid — please rebook.
+                            </p>
                         </div>
                     )}
                 </div>
@@ -137,21 +177,31 @@ const FlightBookingCard = ({ order }: { order: any }) => {
                             <Clock size={15} />
                             Expired
                         </Button>
+                    ) : checking ? (
+                        <Button
+                            isDisabled
+                            className="h-11 px-6 rounded-xl font-bold bg-slate-100 text-slate-400 flex items-center gap-2"
+                        >
+                            <Spinner size="sm" />
+                            Checking...
+                        </Button>
+                    ) : available === false ? (
+                        <Button
+                            isDisabled
+                            className="h-11 px-6 rounded-xl font-bold bg-slate-200 text-slate-400 cursor-not-allowed flex items-center gap-2"
+                        >
+                            <AlertTriangle size={15} />
+                            Not Available
+                        </Button>
                     ) : (
                         <Button
                             dsVariant="cta"
                             className="h-11 px-6 rounded-xl font-bold shadow-sm flex items-center gap-2"
-                            onClick={handleVerifyAndPay}
-                            isDisabled={verifying}
+                            onClick={() => push(`/eticket?bookingno=${order.bookingCode}`)}
                         >
-                            {verifying ? <Spinner size="sm" color="white" /> : <ExternalLink size={15} />}
-                            {verifying ? "Checking..." : "Verify & Pay"}
+                            <ExternalLink size={15} />
+                            Continue Payment
                         </Button>
-                    )}
-                    {!isPaid && !isExpired && (
-                        <p className="text-xs text-slate-400 text-right max-w-[160px] leading-relaxed">
-                            Availability re-checked before payment
-                        </p>
                     )}
                 </div>
             </div>
