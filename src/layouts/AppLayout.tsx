@@ -14,10 +14,10 @@ const AppLayout = ({ children } : Props) => {
     const router = useRouter();
     
     return (
-        <div className="w-full h-full min-h-screen bg-[#f0f4f8] flex flex-col justify-between">
+        <div className="w-full h-full min-h-screen bg-[#f0f4f8] flex flex-col justify-between overflow-x-hidden">
             <ToastContainer />
             <div className="w-full flex-1 h-full min-h-screen">
-                <div className="glass-navbar sticky top-0 z-50 flex flex-row justify-center">
+                <div className="glass-navbar flex flex-row justify-center">
                     <AppNavbar />
                 </div>
                 <AnimatePresence mode="popLayout" initial={false}>
