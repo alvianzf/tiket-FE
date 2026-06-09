@@ -284,12 +284,12 @@ const FerryBookingCard = ({ order }: { order: any }) => {
                     ) : order.bookingNo ? (
                         <Button
                             as={Link}
-                            href={isPaid ? `/eticket?bookingno=${order.bookingNo}` : `/ferry/payment?bookingNo=${order.bookingNo}`}
-                            dsVariant="primary"
+                            href={`/eticket?bookingno=${order.bookingNo}`}
+                            dsVariant={isPaid ? "cta" : "primary"}
                             className="h-11 px-6 rounded-xl font-bold shadow-sm flex items-center gap-2"
                         >
                             <ExternalLink size={15} />
-                            {isPaid ? "View E-Ticket" : "Continue Payment"}
+                            {isPaid ? "View E-Ticket" : "View Booking"}
                         </Button>
                     ) : null}
                 </div>
