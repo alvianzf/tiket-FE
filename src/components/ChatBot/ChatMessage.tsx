@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Message } from './useChatSocket';
-import { Card, CardBody, Snippet, Button } from '@nextui-org/react';
+import { Card, CardBody, Button } from '@nextui-org/react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -145,33 +145,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, sendMessage }) => {
 
     const renderToolResult = () => {
         if (!message.toolResult) return null;
-        
-        const { type, data } = message.toolResult;
-        
-        if (type === 'booking_form') {
-            return (
-                <Card className="mt-2 bg-slate-800 text-white w-full">
-                    <CardBody className="gap-2">
-                        <p className="font-bold text-orange-400">Booking Form Required</p>
-                        <p className="text-sm">Please fill out the passenger details to proceed with booking: <b>{data.details}</b></p>
-                        <p className="text-sm">Total Price: Rp {data.price?.toLocaleString('id-ID')}</p>
-                        
-                        <div className="bg-slate-900 p-2 rounded text-xs font-mono whitespace-pre-wrap">
-{`Booking Request:
-Service: ${data.serviceType}
-Name: [Your Full Name]
-DOB: [YYYY-MM-DD]
-Passport/ID: [Number]
-Nationality: [Country]
-Phone: [Phone Number]`}
-                        </div>
-                        <Snippet symbol="" size="sm" color="default" className="mt-1 w-fit self-end">Copy Template</Snippet>
-                    </CardBody>
-                </Card>
-            );
-        }
-        
-        if (type === 'qris_payment') {
+
+        const toolResult = message.toolResult;
+
+        if (toolResult.type === 'qris_payment') {
+            const { data } = toolResult;
             return (
                 <Card className="mt-2 bg-white text-black w-full">
                     <CardBody className="flex flex-col items-center gap-3">
@@ -191,7 +169,8 @@ Phone: [Phone Number]`}
             );
         }
         
-        if (type === 'booking_summary') {
+        if (toolResult.type === 'booking_summary') {
+            const { data } = toolResult;
             if (data.error) {
                 return (
                     <Card className="mt-2 bg-red-900/50 text-white w-full">
@@ -213,7 +192,7 @@ Phone: [Phone Number]`}
                             </span>
                         </div>
                         <p className="text-lg font-bold">{data.bookingCode}</p>
-                        
+
                         {data.flightdetail && data.flightdetail[0] && (
                             <div className="flex flex-col gap-1 mt-2 text-sm bg-slate-900/50 p-2 rounded">
                                 <p><b>Route:</b> {data.flightdetail[0].origin} ➔ {data.flightdetail[0].destination}</p>
@@ -225,7 +204,7 @@ Phone: [Phone Number]`}
             );
         }
 
-        if (type === 'customer_service_card') {
+        if (toolResult.type === 'customer_service_card') {
             return (
                 <Card className="mt-2 bg-slate-800 text-white w-full border border-green-500/30">
                     <CardBody className="flex flex-col items-center gap-3 py-4">
@@ -255,7 +234,8 @@ Phone: [Phone Number]`}
             );
         }
 
-        if (type === 'flight_results' || type === 'ferry_results') {
+        if (toolResult.type === 'flight_results' || toolResult.type === 'ferry_results') {
+            const { data, type } = toolResult;
             if (data.message) {
                 return (
                     <Card className="mt-2 bg-slate-800 text-slate-300 w-full border border-slate-700">
@@ -267,8 +247,8 @@ Phone: [Phone Number]`}
             }
             return (
                 <div className="flex flex-col gap-2 mt-2 w-full">
-                    {data.options && data.options.map((flight: Record<string, unknown>, i: number) => (
-                        <InteractiveResultCard key={i} item={flight} type={type} label={`Option ${i+1}`} sendMessage={sendMessage} />
+                    {data.options && data.options.map((item, i) => (
+                        <InteractiveResultCard key={i} item={item} type={type} label={`Option ${i+1}`} sendMessage={sendMessage} />
                     ))}
                     {data.cheapest && (
                         <InteractiveResultCard item={data.cheapest} type={type} label="Cheapest" sendMessage={sendMessage} />

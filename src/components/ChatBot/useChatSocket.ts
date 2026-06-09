@@ -2,11 +2,40 @@ import { useEffect, useState, useRef } from 'react';
 import io, { Socket } from 'socket.io-client';
 import { getApiUrl } from '@api/baseApi';
 
-export type ToolResultData = {
-    type: 'booking_form' | 'qris_payment' | 'booking_summary' | 'flight_results' | 'ferry_results' | 'customer_service_card';
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data: any; 
+export type FlightOption = {
+    searchId: string;
+    airline: string;
+    departTime: string;
+    arriveTime: string;
+    departDate?: string;
+    duration: string;
+    price: number;
+    isTransit?: boolean;
 };
+
+export type FerryOption = {
+    tripId: string;
+    ferryName: string;
+    departTime: string;
+    arriveTime: string;
+    duration?: string;
+    price: number;
+    availableSeats?: number;
+};
+
+export type FlightDetail = {
+    origin: string;
+    destination: string;
+    depart: string;
+    arrival: string;
+};
+
+export type ToolResultData =
+    | { type: 'flight_results'; data: { options?: FlightOption[]; cheapest?: FlightOption; earliest?: FlightOption; latest?: FlightOption; message?: string } }
+    | { type: 'ferry_results'; data: { options?: FerryOption[]; cheapest?: FerryOption; earliest?: FerryOption; latest?: FerryOption; message?: string } }
+    | { type: 'booking_summary'; data: { bookingCode?: string; status?: string; error?: string; flightdetail?: FlightDetail[] } }
+    | { type: 'qris_payment'; data: { token: string; bookingCode: string; amount: number } }
+    | { type: 'customer_service_card'; data: Record<string, never> };
 
 export type Message = {
     id: string;
@@ -20,7 +49,7 @@ export const useChatSocket = () => {
         {
             id: 'initial',
             role: 'assistant',
-            content: "Halo! Silakan ketik rute pencarian tiket yang Anda inginkan (contoh: 'Tiket kapal dari Batam ke Singapura besok').\n\nJika Anda butuh bantuan lebih lanjut atau ingin menyampaikan keluhan, cukup ketik **'Customer Service'** kapan saja."
+            content: "Hi! / Halo! 👋\n\nType your travel query and I'll help you search and book.\nKetik pencarian tiket Anda dan saya akan membantu.\n\n*(e.g. \"Flight from Jakarta to Bali tomorrow\" / \"Kapal Batam ke Singapura besok\")*\n\nFor help or complaints, type **'Customer Service'** / Ketik **'Customer Service'** untuk bantuan."
         }
     ]);
     const [isTyping, setIsTyping] = useState(false);
