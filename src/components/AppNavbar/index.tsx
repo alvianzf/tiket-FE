@@ -49,6 +49,7 @@ const AppNavbar = () => {
     const isFlightActive = pathname === '/';
     const isFerryActive = pathname.startsWith('/ferry');
     const isCarRentalActive = pathname.startsWith('/car-rental');
+    const isHistoryActive = pathname.startsWith('/history');
 
     useEffect(() => {
         setIsMenuOpen(false);
@@ -63,6 +64,7 @@ const AppNavbar = () => {
         { label: t('home.flight'), href: '/', isActive: isFlightActive },
         { label: t('home.ferry'), href: '/ferry', isActive: isFerryActive },
         { label: t('home.car_rental'), href: '/car-rental', isActive: isCarRentalActive },
+        { label: t('common.my_bookings', 'My Bookings'), href: '/history', isActive: isHistoryActive },
     ];
 
     return (
