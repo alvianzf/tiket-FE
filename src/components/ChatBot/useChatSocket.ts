@@ -15,6 +15,7 @@ export type FlightOption = {
 
 export type FerryOption = {
     tripId: string;
+    searchId?: string;
     ferryName: string;
     departTime: string;
     arriveTime: string;
