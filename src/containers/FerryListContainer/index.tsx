@@ -1,5 +1,5 @@
 import FerryCard from "@components/FerryCard";
-import { Spinner } from "@nextui-org/react";
+import FerryCardSkeleton from "@components/FerryCardSkeleton";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import { useQuerySearchFerryTrips } from "@queries/ferry";
@@ -99,9 +99,10 @@ const FerryListContainer = () => {
 
             <div className="flex gap-4 w-full flex-col relative flex-nowrap items-center max-w-[1280px]">
                 {isFetching && (
-                    <div className="flex flex-col items-center justify-center py-32 gap-4">
-                        <Spinner size="lg" color="warning" />
-                        <p className="text-slate-400 font-bold animate-pulse uppercase tracking-widest text-xs">Finding your trips...</p>
+                    <div className="flex flex-col gap-6 w-full">
+                        <FerryCardSkeleton />
+                        <FerryCardSkeleton />
+                        <FerryCardSkeleton />
                     </div>
                 )}
                 
@@ -153,9 +154,10 @@ const FerryListContainer = () => {
                 {isRoundTrip && selectedOutbound && (
                     <>
                         {isFetchingReturn && (
-                            <div className="flex flex-col items-center justify-center py-32 gap-4">
-                                <Spinner size="lg" color="warning" />
-                                <p className="text-slate-400 font-bold animate-pulse uppercase tracking-widest text-xs">Finding return trips...</p>
+                            <div className="flex flex-col gap-6 w-full">
+                                <FerryCardSkeleton />
+                                <FerryCardSkeleton />
+                                <FerryCardSkeleton />
                             </div>
                         )}
                         {isReturnError && (

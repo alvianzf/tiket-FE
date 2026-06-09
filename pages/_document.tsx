@@ -12,6 +12,12 @@ export default function Document() {
         <link rel="shortcut icon" href="/favicon.svg" />
         <link rel="apple-touch-icon" href="/brand.svg" />
         <meta name="theme-color" content="#ff5a00" />
+        {/* PWA */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="TiketQ" />
       </Head>
       <body>
         <Main />

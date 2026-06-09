@@ -5,6 +5,8 @@ import Head from "next/head";
 import { AppLayout } from "@layouts";
 import { useTranslation } from "react-i18next";
 import FlightListContainer from "@containers/FlightListContainer";
+import { ErrorBoundary } from "react-error-boundary";
+import ContainerError from "@components/ContainerError";
 
 const FlightListPage: NextPageWithLayout = () => {
     const { t } = useTranslation();
@@ -13,7 +15,9 @@ const FlightListPage: NextPageWithLayout = () => {
     return (
         <>
             <Head>{buildSeoTags(seoTags)}</Head>
-            <FlightListContainer />
+            <ErrorBoundary FallbackComponent={ContainerError}>
+                <FlightListContainer />
+            </ErrorBoundary>
         </>
     )
 }

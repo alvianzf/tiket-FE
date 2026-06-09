@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CarCard from "@components/CarCard";
-import { Button, DatePicker, Select, SelectItem, Spinner } from "@nextui-org/react";
+import CarCardSkeleton from "@components/CarCardSkeleton";
+import { Button, DatePicker, Select, SelectItem } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { searchCars } from "@api/carRental";
 import { CarResult } from "@api/carRental/types";
@@ -141,9 +142,12 @@ const CarRentContainer = () => {
             {/* Results */}
             <div className="flex gap-4 w-full flex-row relative flex-wrap items-start max-w-[1280px] px-4 py-10 -mt-4">
                 {isLoading && (
-                    <div className="flex justify-center py-20 w-full">
-                        <Spinner size="lg" color="warning" />
-                    </div>
+                    <>
+                        <CarCardSkeleton />
+                        <CarCardSkeleton />
+                        <CarCardSkeleton />
+                        <CarCardSkeleton />
+                    </>
                 )}
                 {!isLoading && isSearched && cars.length === 0 && (
                     <div className="flex justify-center py-10 w-full">

@@ -38,11 +38,11 @@ This document serves as an exhaustive future development roadmap and technical i
 
 ### Performance & User Experience (UX)
 
-- [ ] **Progressive Web App (PWA)** — Add `next-pwa` with a service worker and manifest to enable offline e-ticket access.
-- [ ] **Skeleton loading states** — `FlightCardSkeleton` component exists; extend the pattern to ferry and car rental result lists.
-- [ ] **Image optimization** — Audit all `<img>` tags and replace with Next.js `<Image>` for automatic WebP conversion and lazy loading.
-- [ ] **Infinite scroll on flight results** — Replace the current pagination/static list with a virtual scroll for large result sets.
-- [ ] **Error boundary improvements** — `react-error-boundary` is installed; add granular boundaries around each container, not just at the app level.
+- [x] **Progressive Web App (PWA)** — `@ducanh2912/next-pwa` installed; service worker + `public/manifest.json` added; disabled in development, enabled in production. Offline fallback page at `/offline`.
+- [x] **Skeleton loading states** — `FerryCardSkeleton` and `CarCardSkeleton` created; wired into `FerryListContainer` and `CarRentContainer` replacing spinners.
+- [x] **Image optimization** — Audit complete: no raw `<img>` tags found in any `.tsx` file; all images already use Next.js `<Image>` component with `remotePatterns` configured.
+- [x] **Infinite scroll on flight results** — `react-intersection-observer` installed; `FlightListContainer` now renders 10 flights at a time and loads more as the sentinel div enters the viewport. Resets on filter/route change.
+- [x] **Error boundary improvements** — Granular `<ErrorBoundary FallbackComponent={ContainerError}>` added to each container page (flights, ferry list, car rent); `ContainerError` component provides retry button.
 
 ### Internationalization (i18n)
 

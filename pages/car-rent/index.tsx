@@ -4,6 +4,8 @@ import { buildSeoTags } from "@utils/common";
 import Head from "next/head";
 import { AppLayout } from "@layouts";
 import CarRentContainer from "@containers/CarRentContainer";
+import { ErrorBoundary } from "react-error-boundary";
+import ContainerError from "@components/ContainerError";
 
 const CarRentPage: NextPageWithLayout = () => {
     const seoTags = useMetaTags({ title: 'Rental Mobil'})
@@ -11,7 +13,9 @@ const CarRentPage: NextPageWithLayout = () => {
     return (
         <>
             <Head>{buildSeoTags(seoTags)}</Head>
-            <CarRentContainer />
+            <ErrorBoundary FallbackComponent={ContainerError}>
+                <CarRentContainer />
+            </ErrorBoundary>
         </>
     )
 }

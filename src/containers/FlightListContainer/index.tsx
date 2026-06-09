@@ -8,7 +8,8 @@ import IconSearch from "@icons/IconSearch"
 import { Button } from "@nextui-org/react"
 import { useQuerySearchFlights } from "@queries/flights"
 import { useRouter } from "next/router"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState, useRef } from "react"
+import { useInView } from "react-intersection-observer"
 import { useTranslation } from "react-i18next"
 import { motion } from "framer-motion"
 import moment from "moment"
@@ -120,6 +121,24 @@ const FlightListContainer = () => {
 
     const [selectedOutboundCode, setSelectedOutboundCode] = useState<string | null>(null);
 
+    const PAGE_SIZE = 10;
+    const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+    const [visibleReturnCount, setVisibleReturnCount] = useState(PAGE_SIZE);
+    const { ref: sentinelRef, inView } = useInView({ threshold: 0 });
+    const { ref: returnSentinelRef, inView: returnInView } = useInView({ threshold: 0 });
+    const prevOutboundCode = useRef<string | null>(null);
+
+    useEffect(() => {
+        if (prevOutboundCode.current !== selectedOutboundCode) {
+            prevOutboundCode.current = selectedOutboundCode;
+            setVisibleReturnCount(PAGE_SIZE);
+        }
+    }, [selectedOutboundCode]);
+
+    useEffect(() => {
+        setVisibleCount(PAGE_SIZE);
+    }, [from, to, date, selectedAirlines, sortOrder, transitFilter]);
+
     const airlinesData = useMemo(() => {
         const uniqueAirlines = Array.from(new Set(flightDatas.map(f => f.airlineName)));
         return uniqueAirlines.map(name => ({ key: name, label: name }));
@@ -147,7 +166,19 @@ const FlightListContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const filteredAndSortedReturnFlights = useMemo(() => filterAndSort(returnFlightDatas), [returnFlightDatas, selectedAirlines, sortOrder, transitFilter]);
 
+    useEffect(() => {
+        if (inView && visibleCount < filteredAndSortedFlights.length) {
+            setVisibleCount(c => c + PAGE_SIZE);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [inView, filteredAndSortedFlights.length]);
 
+    useEffect(() => {
+        if (returnInView && visibleReturnCount < filteredAndSortedReturnFlights.length) {
+            setVisibleReturnCount(c => c + PAGE_SIZE);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [returnInView, filteredAndSortedReturnFlights.length]);
 
     const totalPassengerCount = (parseInt(adult) || 0) + (parseInt(child) || 0) + (parseInt(infant) || 0);
 
@@ -304,20 +335,30 @@ const FlightListContainer = () => {
                         >
                             {(!isRoundTrip || !selectedOutboundCode) && (
                                 <>
-                                    {!isFetching && filteredAndSortedFlights.length > 0 && filteredAndSortedFlights.map((flight, index) => (
+                                    {!isFetching && filteredAndSortedFlights.length > 0 && filteredAndSortedFlights.slice(0, visibleCount).map((flight, index) => (
                                         <FlightCard flight={flight} key={index} handleSelect={handleSelect} />
                                     ))}
                                     {isFetching && <><FlightCardSkeleton /><FlightCardSkeleton /><FlightCardSkeleton /></>}
                                     {!isFetching && filteredAndSortedFlights.length === 0 && <FlightNotAvailable />}
+                                    {!isFetching && visibleCount < filteredAndSortedFlights.length && (
+                                        <div ref={sentinelRef} className="flex justify-center py-4">
+                                            <FlightCardSkeleton />
+                                        </div>
+                                    )}
                                 </>
                             )}
                             {isRoundTrip && selectedOutboundCode && (
                                 <>
-                                    {!isFetchingReturn && filteredAndSortedReturnFlights.length > 0 && filteredAndSortedReturnFlights.map((flight, index) => (
+                                    {!isFetchingReturn && filteredAndSortedReturnFlights.length > 0 && filteredAndSortedReturnFlights.slice(0, visibleReturnCount).map((flight, index) => (
                                         <FlightCard flight={flight} key={index} handleSelect={handleSelectReturn} />
                                     ))}
                                     {isFetchingReturn && <><FlightCardSkeleton /><FlightCardSkeleton /><FlightCardSkeleton /></>}
                                     {!isFetchingReturn && filteredAndSortedReturnFlights.length === 0 && <FlightNotAvailable />}
+                                    {!isFetchingReturn && visibleReturnCount < filteredAndSortedReturnFlights.length && (
+                                        <div ref={returnSentinelRef} className="flex justify-center py-4">
+                                            <FlightCardSkeleton />
+                                        </div>
+                                    )}
                                 </>
                             )}
                         </motion.div>
