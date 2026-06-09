@@ -37,26 +37,40 @@ const FlightListContainer = () => {
     const child = query?.child as string;
     const infant = query?.infant as string;
     const classParams = query?.class as string;
+    const tripType = (query?.tripType as string) || 'one_way';
+    const returnDate = query?.returnDate as string;
+    const segmentsParam = query?.segments as string;
+
+    const isRoundTrip = tripType === 'round_trip';
+    const isMultiCity = tripType === 'multi_city';
+
+    type SegmentValue = { from: string; to: string; date: string };
+    const multiCitySegments: SegmentValue[] = useMemo(() => {
+        if (!isMultiCity || !segmentsParam) return [];
+        try { return JSON.parse(segmentsParam) as SegmentValue[]; } catch { return []; }
+    }, [isMultiCity, segmentsParam]);
 
     useEffect(() => {
         if (!isReady) return;
 
+        if (isMultiCity) {
+            if (multiCitySegments.length >= 2) { setOpen(false); return; }
+            push('/');
+            return;
+        }
+
         if (from && to && date && adult && child !== undefined && classParams) {
-            // All params present — close the re-search form
             setOpen(false);
             return;
         }
 
-        // Defer the redirect by one tick so transient empty-param states
-        // (e.g. SearchFlight mounting with DEFAULT_VALUES before URL restore)
-        // don't trigger a false redirect.
         const timer = setTimeout(() => {
             if (!from || !to || !date || !adult || !classParams) {
                 push('/');
             }
         }, 0);
         return () => clearTimeout(timer);
-    }, [isReady, from, to, date, adult, child, infant, push, classParams]);
+    }, [isReady, from, to, date, adult, child, infant, push, classParams, isMultiCity, multiCitySegments]);
 
     const { data: flights, isFetching } = useQuerySearchFlights({
         request: {
@@ -70,43 +84,97 @@ const FlightListContainer = () => {
         enabled: !!(from && to && date && isReady && adult && child && infant && classParams)
     });
 
+    const { data: returnFlights, isFetching: isFetchingReturn } = useQuerySearchFlights({
+        request: {
+            departure: to,
+            arrival: from,
+            departureDate: returnDate,
+            adult: parseInt(adult),
+            child: parseInt(child),
+            infant: parseInt(infant),
+        },
+        enabled: !!(isRoundTrip && from && to && returnDate && isReady && adult && child && infant && classParams)
+    });
+
+    const mcSeg0 = multiCitySegments[0];
+    const mcSeg1 = multiCitySegments[1];
+    const mcSeg2 = multiCitySegments[2];
+    const mcSeg3 = multiCitySegments[3];
+
+    const { data: mcFlights0, isFetching: mcFetching0 } = useQuerySearchFlights({ request: { departure: mcSeg0?.from ?? '', arrival: mcSeg0?.to ?? '', departureDate: mcSeg0?.date ?? '', adult: parseInt(adult), child: parseInt(child), infant: parseInt(infant) }, enabled: isMultiCity && !!mcSeg0?.from && !!mcSeg0?.to && !!mcSeg0?.date && isReady });
+    const { data: mcFlights1, isFetching: mcFetching1 } = useQuerySearchFlights({ request: { departure: mcSeg1?.from ?? '', arrival: mcSeg1?.to ?? '', departureDate: mcSeg1?.date ?? '', adult: parseInt(adult), child: parseInt(child), infant: parseInt(infant) }, enabled: isMultiCity && !!mcSeg1?.from && !!mcSeg1?.to && !!mcSeg1?.date && isReady });
+    const { data: mcFlights2, isFetching: mcFetching2 } = useQuerySearchFlights({ request: { departure: mcSeg2?.from ?? '', arrival: mcSeg2?.to ?? '', departureDate: mcSeg2?.date ?? '', adult: parseInt(adult), child: parseInt(child), infant: parseInt(infant) }, enabled: isMultiCity && !!mcSeg2?.from && !!mcSeg2?.to && !!mcSeg2?.date && isReady });
+    const { data: mcFlights3, isFetching: mcFetching3 } = useQuerySearchFlights({ request: { departure: mcSeg3?.from ?? '', arrival: mcSeg3?.to ?? '', departureDate: mcSeg3?.date ?? '', adult: parseInt(adult), child: parseInt(child), infant: parseInt(infant) }, enabled: isMultiCity && !!mcSeg3?.from && !!mcSeg3?.to && !!mcSeg3?.date && isReady });
+
+    const mcFlightSets = [
+        { data: mcFlights0?.data.flatMap(f => f.flat()) ?? [], isFetching: mcFetching0, seg: mcSeg0 },
+        { data: mcFlights1?.data.flatMap(f => f.flat()) ?? [], isFetching: mcFetching1, seg: mcSeg1 },
+        { data: mcFlights2?.data.flatMap(f => f.flat()) ?? [], isFetching: mcFetching2, seg: mcSeg2 },
+        { data: mcFlights3?.data.flatMap(f => f.flat()) ?? [], isFetching: mcFetching3, seg: mcSeg3 },
+    ].filter(s => !!s.seg);
+
+    const [mcSelections, setMcSelections] = useState<(string | null)[]>([null, null, null, null]);
+
     const flightDatas = useMemo(() => flights?.data.flatMap((flight) => flight.flat()) ?? [], [flights]);
+    const returnFlightDatas = useMemo(() => returnFlights?.data.flatMap((flight) => flight.flat()) ?? [], [returnFlights]);
+
+    const [selectedOutboundCode, setSelectedOutboundCode] = useState<string | null>(null);
 
     const airlinesData = useMemo(() => {
         const uniqueAirlines = Array.from(new Set(flightDatas.map(f => f.airlineName)));
         return uniqueAirlines.map(name => ({ key: name, label: name }));
     }, [flightDatas]);
 
-    const filteredAndSortedFlights = useMemo(() => {
-        return flightDatas
-            .filter(flight => {
-                // Exclude flights with no valid pricing (0, null, NaN)
-                const price = getPrice(flight);
-                if (price === null) return false;
+    const filterAndSort = (data: typeof flightDatas) => data
+        .filter(flight => {
+            const price = getPrice(flight);
+            if (price === null) return false;
+            const airlineMatch = selectedAirlines.length === 0 || selectedAirlines.includes(flight.airlineName);
+            const isDirect = !flight.isTransit;
+            const transitMatch = transitFilter === 'all' ||
+                                 (transitFilter === 'direct' && isDirect) ||
+                                 (transitFilter === 'transit' && !isDirect);
+            return airlineMatch && transitMatch;
+        })
+        .sort((a, b) => {
+            const priceA = getPrice(a) ?? Infinity;
+            const priceB = getPrice(b) ?? Infinity;
+            return sortOrder === 'low' ? priceA - priceB : priceB - priceA;
+        });
 
-                const airlineMatch = selectedAirlines.length === 0 || selectedAirlines.includes(flight.airlineName);
-                
-                // standard transit logic: isTransit true means Transit, false means Direct
-                const isDirect = !flight.isTransit; 
-                const transitMatch = transitFilter === 'all' || 
-                                     (transitFilter === 'direct' && isDirect) ||
-                                     (transitFilter === 'transit' && !isDirect);
-                
-                return airlineMatch && transitMatch;
-            })
-            .sort((a, b) => {
-                const priceA = getPrice(a) ?? Infinity;
-                const priceB = getPrice(b) ?? Infinity;
-                return sortOrder === 'low' ? priceA - priceB : priceB - priceA;
-            });
-
-    }, [flightDatas, selectedAirlines, sortOrder, transitFilter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const filteredAndSortedFlights = useMemo(() => filterAndSort(flightDatas), [flightDatas, selectedAirlines, sortOrder, transitFilter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const filteredAndSortedReturnFlights = useMemo(() => filterAndSort(returnFlightDatas), [returnFlightDatas, selectedAirlines, sortOrder, transitFilter]);
 
 
 
     const totalPassengerCount = (parseInt(adult) || 0) + (parseInt(child) || 0) + (parseInt(infant) || 0);
 
     const handleSelect = (flightCode: string) => () => {
+        if (isRoundTrip && !selectedOutboundCode) {
+            setSelectedOutboundCode(flightCode);
+            return;
+        }
+        const queryParams: Record<string, string> = {
+            from,
+            to,
+            date,
+            adult,
+            child,
+            infant,
+            class: classParams,
+            code: isRoundTrip ? selectedOutboundCode! : flightCode,
+            tripType
+        };
+        if (isRoundTrip && returnDate) {
+            queryParams.returnDate = returnDate;
+            queryParams.returnCode = flightCode;
+        }
+        push({ pathname: '/checkout', query: queryParams });
+    }
+
+    const handleSelectReturn = (flightCode: string) => () => {
         push({
             pathname: '/checkout',
             query: {
@@ -117,7 +185,10 @@ const FlightListContainer = () => {
                 child,
                 infant,
                 class: classParams,
-                code: flightCode
+                code: selectedOutboundCode!,
+                returnCode: flightCode,
+                returnDate,
+                tripType
             }
         });
     }
@@ -182,34 +253,76 @@ const FlightListContainer = () => {
                             airlinesData={airlinesData}
                         />
                     </div>
-                    <motion.div 
-                        initial="hidden"
-                        animate="visible"
-                        variants={{
-                            visible: { transition: { staggerChildren: 0.05 } }
-                        }}
-                        className="flex flex-col gap-4 w-full"
-                    >
-                        {!isFetching && filteredAndSortedFlights && filteredAndSortedFlights.length > 0 && (
-                            filteredAndSortedFlights.map((flight, index) => (
-                                <FlightCard 
-                                    flight={flight} 
-                                    key={index} 
-                                    handleSelect={handleSelect}
-                                />
-                            ))
+                    <div className="flex flex-col gap-8 w-full">
+                        {isRoundTrip && (
+                            <p className="text-sm font-semibold text-orange-600 uppercase tracking-wide">
+                                {selectedOutboundCode
+                                    ? `${t('tickets.return_date')} — ${to} → ${from} · ${moment(returnDate).format('ddd, DD MMM YYYY')}`
+                                    : `${t('tickets.departured_date')} — ${from} → ${to} · ${moment(date).format('ddd, DD MMM YYYY')}`
+                                }
+                            </p>
                         )}
-                        {isFetching && (
-                        <>
-                            <FlightCardSkeleton />
-                            <FlightCardSkeleton />
-                            <FlightCardSkeleton />
-                        </>
+                        {isMultiCity ? (
+                            <div className="flex flex-col gap-10 w-full">
+                                {mcFlightSets.map((set, segIdx) => {
+                                    const activeSegIdx = mcSelections.findIndex(s => s === null);
+                                    const isSelected = mcSelections[segIdx] !== null;
+                                    if (segIdx > activeSegIdx && activeSegIdx !== -1) return null;
+                                    return (
+                                        <div key={segIdx} className="flex flex-col gap-4">
+                                            <p className="text-sm font-semibold text-orange-600 uppercase tracking-wide">
+                                                {t('tickets.segment', { number: segIdx + 1 })} — {set.seg?.from} → {set.seg?.to} · {moment(set.seg?.date).format('ddd, DD MMM YYYY')}
+                                                {isSelected && <span className="ml-2 text-green-600">✓</span>}
+                                            </p>
+                                            {!isSelected && (
+                                                <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.05 } } }} className="flex flex-col gap-4">
+                                                    {set.isFetching && <><FlightCardSkeleton /><FlightCardSkeleton /><FlightCardSkeleton /></>}
+                                                    {!set.isFetching && set.data.length > 0 && set.data.map((flight, i) => (
+                                                        <FlightCard key={i} flight={flight} handleSelect={(code) => () => {
+                                                            const updated = [...mcSelections];
+                                                            updated[segIdx] = code;
+                                                            setMcSelections(updated);
+                                                            const allSelected = updated.slice(0, mcFlightSets.length).every(s => s !== null);
+                                                            if (allSelected) {
+                                                                push({ pathname: '/checkout', query: { from: mcFlightSets[0].seg?.from, to: mcFlightSets[mcFlightSets.length - 1].seg?.to, date: mcFlightSets[0].seg?.date, adult, child, infant, class: classParams, code: updated[0]!, tripType: 'multi_city', segments: segmentsParam, allCodes: JSON.stringify(updated.slice(0, mcFlightSets.length)) } });
+                                                            }
+                                                        }} />
+                                                    ))}
+                                                    {!set.isFetching && set.data.length === 0 && <FlightNotAvailable />}
+                                                </motion.div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                        <motion.div
+                            initial="hidden"
+                            animate="visible"
+                            variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
+                            className="flex flex-col gap-4 w-full"
+                        >
+                            {(!isRoundTrip || !selectedOutboundCode) && (
+                                <>
+                                    {!isFetching && filteredAndSortedFlights.length > 0 && filteredAndSortedFlights.map((flight, index) => (
+                                        <FlightCard flight={flight} key={index} handleSelect={handleSelect} />
+                                    ))}
+                                    {isFetching && <><FlightCardSkeleton /><FlightCardSkeleton /><FlightCardSkeleton /></>}
+                                    {!isFetching && filteredAndSortedFlights.length === 0 && <FlightNotAvailable />}
+                                </>
+                            )}
+                            {isRoundTrip && selectedOutboundCode && (
+                                <>
+                                    {!isFetchingReturn && filteredAndSortedReturnFlights.length > 0 && filteredAndSortedReturnFlights.map((flight, index) => (
+                                        <FlightCard flight={flight} key={index} handleSelect={handleSelectReturn} />
+                                    ))}
+                                    {isFetchingReturn && <><FlightCardSkeleton /><FlightCardSkeleton /><FlightCardSkeleton /></>}
+                                    {!isFetchingReturn && filteredAndSortedReturnFlights.length === 0 && <FlightNotAvailable />}
+                                </>
+                            )}
+                        </motion.div>
                         )}
-                        {!isFetching && filteredAndSortedFlights.length === 0 && (
-                            <FlightNotAvailable />
-                        )}
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </>

@@ -53,7 +53,15 @@
             "child": "Child (x%{count})",
             "infant": "Infant (x%{count})",
             "choose": "Select Option",
-            "download_ticket": "Download Ticket"
+            "download_ticket": "Download Ticket",
+            "cabin_class": "Cabin Class",
+            "economy": "Economy",
+            "business": "Business",
+            "lap_infant": "Lap Infant (no seat, held by adult)",
+            "baggage": "Checked Baggage",
+            "carry_on_only": "Carry-on only (free)",
+            "baggage_20kg": "+20 kg (Rp 150.000)",
+            "baggage_30kg": "+30 kg (Rp 250.000)"
         }
     }
 }

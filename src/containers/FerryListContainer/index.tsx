@@ -5,23 +5,60 @@ import { useRouter } from "next/router";
 import { useQuerySearchFerryTrips } from "@queries/ferry";
 import { motion } from "framer-motion";
 import { Ship, User, CreditCard } from "lucide-react";
+import { FerryTrip } from "@interfaces/travel";
+import { useState } from "react";
+import moment from "moment";
 
 const FerryListContainer = () => {
 
     const { t } = useTranslation();
-    const { query } = useRouter();
+    const { query, push } = useRouter();
 
     const embarkation = query?.embarkation as string ?? '';
     const destination = query?.destination as string ?? '';
     const tripdate = query?.tripdate as string ?? '';
+    const type = (query?.type as string) || 'one_way';
+    const returndate = query?.returndate as string ?? '';
+
+    const isRoundTrip = type === 'round_trip';
+    const [selectedOutbound, setSelectedOutbound] = useState<FerryTrip | null>(null);
 
     const { data: trips, isFetching, isError } = useQuerySearchFerryTrips(
         { embarkation, destination, tripdate },
         { enabled: !!embarkation && !!destination && !!tripdate }
     );
 
+    const { data: returnTrips, isFetching: isFetchingReturn, isError: isReturnError } = useQuerySearchFerryTrips(
+        { embarkation: destination, destination: embarkation, tripdate: returndate },
+        { enabled: isRoundTrip && !!destination && !!embarkation && !!returndate && !!selectedOutbound }
+    );
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const tripList: any[] = (trips as any)?.data ?? [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const returnTripList: any[] = (returnTrips as any)?.data ?? [];
+
+    const handleOutboundSelect = (trip: FerryTrip) => {
+        setSelectedOutbound(trip);
+    };
+
+    const handleReturnSelect = (trip: FerryTrip) => {
+        if (!selectedOutbound) return;
+        const totalPrice = (selectedOutbound.price ?? 0) + (trip.price ?? 0);
+        push({
+            pathname: '/ferry/passenger',
+            query: {
+                tripID: selectedOutbound.tripID,
+                returnTripID: trip.tripID,
+                embarkation,
+                destination,
+                tripdate,
+                returndate,
+                vesselName: selectedOutbound.vesselName,
+                price: totalPrice,
+            }
+        });
+    };
 
     const steps = [
         { id: 1, label: t('tickets.select_schedule'), icon: Ship, active: true },
@@ -84,24 +121,76 @@ const FerryListContainer = () => {
                     </div>
                 )}
 
-                <motion.div 
-                    initial="hidden"
-                    animate="visible"
-                    variants={{
-                        visible: { transition: { staggerChildren: 0.1 } }
-                    }}
-                    className="w-full flex flex-col gap-6"
-                >
-                    {!isFetching && tripList.map((trip) => (
-                        <FerryCard
-                            key={trip.tripID}
-                            trip={trip}
-                            embarkation={embarkation}
-                            destination={destination}
-                            tripdate={tripdate}
-                        />
-                    ))}
-                </motion.div>
+                {isRoundTrip && (
+                    <p className="text-sm font-semibold text-orange-600 uppercase tracking-wide w-full max-w-[1280px]">
+                        {selectedOutbound
+                            ? `${t('tickets.return_date')} — ${destination} → ${embarkation} · ${moment(returndate, 'YYYYMMDD').format('ddd, DD MMM YYYY')}`
+                            : `${t('tickets.departured_date')} — ${embarkation} → ${destination} · ${moment(tripdate, 'YYYYMMDD').format('ddd, DD MMM YYYY')}`
+                        }
+                    </p>
+                )}
+
+                {(!isRoundTrip || !selectedOutbound) && (
+                    <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+                        className="w-full flex flex-col gap-6"
+                    >
+                        {!isFetching && tripList.map((trip) => (
+                            <FerryCard
+                                key={trip.tripID}
+                                trip={trip}
+                                embarkation={embarkation}
+                                destination={destination}
+                                tripdate={tripdate}
+                                onSelect={isRoundTrip ? handleOutboundSelect : undefined}
+                            />
+                        ))}
+                    </motion.div>
+                )}
+
+                {isRoundTrip && selectedOutbound && (
+                    <>
+                        {isFetchingReturn && (
+                            <div className="flex flex-col items-center justify-center py-32 gap-4">
+                                <Spinner size="lg" color="warning" />
+                                <p className="text-slate-400 font-bold animate-pulse uppercase tracking-widest text-xs">Finding return trips...</p>
+                            </div>
+                        )}
+                        {isReturnError && (
+                            <div className="glass-card bg-red-50/10 border-red-500/20 p-8 rounded-3xl w-full max-w-md text-center">
+                                <p className="text-red-500 font-bold">{t('tickets.error_loading_trips')}</p>
+                            </div>
+                        )}
+                        {!isFetchingReturn && !isReturnError && returnTripList.length === 0 && (
+                            <div className="glass-card bg-white/5 backdrop-blur-xl p-16 rounded-[40px] w-full text-center border-none shadow-2xl">
+                                <div className="bg-orange-500/10 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <Ship size={48} className="text-[#ff5a00]" />
+                                </div>
+                                <h3 className="text-2xl font-black text-slate-800 mb-2">No Return Trips Scheduled</h3>
+                                <p className="text-slate-500 font-medium">{t('tickets.no_trips_found')}</p>
+                            </div>
+                        )}
+                        <motion.div
+                            initial="hidden"
+                            animate="visible"
+                            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+                            className="w-full flex flex-col gap-6"
+                        >
+                            {!isFetchingReturn && returnTripList.map((trip) => (
+                                <FerryCard
+                                    key={trip.tripID}
+                                    trip={trip}
+                                    embarkation={destination}
+                                    destination={embarkation}
+                                    tripdate={returndate}
+                                    onSelect={handleReturnSelect}
+                                />
+                            ))}
+                        </motion.div>
+                    </>
+                )}
             </div>
         </div>
     )

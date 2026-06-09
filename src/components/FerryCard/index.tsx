@@ -10,9 +10,10 @@ interface Props {
     embarkation: string;
     destination: string;
     tripdate: string;
+    onSelect?: (trip: FerryTrip) => void;
 }
 
-const FerryCard = ({ trip, embarkation, destination, tripdate }: Props) => {
+const FerryCard = ({ trip, embarkation, destination, tripdate, onSelect }: Props) => {
     const { t } = useTranslation();
     const { push } = useRouter();
 
@@ -23,6 +24,10 @@ const FerryCard = ({ trip, embarkation, destination, tripdate }: Props) => {
     }).format(trip.price ?? 0);
 
     const handleOrder = () => {
+        if (onSelect) {
+            onSelect(trip);
+            return;
+        }
         push({
             pathname: '/ferry/passenger',
             query: {

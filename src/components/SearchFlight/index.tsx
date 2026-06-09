@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import FromInput from "./FromInput";
 import DestinationInput from "./DestinationInput";
 import PassengerInput from "./PassengerInput";
+import MultiCitySegment, { SegmentValue } from "./MultiCitySegment";
 import IconSearch from "@icons/IconSearch";
 import { useQueryGetAirports } from "@queries/airports";
 import { Airport } from "@api/airports/types";
@@ -21,6 +22,9 @@ const SearchFlight = () => {
     const { push, query, isReady } = useRouter();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isMultiCity, setIsMultiCity] = useState(false);
+    const defaultSegment = (): SegmentValue => ({ from: '', to: '', date: moment().add(1, 'days').format('YYYY-MM-DD') });
+    const [segments, setSegments] = useState<SegmentValue[]>([defaultSegment(), defaultSegment()]);
 
     useEffect(() => {
         setMounted(true);
@@ -60,6 +64,8 @@ const SearchFlight = () => {
     const child = query?.child as unknown as string;
     const infant = query?.infant as unknown as string;
     const classParams = query?.class as unknown as string;
+    const tripTypeParam = (query?.tripType as string) || 'one_way';
+    const returnDateParam = query?.returnDate as unknown as string;
 
     useEffect(
         () => {
@@ -71,32 +77,56 @@ const SearchFlight = () => {
                     adult,
                     child,
                     infant,
-                    class: classParams
+                    class: classParams,
+                    tripType: (tripTypeParam as 'one_way' | 'round_trip') || 'one_way',
+                    returnDate: returnDateParam || undefined
                 });
             }
         },
-        [isReady, from, to, date, adult, child, infant, classParams, reset]
+        [isReady, from, to, date, adult, child, infant, classParams, tripTypeParam, returnDateParam, reset]
     )
 
     const onSubmit = (data: FormProps) => {
         if(data) {
             setIsSubmitting(true);
+            const queryParams: Record<string, string> = {
+                from: data.from,
+                to: data.to,
+                date: data.date,
+                adult: data.adult,
+                child: data.child,
+                infant: data.infant,
+                class: data.class,
+                tripType: data.tripType
+            };
+            if (data.tripType === 'round_trip' && data.returnDate) {
+                queryParams.returnDate = data.returnDate;
+            }
             push({
                 pathname: '/flights',
-                query: {
-                    from: data.from,
-                    to: data.to,
-                    date: data.date,
-                    adult: data.adult,
-                    child: data.child,
-                    infant: data.infant,
-                    class: data.class
-                }
+                query: queryParams
             }).finally(() => {
                 setIsSubmitting(false);
             });
         }
     }
+
+    const handleMultiCitySearch = () => {
+        const valid = segments.every(s => s.from && s.to && s.date);
+        if (!valid) return;
+        setIsSubmitting(true);
+        push({
+            pathname: '/flights',
+            query: {
+                tripType: 'multi_city',
+                segments: JSON.stringify(segments),
+                adult: watch('adult') || '1',
+                child: watch('child') || '0',
+                infant: watch('infant') || '0',
+                class: watch('class') || 'economy'
+            }
+        }).finally(() => setIsSubmitting(false));
+    };
 
     const filteredAirports = airports?.filter((item: Airport) => item.group === 'Domestik');
     const items = (filteredAirports && filteredAirports.length > 0) ? filteredAirports : airports;
@@ -109,9 +139,76 @@ const SearchFlight = () => {
         );
     }
 
+    const tripType = watch('tripType');
+
     return (
         <div className="w-full lg:max-w-[1200px] glass-card p-8 md:p-10 border-white/30 backdrop-blur-3xl mx-auto">
             <FormProvider {...methods}>
+                <div className="flex flex-row gap-2 bg-white/10 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md w-fit mb-6">
+                    <button
+                        type="button"
+                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${!isMultiCity && tripType === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`}
+                        onClick={() => { setIsMultiCity(false); setValue('tripType', 'one_way'); }}
+                    >
+                        {t('tickets.one_way')}
+                    </button>
+                    <button
+                        type="button"
+                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${!isMultiCity && tripType === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`}
+                        onClick={() => { setIsMultiCity(false); setValue('tripType', 'round_trip'); }}
+                    >
+                        {t('tickets.round_trip')}
+                    </button>
+                    <button
+                        type="button"
+                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${isMultiCity ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`}
+                        onClick={() => setIsMultiCity(true)}
+                    >
+                        {t('tickets.multi_city')}
+                    </button>
+                </div>
+
+                {isMultiCity ? (
+                    <div className="flex flex-col gap-4 w-full">
+                        {segments.map((seg, i) => (
+                            <MultiCitySegment
+                                key={i}
+                                index={i}
+                                value={seg}
+                                airports={items}
+                                isLoading={isAirportsLoading}
+                                canRemove={segments.length > 2}
+                                onChange={(idx, val) => setSegments(prev => prev.map((s, j) => j === idx ? val : s))}
+                                onRemove={(idx) => setSegments(prev => prev.filter((_, j) => j !== idx))}
+                            />
+                        ))}
+                        <div className="flex flex-col lg:flex-row gap-4 items-center justify-between w-full mt-2">
+                            <div className="w-full lg:w-auto">
+                                <PassengerInput />
+                            </div>
+                            <div className="flex gap-3 w-full lg:w-auto">
+                                {segments.length < 4 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setSegments(prev => [...prev, defaultSegment()])}
+                                        className="text-sm font-bold text-orange-500 hover:text-orange-600 transition-colors px-4 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 whitespace-nowrap"
+                                    >
+                                        + {t('tickets.add_flight')}
+                                    </button>
+                                )}
+                                <Button
+                                    isLoading={isSubmitting}
+                                    dsVariant="cta"
+                                    className="h-[48px] px-8 rounded-ds-md"
+                                    onPress={handleMultiCitySearch}
+                                >
+                                    {!isSubmitting && <span className="mr-2"><IconSearch width={20} height={20} /></span>}
+                                    <span className="font-bold">{t('common.search_flight')}</span>
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                ) : (
                 <div className="flex flex-col lg:flex-row gap-6 items-end w-full">
                     <div className="w-full lg:flex-1">
                         <FromInput 
@@ -130,8 +227,8 @@ const SearchFlight = () => {
                     </div>
                     <div className="w-full lg:flex-1 flex flex-col gap-2">
                         <p className="font-medium text-slate-800/80">{t('tickets.departured_date')}</p>
-                        <DatePicker 
-                            aria-label={t('tickets.departured_date')} 
+                        <DatePicker
+                            aria-label={t('tickets.departured_date')}
                             variant="underlined"
                             color="warning"
                             className="w-full"
@@ -144,17 +241,36 @@ const SearchFlight = () => {
                             }}
                         />
                     </div>
-                    <Button 
+                    {tripType === 'round_trip' && (
+                        <div className="w-full lg:flex-1 flex flex-col gap-2">
+                            <p className="font-medium text-slate-800/80">{t('tickets.return_date')}</p>
+                            <DatePicker
+                                aria-label={t('tickets.return_date')}
+                                variant="underlined"
+                                color="warning"
+                                className="w-full"
+                                minValue={watch('date') ? parseDate(watch('date')) : parseDate(moment().format('YYYY-MM-DD'))}
+                                value={watch('returnDate') ? parseDate(watch('returnDate')!) : null}
+                                onChange={(value) => {
+                                    if (value) {
+                                        setValue('returnDate', value.toString());
+                                    }
+                                }}
+                            />
+                        </div>
+                    )}
+                    <Button
                         isIconOnly={!isSubmitting}
                         isLoading={isSubmitting}
                         dsVariant="cta"
-                        className="h-[56px] w-full lg:min-w-[56px] lg:w-[56px] rounded-ds-md" 
+                        className="h-[56px] w-full lg:min-w-[56px] lg:w-[56px] rounded-ds-md"
                         onPress={() => handleSubmit(onSubmit)()}
                     >
                         {!isSubmitting && <IconSearch width={24} height={24}/>}
                         <span className="lg:hidden ml-2 font-bold">{t('common.search_flight')}</span>
-                    </Button> 
+                    </Button>
                 </div>
+                )}
             </FormProvider>
 
             {/* AI Banner */}

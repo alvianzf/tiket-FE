@@ -53,7 +53,15 @@
             "payment": "Finalisasi Pembayaran",
             "seats_available": "%{count} kursi tersedia",
             "ferry_name": "Nama Kapal",
-            "price": "Total Harga"
+            "price": "Total Harga",
+            "multi_city": "Multi-Kota",
+            "add_flight": "Tambah Penerbangan",
+            "remove_flight": "Hapus",
+            "segment": "Penerbangan %{number}",
+            "select_outbound": "Pilih Penerbangan Pergi",
+            "select_return": "Pilih Penerbangan Pulang",
+            "no_trips_found": "Tidak ada perjalanan untuk tanggal ini",
+            "error_loading_trips": "Gagal memuat perjalanan"
         }
     }
 }

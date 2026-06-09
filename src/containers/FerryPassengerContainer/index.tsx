@@ -37,6 +37,7 @@ const FerryPassengerContainer = () => {
     const embarkation = query?.embarkation as string ?? '';
     const destination = query?.destination as string ?? '';
     const tripdate = query?.tripdate as string ?? '';
+    const returndate = query?.returndate as string ?? '';
     const vesselName = query?.vesselName as string ?? '';
     const price = query?.price as string ?? '0';
 
@@ -67,12 +68,20 @@ const FerryPassengerContainer = () => {
 
         setIsSubmitting(true);
         try {
+            const departureDateFormatted = tripdate.length === 8
+                ? `${tripdate.substring(0, 4)}-${tripdate.substring(4, 6)}-${tripdate.substring(6, 8)}`
+                : tripdate;
+            const returnDateFormatted = returndate.length === 8
+                ? `${returndate.substring(0, 4)}-${returndate.substring(4, 6)}-${returndate.substring(6, 8)}`
+                : returndate || null;
+
             const payload = {
                 tripID,
                 contactEmail,
                 contactMobileNumber: mobileNumber,
                 whatsappMobileNumber: whatsappNumber || mobileNumber,
-                departureDate: tripdate,
+                departureDate: departureDateFormatted,
+                ...(returnDateFormatted ? { returnDate: returnDateFormatted } : {}),
                 // Terminal codes — the backend expects these from the trip selection
                 originTerminalCode: embarkation,
                 destinationTerminalCode: destination,

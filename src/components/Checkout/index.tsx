@@ -49,12 +49,15 @@ const Checkout = ({ flightData, isLoading }: Props) => {
         }
     };
 
-    const generatePassengers = (total: number): Passenger[] => {
+    const generatePassengers = (total: number, withLapInfant = false): Passenger[] => {
         return Array(total).fill(null).map(() => ({
             firstname: '',
             lastname: '',
             call: '',
-            date_of_birth: ''
+            date_of_birth: '',
+            cabinClass: 'economy',
+            baggageKg: 0,
+            ...(withLapInfant ? { isLapInfant: false } : {})
         }));
     };
 
@@ -72,7 +75,7 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                     infant: parseInt(infant),
                     adultPassengers: generatePassengers(parseInt(adult)),
                     childPassengers: generatePassengers(parseInt(child)),
-                    infantPassengers: generatePassengers(parseInt(infant))
+                    infantPassengers: generatePassengers(parseInt(infant), true)
                 })
             }
         },

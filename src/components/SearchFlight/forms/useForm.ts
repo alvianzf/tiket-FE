@@ -12,6 +12,8 @@ export interface FormProps {
     child: string;
     infant: string;
     class: string;
+    tripType: 'one_way' | 'round_trip';
+    returnDate?: string;
 }
 
 export const DEFAULT_VALUES: FormProps = {
@@ -21,7 +23,9 @@ export const DEFAULT_VALUES: FormProps = {
     to: '',
     date: moment().add(1,'days').format('YYYY-MM-DD'),
     adult: '1',
-    infant: '0'
+    infant: '0',
+    tripType: 'one_way',
+    returnDate: undefined
 };
 
 const useForm = () => {
@@ -36,6 +40,12 @@ const useForm = () => {
             infant: yup.string().required(t('form.required')),
             class: yup.string().required(t('form.required')),
             date: yup.string().required(t('form.required')),
+            tripType: yup.mixed<'one_way' | 'round_trip'>().oneOf(['one_way', 'round_trip']).required(),
+            returnDate: yup.string().when('tripType', {
+                is: 'round_trip',
+                then: (s) => s.required(t('form.required')),
+                otherwise: (s) => s.optional()
+            }),
         })
         .required();
 

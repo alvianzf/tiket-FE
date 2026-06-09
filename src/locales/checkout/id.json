@@ -53,7 +53,15 @@
             "child": "Anak (x%{count})",
             "infant": "Balita (x%{count})",
             "choose": "Pilih Opsi",
-            "download_ticket": "Unduh Tiket"
+            "download_ticket": "Unduh Tiket",
+            "cabin_class": "Kelas Kabin",
+            "economy": "Ekonomi",
+            "business": "Bisnis",
+            "lap_infant": "Bayi Pangku (tanpa kursi, digendong)",
+            "baggage": "Bagasi Tercatat",
+            "carry_on_only": "Kabin saja (gratis)",
+            "baggage_20kg": "+20 kg (Rp 150.000)",
+            "baggage_30kg": "+30 kg (Rp 250.000)"
         }
     }
 }

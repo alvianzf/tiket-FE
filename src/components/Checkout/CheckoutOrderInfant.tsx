@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, DatePicker, Divider, Input, Select, SelectItem } from "@nextui-org/react"
+import { Card, CardBody, CardHeader, Checkbox, DatePicker, Divider, Input, Select, SelectItem } from "@nextui-org/react"
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "./forms/useForm";
@@ -116,6 +116,37 @@ const CheckoutOrderInfant = () => {
                                             input: "font-mono font-semibold text-dark",
                                         }}
                                     />
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+                                    <Select
+                                        label={t('checkout.cabin_class')}
+                                        labelPlacement="outside"
+                                        variant="underlined"
+                                        selectionMode="single"
+                                        isDisabled={!!watch(`infantPassengers.${index}.isLapInfant`)}
+                                        selectedKeys={[watch(`infantPassengers.${index}.cabinClass`) || 'economy']}
+                                        onChange={(e) => setValue(`infantPassengers.${index}.cabinClass`, e.target.value)}
+                                        classNames={{
+                                            label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
+                                            trigger: "h-10 min-h-unit-10",
+                                            value: "font-semibold text-dark",
+                                        }}
+                                    >
+                                        <SelectItem key="economy" value="economy">{t('checkout.economy')}</SelectItem>
+                                        <SelectItem key="business" value="business">{t('checkout.business')}</SelectItem>
+                                    </Select>
+                                    <div className="flex items-center pt-5 md:pt-6">
+                                        <Checkbox
+                                            isSelected={!!watch(`infantPassengers.${index}.isLapInfant`)}
+                                            onValueChange={(checked) => {
+                                                setValue(`infantPassengers.${index}.isLapInfant`, checked);
+                                                if (checked) setValue(`infantPassengers.${index}.cabinClass`, 'economy');
+                                            }}
+                                            classNames={{ label: "text-sm font-medium text-slate-700" }}
+                                        >
+                                            {t('checkout.lap_infant')}
+                                        </Checkbox>
+                                    </div>
                                 </div>
                             </div>
                         </CardBody>

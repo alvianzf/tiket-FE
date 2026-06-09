@@ -53,7 +53,15 @@
             "payment": "Finalize Payment",
             "seats_available": "%{count} seats available",
             "ferry_name": "Vessel Name",
-            "price": "Total Price"
+            "price": "Total Price",
+            "multi_city": "Multi-City",
+            "add_flight": "Add Flight",
+            "remove_flight": "Remove",
+            "segment": "Flight %{number}",
+            "select_outbound": "Select Outbound Flight",
+            "select_return": "Select Return Flight",
+            "no_trips_found": "No trips found for this date",
+            "error_loading_trips": "Failed to load trips"
         }
     }
 }

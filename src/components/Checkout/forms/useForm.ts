@@ -8,6 +8,9 @@ export interface Passenger {
     lastname: string;
     call: string;
     date_of_birth: string;
+    cabinClass: string;
+    baggageKg: number;
+    isLapInfant?: boolean;
 }
 
 export interface FormProps {
@@ -64,19 +67,26 @@ const useForm = () => {
                 firstname: yup.string().required(t('form.required')),
                 lastname: yup.string().required(t('form.required')),
                 call: yup.string().required(t('form.required')),
-                date_of_birth: yup.string().required(t('form.required'))
+                date_of_birth: yup.string().required(t('form.required')),
+                cabinClass: yup.string().required(t('form.required')),
+                baggageKg: yup.number().required(t('form.required'))
             })).required().min(1),
             childPassengers: yup.array().of(yup.object().shape({
                 firstname: yup.string().required(t('form.required')),
                 lastname: yup.string().required(t('form.required')),
                 call: yup.string().required(t('form.required')),
-                date_of_birth: yup.string().required(t('form.required'))
+                date_of_birth: yup.string().required(t('form.required')),
+                cabinClass: yup.string().required(t('form.required')),
+                baggageKg: yup.number().required(t('form.required'))
             })).required(),
             infantPassengers: yup.array().of(yup.object().shape({
                 firstname: yup.string().required(t('form.required')),
                 lastname: yup.string().required(t('form.required')),
                 call: yup.string().required(t('form.required')),
-                date_of_birth: yup.string().required(t('form.required'))
+                date_of_birth: yup.string().required(t('form.required')),
+                cabinClass: yup.string().required(t('form.required')),
+                baggageKg: yup.number().required(t('form.required')),
+                isLapInfant: yup.boolean().optional()
             })).required(),
         })
         .required();
