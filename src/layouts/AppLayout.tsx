@@ -20,7 +20,7 @@ const AppLayout = ({ children } : Props) => {
                 <div className="glass-navbar flex flex-row justify-center">
                     <AppNavbar />
                 </div>
-                <AnimatePresence mode="popLayout" initial={false}>
+                <AnimatePresence mode="wait" initial={false}>
                     <motion.main
                         key={router.route}
                         initial={{ opacity: 0, y: 12 }}
