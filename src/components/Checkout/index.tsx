@@ -2,7 +2,7 @@ import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tab, Tabs, Bu
 import { useTranslation } from "react-i18next"
 import CheckoutOrder from "./CheckoutOrder";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CheckoutOrderReview from "./CheckoutOrderReview";
 import { FormProvider } from "react-hook-form";
 import useForm, { DEFAULT_VALUES, FormProps, Passenger } from "./forms/useForm";
@@ -81,9 +81,15 @@ const Checkout = ({ flightData, isLoading }: Props) => {
         [flightData, methods, from, to, date, adult, child, infant]
     );
 
+    // A searchId is single-use at the provider: a second book on the same
+    // searchId returns rc 44 "Booking Gagal". Guard against any double submit
+    // (rapid clicks, re-renders) firing mutate() before isMutating flips.
+    const isBookingRef = useRef(false);
+
     const { mutate, isLoading: isMutating } = useMutation(bookFlight, {
         onSuccess: (data) => {
             if(data.rc === "00") {
+                // Keep the guard closed — we navigate away; the searchId is spent.
                 push({
                     pathname: '/checkout/payment',
                     query: {
@@ -92,15 +98,19 @@ const Checkout = ({ flightData, isLoading }: Props) => {
                 })
                 return;
             }
+            isBookingRef.current = false;
             toast.error(data.msg || "Failed to create flight booking. Please try again.");
         },
         onError: (err: unknown) => {
+            isBookingRef.current = false;
             const error = err as { message?: string };
             toast.error(error?.message || "Failed to create flight booking. Please try again.");
         }
     })
 
     const onSubmit = (data: FormProps) => {
+        if (isBookingRef.current) return;
+        isBookingRef.current = true;
         const request = buildRequest(data);
         mutate(request)
     }
