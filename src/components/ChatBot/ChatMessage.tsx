@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Message } from './useChatSocket';
-import { Card, CardBody, Button } from '@nextui-org/react';
+import { Card, CardBody, Button, Snippet } from '@nextui-org/react';
+import { QRCodeSVG } from 'qrcode.react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -105,70 +106,47 @@ const InteractiveResultCard = ({ item, type, label, sendMessage }: any) => {
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ message, sendMessage }) => {
     const isUser = message.role === 'user';
-    const [isLoadingPayment, setIsLoadingPayment] = useState(false);
-
-    const handlePayment = async (token: string) => {
-        setIsLoadingPayment(true);
-        if (typeof window === 'undefined') return;
-
-        if (!window.snap) {
-            await new Promise((resolve) => {
-                const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || '';
-                const isProduction = clientKey && !clientKey.startsWith('SB-');
-                const scriptSrc = isProduction 
-                    ? 'https://app.midtrans.com/snap/snap.js'
-                    : 'https://app.sandbox.midtrans.com/snap/snap.js';
-
-                const script = document.createElement('script');
-                script.src = scriptSrc;
-                // Note: requires NEXT_PUBLIC_MIDTRANS_CLIENT_KEY in frontend env
-                script.setAttribute('data-client-key', clientKey);
-                script.onload = resolve;
-                document.body.appendChild(script);
-            });
-        }
-        
-        setIsLoadingPayment(false);
-
-        if (window.snap) {
-            window.snap.pay(token, {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onSuccess: (result: any) => console.log('Payment success', result),
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onPending: (result: any) => console.log('Payment pending', result),
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onError: (result: any) => console.error('Payment error', result),
-                onClose: () => console.log('Payment popup closed')
-            });
-        }
-    };
 
     const renderToolResult = () => {
         if (!message.toolResult) return null;
 
         const toolResult = message.toolResult;
 
-        if (toolResult.type === 'qris_payment') {
+        if (toolResult.type === 'dana_payment') {
             const { data } = toolResult;
             return (
                 <Card className="mt-2 bg-white text-black w-full">
                     <CardBody className="flex flex-col items-center gap-3">
                         <p className="font-bold text-blue-600">Complete Payment</p>
-                        <p className="text-sm text-center">Please complete your payment of <b>Rp {data.amount?.toLocaleString('id-ID')}</b> for booking <b>{data.bookingCode}</b></p>
-                        
-                        <Button 
-                            color="primary" 
-                            className="w-full font-bold shadow-md h-12"
-                            isLoading={isLoadingPayment}
-                            onClick={() => handlePayment(data.token)}
-                        >
-                            Pay via Midtrans
-                        </Button>
+                        <p className="text-sm text-center">Booking <b>{data.bookingCode}</b></p>
+
+                        {data.kind === 'QRIS' && data.qrContent && (
+                            <>
+                                <div className="bg-white p-3 rounded-lg border">
+                                    <QRCodeSVG value={data.qrContent} size={200} />
+                                </div>
+                                <p className="text-xs text-slate-500 text-center">
+                                    Scan with any QRIS-enabled app (DANA, GoPay, OVO, m-banking).
+                                </p>
+                            </>
+                        )}
+
+                        {data.kind === 'VA' && data.vaNumber && (
+                            <div className="flex flex-col gap-2 w-full">
+                                <span className="text-xs text-slate-500">Virtual Account number</span>
+                                <Snippet symbol="" variant="bordered" className="w-full" classNames={{ pre: "font-mono text-base tracking-wide" }}>
+                                    {data.vaNumber}
+                                </Snippet>
+                                <p className="text-xs text-slate-500">
+                                    Transfer the exact amount from your bank app. Your ticket is issued automatically once payment is received.
+                                </p>
+                            </div>
+                        )}
                     </CardBody>
                 </Card>
             );
         }
-        
+
         if (toolResult.type === 'booking_summary') {
             const { data } = toolResult;
             if (data.error) {
