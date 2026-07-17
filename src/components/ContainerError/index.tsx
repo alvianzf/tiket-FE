@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import Button from "@mui/material/Button";
 
 interface Props {
     error: Error;
@@ -17,8 +17,21 @@ const ContainerError = ({ error, resetErrorBoundary }: Props) => (
             <p className="text-slate-500 text-sm max-w-sm">{error.message || "An unexpected error occurred. Please try again."}</p>
         </div>
         <Button
-            className="button-orange px-8 h-12 font-bold rounded-xl shadow-lg shadow-orange-500/30"
-            onPress={resetErrorBoundary}
+            onClick={resetErrorBoundary}
+            sx={{
+                // Parity with the old `.button-orange px-8 h-12 rounded-xl shadow-lg shadow-orange-500/30`
+                px: 4,
+                height: 48,
+                fontWeight: 700,
+                borderRadius: "12px",
+                color: "#fff",
+                backgroundColor: "#f97316",
+                boxShadow: "0 10px 15px -3px rgba(249,115,22,0.3), 0 4px 6px -4px rgba(249,115,22,0.3)",
+                "&:hover": {
+                    backgroundColor: "#ea580c",
+                    boxShadow: "0 10px 15px -3px rgba(249,115,22,0.3), 0 4px 6px -4px rgba(249,115,22,0.3)",
+                },
+            }}
         >
             Try Again
         </Button>

@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react"
+import { Card, Divider } from "@mui/material"
 import { useTranslation } from "react-i18next"
 import CheckoutOrderReviewPassenger from "./CheckoutOrderReviewPassenger";
 import { useFieldArray, useFormContext } from "react-hook-form";
@@ -47,7 +47,7 @@ const CheckoutOrderReview = () => {
 
     return (
         <div className="flex flex-col gap-12">
-            <motion.div 
+            <motion.div
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
@@ -60,17 +60,17 @@ const CheckoutOrderReview = () => {
                         <p className="text-xl font-extrabold text-dark tracking-tight">{t('checkout.order_section_title')}</p>
                     </div>
 
-                    <Card className="glass-card shadow-md overflow-hidden">
-                        <CardHeader className="flex items-center gap-3 p-8 pb-4">
+                    <Card className="shadow-md overflow-hidden">
+                        <div className="flex items-center gap-3 p-8 pb-4">
                             <div className="w-10 h-10 rounded-ds-md bg-primary/10 flex items-center justify-center">
                                 <ClipboardCheck size={20} className="text-primary" />
                             </div>
                             <span className="text-lg font-bold text-dark tracking-tight">
                                 {watch('firstname')} {watch('lastname')}
                             </span>
-                        </CardHeader>
-                        <Divider className="bg-white/10 mx-8 w-auto" />
-                        <CardBody className="p-8 pt-6">
+                        </div>
+                        <Divider sx={{ mx: 4, borderColor: "rgba(255,255,255,0.1)" }} />
+                        <div className="p-8 pt-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="flex items-center gap-4 group">
                                     <div className="w-12 h-12 rounded-ds-md bg-slate-100 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
@@ -91,7 +91,7 @@ const CheckoutOrderReview = () => {
                                     </div>
                                 </div>
                             </div>
-                        </CardBody>
+                        </div>
                     </Card>
                 </motion.div>
 
@@ -105,28 +105,28 @@ const CheckoutOrderReview = () => {
                     <div className="flex flex-col gap-4">
                         {adultFields.map((field, index) => (
                             <motion.div key={field.adultPassengerKey} variants={itemVariants}>
-                                <CheckoutOrderReviewPassenger 
-                                    fullname={`${watch(`adultPassengers.${index}.call`)}. ${watch(`adultPassengers.${index}.firstname`)} ${watch(`adultPassengers.${index}.lastname`)}`} 
-                                    date_of_birth={`${watch(`adultPassengers.${index}.date_of_birth`)}`} 
-                                    index={index + 1} 
+                                <CheckoutOrderReviewPassenger
+                                    fullname={`${watch(`adultPassengers.${index}.call`)}. ${watch(`adultPassengers.${index}.firstname`)} ${watch(`adultPassengers.${index}.lastname`)}`}
+                                    date_of_birth={`${watch(`adultPassengers.${index}.date_of_birth`)}`}
+                                    index={index + 1}
                                 />
                             </motion.div>
                         ))}
                         {childFields.map((field, index) => (
                             <motion.div key={field.childPassengerKey} variants={itemVariants}>
-                                <CheckoutOrderReviewPassenger 
-                                    fullname={`${watch(`childPassengers.${index}.call`)}. ${watch(`childPassengers.${index}.firstname`)} ${watch(`childPassengers.${index}.lastname`)}`} 
-                                    date_of_birth={`${watch(`childPassengers.${index}.date_of_birth`)}`} 
-                                    index={index + 1} 
+                                <CheckoutOrderReviewPassenger
+                                    fullname={`${watch(`childPassengers.${index}.call`)}. ${watch(`childPassengers.${index}.firstname`)} ${watch(`childPassengers.${index}.lastname`)}`}
+                                    date_of_birth={`${watch(`childPassengers.${index}.date_of_birth`)}`}
+                                    index={index + 1}
                                 />
                             </motion.div>
                         ))}
                         {infantFields.map((field, index) => (
                             <motion.div key={field.infantPassengerKey} variants={itemVariants}>
-                                <CheckoutOrderReviewPassenger 
-                                    fullname={`${watch(`infantPassengers.${index}.call`)}. ${watch(`infantPassengers.${index}.firstname`)} ${watch(`infantPassengers.${index}.lastname`)}`} 
-                                    date_of_birth={`${watch(`infantPassengers.${index}.date_of_birth`)}`} 
-                                    index={index + 1} 
+                                <CheckoutOrderReviewPassenger
+                                    fullname={`${watch(`infantPassengers.${index}.call`)}. ${watch(`infantPassengers.${index}.firstname`)} ${watch(`infantPassengers.${index}.lastname`)}`}
+                                    date_of_birth={`${watch(`infantPassengers.${index}.date_of_birth`)}`}
+                                    index={index + 1}
                                 />
                             </motion.div>
                         ))}

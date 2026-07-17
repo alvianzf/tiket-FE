@@ -1,7 +1,7 @@
 import { Flight } from "@api/searchFlights/types";
 import NextImage from "next/image";
 import Button from "@components/Button";
-import { Card, CardBody, Image } from "@nextui-org/react";
+import { Card, CardContent } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getPrice } from "@api/searchFlights/types";
@@ -40,14 +40,14 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
             animate={{ opacity: 1, x: 0 }}
             layout
         >
-            <Card className="flex flex-col h-auto glass-card shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
-                <CardBody onClick={handleExtended} className="p-0 overflow-visible cursor-pointer">
+            <Card className="flex flex-col h-auto shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
+                <CardContent onClick={handleExtended} className="overflow-visible cursor-pointer" sx={{ p: 0, "&:last-child": { pb: 0 } }}>
                     <div className="flex flex-col gap-6 p-5 lg:p-8">
                         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                             {/* Airline Info & Price */}
                             <div className="flex items-center gap-4 lg:w-[35%]">
                                 <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-md">
-                                    <Image as={NextImage} src={flight.airlineIcon} alt={flight.airlineCode} width={50} height={50} className="brightness-110 object-contain min-w-[50px]"/>
+                                    <NextImage src={flight.airlineIcon} alt={flight.airlineCode} width={50} height={50} className="brightness-110 object-contain min-w-[50px]"/>
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-lg font-extrabold text-dark tracking-tight leading-tight">{flight.airlineName}</p>
@@ -163,7 +163,7 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
                             )}
                         </AnimatePresence>
                     </div>
-                </CardBody>
+                </CardContent>
             </Card>
         </motion.div>
     )

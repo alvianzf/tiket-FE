@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 const CheckoutContainer = () => {
 
-    const { query, isReady, push } = useRouter();
+    const { query, isReady, push, pathname } = useRouter();
 
     const from = query?.from as unknown as string;
     const to = query?.to as unknown as string;
@@ -18,7 +18,10 @@ const CheckoutContainer = () => {
     const code = query?.code as unknown as string;
 
     useEffect(() => {
-        if (!isReady) return;
+        // pathname check: during AnimatePresence exit transitions this page stays
+        // mounted while router state already belongs to the next route — without it
+        // this guard redirects to '/' mid-navigation to /checkout/payment.
+        if (!isReady || pathname !== '/checkout') return;
 
         if (!from || !to || !date || !adult || !child || !classParams || !code) {
             push('/');
@@ -26,7 +29,7 @@ const CheckoutContainer = () => {
             return;
         }
 
-    }, [isReady, from, to, date, adult, child, push, classParams, code]);
+    }, [isReady, pathname, from, to, date, adult, child, push, classParams, code]);
 
     const { data: flights, isFetching } = useQuerySearchFlights({
         request: {

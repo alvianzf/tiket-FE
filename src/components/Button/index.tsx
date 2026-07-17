@@ -1,36 +1,45 @@
-import { Button as BaseButton, ButtonProps } from "@nextui-org/react";
+import BaseButton, { ButtonProps } from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import { ReactNode, useMemo } from "react";
 import { motion } from "framer-motion";
 
 interface Props extends ButtonProps {
     children: ReactNode;
     dsVariant?: "primary" | "cta" | "ghost" | "glass" | "secondary";
+    isLoading?: boolean;
 }
 
-const Button = ({ children, dsVariant = "cta", ...restProps} : Props) => {
+const Button = ({ children, dsVariant = "cta", isLoading = false, ...restProps} : Props) => {
 
-    const variantStyles = useMemo(() => {
+    const variantProps = useMemo((): Partial<ButtonProps> => {
         switch (dsVariant) {
             case "primary":
-                return "bg-primary text-white shadow-[0_4px_14px_rgba(66,103,178,0.3)] hover:bg-primary-dark hover:shadow-[0_6px_20px_rgba(66,103,178,0.4)]";
+                return { variant: "contained", color: "primary" };
             case "cta":
-                return "bg-cta text-white shadow-[0_4px_14px_rgba(255,90,0,0.3)] hover:bg-cta-dark hover:shadow-[0_6px_20px_rgba(255,90,0,0.4)]";
+                return { variant: "contained", color: "warning" };
             case "secondary":
-                return "bg-secondary text-dark font-bold hover:bg-secondary-dark transition-all";
+                return { variant: "contained", color: "secondary" };
             case "ghost":
-                return "bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-white";
+                return {
+                    variant: "outlined",
+                    color: "primary",
+                    sx: { borderWidth: 2, "&:hover": { borderWidth: 2, bgcolor: "primary.main", color: "#fff" } },
+                };
             case "glass":
-                return "bg-white/10 backdrop-blur-md text-white border border-white/25 hover:bg-white/20";
+                return {
+                    variant: "outlined",
+                    sx: {
+                        color: "#fff",
+                        bgcolor: "rgba(255,255,255,0.1)",
+                        backdropFilter: "blur(12px)",
+                        borderColor: "rgba(255,255,255,0.25)",
+                        "&:hover": { bgcolor: "rgba(255,255,255,0.2)", borderColor: "rgba(255,255,255,0.25)" },
+                    },
+                };
             default:
-                return "";
+                return {};
         }
     }, [dsVariant]);
-
-    const baseClassNames = [
-        "ds-btn font-bold rounded-ds-sm transition-all duration-200 active:scale-95 px-6",
-        variantStyles,
-        restProps.className
-    ].join(" ");
 
     return (
         <motion.div
@@ -38,10 +47,17 @@ const Button = ({ children, dsVariant = "cta", ...restProps} : Props) => {
             whileTap={{ scale: 0.98 }}
             className="w-full md:w-auto"
         >
-            <BaseButton 
+            <BaseButton
                 disableRipple
-                {...restProps} 
-                className={baseClassNames}
+                fullWidth
+                disabled={isLoading || restProps.disabled}
+                startIcon={isLoading ? <CircularProgress size={16} color="inherit" /> : restProps.startIcon}
+                {...variantProps}
+                {...restProps}
+                sx={[
+                    ...(Array.isArray(variantProps.sx) ? variantProps.sx : [variantProps.sx]),
+                    ...(Array.isArray(restProps.sx) ? restProps.sx : [restProps.sx]),
+                ]}
             >
                 {children}
             </BaseButton>

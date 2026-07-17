@@ -1,6 +1,6 @@
 import IconMinus from "@icons/IconMinus";
 import IconPlus from "@icons/IconPlus";
-import { Button, Input } from "@nextui-org/react";
+import { Button, IconButton, TextField, InputAdornment } from "@mui/material";
 import { useState, useRef, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -10,7 +10,7 @@ import { FaUsers } from "react-icons/fa";
 const PassengerInput = () => {
     const { t } = useTranslation();
 
-    const [open, setOpen] = useState<boolean>(false);   
+    const [open, setOpen] = useState<boolean>(false);
 
     const { setValue, watch } = useFormContext<FormProps>();
 
@@ -71,16 +71,24 @@ const PassengerInput = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [open]);
-    
+
     return (
         <div className="w-full flex flex-col gap-2 relative" ref={dropdownRef}>
             <p className="font-medium text-slate-800">{t('tickets.no_of_passengers')}</p>
-            <Input type="string" 
-                placeholder={`${adult} ${t('tickets.adult')}, ${child} ${t('tickets.child')}, ${infant} ${t('tickets.infant')}`} 
-                variant="underlined"
-                readOnly
-                startContent={<FaUsers className="text-[#4267B2] mr-2" />}
+            <TextField
+                type="text"
+                fullWidth
+                placeholder={`${adult} ${t('tickets.adult')}, ${child} ${t('tickets.child')}, ${infant} ${t('tickets.infant')}`}
+                variant="standard"
                 onClick={handleOpen}
+                slotProps={{
+                    input: {
+                        readOnly: true,
+                        startAdornment: (
+                            <InputAdornment position="start"><FaUsers className="text-[#4267B2]" /></InputAdornment>
+                        )
+                    }
+                }}
             />
             {open && (
                 <div className="absolute top-[100%] left-0 mt-2 w-max min-w-[320px] z-[9999] glass-card shadow-2xl rounded-2xl p-6 border border-white/20 bg-white/40 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-200">
@@ -92,55 +100,57 @@ const PassengerInput = () => {
                                     <p className="text-sm text-slate-600">{t('tickets.adult_desc')}</p>
                                 </div>
                                 <div className="flex flex-row gap-4 items-center bg-white/50 rounded-full px-2 py-1 border border-white/60">
-                                    <Button isIconOnly size="sm" variant="light" className="text-slate-800 hover:bg-slate-200/50" onClick={handleDecreaseAdultTotal}>
+                                    <IconButton size="small" className="text-slate-800 hover:bg-slate-200/50" onClick={handleDecreaseAdultTotal}>
                                         <IconMinus width={16} height={16}/>
-                                    </Button>   
+                                    </IconButton>
                                     <p className="text-slate-800 font-bold w-4 text-center">{adult}</p>
-                                    <Button isIconOnly size="sm" variant="light" className="text-slate-800 hover:bg-slate-200/50" onClick={handleIncreaseAdultTotal}>
+                                    <IconButton size="small" className="text-slate-800 hover:bg-slate-200/50" onClick={handleIncreaseAdultTotal}>
                                         <IconPlus width={16} height={16}/>
-                                    </Button>   
+                                    </IconButton>
                                 </div>
                             </div>
-                            
+
                             <div className="flex flex-row justify-between items-center gap-6">
                                 <div className="flex flex-col">
                                     <p className="font-bold text-slate-800">{t('tickets.child')}</p>
                                     <p className="text-sm text-slate-600">{t('tickets.child_desc')}</p>
                                 </div>
                                 <div className="flex flex-row gap-4 items-center bg-white/50 rounded-full px-2 py-1 border border-white/60">
-                                    <Button isIconOnly size="sm" variant="light" className="text-slate-800 hover:bg-slate-200/50" onClick={handleDecreaseChildTotal}>
+                                    <IconButton size="small" className="text-slate-800 hover:bg-slate-200/50" onClick={handleDecreaseChildTotal}>
                                         <IconMinus width={16} height={16}/>
-                                    </Button>   
+                                    </IconButton>
                                     <p className="text-slate-800 font-bold w-4 text-center">{child}</p>
-                                    <Button isIconOnly size="sm" variant="light" className="text-slate-800 hover:bg-slate-200/50" onClick={handleIncreaseChildTotal}>
+                                    <IconButton size="small" className="text-slate-800 hover:bg-slate-200/50" onClick={handleIncreaseChildTotal}>
                                         <IconPlus width={16} height={16}/>
-                                    </Button>   
+                                    </IconButton>
                                 </div>
                             </div>
-                            
+
                             <div className="flex flex-row justify-between items-center gap-6">
                                 <div className="flex flex-col">
                                     <p className="font-bold text-slate-800">{t('tickets.infant')}</p>
                                     <p className="text-sm text-slate-600">{t('tickets.infant_desc')}</p>
                                 </div>
                                 <div className="flex flex-row gap-4 items-center bg-white/50 rounded-full px-2 py-1 border border-white/60">
-                                    <Button isIconOnly size="sm" variant="light" className="text-slate-800 hover:bg-slate-200/50" onClick={handleDecreaseInfantTotal}>
+                                    <IconButton size="small" className="text-slate-800 hover:bg-slate-200/50" onClick={handleDecreaseInfantTotal}>
                                         <IconMinus width={16} height={16}/>
-                                    </Button>   
+                                    </IconButton>
                                     <p className="text-slate-800 font-bold w-4 text-center">{infant}</p>
-                                    <Button isIconOnly size="sm" variant="light" className="text-slate-800 hover:bg-slate-200/50" onClick={handleIncreaseInfantTotal}>
+                                    <IconButton size="small" className="text-slate-800 hover:bg-slate-200/50" onClick={handleIncreaseInfantTotal}>
                                         <IconPlus width={16} height={16}/>
-                                    </Button>   
+                                    </IconButton>
                                 </div>
                             </div>
                         </div>
-                        <Button 
-                            className="w-full font-bold shadow-lg shadow-primary/30" 
-                            color="primary" 
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            className="font-bold shadow-lg shadow-primary/30"
+                            color="primary"
                             onClick={handleClose}
                         >
                             {t('tickets.done')}
-                        </Button> 
+                        </Button>
                     </div>
                 </div>
             )}

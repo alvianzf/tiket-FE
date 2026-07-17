@@ -7,20 +7,31 @@ import { Hydrate, QueryClient, QueryClientProvider, QueryErrorResetBoundary } fr
 import { ReactQueryDevtools } from "react-query/devtools";
 import '@utils/i18n';
 import { useTranslation } from "react-i18next";
-import { NextUIProvider } from "@nextui-org/react";
-import { I18nProvider } from "@react-aria/i18n";
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import theme from "@theme/theme";
+import createEmotionCache from "@theme/createEmotionCache";
 import "@styles/global.css"
 import io from 'socket.io-client';
 
 import ChatBot from '@components/ChatBot';
 
-export default function App({ Component, pageProps }: AppPropsWithLayout) {
-    const { t, i18n } = useTranslation();
+const clientSideEmotionCache = createEmotionCache();
+
+export interface MyAppProps extends AppPropsWithLayout {
+    emotionCache?: EmotionCache;
+}
+
+export default function App({ Component, pageProps, emotionCache = clientSideEmotionCache }: MyAppProps) {
+    const { t } = useTranslation();
     const getLayout = Component.getLayout ?? ((page) => page);
     const [queryClient] = useState(() => new QueryClient(defaultQueryOption))
-
-    // Match NextUI DatePicker locale to i18n language
-    const locale = i18n.language === 'en' ? 'en-GB' : 'id-ID';
 
     useEffect(() => {
         // Connect to the backend socket server using unified dynamic API URL resolution
@@ -36,7 +47,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         }
 
         const socket = io(socketUrl);
-        
+
         socket.on('connect', () => {
             socket.emit('visitor_connected');
         });
@@ -47,39 +58,38 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     }, []);
 
     return (
-        <I18nProvider locale={locale}>
-            <NextUIProvider>
-                <Head>
-                    <title>{t('meta.title')}</title>
-                </Head>
-                <QueryClientProvider client={queryClient}>
-                    <Hydrate state={pageProps.dehydratedState}>
-                        <QueryErrorResetBoundary>
-                            {({ reset }) => (
-                                <ErrorBoundary
-                                    fallbackRender={({ error, resetErrorBoundary }) => (
-                                        <div className="flex flex-col items-center justify-center min-h-screen p-10 text-center gap-4">
-                                            <h1 className="text-2xl font-bold text-red-600">Something went wrong</h1>
-                                            <p className="text-slate-600">{error.message}</p>
-                                            <button 
-                                                className="px-6 py-2 bg-primary text-white rounded-lg"
-                                                onClick={resetErrorBoundary}
-                                            >
-                                                Try again
-                                            </button>
-                                        </div>
-                                    )}
-                                    onReset={reset}
-                                >
-                                    <ReactQueryDevtools initialIsOpen={false} />
-                                    {getLayout(<Component {...pageProps}/>)}
-                                    <ChatBot />
-                                </ErrorBoundary>
-                            )}
-                        </QueryErrorResetBoundary>
-                    </Hydrate>
-                </QueryClientProvider>
-            </NextUIProvider>
-        </I18nProvider>
+        <CacheProvider value={emotionCache}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <Head>
+                        <title>{t('meta.title')}</title>
+                        <meta name="viewport" content="initial-scale=1, width=device-width" />
+                    </Head>
+                    <QueryClientProvider client={queryClient}>
+                        <Hydrate state={pageProps.dehydratedState}>
+                            <QueryErrorResetBoundary>
+                                {({ reset }) => (
+                                    <ErrorBoundary
+                                        fallbackRender={({ error, resetErrorBoundary }) => (
+                                            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", p: 5, textAlign: "center", gap: 2 }}>
+                                                <Typography variant="h4" color="error" sx={{ fontWeight: 700 }}>Something went wrong</Typography>
+                                                <Typography color="text.secondary">{error.message}</Typography>
+                                                <Button variant="contained" onClick={resetErrorBoundary}>Try again</Button>
+                                            </Box>
+                                        )}
+                                        onReset={reset}
+                                    >
+                                        <ReactQueryDevtools initialIsOpen={false} />
+                                        {getLayout(<Component {...pageProps}/>)}
+                                        <ChatBot />
+                                    </ErrorBoundary>
+                                )}
+                            </QueryErrorResetBoundary>
+                        </Hydrate>
+                    </QueryClientProvider>
+                </LocalizationProvider>
+            </ThemeProvider>
+        </CacheProvider>
     );
 }

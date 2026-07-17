@@ -5,7 +5,7 @@ import FlightFilter from "@components/FlightFilter"
 import FlightNotAvailable from "@components/FlightNotAvailable"
 import SearchFlight from "@components/SearchFlight"
 import IconSearch from "@icons/IconSearch"
-import { Button } from "@nextui-org/react"
+import { IconButton } from "@mui/material"
 import { useQuerySearchFlights } from "@queries/flights"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useState, useRef } from "react"
@@ -258,13 +258,13 @@ const FlightListContainer = () => {
                                     </div>
                                 </div>
                                 <div className="flex-shrink-0">
-                                    <Button 
-                                        isIconOnly 
-                                        className="button-orange w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl shadow-xl shadow-orange-500/40" 
+                                    <IconButton
+                                        className="button-orange w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl shadow-xl shadow-orange-500/40"
+                                        sx={{ borderRadius: { xs: "12px", md: "16px" } }}
                                         onClick={handleOpen}
                                     >
                                         <IconSearch width={20} height={20}/>
-                                    </Button> 
+                                    </IconButton>
                                 </div>
                             </div>
                         </motion.div>

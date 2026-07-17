@@ -23,6 +23,7 @@
       "@icons/*": ["./src/icons/*"],
       "@layouts": ["./src/layouts"],
       "@styles/*": ["./src/styles/*"],
+      "@theme/*": ["./src/theme/*"],
       "@queries/*": ["./src/queries/*"],
       "@interfaces/*": ["./src/types/*"],
       "@utils/*": ["./src/utils/*"]

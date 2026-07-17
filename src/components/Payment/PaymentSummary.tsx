@@ -1,5 +1,5 @@
 import { GetBookFlightResponse } from "@api/bookFlight/types";
-import { Card, CardBody, CardHeader, Divider, Skeleton } from "@nextui-org/react"
+import { Card, CardContent, CardHeader, Divider, Skeleton } from "@mui/material"
 import { useTranslation } from "react-i18next"
 
 interface Props {
@@ -14,19 +14,13 @@ const PaymentSummary = ({ isLoading, flight } : Props) => {
     return (
         isLoading ? (
             <Card className="w-full">
-                <Skeleton className="rounded-lg">
-                    <div className="h-[300px] rounded-lg bg-secondary"></div>
-                </Skeleton>
+                <Skeleton variant="rounded" className="rounded-lg" height={300} width="100%" />
             </Card>
         ) : (
-            <Card classNames={{
-                header: "font-medium"
-            }}>
-                <CardHeader>
-                    {t('checkout.order_no', { no : flight?.data.bookingCode })}
-                </CardHeader>
+            <Card>
+                <CardHeader disableTypography title={<span className="font-medium">{t('checkout.order_no', { no : flight?.data.bookingCode })}</span>} />
                 <Divider />
-                <CardBody>
+                <CardContent>
                     <div className="flex flex-col gap-3">
                         {flight?.data?.flightdetail.map((detail, index) => (
                             <div key={index}>
@@ -47,7 +41,7 @@ const PaymentSummary = ({ isLoading, flight } : Props) => {
                             ))}
                         </div>
                     </div>
-                </CardBody>
+                </CardContent>
             </Card>
         )
     )

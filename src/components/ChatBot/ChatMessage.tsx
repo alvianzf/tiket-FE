@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Message } from './useChatSocket';
-import { Card, CardBody, Button, Snippet } from '@nextui-org/react';
+import { Card, CardContent, Button, IconButton } from '@mui/material';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { QRCodeSVG } from 'qrcode.react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -26,8 +27,24 @@ const InteractiveResultCard = ({ item, type, label, sendMessage }: any) => {
     };
 
     return (
-        <Card className="mt-2 bg-slate-800 text-white w-full border border-slate-700 overflow-visible transition-all">
-            <CardBody className="p-3 cursor-pointer" onClick={() => setExpanded(!expanded)}>
+        <Card
+            sx={{
+                mt: 1,
+                width: '100%',
+                background: '#1e293b',
+                color: '#fff',
+                border: '1px solid #334155',
+                backdropFilter: 'none',
+                WebkitBackdropFilter: 'none',
+                boxShadow: 'none',
+                overflow: 'visible',
+                transition: 'all .3s ease',
+            }}
+        >
+            <CardContent
+                sx={{ p: 1.5, '&:last-child': { pb: 1.5 }, cursor: 'pointer' }}
+                onClick={() => setExpanded(!expanded)}
+            >
                 <div className="flex justify-between items-start mb-2">
                     <div className="flex gap-2">
                         <span className="px-2 py-0.5 bg-orange-500/20 text-orange-400 text-[10px] uppercase font-bold rounded tracking-wider">
@@ -90,16 +107,22 @@ const InteractiveResultCard = ({ item, type, label, sendMessage }: any) => {
                             </div>
                         </div>
 
-                        <Button 
-                            size="md" 
-                            className="w-full bg-gradient-to-r from-primary to-orange-500 text-white font-bold shadow-lg shadow-orange-500/20"
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            sx={{
+                                background: 'linear-gradient(to right, #4267B2, #f97316)',
+                                color: '#fff',
+                                fontWeight: 700,
+                                boxShadow: '0 10px 15px -3px rgba(249,115,22,0.2)',
+                            }}
                             onClick={handleConfirm}
                         >
                             Select & Continue
                         </Button>
                     </div>
                 )}
-            </CardBody>
+            </CardContent>
         </Card>
     );
 };
@@ -115,8 +138,18 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, sendMessage }) => {
         if (toolResult.type === 'dana_payment') {
             const { data } = toolResult;
             return (
-                <Card className="mt-2 bg-white text-black w-full">
-                    <CardBody className="flex flex-col items-center gap-3">
+                <Card
+                    sx={{
+                        mt: 1,
+                        width: '100%',
+                        background: '#fff',
+                        color: '#000',
+                        backdropFilter: 'none',
+                        WebkitBackdropFilter: 'none',
+                        boxShadow: 'none',
+                    }}
+                >
+                    <CardContent className="flex flex-col items-center gap-3">
                         <p className="font-bold text-blue-600">Complete Payment</p>
                         <p className="text-sm text-center">Booking <b>{data.bookingCode}</b></p>
 
@@ -134,15 +167,22 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, sendMessage }) => {
                         {data.kind === 'VA' && data.vaNumber && (
                             <div className="flex flex-col gap-2 w-full">
                                 <span className="text-xs text-slate-500">Virtual Account number</span>
-                                <Snippet symbol="" variant="bordered" className="w-full" classNames={{ pre: "font-mono text-base tracking-wide" }}>
-                                    {data.vaNumber}
-                                </Snippet>
+                                <div className="flex items-center justify-between gap-2 w-full border-2 border-slate-200 rounded-xl px-3 py-2">
+                                    <pre className="font-mono text-base tracking-wide m-0">{data.vaNumber}</pre>
+                                    <IconButton
+                                        size="small"
+                                        aria-label="Copy Virtual Account number"
+                                        onClick={() => navigator.clipboard.writeText(data.vaNumber ?? '')}
+                                    >
+                                        <ContentCopyIcon fontSize="small" />
+                                    </IconButton>
+                                </div>
                                 <p className="text-xs text-slate-500">
                                     Transfer the exact amount from your bank app. Your ticket is issued automatically once payment is received.
                                 </p>
                             </div>
                         )}
-                    </CardBody>
+                    </CardContent>
                 </Card>
             );
         }
@@ -151,18 +191,40 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, sendMessage }) => {
             const { data } = toolResult;
             if (data.error) {
                 return (
-                    <Card className="mt-2 bg-red-900/50 text-white w-full">
-                        <CardBody>
+                    <Card
+                        sx={{
+                            mt: 1,
+                            width: '100%',
+                            background: 'rgba(127,29,29,0.5)',
+                            color: '#fff',
+                            backdropFilter: 'none',
+                            WebkitBackdropFilter: 'none',
+                            boxShadow: 'none',
+                            border: 'none',
+                        }}
+                    >
+                        <CardContent>
                             <p className="font-bold text-red-400">Error</p>
                             <p className="text-sm">{data.error}</p>
-                        </CardBody>
+                        </CardContent>
                     </Card>
                 );
             }
 
             return (
-                <Card className="mt-2 bg-slate-800 text-white w-full border border-slate-700">
-                    <CardBody className="gap-2">
+                <Card
+                    sx={{
+                        mt: 1,
+                        width: '100%',
+                        background: '#1e293b',
+                        color: '#fff',
+                        border: '1px solid #334155',
+                        backdropFilter: 'none',
+                        WebkitBackdropFilter: 'none',
+                        boxShadow: 'none',
+                    }}
+                >
+                    <CardContent className="flex flex-col gap-2">
                         <div className="flex justify-between items-center">
                             <p className="font-bold text-primary">Booking Info</p>
                             <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded font-bold">
@@ -177,15 +239,29 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, sendMessage }) => {
                                 <p><b>Time:</b> {data.flightdetail[0].depart} ➔ {data.flightdetail[0].arrival}</p>
                             </div>
                         )}
-                    </CardBody>
+                    </CardContent>
                 </Card>
             );
         }
 
         if (toolResult.type === 'customer_service_card') {
             return (
-                <Card className="mt-2 bg-slate-800 text-white w-full border border-green-500/30">
-                    <CardBody className="flex flex-col items-center gap-3 py-4">
+                <Card
+                    sx={{
+                        mt: 1,
+                        width: '100%',
+                        background: '#1e293b',
+                        color: '#fff',
+                        border: '1px solid rgba(34,197,94,0.3)',
+                        backdropFilter: 'none',
+                        WebkitBackdropFilter: 'none',
+                        boxShadow: 'none',
+                    }}
+                >
+                    <CardContent
+                        className="flex flex-col items-center gap-3"
+                        sx={{ py: 2, '&:last-child': { pb: 2 } }}
+                    >
                         <div className="bg-green-500/20 p-3 rounded-full">
                             <svg className="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
@@ -195,19 +271,27 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, sendMessage }) => {
                             <p className="font-bold text-slate-100">Customer Service</p>
                             <p className="text-sm text-slate-400 mt-1">For complaints or assistance, please reach out to us on WhatsApp.</p>
                         </div>
-                        <Button 
-                            as="a"
+                        <Button
+                            component="a"
                             href="https://wa.me/6282382709777"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-full bg-[#25D366] text-white font-bold mt-2"
-                            startContent={
+                            fullWidth
+                            variant="contained"
+                            sx={{
+                                backgroundColor: '#25D366',
+                                color: '#fff',
+                                fontWeight: 700,
+                                mt: 1,
+                                '&:hover': { backgroundColor: '#1ebe5b' },
+                            }}
+                            startIcon={
                                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                             }
                         >
                             Chat on WhatsApp
                         </Button>
-                    </CardBody>
+                    </CardContent>
                 </Card>
             );
         }
@@ -216,10 +300,21 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, sendMessage }) => {
             const { data, type } = toolResult;
             if (data.message) {
                 return (
-                    <Card className="mt-2 bg-slate-800 text-slate-300 w-full border border-slate-700">
-                        <CardBody>
+                    <Card
+                        sx={{
+                            mt: 1,
+                            width: '100%',
+                            background: '#1e293b',
+                            color: '#cbd5e1',
+                            border: '1px solid #334155',
+                            backdropFilter: 'none',
+                            WebkitBackdropFilter: 'none',
+                            boxShadow: 'none',
+                        }}
+                    >
+                        <CardContent>
                             <p className="text-sm">{data.message}</p>
-                        </CardBody>
+                        </CardContent>
                     </Card>
                 );
             }

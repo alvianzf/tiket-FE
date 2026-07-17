@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CarCard from "@components/CarCard";
 import CarCardSkeleton from "@components/CarCardSkeleton";
-import { Button, DatePicker, Select, SelectItem } from "@nextui-org/react";
+import { Button, CircularProgress, MenuItem, TextField } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 import { useState, useEffect } from "react";
 import { searchCars } from "@api/carRental";
 import { CarResult } from "@api/carRental/types";
-import { parseDate, getLocalTimeZone, today } from "@internationalized/date";
 import moment from "moment";
 import { toast } from "react-toastify";
 
@@ -26,6 +26,14 @@ const ROW_OPTIONS = [
     { key: "2", label: "2 Rows" },
     { key: "3", label: "3 Rows" },
 ];
+
+// White text + white underline for standard-variant fields on the dark glass hero card.
+const whiteFieldSx = {
+    "& .MuiInputBase-input": { color: "#fff" },
+    "& .MuiInputBase-root:before": { borderBottomColor: "rgba(255,255,255,0.4)" },
+    "& .MuiInputBase-root:hover:not(.Mui-disabled):before": { borderBottomColor: "rgba(255,255,255,0.7)" },
+    "& .MuiSvgIcon-root": { color: "rgba(255,255,255,0.8)" },
+};
 
 const CarRentContainer = () => {
     const [mounted, setMounted] = useState(false);
@@ -84,54 +92,64 @@ const CarRentContainer = () => {
                         <div className="flex flex-col gap-1 w-full md:flex-1">
                             <p className="text-white/80 text-sm font-medium">Rental Date</p>
                             <DatePicker
-                                aria-label="Rental Date"
-                                variant="underlined"
-                                minValue={today(getLocalTimeZone())}
-                                value={parseDate(date)}
-                                onChange={(val) => { if (val) setDate(moment(val.toString()).format("YYYY-MM-DD")); }}
-                                classNames={{ input: "text-white", label: "text-white/80", innerWrapper: "text-white/80" }}
-                                className="w-full"
+                                minDate={moment().startOf("day")}
+                                value={moment(date, "YYYY-MM-DD")}
+                                onChange={(val) => { if (val) setDate(val.format("YYYY-MM-DD")); }}
+                                slotProps={{
+                                    textField: {
+                                        variant: "standard",
+                                        fullWidth: true,
+                                        slotProps: { htmlInput: { "aria-label": "Rental Date" } },
+                                        sx: whiteFieldSx,
+                                    },
+                                }}
                             />
                         </div>
 
                         {/* Type */}
                         <div className="flex flex-col gap-1 w-full md:flex-1">
                             <p className="text-white/80 text-sm font-medium">Car Type</p>
-                            <Select
-                                aria-label="Car Type"
-                                variant="underlined"
-                                selectedKeys={[type]}
-                                onSelectionChange={(keys) => setType(Array.from(keys)[0] as string)}
-                                classNames={{ value: "text-white", trigger: "text-white/80" }}
-                                className="w-full"
+                            <TextField
+                                select
+                                variant="standard"
+                                fullWidth
+                                slotProps={{ htmlInput: { "aria-label": "Car Type" } }}
+                                sx={whiteFieldSx}
+                                value={type}
+                                onChange={(e) => setType(e.target.value)}
                             >
                                 {CAR_TYPES.map((t) => (
-                                    <SelectItem key={t.key}>{t.label}</SelectItem>
+                                    <MenuItem key={t.key} value={t.key}>{t.label}</MenuItem>
                                 ))}
-                            </Select>
+                            </TextField>
                         </div>
 
                         {/* Rows */}
                         <div className="flex flex-col gap-1 w-full md:flex-1">
                             <p className="text-white/80 text-sm font-medium">Seat Rows</p>
-                            <Select
-                                aria-label="Seat Rows"
-                                variant="underlined"
-                                selectedKeys={[rows]}
-                                onSelectionChange={(keys) => setRows(Array.from(keys)[0] as string)}
-                                classNames={{ value: "text-white", trigger: "text-white/80" }}
-                                className="w-full"
+                            <TextField
+                                select
+                                variant="standard"
+                                fullWidth
+                                slotProps={{ htmlInput: { "aria-label": "Seat Rows" } }}
+                                sx={whiteFieldSx}
+                                value={rows}
+                                onChange={(e) => setRows(e.target.value)}
                             >
                                 {ROW_OPTIONS.map((r) => (
-                                    <SelectItem key={r.key}>{r.label}</SelectItem>
+                                    <MenuItem key={r.key} value={r.key}>{r.label}</MenuItem>
                                 ))}
-                            </Select>
+                            </TextField>
                         </div>
 
                         <Button
-                            className="button-orange h-[48px] w-full md:w-auto md:px-8 font-bold shadow-lg shadow-orange-500/30 rounded-xl"
-                            onPress={handleSearch}
-                            isLoading={isLoading}
+                            variant="contained"
+                            color="warning"
+                            className="w-full md:w-auto"
+                            sx={{ height: 48, borderRadius: "12px", px: { md: 4 } }}
+                            onClick={handleSearch}
+                            disabled={isLoading}
+                            startIcon={isLoading ? <CircularProgress size={16} color="inherit" /> : undefined}
                         >
                             Cari Mobil
                         </Button>

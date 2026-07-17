@@ -1,4 +1,4 @@
-import { Card, CardBody, Checkbox, CheckboxGroup, Radio, RadioGroup, Divider } from "@nextui-org/react";
+import { Card, CardContent, Checkbox, Radio, RadioGroup, FormGroup, FormControlLabel, Divider } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 interface Props {
@@ -11,6 +11,13 @@ interface Props {
   airlinesData: { key: string; label: string }[];
 }
 
+const labelSx = (selected: boolean) => ({
+  "& .MuiFormControlLabel-label": {
+    fontWeight: 700,
+    color: selected ? "#ea580c" : undefined,
+  },
+});
+
 const FlightFilter = ({
   selectedAirlines,
   onAirlinesChange,
@@ -22,15 +29,28 @@ const FlightFilter = ({
 }: Props) => {
   const { t } = useTranslation();
 
+  const effectiveAirlineValues = selectedAirlines.length === 0 ? ["all"] : selectedAirlines;
+
+  const handleAirlineToggle = (value: string, checked: boolean) => {
+    const values = checked
+      ? [...effectiveAirlineValues, value]
+      : effectiveAirlineValues.filter(v => v !== value);
+    if (values.includes("all") && selectedAirlines.length !== 0) {
+      onAirlinesChange([]);
+    } else {
+      onAirlinesChange(values.filter(v => v !== "all"));
+    }
+  };
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center gap-3">
         <div className="w-1.5 h-6 bg-orange-500 rounded-full"></div>
         <p className="font-extrabold text-xl text-slate-800 tracking-tight">{t('tickets.filter')}</p>
       </div>
-      
-      <Card className="glass-card border-none bg-white/10 backdrop-blur-3xl shadow-xl rounded-3xl overflow-hidden">
-        <CardBody className="flex flex-col gap-8 p-8">
+
+      <Card className="border-none bg-white/10 backdrop-blur-3xl shadow-xl rounded-3xl overflow-hidden">
+        <CardContent className="flex flex-col gap-8" sx={{ p: 4, "&:last-child": { pb: 4 } }}>
           {/* Sorting by Price */}
           <div className="flex flex-col gap-4">
             <p className="font-black text-xs uppercase text-slate-400 tracking-[0.2em]">
@@ -38,15 +58,11 @@ const FlightFilter = ({
             </p>
             <RadioGroup
               value={selectedSort}
-              onValueChange={onSortChange}
-              size="md"
-              color="warning"
-              classNames={{
-                wrapper: "gap-3"
-              }}
+              onChange={(e) => onSortChange(e.target.value)}
+              sx={{ gap: 1.5 }}
             >
-              <Radio value="low" className="data-[selected=true]:text-orange-600 font-bold">{t('tickets.lowest_price')}</Radio>
-              <Radio value="high" className="data-[selected=true]:text-orange-600 font-bold">{t('tickets.highest_price')}</Radio>
+              <FormControlLabel value="low" control={<Radio color="warning" />} label={t('tickets.lowest_price')} sx={labelSx(selectedSort === "low")} />
+              <FormControlLabel value="high" control={<Radio color="warning" />} label={t('tickets.highest_price')} sx={labelSx(selectedSort === "high")} />
             </RadioGroup>
           </div>
 
@@ -59,16 +75,12 @@ const FlightFilter = ({
             </p>
             <RadioGroup
               value={selectedTransit}
-              onValueChange={onTransitChange}
-              size="md"
-              color="warning"
-              classNames={{
-                wrapper: "gap-3"
-              }}
+              onChange={(e) => onTransitChange(e.target.value)}
+              sx={{ gap: 1.5 }}
             >
-              <Radio value="all" className="data-[selected=true]:text-orange-600 font-bold">{t('tickets.all') || 'Semua'}</Radio>
-              <Radio value="direct" className="data-[selected=true]:text-orange-600 font-bold">{t('tickets.direct')}</Radio>
-              <Radio value="transit" className="data-[selected=true]:text-orange-600 font-bold">{t('tickets.transit', { number: 1 }) || 'Transit'}</Radio>
+              <FormControlLabel value="all" control={<Radio color="warning" />} label={t('tickets.all') || 'Semua'} sx={labelSx(selectedTransit === "all")} />
+              <FormControlLabel value="direct" control={<Radio color="warning" />} label={t('tickets.direct')} sx={labelSx(selectedTransit === "direct")} />
+              <FormControlLabel value="transit" control={<Radio color="warning" />} label={t('tickets.transit', { number: 1 }) || 'Transit'} sx={labelSx(selectedTransit === "transit")} />
             </RadioGroup>
           </div>
 
@@ -80,33 +92,38 @@ const FlightFilter = ({
               {t('tickets.airline_placeholder')}
             </p>
             {airlinesData.length > 0 ? (
-              <CheckboxGroup
-                value={selectedAirlines.length === 0 ? ["all"] : selectedAirlines}
-                onValueChange={(values) => {
-                  if (values.includes("all") && selectedAirlines.length !== 0) {
-                    onAirlinesChange([]);
-                  } else {
-                    onAirlinesChange(values.filter(v => v !== "all"));
+              <FormGroup sx={{ gap: 1.5 }}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color="warning"
+                      checked={effectiveAirlineValues.includes("all")}
+                      onChange={(e) => handleAirlineToggle("all", e.target.checked)}
+                    />
                   }
-                }}
-                size="md"
-                color="warning"
-                classNames={{
-                  wrapper: "gap-3"
-                }}
-              >
-                <Checkbox value="all" className="data-[selected=true]:text-orange-600 font-bold">{t('tickets.all_airlines') || 'Semua Maskapai'}</Checkbox>
+                  label={t('tickets.all_airlines') || 'Semua Maskapai'}
+                  sx={labelSx(effectiveAirlineValues.includes("all"))}
+                />
                 {airlinesData.map((airline) => (
-                  <Checkbox key={airline.key} value={airline.key} className="data-[selected=true]:text-orange-600 font-bold">
-                    {airline.label}
-                  </Checkbox>
+                  <FormControlLabel
+                    key={airline.key}
+                    control={
+                      <Checkbox
+                        color="warning"
+                        checked={effectiveAirlineValues.includes(airline.key)}
+                        onChange={(e) => handleAirlineToggle(airline.key, e.target.checked)}
+                      />
+                    }
+                    label={airline.label}
+                    sx={labelSx(effectiveAirlineValues.includes(airline.key))}
+                  />
                 ))}
-              </CheckboxGroup>
+              </FormGroup>
             ) : (
               <p className="text-xs text-slate-400 font-medium italic">No airlines available</p>
             )}
           </div>
-        </CardBody>
+        </CardContent>
       </Card>
     </div>
   );

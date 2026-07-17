@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, DatePicker, Autocomplete, AutocompleteItem } from "@nextui-org/react";
-import { parseDate } from "@internationalized/date";
+import { Button, Autocomplete, TextField, InputAdornment } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import { useTranslation } from "react-i18next"
 import { useState, useMemo, useEffect } from "react";
@@ -20,7 +20,7 @@ const SearchFerry = () => {
     }, []);
     const [destinationPort, setDestinationPort] = useState<string>("");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [departureDate, setDepartureDate] = useState<any>(parseDate(moment().format('YYYY-MM-DD')));
+    const [departureDate, setDepartureDate] = useState<any>(moment());
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [returnDate, setReturnDate] = useState<any>(null);
     const { push } = useRouter();
@@ -55,18 +55,18 @@ const SearchFerry = () => {
 
     const handleSearch = () => {
         if (!departurePort || !destinationPort || !departureDate) return;
-        
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const params = new URLSearchParams({
             embarkation: departurePort,
             destination: destinationPort,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            tripdate: (departureDate as any).toString().replace(/-/g, ''),
+            tripdate: (departureDate as any).format('YYYYMMDD'),
             type
         });
 
         if (type === 'round_trip' && returnDate) {
-            params.append('returndate', returnDate.toString().replace(/-/g, ''));
+            params.append('returndate', returnDate.format('YYYYMMDD'));
         }
 
         push(`/ferry/list?${params.toString()}`);
@@ -84,110 +84,142 @@ const SearchFerry = () => {
         <div className="w-full lg:max-w-[1024px] glass-card p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.15)] backdrop-blur-3xl border border-white/20 bg-white/10 rounded-3xl mx-auto">
             <div className="flex flex-col gap-6 w-full">
                 <div className="flex flex-row gap-2 bg-white/10 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md w-fit">
-                    <Button 
-                        size="sm"
-                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 ${type === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`} 
+                    <button
+                        type="button"
+                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${type === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`}
                         onClick={() => setType('one_way')}
                     >
                         <span className="truncate">{t('tickets.one_way')}</span>
-                    </Button> 
-                    <Button 
-                        size="sm"
-                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 ${type === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`} 
+                    </button>
+                    <button
+                        type="button"
+                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${type === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`}
                         onClick={() => setType('round_trip')}
                     >
                         <span className="truncate">{t('tickets.round_trip')}</span>
-                    </Button> 
+                    </button>
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 items-end w-full">
                     <div className="w-full lg:flex-1 relative">
                         <Autocomplete
-                            label={t('tickets.departure')}
-                            placeholder={t('tickets.departure_placeholder')}
-                            variant="underlined"
-                            startContent={<FaShip className="text-[#ff5a00] mr-2" />}
-                            selectedKey={departurePort}
-                            onSelectionChange={(key) => {
-                                if (key) {
-                                    setDeparturePort(key as string);
-                                    setDestinationPort(""); 
+                            options={departurePorts}
+                            loading={isLoadingRoutes}
+                            value={departurePorts.find((port: any) => port.code === departurePort) ?? null}
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            onChange={(_, port: any) => {
+                                if (port) {
+                                    setDeparturePort(port.code);
+                                    setDestinationPort("");
                                 }
                             }}
-                            isLoading={isLoadingRoutes}
-                            popoverProps={{ classNames: { content: "z-[9999]" }, placement: "bottom" }}
-                        >
-                            {departurePorts.map((port: any) => (
-                                <AutocompleteItem key={port.code} value={port.code} className="capitalize">
+                            getOptionLabel={(port: any) => port.name}
+                            isOptionEqualToValue={(option: any, val: any) => option.code === val.code}
+                            slotProps={{ popper: { className: "z-[9999]", placement: "bottom" } }}
+                            renderOption={(props, port: any) => (
+                                <li {...props} key={port.code} className={`${props.className} capitalize`}>
                                     {port.name}
-                                </AutocompleteItem>
-                            ))}
-                        </Autocomplete>
+                                </li>
+                            )}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    variant="standard"
+                                    label={t('tickets.departure')}
+                                    placeholder={t('tickets.departure_placeholder')}
+                                    slotProps={{
+                                        ...params.slotProps,
+                                        input: {
+                                            ...params.slotProps.input,
+                                            startAdornment: (
+                                                <>
+                                                    <InputAdornment position="start"><FaShip className="text-[#ff5a00]" /></InputAdornment>
+                                                    {params.slotProps.input.startAdornment}
+                                                </>
+                                            )
+                                        }
+                                    }}
+                                />
+                            )}
+                        />
                     </div>
 
                     <div className="w-full lg:flex-1 relative">
                         <Autocomplete
-                            label={t('tickets.destination')}
-                            placeholder={t('tickets.destination_placeholder')}
-                            variant="underlined"
-                            startContent={<FaShip className="text-[#ff5a00] mr-2" />}
-                            selectedKey={destinationPort}
+                            options={availableDestinations}
+                            value={availableDestinations.find((port: any) => port.code === destinationPort) ?? null}
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            onSelectionChange={(key: any) => {
-                                if (key) {
-                                    setDestinationPort(key as string);
+                            onChange={(_, port: any) => {
+                                if (port) {
+                                    setDestinationPort(port.code);
                                 }
                             }}
-                            isDisabled={!departurePort}
-                            popoverProps={{ classNames: { content: "z-[9999]" }, placement: "bottom" }}
-                        >
-                            {availableDestinations.map((port: any) => (
-                                <AutocompleteItem key={port.code} value={port.code} className="capitalize">
+                            getOptionLabel={(port: any) => port.name}
+                            isOptionEqualToValue={(option: any, val: any) => option.code === val.code}
+                            disabled={!departurePort}
+                            slotProps={{ popper: { className: "z-[9999]", placement: "bottom" } }}
+                            renderOption={(props, port: any) => (
+                                <li {...props} key={port.code} className={`${props.className} capitalize`}>
                                     {port.name}
-                                </AutocompleteItem>
-                            ))}
-                        </Autocomplete>
+                                </li>
+                            )}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    variant="standard"
+                                    label={t('tickets.destination')}
+                                    placeholder={t('tickets.destination_placeholder')}
+                                    slotProps={{
+                                        ...params.slotProps,
+                                        input: {
+                                            ...params.slotProps.input,
+                                            startAdornment: (
+                                                <>
+                                                    <InputAdornment position="start"><FaShip className="text-[#ff5a00]" /></InputAdornment>
+                                                    {params.slotProps.input.startAdornment}
+                                                </>
+                                            )
+                                        }
+                                    }}
+                                />
+                            )}
+                        />
                     </div>
 
                     <div className="w-full lg:flex-1">
-                        <DatePicker 
+                        <DatePicker
                             label={t('tickets.departured_date')}
-                            variant="underlined"
-                            classNames={{
-                                calendarContent: "bg-white/90 backdrop-blur-xl",
-                            }}
-                            showMonthAndYearPickers
                             value={departureDate}
                             onChange={setDepartureDate}
-                            minValue={parseDate(moment().format('YYYY-MM-DD'))}
+                            minDate={moment()}
+                            slotProps={{ textField: { variant: "standard", fullWidth: true } }}
                         />
                     </div>
-                    
+
                     {type === 'round_trip' && (
                         <div className="w-full lg:flex-1">
-                            <DatePicker 
+                            <DatePicker
                                 label={t('tickets.return_date')}
-                                variant="underlined"
-                                classNames={{
-                                    calendarContent: "bg-white/90 backdrop-blur-xl",
-                                }}
-                                showMonthAndYearPickers
                                 value={returnDate}
                                 onChange={setReturnDate}
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                minValue={(departureDate as any) || parseDate(moment().format('YYYY-MM-DD'))}
+                                minDate={(departureDate as any) || moment()}
+                                slotProps={{ textField: { variant: "standard", fullWidth: true } }}
                             />
                         </div>
                     )}
 
-                    <Button 
-                        className="button-orange w-full lg:min-w-[56px] lg:w-[56px] h-[56px] rounded-2xl flex items-center justify-center gap-2 mt-4 lg:mt-0" 
+                    <Button
+                        variant="contained"
+                        color="warning"
+                        className="w-full lg:min-w-[56px] lg:w-[56px] h-[56px] rounded-2xl flex items-center justify-center gap-2 mt-4 lg:mt-0"
+                        sx={{ minWidth: 0, borderRadius: "1rem", "@media (min-width:1024px)": { paddingInline: 0 } }}
                         onClick={handleSearch}
                         disabled={!departurePort || !destinationPort || !departureDate}
                     >
                         <IconSearch width={24} height={24}/>
                         <span className="lg:hidden ml-2 font-bold">{t('common.search_ferry')}</span>
-                    </Button> 
+                    </Button>
                 </div>
             </div>
 

@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button, CircularProgress } from "@mui/material";
 import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
@@ -165,9 +165,13 @@ const CarRentalForm = ({ car, date }: Props) => {
             </div>
 
             <Button
-                className="button-orange w-full h-14 text-base font-bold shadow-lg shadow-orange-500/30"
-                isLoading={isSubmitting}
-                onPress={handleSubmit}
+                variant="contained"
+                color="warning"
+                fullWidth
+                sx={{ height: 56, fontSize: "1rem" }}
+                disabled={isSubmitting}
+                startIcon={isSubmitting ? <CircularProgress size={16} color="inherit" /> : undefined}
+                onClick={handleSubmit}
             >
                 Submit Rental Request
             </Button>

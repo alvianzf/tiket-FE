@@ -1,4 +1,4 @@
-import { Button, Image } from "@nextui-org/react";
+import Button from "@components/Button";
 import NextImage from "next/image";
 import { useTranslation } from "react-i18next";
 
@@ -21,9 +21,8 @@ const PurchaseContainer = () => {
                         <div className="w-full md:w-1/2 flex justify-center">
                             <div className="relative group">
                                 <div className="absolute inset-0 bg-blue-400/20 rounded-full blur-2xl group-hover:bg-blue-400/30 transition-all duration-500"></div>
-                                <Image 
-                                    as={NextImage}
-                                    src="/images/no-purchases.png" 
+                                <NextImage
+                                    src="/images/no-purchases.png"
                                     width={350} 
                                     height={350} 
                                     alt="No purchases yet"
@@ -43,9 +42,9 @@ const PurchaseContainer = () => {
                             </div>
                             
                             <div className="pt-4">
-                                <Button 
-                                    color="primary" 
-                                    size="lg"
+                                <Button
+                                    dsVariant="primary"
+                                    size="large"
                                     className="button-blue px-8 font-bold shadow-lg shadow-blue-500/30 hover:scale-105 transition-all"
                                     onClick={() => window.location.href = '/'}
                                 >

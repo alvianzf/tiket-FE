@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next"
 import useForm, { FormProps } from "./forms/useForm";
 import { FormProvider } from "react-hook-form";
-import { Button, Input } from "@nextui-org/react";
+import { Button, TextField, InputAdornment, CircularProgress } from "@mui/material";
 import { useMutation } from "react-query";
 import { FaTicketAlt } from "react-icons/fa";
 import { checkBookFlight } from "@api/bookFlight";
@@ -45,7 +45,7 @@ const SearchBookingNumber = ({ onOpenChangeFind } : Props) => {
 
     const onSubmit = (data: FormProps) => {
         mutate(data.booking_no);
-        
+
     }
 
     return (
@@ -53,21 +53,31 @@ const SearchBookingNumber = ({ onOpenChangeFind } : Props) => {
             <div className="flex flex-col gap-5">
                 <div className="flex flex-col gap-2">
                     <p>{t('home.booking_no')}</p>
-                    <Input
+                    <TextField
                         type="text"
-                        variant="underlined"
+                        variant="standard"
+                        fullWidth
                         defaultValue={booking_no}
-                        onValueChange={(value) => setValue('booking_no', value)}
-                        errorMessage={errors?.booking_no?.message}
-                        isInvalid={!!errors?.booking_no}
+                        onChange={(e) => setValue('booking_no', e.target.value)}
+                        helperText={errors?.booking_no?.message}
+                        error={!!errors?.booking_no}
                         disabled={isLoading}
-                        startContent={<FaTicketAlt className="text-[#4267B2] mr-2" />}
-                        classNames={{
-                            mainWrapper: "w-full"
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start"><FaTicketAlt className="text-[#4267B2]" /></InputAdornment>
+                                )
+                            }
                         }}
                     />
                 </div>
-                <Button className="bg-[#ff5a00] text-white" isLoading={isLoading} disabled={isLoading} onClick={handleSubmit(onSubmit)}>
+                <Button
+                    variant="contained"
+                    color="warning"
+                    startIcon={isLoading ? <CircularProgress size={16} color="inherit" /> : undefined}
+                    disabled={isLoading}
+                    onClick={handleSubmit(onSubmit)}
+                >
                     {t('home.find_booking_no')}
                 </Button>
             </div>

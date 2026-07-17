@@ -1,5 +1,6 @@
 import FerryPassenger from "@components/FerryPassenger";
-import { Button, Card, CardBody, Input } from "@nextui-org/react";
+import { Button, Card, CardContent, CircularProgress, TextField } from "@mui/material";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
@@ -130,7 +131,7 @@ const FerryPassengerContainer = () => {
         <div className="flex flex-col gap-8 w-full items-center justify-center">
             <div className="flex gap-2 w-full flex-col relative flex-nowrap items-center max-w-[1024px]">
                 <Card className="px-4 w-full mt-[40px]">
-                    <CardBody>
+                    <CardContent>
                         <div className="flex flex-row items-center w-full gap-2">
                             <div className="flex flex-col items-center gap-1 w-[20%]">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#4267b2" width="20px" height="20px" viewBox="0 0 512 512" stroke="#4267b2">
@@ -169,7 +170,7 @@ const FerryPassengerContainer = () => {
                                 <span>{t('tickets.payment')}</span>
                             </div>
                         </div>
-                    </CardBody>
+                    </CardContent>
                 </Card>
             </div>
             <div className="flex gap-4 w-full flex-col relative flex-nowrap items-center max-w-[1280px]">
@@ -182,41 +183,43 @@ const FerryPassengerContainer = () => {
                     />
                 ))}
                 <Card className="p-4 w-full">
-                    <CardBody>
+                    <CardContent>
                         <span className="text-[24px] font-bold mb-4">Booking Requirements</span>
                         <div className="flex flex-row gap-4">
                             <div className="flex flex-col gap-4 w-[50%]">
                                 <div className="flex flex-col gap-2">
                                     <p>Email Address</p>
-                                    <Input type="email" variant="bordered" classNames={{ inputWrapper: "rounded-none" }}
+                                    <TextField type="email" fullWidth sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
                                         value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <p>Mobile Phone</p>
-                                    <Input type="tel" variant="bordered" classNames={{ inputWrapper: "rounded-none" }}
+                                    <TextField type="tel" fullWidth sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
                                         value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-4 w-[50%]">
                                 <div className="flex flex-col gap-2">
                                     <p>Confirmation Email Address</p>
-                                    <Input type="email" variant="bordered" classNames={{ inputWrapper: "rounded-none" }}
+                                    <TextField type="email" fullWidth sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
                                         value={confirmationEmail} onChange={(e) => setConfirmationEmail(e.target.value)} />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <p>WhatsApp No.</p>
-                                    <Input type="tel" variant="bordered" classNames={{ inputWrapper: "rounded-none" }}
+                                    <TextField type="tel" fullWidth sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
                                         value={whatsappNumber} onChange={(e) => setWhatsappNumber(e.target.value)} />
                                 </div>
                             </div>
                         </div>
-                    </CardBody>
+                    </CardContent>
                 </Card>
                 <div className="flex flex-row justify-between w-full">
-                    <Button className={'button-grey'} onClick={() => push('/ferry/list')}>
+                    <Button variant="contained" color="inherit" component={Link} href="/ferry/list">
                         {'Back'}
                     </Button>
-                    <Button className={'button-orange'} isLoading={isSubmitting} onClick={handleNext}>
+                    <Button variant="contained" color="warning" disabled={isSubmitting}
+                        startIcon={isSubmitting ? <CircularProgress size={16} color="inherit" /> : undefined}
+                        onClick={handleNext}>
                         {'Next'}
                     </Button>
                 </div>

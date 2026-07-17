@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button } from '@nextui-org/react';
+import Button from '@mui/material/Button';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import AppLayout from '../src/layouts/AppLayout';
 
@@ -40,20 +41,30 @@ const Custom404 = () => {
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
-            size="lg"
-            variant="solid"
+            size="large"
+            variant="contained"
             color="primary"
-            className="font-semibold shadow-lg shadow-primary/30"
-            onClick={() => router.push('/')}
+            component={Link}
+            href="/"
+            sx={{ fontWeight: 600 }}
           >
             {t('home', 'Back to Home')}
           </Button>
-          
+
           <Button
-            size="lg"
-            variant="flat"
-            className="font-semibold backdrop-blur-md border border-white/20"
+            size="large"
+            variant="text"
             onClick={() => router.back()}
+            sx={{
+              // Parity with NextUI `variant="flat"` + backdrop-blur-md border-white/20
+              fontWeight: 600,
+              color: '#3f3f46',
+              backgroundColor: 'rgba(212,212,216,0.4)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              '&:hover': { backgroundColor: 'rgba(212,212,216,0.55)' },
+            }}
           >
             {t('back', 'Go Back')}
           </Button>

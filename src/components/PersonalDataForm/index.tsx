@@ -1,4 +1,5 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, DatePicker, Input, Select, SelectItem } from "@nextui-org/react";
+import { Button, Card, CardActions, CardContent, CardHeader, MenuItem, TextField } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 import { useTranslation } from "react-i18next"
 
 const PersonalDataForm = () => {
@@ -11,52 +12,63 @@ const PersonalDataForm = () => {
 
     return (
         <Card>
-            <CardHeader>
-                <p>{t('profile.personal_data')}</p>
-            </CardHeader>
-            <CardBody>
+            <CardHeader title={<p>{t('profile.personal_data')}</p>} />
+            <CardContent>
                 <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-2">
                         <p className="font-medium text-slate-700">{t('profile.fullname')}</p>
-                        <Input type="text" variant="underlined" placeholder="Enter full name" />
+                        <TextField type="text" variant="standard" placeholder="Enter full name" fullWidth />
                     </div>
                     <div className="flex flex-row gap-4">
                         <div className="flex flex-col gap-2 w-[48%]">
                             <p className="font-medium text-slate-700">{t('profile.date_of_birth')}</p>
-                            <DatePicker variant="underlined" />
+                            <DatePicker slotProps={{ textField: { variant: "standard", size: "small", fullWidth: true } }} />
                         </div>
                         <div className="flex flex-col gap-2 w-[50%]">
                             <p className="font-medium text-slate-700">{t('profile.gender')}</p>
-                            <Select
-                                variant="underlined"
-                                placeholder={t('profile.choose_gender')}
+                            <TextField
+                                select
+                                variant="standard"
+                                fullWidth
+                                defaultValue=""
+                                slotProps={{
+                                    select: {
+                                        displayEmpty: true,
+                                        renderValue: (value) =>
+                                            value === "" ? (
+                                                <span className="text-slate-400">{t('profile.choose_gender')}</span>
+                                            ) : (
+                                                genderOptions.find((item) => item.key === value)?.label
+                                            ),
+                                    },
+                                }}
                             >
                                 {genderOptions.map((item) => (
-                                        <SelectItem key={item.key}>
+                                        <MenuItem key={item.key} value={item.key}>
                                             {item.label}
-                                        </SelectItem>
+                                        </MenuItem>
                                     ))
                                 }
-                            </Select>
+                            </TextField>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
                         <p className="font-medium text-slate-700">{t('profile.city_of_residence')}</p>
-                        <Input type="text" variant="underlined" placeholder="Enter city" />
+                        <TextField type="text" variant="standard" placeholder="Enter city" fullWidth />
                     </div>
                 </div>
-            </CardBody>
-            <CardFooter>
+            </CardContent>
+            <CardActions>
                 <div className="flex flex-row gap-2 justify-end w-full">
-                    <Button color="primary" variant="bordered" className="max-w-fit border rounded-sm data-[hover=true]:bg-transparent">
+                    <Button color="primary" variant="outlined" className="max-w-fit">
                         {t('profile.cancel')}
                     </Button>
-                    <Button color="primary" variant="bordered" className="max-w-fit rounded-sm bg-[#ff5a00] border-[#ff5a00] text-white">
+                    <Button color="warning" variant="contained" className="max-w-fit">
                         {t('profile.save')}
-                    </Button>  
+                    </Button>
                 </div>
-            </CardFooter>
-        </Card> 
+            </CardActions>
+        </Card>
     )
 }
 
