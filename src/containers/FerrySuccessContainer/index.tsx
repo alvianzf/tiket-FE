@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Image } from "@nextui-org/react";
+import { Button, Card, CardContent } from "@mui/material";
 import NextImage from "next/image"
 import { useTranslation } from "react-i18next";
 
@@ -10,7 +10,7 @@ const FerrySuccessContainer = () => {
         <div className="flex flex-col gap-8 w-full items-center justify-center">
             <div className="flex gap-2 w-full flex-col relative flex-nowrap items-center max-w-[1024px]">
                 <Card className="px-4 w-full mt-[40px]">
-                    <CardBody>
+                    <CardContent>
                         <div className="flex flex-row items-center w-full gap-2">
                             <div className="flex flex-col items-center gap-1 w-[20%]">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#4267b2" width="20px" height="20px" viewBox="0 0 512 512" stroke="#4267b2">
@@ -49,24 +49,24 @@ const FerrySuccessContainer = () => {
                                 <span>{t('tickets.payment')}</span>
                             </div>
                         </div>
-                    </CardBody>
+                    </CardContent>
                 </Card>
             </div>
             <div className="flex gap-4 w-full flex-col relative flex-nowrap items-center max-w-[1280px]">
                 <Card className="p-6 w-full">
-                    <CardBody>
+                    <CardContent>
                         <div className="flex flex-col text-center gap-8">
                             <div className="m-auto">
-                                <Image as={NextImage} src="/images/payment-success.png" width={200} height={200} alt="Payment Success"/>
+                                <NextImage src="/images/payment-success.png" width={200} height={200} alt="Payment Success"/>
                             </div>
                             <p className="text-orange text-lg font-medium">{t('checkout.payment_received')}</p>
                             <p>{t('checkout.order_no', { no : '00001' })}</p>
                             <p className="text-orange text-lg font-medium">{t('checkout.thankyou_for_your_payment')}</p>
-                            <Button className={"button-orange"}>
+                            <Button variant="contained" color="warning">
                                 {t('checkout.get_eticket')}
                             </Button>
-                        </div>      
-                    </CardBody>
+                        </div>
+                    </CardContent>
                 </Card>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Input, Select, SelectItem } from "@nextui-org/react"
+import { Card, CardContent, CardHeader, MenuItem, TextField } from "@mui/material"
 import { useTranslation } from "react-i18next"
 
 interface PassengerData {
@@ -83,13 +83,16 @@ const FerryPassenger = ({ index, data, onChange }: Props) => {
 
     return (
         <Card className="p-4 w-full">
-            <CardHeader>
-                <div className="flex flex-row gap-2">
-                    <span className="text-[24px] text-orange font-bold">Passenger {index + 1}</span>
-                    <span className="text-[24px]">Adult</span>
-                </div>
-            </CardHeader>
-            <CardBody>
+            <CardHeader
+                disableTypography
+                title={
+                    <div className="flex flex-row gap-2">
+                        <span className="text-[24px] text-orange font-bold">Passenger {index + 1}</span>
+                        <span className="text-[24px]">Adult</span>
+                    </div>
+                }
+            />
+            <CardContent>
                 <div className="flex flex-col gap-2 p-4 bg-red-100 mb-6">
                     <p className="text-red-500 text-center text-sm">Please ensure that you are holding a valid travel document before you proceed. TiketQ is not responsible for any consequences imposed by authorities for inaccurate or incomplete documents.</p>
                 </div>
@@ -97,10 +100,11 @@ const FerryPassenger = ({ index, data, onChange }: Props) => {
                     <div className="flex flex-col gap-4 w-[50%]">
                         <div className="flex flex-col gap-2">
                             <p>Passport No.</p>
-                            <Input
+                            <TextField
                                 type="text"
-                                variant="underlined"
+                                variant="standard"
                                 placeholder="Enter Passport No."
+                                fullWidth
                                 value={data.passportNumber}
                                 onChange={(e) => update('passportNumber', e.target.value)}
                             />
@@ -108,29 +112,32 @@ const FerryPassenger = ({ index, data, onChange }: Props) => {
                         <div className="flex flex-col gap-1">
                             <p>Name (As in Passport)</p>
                             <div className="flex flex-row gap-2 w-full">
-                                <Select
+                                <TextField
+                                    select
                                     className="w-[25%]"
-                                    variant="underlined"
-                                    selectionMode="single"
-                                    placeholder={t('checkout.choose')}
-                                    selectedKeys={data.title ? [data.title] : []}
-                                    onSelectionChange={(keys) => update('title', Array.from(keys)[0] as string)}
+                                    variant="standard"
+                                    value={data.title}
+                                    onChange={(e) => update('title', e.target.value)}
+                                    slotProps={{ select: { displayEmpty: true } }}
                                 >
+                                    <MenuItem value="" disabled>
+                                        <span className="text-slate-400">{t('checkout.choose')}</span>
+                                    </MenuItem>
                                     {titleOptions.map((item) => (
-                                        <SelectItem key={item.key}>{item.label}</SelectItem>
+                                        <MenuItem key={item.key} value={item.key}>{item.label}</MenuItem>
                                     ))}
-                                </Select>
-                                <Input
+                                </TextField>
+                                <TextField
                                     type="text"
-                                    variant="underlined"
+                                    variant="standard"
                                     placeholder="First Name"
                                     className="grow"
                                     value={data.firstName}
                                     onChange={(e) => update('firstName', e.target.value)}
                                 />
-                                <Input
+                                <TextField
                                     type="text"
-                                    variant="underlined"
+                                    variant="standard"
                                     placeholder="Last Name"
                                     className="grow"
                                     value={data.lastName}
@@ -140,20 +147,22 @@ const FerryPassenger = ({ index, data, onChange }: Props) => {
                         </div>
                         <div className="flex flex-col gap-2">
                             <p>Nationality</p>
-                            <Input
+                            <TextField
                                 type="text"
-                                variant="underlined"
+                                variant="standard"
                                 placeholder="e.g. Indonesian"
+                                fullWidth
                                 value={data.nationality}
                                 onChange={(e) => update('nationality', e.target.value)}
                             />
                         </div>
                         <div className="flex flex-col gap-2">
                             <p>Issuing Country</p>
-                            <Input
+                            <TextField
                                 type="text"
-                                variant="underlined"
+                                variant="standard"
                                 placeholder="e.g. Indonesia"
+                                fullWidth
                                 value={data.issuingCountry}
                                 onChange={(e) => update('issuingCountry', e.target.value)}
                             />
@@ -163,46 +172,58 @@ const FerryPassenger = ({ index, data, onChange }: Props) => {
                         <div className="flex flex-col gap-2">
                             <p>Date of Birth</p>
                             <div className="flex flex-row gap-1">
-                                <Select variant="underlined" placeholder="Day" selectionMode="single"
-                                    selectedKeys={parseDatePart(data.dateOfBirth, 'day') ? [parseDatePart(data.dateOfBirth, 'day')] : []}
-                                    onSelectionChange={(k) => updateDob('day', Array.from(k)[0] as string)}>
-                                    {DAYS.map(d => <SelectItem key={d}>{d}</SelectItem>)}
-                                </Select>
-                                <Select variant="underlined" placeholder="Month" selectionMode="single"
-                                    selectedKeys={parseDatePart(data.dateOfBirth, 'month') ? [parseDatePart(data.dateOfBirth, 'month')] : []}
-                                    onSelectionChange={(k) => updateDob('month', Array.from(k)[0] as string)}>
-                                    {MONTHS.map(m => <SelectItem key={m.value}>{m.label}</SelectItem>)}
-                                </Select>
-                                <Select variant="underlined" placeholder="Year" selectionMode="single"
-                                    selectedKeys={parseDatePart(data.dateOfBirth, 'year') ? [parseDatePart(data.dateOfBirth, 'year')] : []}
-                                    onSelectionChange={(k) => updateDob('year', Array.from(k)[0] as string)}>
-                                    {DOB_YEARS.map(y => <SelectItem key={y}>{y}</SelectItem>)}
-                                </Select>
+                                <TextField select variant="standard" fullWidth
+                                    value={parseDatePart(data.dateOfBirth, 'day')}
+                                    onChange={(e) => updateDob('day', e.target.value)}
+                                    slotProps={{ select: { displayEmpty: true } }}>
+                                    <MenuItem value="" disabled><span className="text-slate-400">Day</span></MenuItem>
+                                    {DAYS.map(d => <MenuItem key={d} value={d}>{d}</MenuItem>)}
+                                </TextField>
+                                <TextField select variant="standard" fullWidth
+                                    value={parseDatePart(data.dateOfBirth, 'month')}
+                                    onChange={(e) => updateDob('month', e.target.value)}
+                                    slotProps={{ select: { displayEmpty: true } }}>
+                                    <MenuItem value="" disabled><span className="text-slate-400">Month</span></MenuItem>
+                                    {MONTHS.map(m => <MenuItem key={m.value} value={m.value}>{m.label}</MenuItem>)}
+                                </TextField>
+                                <TextField select variant="standard" fullWidth
+                                    value={parseDatePart(data.dateOfBirth, 'year')}
+                                    onChange={(e) => updateDob('year', e.target.value)}
+                                    slotProps={{ select: { displayEmpty: true } }}>
+                                    <MenuItem value="" disabled><span className="text-slate-400">Year</span></MenuItem>
+                                    {DOB_YEARS.map(y => <MenuItem key={y} value={y}>{y}</MenuItem>)}
+                                </TextField>
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
                             <p>Passport Expiry Date</p>
                             <div className="flex flex-row gap-1">
-                                <Select variant="underlined" placeholder="Day" selectionMode="single"
-                                    selectedKeys={parseDatePart(data.passportExpiry, 'day') ? [parseDatePart(data.passportExpiry, 'day')] : []}
-                                    onSelectionChange={(k) => updateExpiry('day', Array.from(k)[0] as string)}>
-                                    {DAYS.map(d => <SelectItem key={d}>{d}</SelectItem>)}
-                                </Select>
-                                <Select variant="underlined" placeholder="Month" selectionMode="single"
-                                    selectedKeys={parseDatePart(data.passportExpiry, 'month') ? [parseDatePart(data.passportExpiry, 'month')] : []}
-                                    onSelectionChange={(k) => updateExpiry('month', Array.from(k)[0] as string)}>
-                                    {MONTHS.map(m => <SelectItem key={m.value}>{m.label}</SelectItem>)}
-                                </Select>
-                                <Select variant="underlined" placeholder="Year" selectionMode="single"
-                                    selectedKeys={parseDatePart(data.passportExpiry, 'year') ? [parseDatePart(data.passportExpiry, 'year')] : []}
-                                    onSelectionChange={(k) => updateExpiry('year', Array.from(k)[0] as string)}>
-                                    {EXP_YEARS.map(y => <SelectItem key={y}>{y}</SelectItem>)}
-                                </Select>
+                                <TextField select variant="standard" fullWidth
+                                    value={parseDatePart(data.passportExpiry, 'day')}
+                                    onChange={(e) => updateExpiry('day', e.target.value)}
+                                    slotProps={{ select: { displayEmpty: true } }}>
+                                    <MenuItem value="" disabled><span className="text-slate-400">Day</span></MenuItem>
+                                    {DAYS.map(d => <MenuItem key={d} value={d}>{d}</MenuItem>)}
+                                </TextField>
+                                <TextField select variant="standard" fullWidth
+                                    value={parseDatePart(data.passportExpiry, 'month')}
+                                    onChange={(e) => updateExpiry('month', e.target.value)}
+                                    slotProps={{ select: { displayEmpty: true } }}>
+                                    <MenuItem value="" disabled><span className="text-slate-400">Month</span></MenuItem>
+                                    {MONTHS.map(m => <MenuItem key={m.value} value={m.value}>{m.label}</MenuItem>)}
+                                </TextField>
+                                <TextField select variant="standard" fullWidth
+                                    value={parseDatePart(data.passportExpiry, 'year')}
+                                    onChange={(e) => updateExpiry('year', e.target.value)}
+                                    slotProps={{ select: { displayEmpty: true } }}>
+                                    <MenuItem value="" disabled><span className="text-slate-400">Year</span></MenuItem>
+                                    {EXP_YEARS.map(y => <MenuItem key={y} value={y}>{y}</MenuItem>)}
+                                </TextField>
                             </div>
                         </div>
                     </div>
                 </div>
-            </CardBody>
+            </CardContent>
         </Card>
     )
 }

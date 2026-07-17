@@ -1,6 +1,6 @@
-import { Autocomplete, AutocompleteItem, AutocompleteSection, DatePicker } from "@nextui-org/react";
+import { Autocomplete, TextField, InputAdornment } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 import { useTranslation } from "react-i18next";
-import { parseDate } from "@internationalized/date";
 import moment from "moment";
 import { Airport } from "@api/airports/types";
 import { FaPlaneDeparture, FaPlaneArrival } from "react-icons/fa";
@@ -25,8 +25,6 @@ interface Props {
 const MultiCitySegment = ({ index, value, airports, isLoading, canRemove, onChange, onRemove }: Props) => {
     const { t } = useTranslation();
 
-    const sections = [{ key: 'popular_city', title: t('tickets.popular_city'), children: airports }];
-
     return (
         <div className="flex flex-col lg:flex-row gap-4 items-end w-full p-4 bg-white/5 rounded-2xl border border-white/10">
             <div className="hidden lg:flex w-6 shrink-0 items-center justify-center self-end pb-2">
@@ -36,74 +34,119 @@ const MultiCitySegment = ({ index, value, airports, isLoading, canRemove, onChan
                 <p className="font-medium text-slate-800/80 text-sm">{t('tickets.from')}</p>
                 <Autocomplete
                     aria-label={t('tickets.from')}
-                    placeholder={t('tickets.from_placeholder')}
-                    variant="underlined"
-                    startContent={<FaPlaneDeparture className="text-primary mr-2" />}
-                    selectedKey={value.from || null}
-                    onSelectionChange={(key) => { if (key) onChange(index, { ...value, from: String(key) }); }}
-                    isLoading={isLoading}
-                    isVirtualized={false}
-                    items={sections}
-                    classNames={{ popoverContent: 'w-[350px] md:w-[600px] glass-card bg-white/80 z-[9999]' }}
-                    popoverProps={{ className: "z-[9999]" }}
-                >
-                    {(section) => (
-                        <AutocompleteSection key={section.key} title={section.title} items={section.children}
-                            classNames={{ heading: 'text-primary text-base font-bold pl-2' }} hideSelectedIcon>
-                            {(item: Airport) => (
-                                <AutocompleteItem key={item.code} textValue={item.name}
-                                    className="text-black data-[hover=true]:bg-primary data-[hover=true]:text-white transition-colors">
-                                    <div className="flex flex-col">
-                                        <span className="font-bold">{item.code}</span>
-                                        <span className="text-tiny opacity-80">{item.name}</span>
-                                    </div>
-                                </AutocompleteItem>
-                            )}
-                        </AutocompleteSection>
+                    options={airports}
+                    loading={isLoading}
+                    value={airports.find((item) => item.code === value.from) ?? null}
+                    onChange={(_, item) => { if (item) onChange(index, { ...value, from: item.code }); }}
+                    getOptionLabel={(item) => item.name}
+                    isOptionEqualToValue={(option, val) => option.code === val.code}
+                    groupBy={() => t('tickets.popular_city')}
+                    slotProps={{
+                        popper: {
+                            className: "z-[9999]",
+                            sx: { width: { xs: "350px !important", md: "600px !important" } }
+                        }
+                    }}
+                    renderGroup={(params) => (
+                        <li key={params.key}>
+                            <div className="text-primary text-base font-bold pl-2 py-1">{params.group}</div>
+                            <ul className="list-none p-0">{params.children}</ul>
+                        </li>
                     )}
-                </Autocomplete>
+                    renderOption={(props, item) => (
+                        <li {...props} key={item.code} className={`${props.className} text-black hover:bg-primary hover:text-white transition-colors`}>
+                            <div className="flex flex-col">
+                                <span className="font-bold">{item.code}</span>
+                                <span className="text-xs opacity-80">{item.name}</span>
+                            </div>
+                        </li>
+                    )}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            variant="standard"
+                            placeholder={t('tickets.from_placeholder')}
+                            slotProps={{
+                                ...params.slotProps,
+                                input: {
+                                    ...params.slotProps.input,
+                                    startAdornment: (
+                                        <>
+                                            <InputAdornment position="start"><FaPlaneDeparture className="text-primary" /></InputAdornment>
+                                            {params.slotProps.input.startAdornment}
+                                        </>
+                                    )
+                                }
+                            }}
+                        />
+                    )}
+                />
             </div>
             <div className="w-full lg:flex-1 flex flex-col gap-2">
                 <p className="font-medium text-slate-800/80 text-sm">{t('tickets.to')}</p>
                 <Autocomplete
                     aria-label={t('tickets.to')}
-                    placeholder={t('tickets.to_placeholder')}
-                    variant="underlined"
-                    startContent={<FaPlaneArrival className="text-primary mr-2" />}
-                    selectedKey={value.to || null}
-                    onSelectionChange={(key) => { if (key) onChange(index, { ...value, to: String(key) }); }}
-                    isLoading={isLoading}
-                    isVirtualized={false}
-                    items={sections}
-                    classNames={{ popoverContent: 'w-[350px] md:w-[600px] glass-card bg-white/80 z-[9999]' }}
-                    popoverProps={{ className: "z-[9999]" }}
-                >
-                    {(section) => (
-                        <AutocompleteSection key={section.key} title={section.title} items={section.children}
-                            classNames={{ heading: 'text-primary text-base font-bold pl-2' }} hideSelectedIcon>
-                            {(item: Airport) => (
-                                <AutocompleteItem key={item.code} textValue={item.name}
-                                    className="text-black data-[hover=true]:bg-primary data-[hover=true]:text-white transition-colors">
-                                    <div className="flex flex-col">
-                                        <span className="font-bold">{item.code}</span>
-                                        <span className="text-tiny opacity-80">{item.name}</span>
-                                    </div>
-                                </AutocompleteItem>
-                            )}
-                        </AutocompleteSection>
+                    options={airports}
+                    loading={isLoading}
+                    value={airports.find((item) => item.code === value.to) ?? null}
+                    onChange={(_, item) => { if (item) onChange(index, { ...value, to: item.code }); }}
+                    getOptionLabel={(item) => item.name}
+                    isOptionEqualToValue={(option, val) => option.code === val.code}
+                    groupBy={() => t('tickets.popular_city')}
+                    slotProps={{
+                        popper: {
+                            className: "z-[9999]",
+                            sx: { width: { xs: "350px !important", md: "600px !important" } }
+                        }
+                    }}
+                    renderGroup={(params) => (
+                        <li key={params.key}>
+                            <div className="text-primary text-base font-bold pl-2 py-1">{params.group}</div>
+                            <ul className="list-none p-0">{params.children}</ul>
+                        </li>
                     )}
-                </Autocomplete>
+                    renderOption={(props, item) => (
+                        <li {...props} key={item.code} className={`${props.className} text-black hover:bg-primary hover:text-white transition-colors`}>
+                            <div className="flex flex-col">
+                                <span className="font-bold">{item.code}</span>
+                                <span className="text-xs opacity-80">{item.name}</span>
+                            </div>
+                        </li>
+                    )}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            variant="standard"
+                            placeholder={t('tickets.to_placeholder')}
+                            slotProps={{
+                                ...params.slotProps,
+                                input: {
+                                    ...params.slotProps.input,
+                                    startAdornment: (
+                                        <>
+                                            <InputAdornment position="start"><FaPlaneArrival className="text-primary" /></InputAdornment>
+                                            {params.slotProps.input.startAdornment}
+                                        </>
+                                    )
+                                }
+                            }}
+                        />
+                    )}
+                />
             </div>
             <div className="w-full lg:flex-1 flex flex-col gap-2">
                 <p className="font-medium text-slate-800/80 text-sm">{t('tickets.departured_date')}</p>
                 <DatePicker
-                    aria-label={t('tickets.departured_date')}
-                    variant="underlined"
-                    color="warning"
                     className="w-full"
-                    minValue={parseDate(moment().format('YYYY-MM-DD'))}
-                    value={value.date ? parseDate(value.date) : null}
-                    onChange={(v) => { if (v) onChange(index, { ...value, date: v.toString() }); }}
+                    minDate={moment()}
+                    value={value.date ? moment(value.date) : null}
+                    onChange={(v) => { if (v) onChange(index, { ...value, date: v.format('YYYY-MM-DD') }); }}
+                    slotProps={{
+                        textField: {
+                            variant: "standard",
+                            fullWidth: true
+                        }
+                    }}
                 />
             </div>
             {canRemove && (

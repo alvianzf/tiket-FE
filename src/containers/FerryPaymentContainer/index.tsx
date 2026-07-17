@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import DanaPayment from "@components/Payment/DanaPayment";
-import { Card, CardBody, CardHeader, Spinner } from "@nextui-org/react";
+import { Card, CardContent, CardHeader, CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -41,7 +41,7 @@ const FerryPaymentContainer = () => {
         <div className="flex flex-col gap-8 w-full items-center justify-center">
             <div className="flex gap-2 w-full flex-col relative flex-nowrap items-center max-w-[1024px]">
                 <Card className="px-4 w-full mt-[40px]">
-                    <CardBody>
+                    <CardContent>
                         <div className="flex flex-row items-center w-full gap-2">
                             <div className="flex flex-col items-center gap-1 w-[20%]">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#4267b2" width="20px" height="20px" viewBox="0 0 512 512" stroke="#4267b2">
@@ -74,14 +74,14 @@ const FerryPaymentContainer = () => {
                                 <span>{t('tickets.payment')}</span>
                             </div>
                         </div>
-                    </CardBody>
+                    </CardContent>
                 </Card>
             </div>
 
             <div className="flex gap-4 w-full flex-col relative flex-nowrap items-center max-w-[1024px] px-5">
                 {isFetchingBooking && (
                     <div className="flex justify-center py-10">
-                        <Spinner size="lg" color="warning" />
+                        <CircularProgress size={44} color="warning" />
                     </div>
                 )}
 
@@ -97,10 +97,11 @@ const FerryPaymentContainer = () => {
 
                     <div className="w-[100%] md:w-[36%]">
                         <Card>
-                            <CardHeader>
-                                <p className="font-bold">Booking No: {bookingNo || '—'}</p>
-                            </CardHeader>
-                            <CardBody>
+                            <CardHeader
+                                disableTypography
+                                title={<p className="font-bold">Booking No: {bookingNo || '—'}</p>}
+                            />
+                            <CardContent>
                                 <div className="flex flex-col gap-4">
                                     <div className="flex flex-row items-center justify-between">
                                         <p className="font-bold">{embarkation || '—'}</p>
@@ -123,7 +124,7 @@ const FerryPaymentContainer = () => {
                                         </>
                                     )}
                                 </div>
-                            </CardBody>
+                            </CardContent>
                         </Card>
                     </div>
                 </div>

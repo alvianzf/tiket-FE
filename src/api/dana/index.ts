@@ -1,13 +1,14 @@
 import baseAPI, { handleDefaultSuccess, handleDefaultError } from "@api/baseApi";
 
-export type DanaPayMethod = "QRIS" | "BCA" | "BNI" | "BRI" | "MANDIRI";
+export type DanaPayMethod = "DANA" | "BNI" | "BRI" | "MANDIRI" | "CIMB" | "PANIN";
 
 export interface DanaPaymentResponse {
     method: DanaPayMethod;
-    kind: "QRIS" | "VA";
+    kind: "VA" | "REDIRECT";
     vaNumber: string | null;
-    qrContent: string | null;
-    paymentCode: string;
+    /** Present for the DANA wallet method — redirect the user here to pay. */
+    redirectUrl: string | null;
+    paymentCode: string | null;
     expiryTime: string | null;
     referenceNo: string | null;
     bookingNo: string;

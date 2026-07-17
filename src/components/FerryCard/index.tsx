@@ -1,4 +1,4 @@
-import { Button, Card, CardBody } from "@nextui-org/react"
+import { Button, Card, CardContent } from "@mui/material"
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next"
 import { FerryTrip } from "@interfaces/travel";
@@ -50,8 +50,8 @@ const FerryCard = ({ trip, embarkation, destination, tripdate, onSelect }: Props
             whileHover={{ y: -4 }}
             className="w-full"
         >
-            <Card className="w-full glass-card border-none bg-white/10 backdrop-blur-2xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden rounded-[32px]">
-                <CardBody className="p-8">
+            <Card className="w-full shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden rounded-[32px]">
+                <CardContent className="p-8" sx={{ "&:last-child": { pb: 4 } }}>
                     <div className="flex flex-col md:flex-row items-center gap-10">
                         {/* Icon Side */}
                         <div className="flex-shrink-0">
@@ -78,7 +78,7 @@ const FerryCard = ({ trip, embarkation, destination, tripdate, onSelect }: Props
 
                                 <div className="flex-grow flex flex-col items-center gap-1">
                                     <div className="w-full h-1 bg-orange-500/10 rounded-full relative overflow-hidden">
-                                        <motion.div 
+                                        <motion.div
                                             initial={{ x: "-100%" }}
                                             animate={{ x: "100%" }}
                                             transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
@@ -111,16 +111,18 @@ const FerryCard = ({ trip, embarkation, destination, tripdate, onSelect }: Props
                                 <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-1 block">{t('tickets.price', 'Total Price')}</span>
                                 <span className="text-3xl font-black text-[#ff5a00] tracking-tighter">{formattedPrice}</span>
                             </div>
-                            
-                            <Button 
-                                className="button-orange h-14 px-10 text-lg font-bold shadow-xl shadow-orange-500/40 rounded-2xl w-full md:w-auto" 
+
+                            <Button
+                                variant="contained"
+                                color="warning"
+                                className="h-14 px-10 text-lg font-bold shadow-xl shadow-orange-500/40 rounded-2xl w-full md:w-auto"
                                 onClick={handleOrder}
                             >
                                 {t('tickets.order')}
                             </Button>
                         </div>
                     </div>
-                </CardBody>
+                </CardContent>
             </Card>
         </motion.div>
     )

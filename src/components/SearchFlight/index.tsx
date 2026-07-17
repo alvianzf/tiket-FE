@@ -1,4 +1,4 @@
-import { DatePicker } from "@nextui-org/react";
+import { DatePicker } from "@mui/x-date-pickers";
 import Button from "@components/Button";
 import { useTranslation } from "react-i18next";
 import FromInput from "./FromInput";
@@ -11,7 +11,6 @@ import { Airport } from "@api/airports/types";
 import { FormProvider } from "react-hook-form";
 import useForm, { FormProps } from "./forms/useForm";
 import { useEffect, useState } from "react";
-import { parseDate } from "@internationalized/date";
 import moment from "moment";
 import { useRouter } from "next/router";
 
@@ -200,7 +199,7 @@ const SearchFlight = () => {
                                     isLoading={isSubmitting}
                                     dsVariant="cta"
                                     className="h-[48px] px-8 rounded-ds-md"
-                                    onPress={handleMultiCitySearch}
+                                    onClick={handleMultiCitySearch}
                                 >
                                     {!isSubmitting && <span className="mr-2"><IconSearch width={20} height={20} /></span>}
                                     <span className="font-bold">{t('common.search_flight')}</span>
@@ -228,15 +227,18 @@ const SearchFlight = () => {
                     <div className="w-full lg:flex-1 flex flex-col gap-2">
                         <p className="font-medium text-slate-800/80">{t('tickets.departured_date')}</p>
                         <DatePicker
-                            aria-label={t('tickets.departured_date')}
-                            variant="underlined"
-                            color="warning"
                             className="w-full"
-                            minValue={parseDate(moment().format('YYYY-MM-DD'))}
-                            value={watch('date') ? parseDate(watch('date')) : null}
+                            minDate={moment()}
+                            value={watch('date') ? moment(watch('date')) : null}
                             onChange={(value) => {
                                 if (value) {
-                                    setValue('date', value.toString());
+                                    setValue('date', value.format('YYYY-MM-DD'));
+                                }
+                            }}
+                            slotProps={{
+                                textField: {
+                                    variant: "standard",
+                                    fullWidth: true
                                 }
                             }}
                         />
@@ -245,26 +247,29 @@ const SearchFlight = () => {
                         <div className="w-full lg:flex-1 flex flex-col gap-2">
                             <p className="font-medium text-slate-800/80">{t('tickets.return_date')}</p>
                             <DatePicker
-                                aria-label={t('tickets.return_date')}
-                                variant="underlined"
-                                color="warning"
                                 className="w-full"
-                                minValue={watch('date') ? parseDate(watch('date')) : parseDate(moment().format('YYYY-MM-DD'))}
-                                value={watch('returnDate') ? parseDate(watch('returnDate')!) : null}
+                                minDate={watch('date') ? moment(watch('date')) : moment()}
+                                value={watch('returnDate') ? moment(watch('returnDate')!) : null}
                                 onChange={(value) => {
                                     if (value) {
-                                        setValue('returnDate', value.toString());
+                                        setValue('returnDate', value.format('YYYY-MM-DD'));
+                                    }
+                                }}
+                                slotProps={{
+                                    textField: {
+                                        variant: "standard",
+                                        fullWidth: true
                                     }
                                 }}
                             />
                         </div>
                     )}
                     <Button
-                        isIconOnly={!isSubmitting}
                         isLoading={isSubmitting}
                         dsVariant="cta"
                         className="h-[56px] w-full lg:min-w-[56px] lg:w-[56px] rounded-ds-md"
-                        onPress={() => handleSubmit(onSubmit)()}
+                        sx={{ minWidth: 0, "@media (min-width:1024px)": { paddingInline: 0 } }}
+                        onClick={() => handleSubmit(onSubmit)()}
                     >
                         {!isSubmitting && <IconSearch width={24} height={24}/>}
                         <span className="lg:hidden ml-2 font-bold">{t('common.search_flight')}</span>

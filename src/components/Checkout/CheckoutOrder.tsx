@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Divider, Input } from "@nextui-org/react";
+import { Card, Divider, InputAdornment, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { FormProps } from "./forms/useForm";
@@ -6,6 +6,25 @@ import CheckoutOrderAdult from "./CheckoutOrderAdult";
 import CheckoutOrderChild from "./CheckoutOrderChild";
 import CheckoutOrderInfant from "./CheckoutOrderInfant";
 import { User, Phone, Mail, FileText } from "lucide-react";
+
+// Replicates the old NextUI "underlined + outside label" input look.
+const fieldSx = {
+    "& .MuiInputLabel-root": {
+        fontWeight: 700,
+        textTransform: "uppercase",
+        letterSpacing: "0.05em",
+        color: "#94a3b8",
+        fontSize: 13.5,
+    },
+    "& .MuiInput-input": {
+        fontWeight: 600,
+        color: "#2F3033",
+    },
+} as const;
+
+const monoInputSx = {
+    "& .MuiInput-input": { fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" },
+} as const;
 
 const CheckoutOrder = () => {
 
@@ -20,83 +39,109 @@ const CheckoutOrder = () => {
                     <div className="w-1.5 h-6 bg-primary rounded-full"></div>
                     <p className="text-xl font-extrabold text-dark tracking-tight">{t('checkout.order_section_title')}</p>
                 </div>
-                
-                <Card className="glass-card shadow-md overflow-hidden">
-                    <CardHeader className="flex flex-col items-start gap-1 p-5 md:p-8 pb-3 md:pb-4">
+
+                <Card className="shadow-md overflow-hidden">
+                    <div className="flex flex-col items-start gap-1 p-5 md:p-8 pb-3 md:pb-4">
                         <div className="flex items-center gap-2 text-slate-400 font-black uppercase tracking-[0.2em] text-xs">
                             <FileText size={14} />
                             <span>{t('checkout.order_section_description')}</span>
                         </div>
-                    </CardHeader>
-                    <Divider className="bg-white/10 mx-5 md:mx-8 w-auto" />
-                    <CardBody className="p-5 md:p-8 pt-4 md:pt-6">
+                    </div>
+                    <Divider sx={{ mx: { xs: 2.5, md: 4 }, borderColor: "rgba(255,255,255,0.1)" }} />
+                    <div className="p-5 md:p-8 pt-4 md:pt-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 w-full">
-                            <Input
+                            <TextField
                                 type="text"
                                 label={t('checkout.name_middle_name')}
-                                labelPlacement="outside"
-                                variant="underlined"
+                                variant="standard"
+                                fullWidth
                                 placeholder="E.g. John"
                                 value={watch('firstname')}
-                                onValueChange={(value) => setValue('firstname', value)}
-                                errorMessage={errors?.firstname?.message}
-                                isInvalid={!!errors?.firstname}
-                                startContent={<User size={18} className="text-slate-400 mr-2" />}
-                                classNames={{
-                                    label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
-                                    input: "font-semibold text-dark",
+                                onChange={(e) => setValue('firstname', e.target.value)}
+                                helperText={errors?.firstname?.message}
+                                error={!!errors?.firstname}
+                                slotProps={{
+                                    inputLabel: { shrink: true },
+                                    input: {
+                                        startAdornment: (
+                                        <InputAdornment position="start">
+                                            <User size={18} className="text-slate-400" />
+                                        </InputAdornment>
+                                        ),
+                                    },
                                 }}
+                                sx={fieldSx}
                             />
-                            <Input
+                            <TextField
                                 type="text"
                                 label={t('checkout.last_name')}
-                                labelPlacement="outside"
-                                variant="underlined"
+                                variant="standard"
+                                fullWidth
                                 placeholder="E.g. Doe"
                                 value={watch('lastname')}
-                                onValueChange={(value) => setValue('lastname', value)}
-                                errorMessage={errors?.lastname?.message}
-                                isInvalid={!!errors?.lastname}
-                                startContent={<User size={18} className="text-slate-400 mr-2" />}
-                                classNames={{
-                                    label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
-                                    input: "font-semibold text-dark",
+                                onChange={(e) => setValue('lastname', e.target.value)}
+                                helperText={errors?.lastname?.message}
+                                error={!!errors?.lastname}
+                                slotProps={{
+                                    inputLabel: { shrink: true },
+                                    input: {
+                                        startAdornment: (
+                                        <InputAdornment position="start">
+                                            <User size={18} className="text-slate-400" />
+                                        </InputAdornment>
+                                        ),
+                                    },
                                 }}
+                                sx={fieldSx}
                             />
-                            <Input
-                                type="text"
+                            <TextField
+                                type="tel"
                                 label={t('checkout.phone_no')}
-                                labelPlacement="outside"
-                                variant="underlined"
+                                variant="standard"
+                                fullWidth
                                 placeholder="E.g. +62812345678"
                                 value={watch('phone')}
-                                onValueChange={(value) => setValue('phone', value)}
-                                errorMessage={errors?.phone?.message}
-                                isInvalid={!!errors?.phone}
-                                startContent={<Phone size={18} className="text-slate-400 mr-2" />}
-                                classNames={{
-                                    label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
-                                    input: "font-mono font-semibold text-dark",
+                                onChange={(e) => setValue('phone', e.target.value)}
+                                helperText={errors?.phone?.message}
+                                error={!!errors?.phone}
+                                slotProps={{
+                                    inputLabel: { shrink: true },
+                                    htmlInput: { inputMode: "tel" },
+                                    input: {
+                                        startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Phone size={18} className="text-slate-400" />
+                                        </InputAdornment>
+                                        ),
+                                    },
                                 }}
+                                sx={[fieldSx, monoInputSx]}
                             />
-                            <Input
-                                type="text"
+                            <TextField
+                                type="email"
                                 label={t('checkout.email')}
-                                labelPlacement="outside"
-                                variant="underlined"
+                                variant="standard"
+                                fullWidth
                                 placeholder="E.g. john.doe@example.com"
                                 value={watch('email')}
-                                onValueChange={(value) => setValue('email', value)}
-                                errorMessage={errors?.email?.message}
-                                isInvalid={!!errors?.email}
-                                startContent={<Mail size={18} className="text-slate-400 mr-2" />}
-                                classNames={{
-                                    label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
-                                    input: "font-semibold text-dark",
+                                onChange={(e) => setValue('email', e.target.value)}
+                                helperText={errors?.email?.message}
+                                error={!!errors?.email}
+                                slotProps={{
+                                    inputLabel: { shrink: true },
+                                    htmlInput: { inputMode: "email" },
+                                    input: {
+                                        startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Mail size={18} className="text-slate-400" />
+                                        </InputAdornment>
+                                        ),
+                                    },
                                 }}
+                                sx={fieldSx}
                             />
                         </div>
-                    </CardBody>
+                    </div>
                 </Card>
             </div>
 
@@ -105,7 +150,7 @@ const CheckoutOrder = () => {
                     <div className="w-1.5 h-6 bg-primary rounded-full"></div>
                     <p className="text-xl font-extrabold text-dark tracking-tight">{t('checkout.detail_traveler')}</p>
                 </div>
-                
+
                 <div className="flex flex-col gap-6">
                     <CheckoutOrderAdult />
                     <CheckoutOrderChild />

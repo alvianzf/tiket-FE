@@ -1,4 +1,4 @@
-import { Chip, Spinner } from "@nextui-org/react";
+import { Chip, CircularProgress } from "@mui/material";
 import Button from "@components/Button";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Plane, Ship, Car, Calendar, MapPin, Users, CreditCard, ExternalLink, AlertTriangle, Clock } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import { searchFlights } from "@api/searchFlights";
 import { getPrice } from "@api/searchFlights/types";
 
@@ -21,8 +20,16 @@ interface Props {
 
 const statusColor = (paid: boolean, status?: string) => {
     if (paid || status === "PAID") return "success";
-    if (status === "FAILED" || status === "CANCELLED") return "danger";
+    if (status === "FAILED" || status === "CANCELLED") return "error";
     return "warning";
+};
+
+// Replicates NextUI's `variant="flat"` chip look (soft tinted background).
+const flatChipSx: Record<string, { bgcolor: string; color: string }> = {
+    success: { bgcolor: "rgba(23,201,100,0.15)", color: "#0e793c" },
+    error: { bgcolor: "rgba(243,18,96,0.15)", color: "#c20e4d" },
+    warning: { bgcolor: "rgba(245,165,36,0.18)", color: "#b45309" },
+    default: { bgcolor: "rgba(100,116,139,0.15)", color: "#52525b" },
 };
 
 const statusLabel = (paid: boolean, status?: string) => {
@@ -39,8 +46,6 @@ const isDeparturePassed = (departureDate?: string) => {
 // --- Flight booking card — searches live availability on mount ---
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const FlightBookingCard = ({ order }: { order: any }) => {
-    const { push } = useRouter();
-
     const isPaid = order.payment_status === true;
     const departed = isDeparturePassed(order.departureDate);
     const isExpired = !isPaid && departed;
@@ -107,13 +112,11 @@ const FlightBookingCard = ({ order }: { order: any }) => {
                             {order.bookingCode}
                         </span>
                         <Chip
-                            color={isExpired ? "default" : statusColor(order.payment_status, order.transactionStatus)}
-                            variant="flat"
-                            size="sm"
+                            size="small"
+                            sx={flatChipSx[isExpired ? "default" : statusColor(order.payment_status, order.transactionStatus)]}
                             className="font-bold uppercase tracking-wider"
-                        >
-                            {isExpired ? "Expired" : statusLabel(order.payment_status, order.transactionStatus)}
-                        </Chip>
+                            label={isExpired ? "Expired" : statusLabel(order.payment_status, order.transactionStatus)}
+                        />
                     </div>
                     <div className="flex flex-wrap gap-4 text-sm text-slate-600">
                         <span className="flex items-center gap-1.5">
@@ -161,7 +164,7 @@ const FlightBookingCard = ({ order }: { order: any }) => {
                 <div className="flex flex-col items-end gap-2 shrink-0">
                     {isPaid ? (
                         <Button
-                            as={Link}
+                            component={Link}
                             href={`/eticket?bookingno=${order.bookingCode}`}
                             dsVariant="cta"
                             className="h-11 px-6 rounded-xl font-bold shadow-sm flex items-center gap-2"
@@ -171,7 +174,7 @@ const FlightBookingCard = ({ order }: { order: any }) => {
                         </Button>
                     ) : isExpired ? (
                         <Button
-                            isDisabled
+                            disabled
                             className="h-11 px-6 rounded-xl font-bold bg-slate-200 text-slate-400 cursor-not-allowed flex items-center gap-2"
                         >
                             <Clock size={15} />
@@ -179,15 +182,15 @@ const FlightBookingCard = ({ order }: { order: any }) => {
                         </Button>
                     ) : checking ? (
                         <Button
-                            isDisabled
+                            disabled
                             className="h-11 px-6 rounded-xl font-bold bg-slate-100 text-slate-400 flex items-center gap-2"
                         >
-                            <Spinner size="sm" />
+                            <CircularProgress size={16} color="inherit" />
                             Checking...
                         </Button>
                     ) : available === false ? (
                         <Button
-                            isDisabled
+                            disabled
                             className="h-11 px-6 rounded-xl font-bold bg-slate-200 text-slate-400 cursor-not-allowed flex items-center gap-2"
                         >
                             <AlertTriangle size={15} />
@@ -195,9 +198,10 @@ const FlightBookingCard = ({ order }: { order: any }) => {
                         </Button>
                     ) : (
                         <Button
+                            component={Link}
+                            href={`/eticket?bookingno=${order.bookingCode}`}
                             dsVariant="cta"
                             className="h-11 px-6 rounded-xl font-bold shadow-sm flex items-center gap-2"
-                            onClick={() => push(`/eticket?bookingno=${order.bookingCode}`)}
                         >
                             <ExternalLink size={15} />
                             Continue Payment
@@ -231,13 +235,11 @@ const FerryBookingCard = ({ order }: { order: any }) => {
                             {order.bookingNo}
                         </span>
                         <Chip
-                            color={isExpired ? "default" : statusColor(order.payment_status, order.transactionStatus)}
-                            variant="flat"
-                            size="sm"
+                            size="small"
+                            sx={flatChipSx[isExpired ? "default" : statusColor(order.payment_status, order.transactionStatus)]}
                             className="font-bold uppercase tracking-wider"
-                        >
-                            {isExpired ? "Expired" : statusLabel(order.payment_status, order.transactionStatus)}
-                        </Chip>
+                            label={isExpired ? "Expired" : statusLabel(order.payment_status, order.transactionStatus)}
+                        />
                     </div>
                     <div className="flex flex-wrap gap-4 text-sm text-slate-600">
                         <span className="flex items-center gap-1.5">
@@ -275,7 +277,7 @@ const FerryBookingCard = ({ order }: { order: any }) => {
                 <div className="shrink-0">
                     {isExpired ? (
                         <Button
-                            isDisabled
+                            disabled
                             className="h-11 px-6 rounded-xl font-bold bg-slate-200 text-slate-400 cursor-not-allowed flex items-center gap-2"
                         >
                             <Clock size={15} />
@@ -283,7 +285,7 @@ const FerryBookingCard = ({ order }: { order: any }) => {
                         </Button>
                     ) : order.bookingNo ? (
                         <Button
-                            as={Link}
+                            component={Link}
                             href={`/eticket?bookingno=${order.bookingNo}`}
                             dsVariant={isPaid ? "cta" : "primary"}
                             className="h-11 px-6 rounded-xl font-bold shadow-sm flex items-center gap-2"
@@ -316,7 +318,7 @@ const OrderContainer = ({ flightData = [], ferryData = [], carData = [] }: Props
                     <h2 className="text-2xl font-black text-slate-800 mb-2">{t('profile.no_orders_yet_title')}</h2>
                     <p className="text-slate-500 max-w-sm">{t('profile.no_orders_yet_description')}</p>
                 </div>
-                <Button dsVariant="primary" size="lg" className="h-14 px-10 rounded-ds-sm" onClick={() => window.location.href = '/'}>
+                <Button dsVariant="primary" size="large" className="h-14 px-10 rounded-ds-sm" onClick={() => window.location.href = '/'}>
                     {t('profile.home')}
                 </Button>
             </motion.div>
@@ -385,13 +387,11 @@ const OrderContainer = ({ flightData = [], ferryData = [], carData = [] }: Props
                                         <div className="flex items-center gap-3 flex-wrap">
                                             <span className="font-bold text-green-700 text-base">{order.car?.name || "Car Rental"}</span>
                                             <Chip
-                                                color={order.status === "APPROVED" ? "success" : order.status === "REJECTED" ? "danger" : "warning"}
-                                                variant="flat"
-                                                size="sm"
+                                                size="small"
+                                                sx={flatChipSx[order.status === "APPROVED" ? "success" : order.status === "REJECTED" ? "error" : "warning"]}
                                                 className="font-bold uppercase tracking-wider"
-                                            >
-                                                {order.status || "Pending"}
-                                            </Chip>
+                                                label={order.status || "Pending"}
+                                            />
                                         </div>
                                         <div className="flex flex-wrap gap-4 text-sm text-slate-600">
                                             {order.car?.type && (
@@ -416,7 +416,7 @@ const OrderContainer = ({ flightData = [], ferryData = [], carData = [] }: Props
                                     </div>
                                     {order.car?.id && (
                                         <Button
-                                            as={Link}
+                                            component={Link}
                                             href={`/car-rental/${order.car.id}`}
                                             dsVariant="primary"
                                             className="h-11 px-6 rounded-xl font-bold shadow-sm shrink-0 flex items-center gap-2"

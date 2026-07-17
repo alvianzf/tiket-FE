@@ -1,4 +1,4 @@
-import { Button, Card, CardBody } from "@nextui-org/react";
+import { Button, Card, CardContent } from "@mui/material";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { CarResult } from "@api/carRental/types";
@@ -11,11 +11,14 @@ interface Props {
 const CarCard = ({ car, date }: Props) => {
     const { push } = useRouter();
 
-    const formattedPrice = new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        maximumFractionDigits: 0,
-    }).format(Number(car.pricePerDay));
+    const priceValue = Number(car.pricePerDay);
+    const formattedPrice = Number.isFinite(priceValue)
+        ? new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            maximumFractionDigits: 0,
+        }).format(priceValue)
+        : "-";
 
     const primaryPhoto = car.photos?.find((p) => p.isPrimary) ?? car.photos?.[0];
 
@@ -34,13 +37,13 @@ const CarCard = ({ car, date }: Props) => {
     };
 
     return (
-        <Card 
-            className="w-[calc(25%-12px)] mb-5 glass-card border border-white/20 bg-white/30 backdrop-blur-xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" 
+        <Card
+            className="w-[calc(25%-12px)] mb-5 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
         >
-            <CardBody>
+            <CardContent>
                 <div className="flex flex-col gap-4">
                     {/* Photo - still clickable for details */}
-                    <div 
+                    <div
                         onClick={handleViewDetails}
                         className="relative w-full h-[160px] rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center cursor-pointer group"
                     >
@@ -63,29 +66,32 @@ const CarCard = ({ car, date }: Props) => {
                         <div className="flex flex-col gap-0.5">
                             <p className="text-xl font-bold text-slate-800 line-clamp-1">{car.name}</p>
                             <p className="text-[11px] text-slate-500 uppercase tracking-wider font-bold">{car.type} · {car.rows} Baris · {car.transmission}</p>
-                            <p className="text-sm font-semibold text-slate-500 line-through decoration-slate-400">Rp {(Number(car.pricePerDay) * 1.2).toLocaleString("id-ID")}</p>
                             <p className="text-lg text-orange-600 font-black mt-1">{formattedPrice}<span className="text-xs font-normal text-slate-400 capitalize"> / {car.pricingDuration || 'Hari'}</span></p>
                         </div>
 
                         {/* Buttons Group */}
                         <div className="flex flex-col gap-2 mt-1">
                             <Button
-                                className="bg-orange-600 text-white w-full font-bold h-11 shadow-[0_5px_15px_rgba(234,88,12,0.2)] hover:bg-orange-700 hover:-translate-y-0.5 active:translate-y-0 transition-all"
-                                onPress={handleRent}
+                                variant="contained"
+                                color="warning"
+                                fullWidth
+                                sx={{ height: 44 }}
+                                onClick={handleRent}
                             >
                                 Sewa Sekarang
                             </Button>
                             <Button
-                                variant="light"
-                                className="w-full font-bold h-10 text-slate-600 border border-slate-200"
-                                onPress={handleViewDetails}
+                                variant="text"
+                                fullWidth
+                                sx={{ height: 40, color: "#475569", border: "1px solid #e2e8f0" }}
+                                onClick={handleViewDetails}
                             >
                                 Lihat Detail
                             </Button>
                         </div>
                     </div>
                 </div>
-            </CardBody>
+            </CardContent>
         </Card>
     );
 };

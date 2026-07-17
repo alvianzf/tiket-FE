@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useChatSocket } from './useChatSocket';
 import ChatMessage from './ChatMessage';
-import { Button, Input } from '@nextui-org/react';
+import { TextField, IconButton } from '@mui/material';
 import { MessageCircle, X, Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -92,26 +92,42 @@ const ChatBot = () => {
                         {/* Input Area */}
                         <div className="p-3 bg-slate-900 border-t border-slate-800">
                             <div className="relative flex items-center">
-                                <Input
+                                <TextField
+                                    fullWidth
                                     value={inputValue}
                                     onChange={(e) => setInputValue(e.target.value)}
                                     onKeyDown={handleKeyPress}
                                     placeholder="Type your message..."
-                                    variant="faded"
-                                    classNames={{
-                                        input: "text-white placeholder:text-slate-500",
-                                        inputWrapper: "bg-slate-800 border-slate-700 pr-12 text-white hover:bg-slate-800/80 focus-within:!bg-slate-800"
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            background: '#1e293b',
+                                            color: '#fff',
+                                            pr: '48px',
+                                            '& fieldset': { borderColor: '#334155' },
+                                            '&:hover': { background: 'rgba(30,41,59,0.8)' },
+                                            '&:hover fieldset': { borderColor: '#334155' },
+                                            '&.Mui-focused': { background: '#1e293b' },
+                                        },
+                                        '& .MuiOutlinedInput-input::placeholder': { color: '#64748b', opacity: 1 },
                                     }}
                                 />
-                                <Button 
-                                    isIconOnly 
-                                    size="sm" 
-                                    className="absolute right-1 z-10 bg-primary/20 text-primary hover:bg-primary hover:text-white transition-colors"
+                                <IconButton
+                                    size="small"
+                                    className="transition-colors"
+                                    sx={{
+                                        position: 'absolute',
+                                        right: 4,
+                                        zIndex: 10,
+                                        backgroundColor: 'rgba(66,103,178,0.2)',
+                                        color: '#4267B2',
+                                        '&:hover': { backgroundColor: '#4267B2', color: '#fff' },
+                                        '&.Mui-disabled': { backgroundColor: 'rgba(66,103,178,0.2)', color: 'rgba(66,103,178,0.5)' },
+                                    }}
                                     onClick={handleSend}
-                                    isDisabled={!inputValue.trim()}
+                                    disabled={!inputValue.trim()}
                                 >
                                     <Send size={16} />
-                                </Button>
+                                </IconButton>
                             </div>
                         </div>
                     </motion.div>

@@ -4,15 +4,14 @@ import { NextPageWithLayout } from "@interfaces/common";
 import { AppLayout } from "@layouts";
 import { getCarById } from '@api/carRental';
 import { CarPhoto } from '@api/carRental/types';
-import { 
-    Button, 
-    Skeleton, 
+import {
+    Button,
+    Skeleton,
     Chip,
-    useDisclosure,
-    Modal,
-    ModalContent,
-    ModalBody
-} from "@nextui-org/react";
+    IconButton,
+    Dialog,
+    DialogContent
+} from "@mui/material";
 import { 
     Users, 
     Settings, 
@@ -38,12 +37,12 @@ const CarDetailPage: NextPageWithLayout = () => {
     const router = useRouter();
     const { id, date } = router.query;
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [isOpen, setIsOpen] = useState(false);
     const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
     const handlePhotoClick = (url: string) => {
         setSelectedPhoto(url);
-        onOpen();
+        setIsOpen(true);
     };
 
     const { data: car, isLoading, error } = useQuery(
@@ -64,17 +63,17 @@ const CarDetailPage: NextPageWithLayout = () => {
     if (isLoading) {
         return (
             <div className="max-w-7xl mx-auto px-6 py-12">
-                <Skeleton className="h-8 w-48 rounded-lg mb-8" />
+                <Skeleton variant="rounded" className="h-8 w-48 rounded-lg mb-8" />
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2 space-y-6">
-                        <Skeleton className="aspect-video w-full rounded-3xl" />
+                        <Skeleton variant="rounded" className="aspect-video w-full rounded-3xl" />
                         <div className="grid grid-cols-4 gap-4">
-                            {[1, 2, 3, 4].map(i => <Skeleton key={i} className="aspect-video rounded-xl" />)}
+                            {[1, 2, 3, 4].map(i => <Skeleton variant="rounded" key={i} className="aspect-video rounded-xl" />)}
                         </div>
-                        <Skeleton className="h-64 w-full rounded-2xl" />
+                        <Skeleton variant="rounded" className="h-64 w-full rounded-2xl" />
                     </div>
                     <div className="space-y-6">
-                        <Skeleton className="h-96 w-full rounded-3xl" />
+                        <Skeleton variant="rounded" className="h-96 w-full rounded-3xl" />
                     </div>
                 </div>
             </div>
@@ -85,7 +84,7 @@ const CarDetailPage: NextPageWithLayout = () => {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
                 <p className="text-xl text-slate-600">Terjadi kesalahan saat memuat data kendaraan.</p>
-                <Button onPress={handleBack} variant="flat">Kembali</Button>
+                <Button onClick={handleBack} variant="outlined" color="inherit">Kembali</Button>
             </div>
         );
     }
@@ -102,14 +101,19 @@ const CarDetailPage: NextPageWithLayout = () => {
                 
                 {/* Back Button */}
                 <div className="flex items-center mb-6">
-                    <Button 
-                        isIconOnly 
-                        variant="flat" 
-                        onPress={handleBack}
-                        className="bg-white shadow-sm border border-slate-200 text-slate-600 hover:bg-slate-100"
+                    <IconButton
+                        onClick={handleBack}
+                        sx={{
+                            bgcolor: "#fff",
+                            border: "1px solid #e2e8f0",
+                            borderRadius: "12px",
+                            color: "#475569",
+                            boxShadow: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+                            "&:hover": { bgcolor: "#f1f5f9" },
+                        }}
                     >
                         <ArrowLeft size={18} />
-                    </Button>
+                    </IconButton>
                 </div>
 
                 <div className="flex flex-col gap-8">
@@ -171,8 +175,8 @@ const CarDetailPage: NextPageWithLayout = () => {
                     <div className="bg-white p-8 md:p-10 rounded-[2rem] shadow-sm border border-slate-200 flex flex-col gap-6">
                         <div className="flex flex-col gap-1">
                             <div className="flex items-center gap-2 mb-2">
-                                <Chip color="success" variant="flat" size="sm" className="font-semibold border-none">Tersedia</Chip>
-                                <Chip variant="flat" size="sm" className="bg-slate-100 text-slate-600 border-none font-semibold">{car.type}</Chip>
+                                <Chip label="Tersedia" size="small" sx={{ bgcolor: "#dcfce7", color: "#15803d", fontWeight: 600 }} />
+                                <Chip label={car.type} size="small" sx={{ bgcolor: "#f1f5f9", color: "#475569", fontWeight: 600 }} />
                             </div>
                             <h1 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">{car.name}</h1>
                             
@@ -199,10 +203,13 @@ const CarDetailPage: NextPageWithLayout = () => {
                             </div>
                         </div>
 
-                        <Button 
-                            size="lg"
-                            className="button-orange w-full font-bold h-14 rounded-xl mt-4 text-lg"
-                            onPress={handleRent}
+                        <Button
+                            size="large"
+                            variant="contained"
+                            color="warning"
+                            fullWidth
+                            sx={{ height: 56, borderRadius: "12px", mt: 2, fontSize: "1.125rem" }}
+                            onClick={handleRent}
                         >
                             Sewa Sekarang
                         </Button>
@@ -271,35 +278,30 @@ const CarDetailPage: NextPageWithLayout = () => {
             `}</style>
 
             {/* Photo Viewing Modal */}
-            <Modal 
-                isOpen={isOpen} 
-                onOpenChange={onOpenChange} 
-                size="5xl" 
-                backdrop="blur" 
-                hideCloseButton
-                classNames={{
-                    base: "bg-transparent shadow-none border-none",
-                    body: "p-0",
+            <Dialog
+                open={isOpen}
+                onClose={() => setIsOpen(false)}
+                maxWidth="xl"
+                fullWidth
+                slotProps={{
+                    backdrop: { sx: { backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" } },
+                    paper: { sx: { background: "transparent", backdropFilter: "none", WebkitBackdropFilter: "none", border: "none", boxShadow: "none" } },
                 }}
             >
-                <ModalContent>
-                    {(onClose) => (
-                        <ModalBody onClick={onClose} className="cursor-zoom-out p-4">
-                            {selectedPhoto && (
-                                <div className="relative w-full h-[85vh] rounded-[2rem] overflow-hidden">
-                                    <Image 
-                                        src={selectedPhoto} 
-                                        alt="Full Vehicle View" 
-                                        fill
-                                        className="object-contain"
-                                        unoptimized
-                                    />
-                                </div>
-                            )}
-                        </ModalBody>
+                <DialogContent onClick={() => setIsOpen(false)} className="cursor-zoom-out" sx={{ p: 2 }}>
+                    {selectedPhoto && (
+                        <div className="relative w-full h-[85vh] rounded-[2rem] overflow-hidden">
+                            <Image
+                                src={selectedPhoto}
+                                alt="Full Vehicle View"
+                                fill
+                                className="object-contain"
+                                unoptimized
+                            />
+                        </div>
                     )}
-                </ModalContent>
-            </Modal>
+                </DialogContent>
+            </Dialog>
 
             {/* Always-visible Sticky Bottom Bar for booking CTA */}
             <div className="fixed bottom-0 inset-x-0 z-50 bg-white border-t border-slate-200 py-4 px-6 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
@@ -310,10 +312,13 @@ const CarDetailPage: NextPageWithLayout = () => {
                             <span className="text-2xl font-bold text-orange-600">{formattedPrice}</span>
                         </div>
                     </div>
-                    <Button 
-                        size="lg"
-                        className="button-orange font-bold h-14 px-12 rounded-xl w-full sm:w-auto text-lg"
-                        onPress={handleRent}
+                    <Button
+                        size="large"
+                        variant="contained"
+                        color="warning"
+                        className="w-full sm:w-auto"
+                        sx={{ height: 56, borderRadius: "12px", px: 6, fontSize: "1.125rem" }}
+                        onClick={handleRent}
                     >
                         Sewa Sekarang
                     </Button>

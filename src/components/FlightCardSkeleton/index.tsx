@@ -1,12 +1,10 @@
-import { Card, Skeleton  } from "@nextui-org/react";
+import { Card, Skeleton } from "@mui/material";
 
 const FlightCardSkeleton = () => {
 
     return (
         <Card className="w-full">
-            <Skeleton className="rounded-lg">
-                <div className="h-32 rounded-lg bg-secondary"></div>
-            </Skeleton>
+            <Skeleton variant="rounded" className="rounded-lg h-32 w-full" height={128} />
         </Card>
     )
 }

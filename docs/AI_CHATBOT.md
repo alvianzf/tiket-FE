@@ -7,12 +7,13 @@ This document covers the complete technical implementation of the TiketQ AI Assi
 ## TypeScript Types (`useChatSocket.ts`)
 
 ```typescript
-// IMPORTANT: The frontend ToolResultData type only lists some of the backend types.
-// The actual type union handled in ChatMessage.tsx is broader.
-export type ToolResultData = {
-  type: "booking_form" | "qris_payment" | "booking_summary";
-  data: any;
-};
+// Discriminated union — each tool result carries its own typed `data`.
+export type ToolResultData =
+  | { type: "flight_results"; data: { options?: FlightOption[]; cheapest?: FlightOption; earliest?: FlightOption; latest?: FlightOption; message?: string } }
+  | { type: "ferry_results"; data: { options?: FerryOption[]; cheapest?: FerryOption; earliest?: FerryOption; latest?: FerryOption; message?: string } }
+  | { type: "booking_summary"; data: { bookingCode?: string; status?: string; error?: string; flightdetail?: FlightDetail[] } }
+  | { type: "dana_payment"; data: { bookingCode: string; kind: "QRIS" | "VA"; vaNumber: string | null; qrContent: string | null; expiryTime: string | null } }
+  | { type: "customer_service_card"; data: Record<string, never> };
 
 export type Message = {
   id: string;
@@ -22,7 +23,7 @@ export type Message = {
 };
 ```
 
-> ⚠️ **Type Mismatch Warning:** The `ToolResultData.type` union in the frontend is incomplete. `ChatMessage.tsx` actually handles `'flight_results'`, `'ferry_results'`, and `'customer_service_card'` which are NOT listed in the TypeScript type. The type definition should eventually be expanded.
+> **Note:** The union above is now the full, accurate set the frontend defines and `ChatMessage.tsx` renders. The older `'booking_form'` and `'qris_payment'` member names no longer exist; the chatbot payment card is `'dana_payment'` (see below). `FlightOption` / `FerryOption` / `FlightDetail` are also declared in `useChatSocket.ts`.
 
 ---
 
@@ -35,7 +36,7 @@ export const useChatSocket = () => {
       id: "initial",
       role: "assistant",
       content:
-        "Halo! Silakan ketik rute pencarian tiket yang Anda inginkan...\n\nJika Anda butuh bantuan lebih lanjut atau ingin menyampaikan keluhan, cukup ketik **'Customer Service'** kapan saja.",
+        "Hi! / Halo! 👋\n\nType your travel query and I'll help you search and book.\nKetik pencarian tiket Anda dan saya akan membantu.\n\n*(e.g. \"Flight from Jakarta to Bali tomorrow\" / \"Kapal Batam ke Singapura besok\")*\n\nFor help or complaints, type **'Customer Service'** / Ketik **'Customer Service'** untuk bantuan.",
     },
   ]);
   const [isTyping, setIsTyping] = useState(false);
@@ -134,9 +135,8 @@ export const useChatSocket = () => {
 | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `'flight_results'` / `'ferry_results'` | Interactive `<InteractiveResultCard>` per option. Supports expand to select Adults/Children/Infants, then fires `sendMessage()` with a pre-written booking intent string. Deduplicates: cheapest/earliest/latest shown only if their `searchId` differs. |
 | `'booking_summary'`                    | Shows `bookingCode`, `status` badge, and route info from `flightdetail[0]`. If `data.error` present, renders a red error card instead.                                                                                                                   |
-| `'qris_payment'`                       | Shows booking code, amount in IDR, and a "Pay via Midtrans" button. On click, dynamically injects `snap.js` script tag and calls `window.snap.pay(token, callbacks)`. **Requires** `NEXT_PUBLIC_MIDTRANS_CLIENT_KEY` env var.                            |
+| `'dana_payment'`                       | DANA payment card. For `kind: 'QRIS'` renders a QR code (`qrcode.react`'s `QRCodeSVG`) from `data.qrContent`. For `kind: 'VA'` renders a copyable virtual-account number from `data.vaNumber`. No Midtrans Snap; no client key needed.                     |
 | `'customer_service_card'`              | Renders a static WhatsApp card. CTA button links to `https://wa.me/6282382709777`.                                                                                                                                                                       |
-| `'booking_form'`                       | Shows a template with service type, price, and a text snippet the user can copy with passenger details.                                                                                                                                                  |
 
 ### InteractiveResultCard — Confirm Message Format
 
@@ -144,31 +144,27 @@ When the user clicks "Select & Continue" after choosing a flight/ferry:
 
 ```javascript
 sendMessage(
-  `I want to book the ${label} ${isFlight ? "flight" : "ferry"} (${item.airline || item.ferryName}) departing at ${item.departTime} for ${adults} Adult(s), ${children} Child(ren), and ${infants} Infant(s).`,
+  `I want to book the ${label} ${isFlight ? "flight" : "ferry"} (${item.airline || item.ferryName}) departing at ${item.departTime}${isFlight && item.departDate ? ` on ${item.departDate}` : ""} for ${adults} Adult(s), ${children} Child(ren), and ${infants} Infant(s).`,
 );
 // Example output:
-// "I want to book the Cheapest flight (Lion Air) departing at 08:00 for 2 Adult(s), 0 Child(ren), and 0 Infant(s)."
+// "I want to book the Cheapest flight (Lion Air) departing at 08:00 on 2026-07-18 for 2 Adult(s), 0 Child(ren), and 0 Infant(s)."
 ```
 
 This triggers the AI to start the conversational booking data collection flow.
 
-### Midtrans Snap Integration
+### DANA Payment Card (`dana_payment`)
 
-```typescript
-// ChatMessage.tsx dynamically loads the sandbox Midtrans Snap script:
-script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
-script.setAttribute(
-  "data-client-key",
-  process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || "",
-);
+The chatbot's in-conversation payment card is rendered inline by `ChatMessage.tsx` — there is no Midtrans Snap popup and no client-key env var. Note this is separate from the main checkout (`Payment/DanaPayment.tsx`), and unlike checkout it still supports a QRIS branch:
 
-// Then calls:
-window.snap.pay(token, {
-  onSuccess: (result) => console.log("Payment success", result),
-  onPending: (result) => console.log("Payment pending", result),
-  onError: (result) => console.error("Payment error", result),
-  onClose: () => console.log("Payment popup closed"),
-});
+```tsx
+// ChatMessage.tsx — dana_payment branch
+{data.kind === "QRIS" && data.qrContent && (
+  <QRCodeSVG value={data.qrContent} size={200} /> // from `qrcode.react`
+)}
+
+{data.kind === "VA" && data.vaNumber && (
+  // copyable virtual-account number + "transfer the exact amount" note
+)}
 ```
 
 ---

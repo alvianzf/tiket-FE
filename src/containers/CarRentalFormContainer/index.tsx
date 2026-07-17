@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CarRentalForm from "@components/CarRentalForm";
-import { Spinner } from "@nextui-org/react";
+import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { searchCars } from "@api/carRental";
@@ -31,7 +31,7 @@ const CarRentalFormContainer = () => {
     if (isLoading) {
         return (
             <div className="flex justify-center items-center min-h-[400px]">
-                <Spinner size="lg" color="warning" />
+                <CircularProgress size={44} color="warning" />
             </div>
         );
     }

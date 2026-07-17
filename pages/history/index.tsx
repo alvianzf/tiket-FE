@@ -2,7 +2,7 @@ import { NextPageWithLayout } from "@interfaces/common";
 import Head from "next/head";
 import { AppLayout } from "@layouts";
 import { useState } from "react";
-import { Input, Button, Card, CardBody, Skeleton } from "@nextui-org/react";
+import { Button, Card, CardContent, CircularProgress, InputAdornment, Skeleton, TextField } from "@mui/material";
 import { useMutation } from "react-query";
 import baseAPI from "@api/baseApi";
 import OrderContainer from "@containers/OrderContainer";
@@ -54,8 +54,8 @@ const FindBookingPage: NextPageWithLayout = () => {
                             <span className="text-sm font-bold text-[#ff5a00]">No account needed — just your email</span>
                         </div>
 
-                        <Card className="glass-card w-full max-w-lg shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-3xl border border-white/20 bg-white/10 rounded-3xl">
-                            <CardBody className="flex flex-col gap-8 p-8">
+                        <Card className="w-full max-w-lg shadow-[0_20px_50px_rgba(0,0,0,0.12)] rounded-3xl">
+                            <CardContent className="flex flex-col gap-8 p-8">
                                 <div className="text-center space-y-3">
                                     <div className="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center mx-auto">
                                         <Mail size={28} className="text-[#ff5a00]" />
@@ -67,23 +67,34 @@ const FindBookingPage: NextPageWithLayout = () => {
                                 </div>
 
                                 <form onSubmit={handleSearch} className="flex flex-col gap-4">
-                                    <Input
+                                    <TextField
                                         type="email"
                                         label="Email Address"
                                         placeholder="your@email.com"
-                                        variant="underlined"
-                                        size="lg"
+                                        variant="standard"
+                                        size="medium"
                                         color="warning"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
-                                        startContent={<Mail size={16} className="text-slate-400 mb-0.5" />}
+                                        slotProps={{
+                                            input: {
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <Mail size={16} className="text-slate-400 mb-0.5" />
+                                                    </InputAdornment>
+                                                ),
+                                            },
+                                        }}
                                     />
                                     <Button
                                         type="submit"
-                                        size="lg"
+                                        variant="contained"
+                                        color="warning"
+                                        size="large"
                                         className="h-14 text-base font-bold shadow-xl shadow-orange-500/40 rounded-2xl button-orange gap-2"
-                                        isLoading={historyMutation.isLoading}
+                                        disabled={historyMutation.isLoading}
+                                        startIcon={historyMutation.isLoading ? <CircularProgress size={16} color="inherit" /> : undefined}
                                     >
                                         <Search size={18} />
                                         Find My Bookings
@@ -94,7 +105,7 @@ const FindBookingPage: NextPageWithLayout = () => {
                                         </p>
                                     )}
                                 </form>
-                            </CardBody>
+                            </CardContent>
                         </Card>
 
                         <div className="flex flex-wrap justify-center gap-6 text-center max-w-md">
@@ -125,7 +136,8 @@ const FindBookingPage: NextPageWithLayout = () => {
                                 </p>
                             </div>
                             <Button
-                                variant="flat"
+                                variant="text"
+                                color="warning"
                                 className="bg-orange-500/10 text-[#ff5a00] hover:bg-orange-500/20 font-bold px-5 py-2 h-10 rounded-xl text-sm"
                                 onClick={() => { setBookings(null); setEmail(""); }}
                             >
@@ -135,9 +147,9 @@ const FindBookingPage: NextPageWithLayout = () => {
 
                         {historyMutation.isLoading ? (
                             <div className="space-y-4">
-                                <Skeleton className="w-full h-20 rounded-2xl" />
-                                <Skeleton className="w-full h-20 rounded-2xl" />
-                                <Skeleton className="w-full h-20 rounded-2xl" />
+                                <Skeleton variant="rounded" className="w-full h-20 rounded-2xl" />
+                                <Skeleton variant="rounded" className="w-full h-20 rounded-2xl" />
+                                <Skeleton variant="rounded" className="w-full h-20 rounded-2xl" />
                             </div>
                         ) : (
                             <OrderContainer

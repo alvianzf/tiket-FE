@@ -1,4 +1,4 @@
-import { Autocomplete, AutocompleteItem, AutocompleteSection } from "@nextui-org/react";
+import { Autocomplete, TextField, InputAdornment } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "../forms/useForm";
@@ -16,72 +16,65 @@ const FromInput = ({ items, isLoading } : Props) => {
 
     const { setValue, watch, formState: { errors }} = useFormContext<FormProps>();
 
-    const sections = [
-        {
-            key: 'popular_city',
-            title: t('tickets.popular_city'),
-            children: items
-        }
-    ];
-
     return (
         <div className="w-full flex flex-col gap-2">
             <p className="font-medium text-slate-800/80">{t('tickets.from')}</p>
             <Autocomplete
                 aria-label={t('tickets.from')}
-                placeholder={t('tickets.from_placeholder')}
                 className="w-full"
-                variant="underlined"
-                startContent={<FaPlaneDeparture className="text-primary mr-2" />}
-                classNames={{
-                    listbox: 'flex flex-col',
-                    popoverContent: 'w-[350px] md:w-[800px] glass-card bg-white/80 z-[9999]'
-                }}
-                popoverProps={{ className: "z-[9999]" }}
-                listboxProps={{
-                    classNames: {
-                        list: "flex flex-col gap-3",
-                        base: 'w-full'
+                options={items}
+                loading={isLoading}
+                value={items.find((item) => item.code === watch('from')) ?? null}
+                onChange={(_, item) => {
+                    if(item) {
+                        setValue('from', item.code)
                     }
                 }}
-                onSelectionChange={(key) => {
-                    if(key && typeof key === 'string') {
-                        setValue('from', key)
+                getOptionLabel={(item) => item.name}
+                isOptionEqualToValue={(option, val) => option.code === val.code}
+                groupBy={() => t('tickets.popular_city')}
+                slotProps={{
+                    popper: {
+                        className: "z-[9999]",
+                        sx: { width: { xs: "350px !important", md: "800px !important" } }
                     }
                 }}
-                selectedKey={watch('from') || null}
-                errorMessage={errors?.from?.message}
-                isInvalid={!!errors?.from?.message}
-                isLoading={isLoading}
-                isVirtualized={false}
-                items={sections}
-            >
-                {(section) => (
-                    <AutocompleteSection 
-                        key={section.key}
-                        title={section.title} 
-                        items={section.children}
-                        classNames={{
-                            heading: 'text-primary text-base font-bold pl-2',
-                            group: 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 w-full'
-                        }} 
-                        hideSelectedIcon
-                    >
-                         {(item: Airport) => (
-                            <AutocompleteItem 
-                                key={item.code} 
-                                textValue={item.name}
-                                className="text-black data-[hover=true]:bg-primary data-[hover=true]:text-white transition-colors"
-                            >
-                                <div className="flex flex-col">
-                                    <span className="font-bold">{item.code}</span>
-                                    <span className="text-tiny opacity-80">{item.name}</span>
-                                </div>
-                            </AutocompleteItem>
-                         )}
-                    </AutocompleteSection>
+                renderGroup={(params) => (
+                    <li key={params.key}>
+                        <div className="text-primary text-base font-bold pl-2 py-1">{params.group}</div>
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 w-full list-none p-0">{params.children}</ul>
+                    </li>
                 )}
-            </Autocomplete>
+                renderOption={(props, item) => (
+                    <li {...props} key={item.code} className={`${props.className} text-black hover:bg-primary hover:text-white transition-colors`}>
+                        <div className="flex flex-col">
+                            <span className="font-bold">{item.code}</span>
+                            <span className="text-xs opacity-80">{item.name}</span>
+                        </div>
+                    </li>
+                )}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        variant="standard"
+                        placeholder={t('tickets.from_placeholder')}
+                        error={!!errors?.from?.message}
+                        helperText={errors?.from?.message}
+                        slotProps={{
+                            ...params.slotProps,
+                            input: {
+                                ...params.slotProps.input,
+                                startAdornment: (
+                                    <>
+                                        <InputAdornment position="start"><FaPlaneDeparture className="text-primary" /></InputAdornment>
+                                        {params.slotProps.input.startAdornment}
+                                    </>
+                                )
+                            }
+                        }}
+                    />
+                )}
+            />
         </div>
     )
 }

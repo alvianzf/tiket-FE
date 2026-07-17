@@ -1,5 +1,5 @@
 import Button from "@components/Button";
-import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react"
+import { Card, CardContent, CardHeader, Divider } from "@mui/material"
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next"
 
@@ -20,22 +20,18 @@ const PaymentConfirmation = () => {
     }
 
     return (
-        <Card classNames={{
-            header: "font-medium"
-        }}>
-            <CardHeader>
-                {t('checkout.waiting_payment_verification')}
-            </CardHeader>
+        <Card>
+            <CardHeader disableTypography title={<span className="font-medium">{t('checkout.waiting_payment_verification')}</span>} />
             <Divider />
-            <CardBody>
+            <CardContent>
                 <div className="flex flex-col gap-5 text-center">
                     <p>{t('checkout.upload_description')}</p>
                     <Button dsVariant={"cta"} onClick={handleOnPayment}>
                         {t('checkout.upload')}
                     </Button>
                 </div>
-            </CardBody>
-        </Card>      
+            </CardContent>
+        </Card>
     )
 }
 

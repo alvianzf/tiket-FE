@@ -1,9 +1,28 @@
-import { Card, CardBody, CardHeader, Divider, Input, Select, SelectItem } from "@nextui-org/react"
+import { Card, Divider, InputAdornment, MenuItem, TextField } from "@mui/material"
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "./forms/useForm";
 import { User, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
+
+// Replicates the old NextUI "underlined + outside label" input look.
+const fieldSx = {
+    "& .MuiInputLabel-root": {
+        fontWeight: 700,
+        textTransform: "uppercase",
+        letterSpacing: "0.05em",
+        color: "#94a3b8",
+        fontSize: 13.5,
+    },
+    "& .MuiInput-input": {
+        fontWeight: 600,
+        color: "#2F3033",
+    },
+} as const;
+
+const monoInputSx = {
+    "& .MuiInput-input": { fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" },
+} as const;
 
 const CheckoutOrderAdult = () => {
     const { setValue, formState: { errors }, control, watch } = useFormContext<FormProps>();
@@ -34,114 +53,119 @@ const CheckoutOrderAdult = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                 >
-                    <Card className="glass-card shadow-md overflow-hidden">
-                        <CardHeader className="flex items-center gap-3 p-5 md:p-8 pb-3 md:pb-4">
+                    <Card className="shadow-md overflow-hidden">
+                        <div className="flex items-center gap-3 p-5 md:p-8 pb-3 md:pb-4">
                             <div className="w-10 h-10 rounded-ds-md bg-primary/10 flex items-center justify-center shrink-0">
                                 <User size={20} className="text-primary" />
                             </div>
                             <span className="text-lg font-black text-slate-800 tracking-tight">
                                 {t('checkout.adult', { count: index+1 })}
                             </span>
-                        </CardHeader>
-                        <Divider className="bg-white/10 mx-5 md:mx-8 w-auto" />
-                        <CardBody className="p-5 md:p-8 pt-4 md:pt-6">
+                        </div>
+                        <Divider sx={{ mx: { xs: 2.5, md: 4 }, borderColor: "rgba(255,255,255,0.1)" }} />
+                        <div className="p-5 md:p-8 pt-4 md:pt-6">
                             <div className="flex flex-col gap-5 md:gap-8 w-full">
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
-                                    <Select
+                                    <TextField
+                                        select
                                         label={t('checkout.choose')}
-                                        labelPlacement="outside"
-                                        variant="underlined"
-                                        selectionMode="single"
-                                        placeholder="Title"
-                                        selectedKeys={[watch(`adultPassengers.${index}.call`)]}
-                                        errorMessage={errors?.adultPassengers?.[index]?.call?.message}
-                                        isInvalid={!!errors?.adultPassengers?.[index]?.call}
+                                        variant="standard"
+                                        fullWidth
+                                        value={watch(`adultPassengers.${index}.call`) || ''}
+                                        helperText={errors?.adultPassengers?.[index]?.call?.message}
+                                        error={!!errors?.adultPassengers?.[index]?.call}
                                         onChange={(e) => setValue(`adultPassengers.${index}.call`, e.target.value)}
-                                        classNames={{
-                                            label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
-                                            trigger: "h-10 min-h-unit-10",
-                                            value: "font-semibold text-dark",
+                                        slotProps={{
+                                            inputLabel: { shrink: true },
+                                            select: {
+                                                displayEmpty: true,
+                                                renderValue: (value: unknown) => {
+                                                    const v = value as string;
+                                                    if (!v) return <span className="text-slate-400">Title</span>;
+                                                    return options.find((item) => item.key === v)?.label ?? v;
+                                                },
+                                            },
                                         }}
+                                        sx={fieldSx}
                                     >
                                         {options.map((item) => (
-                                            <SelectItem key={item.key} value={item.key}>
+                                            <MenuItem key={item.key} value={item.key}>
                                                 {item.label}
-                                            </SelectItem>
+                                            </MenuItem>
                                         ))}
-                                    </Select>
+                                    </TextField>
                                     <div className="md:col-span-2">
-                                        <Input
+                                        <TextField
                                             type="text"
                                             label={t('checkout.name_middle_name')}
-                                            labelPlacement="outside"
-                                            variant="underlined"
+                                            variant="standard"
+                                            fullWidth
                                             placeholder="Enter first/middle name"
                                             value={watch(`adultPassengers.${index}.firstname`)}
-                                            onValueChange={(value) => setValue(`adultPassengers.${index}.firstname`, value)}
-                                            isInvalid={!!errors?.adultPassengers?.[index]?.firstname}
-                                            errorMessage={errors?.adultPassengers?.[index]?.firstname?.message}
-                                            classNames={{
-                                                label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
-                                                input: "font-semibold text-dark",
-                                            }}
+                                            onChange={(e) => setValue(`adultPassengers.${index}.firstname`, e.target.value)}
+                                            error={!!errors?.adultPassengers?.[index]?.firstname}
+                                            helperText={errors?.adultPassengers?.[index]?.firstname?.message}
+                                            slotProps={{ inputLabel: { shrink: true } }}
+                                            sx={fieldSx}
                                         />
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
-                                    <Input
+                                    <TextField
                                         type="text"
                                         label={t('checkout.last_name')}
-                                        labelPlacement="outside"
-                                        variant="underlined"
+                                        variant="standard"
+                                        fullWidth
                                         placeholder="Enter last name"
                                         value={watch(`adultPassengers.${index}.lastname`)}
-                                        onValueChange={(value) => setValue(`adultPassengers.${index}.lastname`, value)}
-                                        isInvalid={!!errors?.adultPassengers?.[index]?.lastname}
-                                        errorMessage={errors?.adultPassengers?.[index]?.lastname?.message}
-                                        classNames={{
-                                            label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
-                                            input: "font-semibold text-dark",
-                                        }}
+                                        onChange={(e) => setValue(`adultPassengers.${index}.lastname`, e.target.value)}
+                                        error={!!errors?.adultPassengers?.[index]?.lastname}
+                                        helperText={errors?.adultPassengers?.[index]?.lastname?.message}
+                                        slotProps={{ inputLabel: { shrink: true } }}
+                                        sx={fieldSx}
                                     />
-                                    <Input
+                                    <TextField
                                         type="date"
                                         label={t('checkout.date_of_birth')}
-                                        labelPlacement="outside"
-                                        variant="underlined"
+                                        variant="standard"
+                                        fullWidth
                                         placeholder={t('checkout.select_date')}
                                         value={watch(`adultPassengers.${index}.date_of_birth`)}
-                                        onValueChange={(value) => handleDateChange(value, index)}
-                                        isInvalid={!!errors?.adultPassengers?.[index]?.date_of_birth}
-                                        errorMessage={errors?.adultPassengers?.[index]?.date_of_birth?.message}
-                                        startContent={<Calendar size={18} className="text-slate-400 mr-1" />}
-                                        classNames={{
-                                            label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
-                                            input: "font-mono font-semibold text-dark",
+                                        onChange={(e) => handleDateChange(e.target.value, index)}
+                                        error={!!errors?.adultPassengers?.[index]?.date_of_birth}
+                                        helperText={errors?.adultPassengers?.[index]?.date_of_birth?.message}
+                                        slotProps={{
+                                            inputLabel: { shrink: true },
+                                            input: {
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <Calendar size={18} className="text-slate-400" />
+                                                    </InputAdornment>
+                                                ),
+                                            },
                                         }}
+                                        sx={[fieldSx, monoInputSx]}
                                     />
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
-                                    <Select
+                                    <TextField
+                                        select
                                         label={t('checkout.cabin_class')}
-                                        labelPlacement="outside"
-                                        variant="underlined"
-                                        selectionMode="single"
-                                        selectedKeys={[watch(`adultPassengers.${index}.cabinClass`) || 'economy']}
+                                        variant="standard"
+                                        fullWidth
+                                        value={watch(`adultPassengers.${index}.cabinClass`) || 'economy'}
                                         onChange={(e) => setValue(`adultPassengers.${index}.cabinClass`, e.target.value)}
-                                        classNames={{
-                                            label: "font-bold uppercase tracking-wider text-slate-400 text-[10px] font-sans",
-                                            trigger: "h-10 min-h-unit-10",
-                                            value: "font-semibold text-dark",
-                                        }}
+                                        slotProps={{ inputLabel: { shrink: true } }}
+                                        sx={fieldSx}
                                     >
-                                        <SelectItem key="economy" value="economy">{t('checkout.economy')}</SelectItem>
-                                        <SelectItem key="business" value="business">{t('checkout.business')}</SelectItem>
-                                    </Select>
+                                        <MenuItem value="economy">{t('checkout.economy')}</MenuItem>
+                                        <MenuItem value="business">{t('checkout.business')}</MenuItem>
+                                    </TextField>
                                 </div>
                             </div>
-                        </CardBody>
+                        </div>
                     </Card>
                 </motion.div>
             ))}
