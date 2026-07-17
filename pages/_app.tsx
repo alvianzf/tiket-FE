@@ -34,6 +34,15 @@ export default function App({ Component, pageProps, emotionCache = clientSideEmo
     const [queryClient] = useState(() => new QueryClient(defaultQueryOption))
 
     useEffect(() => {
+        // 🥚 Easter egg — for the curious who open the console.
+        console.log(
+            "%cTiketQ ✈️%c\nCrafted by Alvian — github.com/alvianzf",
+            "font-size:22px;font-weight:800;color:#FF5A00;",
+            "font-size:12px;color:#4267B2;"
+        );
+    }, []);
+
+    useEffect(() => {
         // Connect to the backend socket server using unified dynamic API URL resolution
         const apiUrl = getApiUrl();
 
