@@ -19,7 +19,7 @@
 `src/utils/i18n/translations.ts` `require`s per-domain JSON files and merges them into a flat `en`/`id` resource bundle. The domain groups are:
 
 ```
-meta, home, footer, tickets, checkout, profile, form, common
+meta, home, footer, tickets, checkout, profile, form, common, pages
 ```
 
 Each lives under `src/locales/<group>/{en.json,id.json}` (the JSON is wrapped in a top-level `en`/`id` key that the loader unwraps). To add copy, add the key to **both** `en.json` and `id.json` of the relevant group.

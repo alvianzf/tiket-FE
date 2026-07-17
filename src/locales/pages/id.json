@@ -1,0 +1,53 @@
+{
+    "id": {
+        "pages": {
+            "about": {
+                "title": "Tentang TiketQ",
+                "subtitle": "Mitra perjalanan tepercaya Anda untuk pemesanan tiket pesawat, kapal feri, dan sewa mobil di Batam dan berbagai wilayah Indonesia lainnya.",
+                "mission_title": "Misi Kami",
+                "mission_body": "Kami percaya memesan perjalanan seharusnya semudah mengobrol dengan teman. TiketQ menyatukan tiket pesawat, kapal feri, dan sewa mobil dalam satu platform yang cepat, transparan, dan dapat diandalkan — tanpa biaya tersembunyi dan tanpa kerumitan.",
+                "offer_title": "Apa yang Kami Tawarkan",
+                "offer_flights": "Tiket Pesawat",
+                "offer_flights_desc": "Cari dan pesan penerbangan domestik maupun internasional dengan harga terbaik dan e-tiket instan.",
+                "offer_ferry": "Tiket Kapal Feri",
+                "offer_ferry_desc": "Rute feri Batam–Singapura dan sekitarnya, lengkap dengan jadwal dan ketersediaan langsung.",
+                "offer_car": "Sewa Mobil",
+                "offer_car_desc": "Sewa kendaraan untuk perjalanan Anda dengan pilihan yang fleksibel dan proses yang mudah.",
+                "why_title": "Mengapa Memilih TiketQ",
+                "why_1_title": "Harga Transparan",
+                "why_1_body": "Harga yang Anda lihat adalah harga yang Anda bayar — tanpa biaya tersembunyi.",
+                "why_2_title": "Asisten AI 24/7",
+                "why_2_body": "Pesan dan kelola perjalanan Anda cukup dengan mengobrol bersama asisten TiketQ.",
+                "why_3_title": "Pembayaran Aman",
+                "why_3_body": "Pembayaran diproses dengan aman melalui DANA dan bank virtual account tepercaya."
+            },
+            "resources": {
+                "title": "Sumber Daya dan Kebijakan",
+                "subtitle": "Informasi penting tentang cara kami melindungi Anda dan mengatur layanan kami.",
+                "privacy_title": "Kebijakan Privasi",
+                "privacy_body": "Kami mengumpulkan data pribadi (nama, email, nomor telepon, dan detail penumpang) hanya untuk memproses pemesanan Anda dan menerbitkan tiket. Data Anda tidak dijual kepada pihak ketiga dan hanya dibagikan kepada mitra maskapai, operator feri, atau penyedia pembayaran sejauh diperlukan untuk menyelesaikan transaksi Anda.",
+                "terms_title": "Syarat dan Ketentuan",
+                "terms_body": "Dengan menggunakan TiketQ, Anda setuju untuk memberikan informasi yang akurat, mematuhi ketentuan maskapai dan operator feri terkait, serta menggunakan platform hanya untuk pemesanan yang sah. Harga dan ketersediaan dapat berubah hingga pemesanan dikonfirmasi.",
+                "refund_title": "Kebijakan Pengembalian Dana & Pembatalan",
+                "refund_body": "Pengembalian dana dan pembatalan mengikuti ketentuan maskapai atau operator feri terkait. Untuk permintaan pembatalan atau pengembalian dana, silakan hubungi tim kami melalui halaman Hubungi Kami dengan menyertakan kode pemesanan Anda.",
+                "faq_title": "Pertanyaan Umum",
+                "faq_body": "Butuh bantuan cepat? Asisten AI TiketQ tersedia 24/7 di pojok kanan bawah layar untuk membantu pencarian, pemesanan, dan pertanyaan seputar pesanan Anda."
+            },
+            "contact": {
+                "title": "Hubungi Kami",
+                "subtitle": "Tim kami siap membantu Anda. Hubungi kami melalui salah satu kanal di bawah ini.",
+                "email_label": "Email",
+                "email_value": "support@tiketq.com",
+                "whatsapp_label": "WhatsApp",
+                "whatsapp_value": "+62 811-1000-2000",
+                "phone_label": "Telepon",
+                "phone_value": "+62 21 5000 1000",
+                "hours_label": "Jam Operasional",
+                "hours_value": "Senin–Minggu, 08.00–22.00 WIB",
+                "address_label": "Alamat",
+                "address_value": "PT Ini Tiket Que, Jakarta, Indonesia",
+                "cs_note": "Untuk pertanyaan seputar pesanan, sertakan kode pemesanan Anda agar kami dapat membantu lebih cepat. Anda juga dapat menggunakan Asisten AI TiketQ kapan saja."
+            }
+        }
+    }
+}

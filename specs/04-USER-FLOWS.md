@@ -24,6 +24,15 @@ The form uses `react-hook-form` with a `yup` resolver (`src/components/Checkout/
 
 **Multi-city validation** (segments held in local `useState`, not `react-hook-form`): on submit, `handleMultiCitySearch` blocks the search and shows a `toast.error` if (1) any segment is missing its from/to/date, or (2) the segment dates are not non-decreasing in order — **each segment's departure date must be on or after the previous segment's date** (you can't have city 2 depart before city 1). Dates are `YYYY-MM-DD` strings compared lexicographically. Each segment's `DatePicker` also sets its `minDate` to the previous segment's date to prevent the out-of-order selection up front. (Previously the incomplete/out-of-order cases failed silently with a bare `return`.)
 
+### Planned enhancement — International search toggle
+
+**Status: planned, not yet implemented.** Today the airport/destination set is scoped to Indonesian domestic hubs to keep the dataset small (the backend `routes/api/flight/airports` route prioritizes ~10 ID hubs; the flight provider supports international but it was filtered out for size). This enhancement adds opt-in international search:
+
+- **Toggle control** — a **"International"** toggle on the flight `SearchFlight` form. Default **off** = domestic (Indonesia) only, preserving today's behavior. When **on**, the search includes international destinations and flights as well (the provider already supports this), so results are **ALL** = domestic + international.
+- **Airport dropdown grouping** — when the toggle is active, the origin/destination airport dropdown is split into two labelled sections with a visual separator: **Domestic** and **International**. The sections stack **vertically** (Domestic group first, then a separator, then International). When the toggle is off, only the Domestic group is shown (current behavior).
+- **Data source** — flight results already carry an `isInternational` flag (`src/api/searchFlights/types.ts`), which can drive result labelling; airports need a domestic/international classification (from the provider or a maintained list) to populate the two dropdown groups.
+- **Backend** — the airports route (and the flight-search provider request) must stop scoping to domestic when the toggle is on; expect a larger airport payload, so keep the Redis cache and consider paginating/typeahead (`/api/flight/search-airport/:q`) for the international set.
+
 ### Checkout data collection & booking
 
 `Checkout` (`src/components/Checkout/index.tsx`) is a `FormProvider`-wrapped multi-tab form:

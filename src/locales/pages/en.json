@@ -1,0 +1,53 @@
+{
+    "en": {
+        "pages": {
+            "about": {
+                "title": "About TiketQ",
+                "subtitle": "Your trusted travel partner for booking flights, ferries, and car rentals in Batam and across Indonesia.",
+                "mission_title": "Our Mission",
+                "mission_body": "We believe booking travel should be as easy as chatting with a friend. TiketQ brings flights, ferries, and car rentals together on one fast, transparent, and reliable platform — no hidden fees, no hassle.",
+                "offer_title": "What We Offer",
+                "offer_flights": "Flights",
+                "offer_flights_desc": "Search and book domestic and international flights at the best prices, with instant e-tickets.",
+                "offer_ferry": "Ferry Tickets",
+                "offer_ferry_desc": "Batam–Singapore and regional ferry routes, with live schedules and availability.",
+                "offer_car": "Car Rental",
+                "offer_car_desc": "Rent a vehicle for your trip with flexible options and a simple process.",
+                "why_title": "Why Choose TiketQ",
+                "why_1_title": "Transparent Pricing",
+                "why_1_body": "The price you see is the price you pay — no hidden charges.",
+                "why_2_title": "24/7 AI Assistant",
+                "why_2_body": "Book and manage your trips just by chatting with the TiketQ assistant.",
+                "why_3_title": "Secure Payments",
+                "why_3_body": "Payments are processed securely through DANA and trusted bank virtual accounts."
+            },
+            "resources": {
+                "title": "Resources and Policies",
+                "subtitle": "Important information about how we protect you and govern our services.",
+                "privacy_title": "Privacy Policy",
+                "privacy_body": "We collect personal data (name, email, phone number, and passenger details) only to process your bookings and issue tickets. Your data is never sold to third parties and is shared with airline partners, ferry operators, or payment providers solely as needed to complete your transaction.",
+                "terms_title": "Terms of Service",
+                "terms_body": "By using TiketQ you agree to provide accurate information, comply with the terms of the relevant airlines and ferry operators, and use the platform only for legitimate bookings. Prices and availability may change until a booking is confirmed.",
+                "refund_title": "Refund & Cancellation Policy",
+                "refund_body": "Refunds and cancellations follow the terms of the relevant airline or ferry operator. To request a cancellation or refund, please contact our team via the Contact Us page and include your booking code.",
+                "faq_title": "Frequently Asked Questions",
+                "faq_body": "Need quick help? The TiketQ AI assistant is available 24/7 in the bottom-right corner of your screen to help with searches, bookings, and questions about your orders."
+            },
+            "contact": {
+                "title": "Contact Us",
+                "subtitle": "Our team is here to help. Reach us through any of the channels below.",
+                "email_label": "Email",
+                "email_value": "support@tiketq.com",
+                "whatsapp_label": "WhatsApp",
+                "whatsapp_value": "+62 811-1000-2000",
+                "phone_label": "Phone",
+                "phone_value": "+62 21 5000 1000",
+                "hours_label": "Operating Hours",
+                "hours_value": "Monday–Sunday, 08:00–22:00 (WIB)",
+                "address_label": "Address",
+                "address_value": "PT Ini Tiket Que, Jakarta, Indonesia",
+                "cs_note": "For order-related questions, include your booking code so we can help you faster. You can also use the TiketQ AI assistant any time."
+            }
+        }
+    }
+}

@@ -105,3 +105,18 @@ sequenceDiagram
 ## 5. Localization
 
 Promo/marketing copy for the widget is localized in `src/locales/common/{en,id}.json` (`common.ai_promo_title`, `common.ai_promo_banner_title/desc/example_flight/example_ferry`, `common.ai_bubble`). See `07-NON-FUNCTIONAL.md` for the i18n system.
+
+## 6. Planned enhancements
+
+**Status: planned, not yet implemented.**
+
+### 6.1 Round-trip & multi-city in chat
+The chat should support the same trip types as the web `SearchFlight` form:
+- **Round-trip** — `search_flights` already accepts `returnDate` (backend `services/chatService.js`), but the chat flow does not yet present outbound + return selection as a pair. The assistant should search both legs, render outbound and return options (as cards, see §6.2), and carry both selected `searchId`s into `execute_flight_booking`.
+- **Multi-city** — not yet supported by any tool. Requires a new tool (or an extended `search_flights`) that accepts an ordered list of segments (each `{ departure, arrival, departureDate }`), returns per-segment options, and lets the user pick one flight per segment before booking. Mirror the web multi-city flow (`SearchFlight` multi-city UI, `02-STATE-AND-DATA.md`).
+
+### 6.2 Card-first responses
+Bias the assistant toward **rich cards over plain text** for anything structured — search results, a selected itinerary summary, booking confirmations, payment instructions, and booking-history results — to keep the conversation visual and engaging. Concretely:
+- Add a `booking_history` `chat:tool_result` card so `get_booking_history` renders a scannable list of bookings (today it returns text only — see the backend `05-INTEGRATIONS.md`/`AI_ARCHITECTURE.md`).
+- Add a round-trip/multi-city itinerary card that shows all chosen legs together before payment.
+- Keep the existing `flight_results` / `ferry_results` / `dana_payment` / `booking_summary` / `customer_service_card` types; text from the model stays as a short narration around the card, per the system prompt's "don't list options in text" rule.

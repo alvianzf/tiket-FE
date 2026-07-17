@@ -9,7 +9,8 @@ const localeGroups = [
     'checkout',
     'profile',
     'form',
-    'common'
+    'common',
+    'pages'
 ];
 
 const localeEnGroups = {};
