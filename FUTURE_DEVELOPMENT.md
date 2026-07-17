@@ -17,7 +17,7 @@ This document serves as an exhaustive future development roadmap and technical i
 
 ### User Account & Profile
 
-- [ ] **My Bookings page** — Authenticated users should see a history of their `Transaction` records, linked by email. Requires a `GET /api/auth/bookings` backend endpoint.
+- [ ] **My Bookings page** — Authenticated users should see a history of their `Transaction` records, linked by email. Requires a `GET /api/auth/bookings` backend endpoint. _Partial:_ a public **email-lookup** page exists at `/history` (`pages/history/index.tsx` → `OrderContainer`, linked as "My Bookings" in the navbar), but it is an unauthenticated find-by-email flow rather than a logged-in account history.
 - [ ] **Booking cancellation flow** — UI and backend logic to cancel `PENDING` bookings and optionally trigger Midtrans refunds.
 - [ ] **E-ticket resend by email** — Button on the Eticket page to re-trigger the email service (`emailService.js`).
 - [ ] **Profile edit page** — The `ChangeProfileContainer` exists but may be incomplete. Fully wire up password change and username update to `PUT /api/auth/users/:id`.
@@ -38,11 +38,11 @@ This document serves as an exhaustive future development roadmap and technical i
 
 ### Performance & User Experience (UX)
 
-- [x] **Progressive Web App (PWA)** — `@ducanh2912/next-pwa` installed; service worker + `public/manifest.json` added; disabled in development, enabled in production. Offline fallback page at `/offline`.
+- [ ] **Progressive Web App (PWA)** — Partially scaffolded: `public/manifest.json` and an offline fallback page at `/offline` exist, but `@ducanh2912/next-pwa` is **not** installed and `next.config.mjs` does not wrap the app — there is no service worker yet, so the PWA is not actually enabled.
 - [x] **Skeleton loading states** — `FerryCardSkeleton` and `CarCardSkeleton` created; wired into `FerryListContainer` and `CarRentContainer` replacing spinners.
 - [x] **Image optimization** — Audit complete: no raw `<img>` tags found in any `.tsx` file; all images already use Next.js `<Image>` component with `remotePatterns` configured.
 - [x] **Infinite scroll on flight results** — `react-intersection-observer` installed; `FlightListContainer` now renders 10 flights at a time and loads more as the sentinel div enters the viewport. Resets on filter/route change.
-- [x] **Error boundary improvements** — Granular `<ErrorBoundary FallbackComponent={ContainerError}>` added to each container page (flights, ferry list, car rent); `ContainerError` component provides retry button.
+- [ ] **Error boundary improvements** — Partially done: `react-error-boundary` is installed and a `ContainerError` fallback component (with retry button) exists, but it is **not yet wired** — no container currently wraps its content in `<ErrorBoundary FallbackComponent={ContainerError}>`.
 
 ### Internationalization (i18n)
 

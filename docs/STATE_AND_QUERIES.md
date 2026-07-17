@@ -80,12 +80,20 @@ useEffect(() => {
       refetch();
     }
   });
+  // Reconnect recovery: a booking:update pushed while the tab was backgrounded
+  // (user in the bank/DANA app) can be missed if the socket dropped. On
+  // reconnect, re-pull the booking so the e-ticket reflects the latest status.
+  socket.io.on("reconnect", () => {
+    refetch();
+  });
 
   return () => {
     socket.disconnect();
   };
 }, [bookingno, refetch]);
 ```
+
+The same reconnect-recovery pattern is used by `Payment/DanaPayment.tsx` and `DanaTransactionStatusContainer`: both subscribe to `booking:update` (routing the user to the e-ticket on a match). This is still push-based — there is **no** `refetchInterval` anywhere. The reconnect listener only re-pulls once on socket reconnect; it is not polling.
 
 ---
 
