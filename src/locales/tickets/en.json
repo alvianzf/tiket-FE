@@ -61,7 +61,9 @@
             "select_outbound": "Select Outbound Flight",
             "select_return": "Select Return Flight",
             "no_trips_found": "No trips found for this date",
-            "error_loading_trips": "Failed to load trips"
+            "error_loading_trips": "Failed to load trips",
+            "incomplete_segments": "Please complete the departure, destination, and date for every flight.",
+            "date_order_error": "Each city's date must be on or after the previous city's date."
         }
     }
 }

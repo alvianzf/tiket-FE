@@ -13,6 +13,7 @@ import useForm, { FormProps } from "./forms/useForm";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const SearchFlight = () => {
     const [mounted, setMounted] = useState(false);
@@ -112,7 +113,15 @@ const SearchFlight = () => {
 
     const handleMultiCitySearch = () => {
         const valid = segments.every(s => s.from && s.to && s.date);
-        if (!valid) return;
+        if (!valid) {
+            toast.error(t('tickets.incomplete_segments'));
+            return;
+        }
+        const datesNonDecreasing = segments.every((s, i) => i === 0 || s.date >= segments[i - 1].date);
+        if (!datesNonDecreasing) {
+            toast.error(t('tickets.date_order_error'));
+            return;
+        }
         setIsSubmitting(true);
         push({
             pathname: '/flights',
@@ -177,6 +186,7 @@ const SearchFlight = () => {
                                 airports={items}
                                 isLoading={isAirportsLoading}
                                 canRemove={segments.length > 2}
+                                minDate={i > 0 ? segments[i - 1].date : undefined}
                                 onChange={(idx, val) => setSegments(prev => prev.map((s, j) => j === idx ? val : s))}
                                 onRemove={(idx) => setSegments(prev => prev.filter((_, j) => j !== idx))}
                             />

@@ -61,7 +61,9 @@
             "select_outbound": "Pilih Penerbangan Pergi",
             "select_return": "Pilih Penerbangan Pulang",
             "no_trips_found": "Tidak ada perjalanan untuk tanggal ini",
-            "error_loading_trips": "Gagal memuat perjalanan"
+            "error_loading_trips": "Gagal memuat perjalanan",
+            "incomplete_segments": "Harap lengkapi keberangkatan, tujuan, dan tanggal untuk setiap penerbangan.",
+            "date_order_error": "Tanggal setiap kota harus sama dengan atau setelah tanggal kota sebelumnya."
         }
     }
 }
