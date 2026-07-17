@@ -22,6 +22,8 @@
 
 The form uses `react-hook-form` with a `yup` resolver (`src/components/Checkout/forms/useForm.ts` for checkout; `SearchFlight/forms/useForm.ts` for search). Trip type is a `watch`ed field driving conditional return-date and multi-city UI. Submit builds a `Record<string,string>` query and `router.push({ pathname: '/flights', query })`.
 
+**Multi-city validation** (segments held in local `useState`, not `react-hook-form`): on submit, `handleMultiCitySearch` blocks the search and shows a `toast.error` if (1) any segment is missing its from/to/date, or (2) the segment dates are not non-decreasing in order — **each segment's departure date must be on or after the previous segment's date** (you can't have city 2 depart before city 1). Dates are `YYYY-MM-DD` strings compared lexicographically. Each segment's `DatePicker` also sets its `minDate` to the previous segment's date to prevent the out-of-order selection up front. (Previously the incomplete/out-of-order cases failed silently with a bare `return`.)
+
 ### Checkout data collection & booking
 
 `Checkout` (`src/components/Checkout/index.tsx`) is a `FormProvider`-wrapped multi-tab form:

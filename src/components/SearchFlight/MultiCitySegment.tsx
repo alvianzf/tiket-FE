@@ -18,11 +18,12 @@ interface Props {
     airports: Airport[];
     isLoading: boolean;
     canRemove: boolean;
+    minDate?: string;
     onChange: (index: number, value: SegmentValue) => void;
     onRemove: (index: number) => void;
 }
 
-const MultiCitySegment = ({ index, value, airports, isLoading, canRemove, onChange, onRemove }: Props) => {
+const MultiCitySegment = ({ index, value, airports, isLoading, canRemove, minDate, onChange, onRemove }: Props) => {
     const { t } = useTranslation();
 
     return (
@@ -138,7 +139,7 @@ const MultiCitySegment = ({ index, value, airports, isLoading, canRemove, onChan
                 <p className="font-medium text-slate-800/80 text-sm">{t('tickets.departured_date')}</p>
                 <DatePicker
                     className="w-full"
-                    minDate={moment()}
+                    minDate={minDate ? moment(minDate) : moment()}
                     value={value.date ? moment(value.date) : null}
                     onChange={(v) => { if (v) onChange(index, { ...value, date: v.format('YYYY-MM-DD') }); }}
                     slotProps={{
