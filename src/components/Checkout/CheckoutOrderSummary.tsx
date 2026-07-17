@@ -1,13 +1,23 @@
 import { Flight } from "@api/searchFlights/types";
-import { Card, CardBody, CardHeader, Divider, Skeleton } from "@nextui-org/react"
+import { Card, Divider, Skeleton } from "@mui/material"
 import { useTranslation } from "react-i18next"
-import { Receipt, Tag } from "lucide-react";
+import { Receipt } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface Props {
     flightData?: Flight;
     isLoading: boolean;
 }
+
+// The summary card intentionally overrides the default glass surface with a
+// more translucent tint, heavier blur, and a 32px radius.
+const summaryCardSx = {
+    background: "rgba(255,255,255,0.10)",
+    backdropFilter: "blur(64px)",
+    border: "none",
+    borderRadius: "32px",
+    boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)",
+} as const;
 
 const CheckoutOrderSummary = ({ flightData, isLoading } : Props) => {
 
@@ -17,10 +27,8 @@ const CheckoutOrderSummary = ({ flightData, isLoading } : Props) => {
 
     return (
         isLoading ? (
-            <Card className="w-full glass-card border-none bg-white/10 backdrop-blur-3xl shadow-xl rounded-[32px] overflow-hidden">
-                <Skeleton className="rounded-[32px]">
-                    <div className="h-[300px] rounded-[32px] bg-secondary/20"></div>
-                </Skeleton>
+            <Card className="w-full overflow-hidden" sx={summaryCardSx}>
+                <Skeleton variant="rounded" height={300} sx={{ borderRadius: "32px", bgcolor: "rgba(10,209,255,0.2)" }} />
             </Card>
         ) : (
             <motion.div
@@ -28,15 +36,15 @@ const CheckoutOrderSummary = ({ flightData, isLoading } : Props) => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
             >
-                <Card className="glass-card border-none bg-white/10 backdrop-blur-3xl shadow-xl rounded-[32px] overflow-hidden sticky top-24">
-                    <CardHeader className="p-8 pb-4">
+                <Card className="overflow-hidden sticky top-24" sx={summaryCardSx}>
+                    <div className="p-8 pb-4">
                         <div className="flex items-center gap-2 text-slate-400 font-black uppercase tracking-[0.2em] text-xs">
                             <Receipt size={14} />
                             <span>{t('checkout.order_summary')}</span>
                         </div>
-                    </CardHeader>
-                    <Divider className="bg-white/10 mx-8 w-auto" />
-                    <CardBody className="p-8 pt-6">
+                    </div>
+                    <Divider sx={{ mx: 4, borderColor: "rgba(255,255,255,0.1)" }} />
+                    <div className="p-8 pt-6">
                         <div className="flex flex-col gap-8">
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between group">
@@ -48,36 +56,8 @@ const CheckoutOrderSummary = ({ flightData, isLoading } : Props) => {
                                     </span>
                                 </div>
                             </div>
-
-                            <div className="p-5 rounded-2xl bg-orange-500/5 border border-orange-500/10 space-y-3">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <Tag size={12} className="text-[#ff5a00]" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">{t('checkout.price_details', 'Price Details')}</span>
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-xs font-bold text-slate-500">Base Fare</span>
-                                        <span className="text-xs font-black text-slate-700">
-                                            {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(totalPrice * 0.9)}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-xs font-bold text-slate-500">Tax & Fees</span>
-                                        <span className="text-xs font-black text-slate-700">
-                                            {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(totalPrice * 0.1)}
-                                        </span>
-                                    </div>
-                                </div>
-                                <Divider className="bg-orange-500/10 my-2" />
-                                <div className="flex justify-between items-center">
-                                    <span className="text-sm font-black text-slate-800">Grand Total</span>
-                                    <span className="text-lg font-black text-[#ff5a00]">
-                                        {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(totalPrice)}
-                                    </span>
-                                </div>
-                            </div>
                         </div>
-                    </CardBody>
+                    </div>
                 </Card>
             </motion.div>
         )

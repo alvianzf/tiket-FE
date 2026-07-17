@@ -1,16 +1,19 @@
-import { Button, Card, CardBody, Image } from "@nextui-org/react";
+import { Button, Card, CardContent } from "@mui/material";
 import NextImage from "next/image"
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
 const FerryFailedContainer = () => {
 
     const { t } = useTranslation();
+    const { back } = useRouter();
 
     return (
         <div className="flex flex-col gap-8 w-full items-center justify-center">
             <div className="flex gap-2 w-full flex-col relative flex-nowrap items-center max-w-[1024px]">
                 <Card className="px-4 w-full mt-[40px]">
-                    <CardBody>
+                    <CardContent>
                         <div className="flex flex-row items-center w-full gap-2">
                             <div className="flex flex-col items-center gap-1 w-[20%]">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#4267b2" width="20px" height="20px" viewBox="0 0 512 512" stroke="#4267b2">
@@ -49,22 +52,27 @@ const FerryFailedContainer = () => {
                                 <span>{t('tickets.payment')}</span>
                             </div>
                         </div>
-                    </CardBody>
+                    </CardContent>
                 </Card>
             </div>
             <div className="flex gap-4 w-full flex-col relative flex-nowrap items-center max-w-[1280px]">
                 <Card className="p-6 w-full">
-                    <CardBody>
+                    <CardContent>
                     <div className="flex flex-col text-center gap-8">
                         <div className="m-auto">
-                            <Image as={NextImage} src="/images/payment-failed.png" width={200} height={200} alt="Payment Failed"/>
+                            <NextImage src="/images/payment-failed.png" width={200} height={200} alt="Payment Failed"/>
                         </div>
                         <p className="text-orange text-lg font-medium">{t('checkout.payment_failed')}</p>
-                        <Button className={"button-orange"}>
-                            {t('checkout.home')}
-                        </Button>
-                    </div> 
-                    </CardBody>
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            <Button variant="contained" color="warning" onClick={() => back()}>
+                                {t('checkout.try_again', 'Try Again')}
+                            </Button>
+                            <Button variant="outlined" color="primary" component={Link} href="/">
+                                {t('checkout.home')}
+                            </Button>
+                        </div>
+                    </div>
+                    </CardContent>
                 </Card>
             </div>
         </div>

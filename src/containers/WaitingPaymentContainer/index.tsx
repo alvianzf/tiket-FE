@@ -8,17 +8,21 @@ const WaitingPaymentContainer = () => {
 
     const { t } = useTranslation();
 
-    const { query, isReady, push } = useRouter();
+    const { query, isReady, push, pathname } = useRouter();
 
     const bookingno = query?.bookingno as unknown as string;
 
     useEffect(
         () => {
-            if(!bookingno && isReady) {
+            // Guard only the active route: during AnimatePresence exit transitions this
+            // page stays mounted while router.query/pathname already belong to the next
+            // route, and a dep-less redirect here livelocks pushing '/' (prod incident).
+            if (!isReady || pathname !== '/checkout/payment/waiting') return;
+            if (!bookingno) {
                 push('/');
-                return
             }
         },
+        [bookingno, isReady, pathname, push]
     )
 
     const { data, isFetching } = useQueryCheckBookFlight({
@@ -33,7 +37,7 @@ const WaitingPaymentContainer = () => {
                     <p className="text-lg font-medium text-center">{t('checkout.payment')}</p>
                     <div className="flex flex-row flex-wrap gap-[30px]">
                         <div className="flex flex-col gap-[15px] w-[100%] md:w-[60%] lg:w-[60%]">
-                            <PaymentWaiting flight={data} isLoading={isFetching}/>
+                            <PaymentWaiting />
                         </div>
                         <div className="w-[100%] md:w-[36%] lg:w-[36%]">
                             <PaymentSummary isLoading={isFetching} flight={data}/>

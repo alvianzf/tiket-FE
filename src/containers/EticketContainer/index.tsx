@@ -1,6 +1,6 @@
 import { PassengerResponse } from "@api/bookFlight/types";
 import LionAir from "@icons/LionAir"
-import { Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react"
+import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import { useQueryCheckBookFlight } from "@queries/bookFlight";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -11,7 +11,7 @@ import { getApiUrl } from '@api/baseApi';
 
 const EticketContainer = () => {
 
-    const { query, isReady, push } = useRouter();
+    const { query, isReady, push, pathname } = useRouter();
 
     const bookingno = query?.bookingno as unknown as string;
 
@@ -19,11 +19,15 @@ const EticketContainer = () => {
 
     useEffect(
         () => {
-            if(!bookingno && isReady) {
+            // Guard only the active route: during AnimatePresence exit transitions this
+            // page stays mounted while router.query/pathname already belong to the next
+            // route, and a dep-less redirect here livelocks pushing '/' (prod incident).
+            if (!isReady || pathname !== '/eticket') return;
+            if (!bookingno) {
                 push('/');
-                return
             }
         },
+        [bookingno, isReady, pathname, push]
     )
 
     const { data, isFetching, refetch } = useQueryCheckBookFlight({
@@ -45,9 +49,15 @@ const EticketContainer = () => {
 
         const socket = io(socketUrl);
         socket.on('booking:update', (payload: { bookingNo: string }) => {
-            if (payload.bookingNo === bookingno) {
+            if (payload?.bookingNo === bookingno) {
                 refetch();
             }
+        });
+        // A booking:update pushed while the tab was backgrounded (user in the
+        // bank/DANA app) can be missed if the socket dropped. On reconnect,
+        // re-pull the booking so the e-ticket reflects the latest status.
+        socket.io.on('reconnect', () => {
+            refetch();
         });
 
         return () => {
@@ -90,7 +100,7 @@ const EticketContainer = () => {
     return (
         isFetching ? (
             <div className="flex justify-center py-20">
-                <Spinner size="lg" />
+                <CircularProgress size={44} />
             </div>
         ) : (
 
@@ -191,39 +201,34 @@ const EticketContainer = () => {
                             <div className="flex-1 h-px bg-slate-200/50"></div>
                         </div>
                         
-                        <Table 
-                            aria-label="Passenger Details"
-                            classNames={{
-                                base: "shadow-none font-sans font-medium",
-                                table: "min-w-full bg-transparent font-sans font-medium",
-                                thead: "bg-primary/5 border-b border-primary/10 font-sans font-medium",
-                                th: "text-primary font-bold uppercase text-xs p-4 font-sans font-medium",
-                                td: "p-4 font-medium text-slate-700 border-b border-slate-50 font-sans font-medium"
-                            }}
-                        >
-                            <TableHeader>
-                                <TableColumn width={80}>NO.</TableColumn>
-                                <TableColumn>NAMA PENUMPANG</TableColumn>
-                                <TableColumn>NO. PENERBANGAN</TableColumn>
-                                <TableColumn>FASILITAS</TableColumn>
-                            </TableHeader>
-                            
-                            <TableBody items={passengers ?? []}>
-                                {(item) => (
-                                    <TableRow key={item.date_of_birth}>
-                                        <TableCell>1</TableCell>
-                                        <TableCell className="font-bold flex items-center gap-2">
-                                            <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px]">👤</span>
-                                            {`${item.title} ${item.first_name} ${item.last_name}`}
-                                        </TableCell>
-                                        <TableCell className="font-mono">{data?.data.flightdetail?.[0]?.flightCode}</TableCell>
-                                        <TableCell>
-                                            <span className="bg-slate-100 text-slate-400 px-3 py-1 rounded-full text-[10px] font-bold">Default</span>
-                                        </TableCell>
+                        <TableContainer className="shadow-none font-sans font-medium">
+                            <Table aria-label="Passenger Details" className="min-w-full bg-transparent font-sans font-medium">
+                                <TableHead className="bg-primary/5 border-b border-primary/10 font-sans font-medium">
+                                    <TableRow>
+                                        <TableCell width={80} className="text-primary font-bold uppercase text-xs p-4 font-sans font-medium">NO.</TableCell>
+                                        <TableCell className="text-primary font-bold uppercase text-xs p-4 font-sans font-medium">NAMA PENUMPANG</TableCell>
+                                        <TableCell className="text-primary font-bold uppercase text-xs p-4 font-sans font-medium">NO. PENERBANGAN</TableCell>
+                                        <TableCell className="text-primary font-bold uppercase text-xs p-4 font-sans font-medium">FASILITAS</TableCell>
                                     </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
+                                </TableHead>
+
+                                <TableBody>
+                                    {(passengers ?? []).map((item) => (
+                                        <TableRow key={item.date_of_birth}>
+                                            <TableCell className="p-4 font-medium text-slate-700 border-b border-slate-50 font-sans">1</TableCell>
+                                            <TableCell className="p-4 text-slate-700 border-b border-slate-50 font-sans font-bold flex items-center gap-2">
+                                                <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px]">👤</span>
+                                                {`${item.title} ${item.first_name} ${item.last_name}`}
+                                            </TableCell>
+                                            <TableCell className="p-4 font-medium text-slate-700 border-b border-slate-50 font-mono">{data?.data.flightdetail?.[0]?.flightCode}</TableCell>
+                                            <TableCell className="p-4 font-medium text-slate-700 border-b border-slate-50 font-sans">
+                                                <span className="bg-slate-100 text-slate-400 px-3 py-1 rounded-full text-[10px] font-bold">Default</span>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4 mt-12 pt-8 border-t border-slate-100">

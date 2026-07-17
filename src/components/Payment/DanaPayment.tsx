@@ -1,12 +1,16 @@
-import { Card, CardBody, CardHeader, Divider, RadioGroup, Radio, Snippet } from "@nextui-org/react";
+import { Card, CardContent, CardHeader, Divider, RadioGroup, Radio, FormControlLabel, IconButton } from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Button from "@components/Button";
+import Dana from "@icons/Dana";
+import BankBni from "@icons/BankBni";
+import BankBri from "@icons/BankBri";
+import BankMandiri from "@icons/BankMandiri";
 import { createDanaOrder, DanaPayMethod, DanaPaymentResponse } from "@api/dana";
 import { getApiUrl } from "@api/baseApi";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, ReactElement } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { QRCodeSVG } from "qrcode.react";
 import io from "socket.io-client";
 
 interface Props {
@@ -19,12 +23,15 @@ interface Props {
     successPath?: string;
 }
 
-const METHODS: { key: DanaPayMethod; label: string }[] = [
-    { key: "QRIS", label: "QRIS" },
-    { key: "BCA", label: "BCA Virtual Account" },
-    { key: "BNI", label: "BNI Virtual Account" },
-    { key: "BRI", label: "BRI Virtual Account" },
-    { key: "MANDIRI", label: "Mandiri Virtual Account" },
+type IconComponent = (props: { width: number; height: number }) => ReactElement;
+
+// Uses the same payment logos shown on the home page (PaymentPartners). BCA is
+// intentionally omitted — it is not enabled for our DANA merchant yet.
+const METHODS: { key: DanaPayMethod; label: string; Icon: IconComponent }[] = [
+    { key: "DANA", label: "DANA", Icon: Dana },
+    { key: "BRI", label: "BRI Virtual Account", Icon: BankBri },
+    { key: "MANDIRI", label: "Mandiri Virtual Account", Icon: BankMandiri },
+    { key: "BNI", label: "BNI Virtual Account", Icon: BankBni },
 ];
 
 const formatIDR = (n: number) =>
@@ -36,7 +43,7 @@ const DanaPayment = ({ bookingNo, amount, isLoading = false, successPath = "/eti
 
     const total = amount;
 
-    const [method, setMethod] = useState<DanaPayMethod>("QRIS");
+    const [method, setMethod] = useState<DanaPayMethod>("DANA");
     const [isProcessing, setIsProcessing] = useState(false);
     const [payment, setPayment] = useState<DanaPaymentResponse | null>(null);
     const [remaining, setRemaining] = useState<number | null>(null);
@@ -54,10 +61,21 @@ const DanaPayment = ({ bookingNo, amount, isLoading = false, successPath = "/eti
             socketUrl = apiUrl;
         }
         const socket = io(socketUrl);
-        socket.on("booking:update", (payload: { bookingNo: string }) => {
+        const onBookingUpdate = (payload: { bookingNo: string }) => {
             if (payload?.bookingNo === bookingNo) {
                 push({ pathname: successPath, query: { bookingno: bookingNo } });
             }
+        };
+        socket.on("booking:update", onBookingUpdate);
+        // On flaky mobile networks the socket can drop while the user is in the
+        // bank/DANA app and reconnect on return. socket.io keeps the
+        // booking:update listener attached across reconnects, so any update
+        // emitted after we reconnect still routes the user to their e-ticket.
+        socket.on("connect", () => {
+            // Resubscription is automatic; nothing to re-emit.
+        });
+        socket.io.on("reconnect", () => {
+            // Resubscription is automatic; nothing to re-emit.
         });
         return () => {
             socket.disconnect();
@@ -90,6 +108,11 @@ const DanaPayment = ({ bookingNo, amount, isLoading = false, successPath = "/eti
         setIsProcessing(true);
         try {
             const result = await createDanaOrder(bookingNo, method);
+            // DANA wallet returns a redirect URL — send the user to DANA to pay.
+            if (result?.kind === "REDIRECT" && result.redirectUrl) {
+                window.location.href = result.redirectUrl;
+                return;
+            }
             if (!result?.paymentCode) {
                 toast.error(t("checkout.payment_failed", "Failed to start payment. Please try again."));
                 return;
@@ -109,9 +132,9 @@ const DanaPayment = ({ bookingNo, amount, isLoading = false, successPath = "/eti
         const expired = remaining === 0;
         return (
             <Card>
-                <CardHeader className="font-medium">{t("checkout.complete_payment", "Complete your payment")}</CardHeader>
+                <CardHeader disableTypography title={<span className="font-medium">{t("checkout.complete_payment", "Complete your payment")}</span>} />
                 <Divider />
-                <CardBody className="flex flex-col gap-5">
+                <CardContent className="flex flex-col gap-5">
                     <div className="flex justify-between">
                         <span className="text-slate-500">{t("checkout.total")}</span>
                         <span className="font-semibold text-orange">{formatIDR(total)}</span>
@@ -125,25 +148,21 @@ const DanaPayment = ({ bookingNo, amount, isLoading = false, successPath = "/eti
                         </div>
                     )}
 
-                    {payment.kind === "QRIS" && payment.qrContent && !expired && (
-                        <div className="flex flex-col items-center gap-3">
-                            <div className="bg-white p-4 rounded-ds-md border">
-                                <QRCodeSVG value={payment.qrContent} size={220} />
-                            </div>
-                            <p className="text-sm text-slate-500 text-center">
-                                {t("checkout.scan_qris", "Scan this QR with any QRIS-enabled app (DANA, GoPay, OVO, m-banking).")}
-                            </p>
-                        </div>
-                    )}
-
                     {payment.kind === "VA" && payment.vaNumber && !expired && (
                         <div className="flex flex-col gap-2">
                             <span className="text-sm text-slate-500">
                                 {payment.method} {t("checkout.va_number", "Virtual Account number")}
                             </span>
-                            <Snippet symbol="" variant="bordered" className="w-full" classNames={{ pre: "font-mono text-lg tracking-wide" }}>
-                                {payment.vaNumber}
-                            </Snippet>
+                            <div className="flex items-center justify-between gap-3 w-full border-2 border-default rounded-lg px-4 py-2">
+                                <pre className="font-mono text-lg tracking-wide m-0">{payment.vaNumber}</pre>
+                                <IconButton
+                                    size="small"
+                                    aria-label={t("checkout.copy", "Copy")}
+                                    onClick={() => navigator.clipboard.writeText(payment.vaNumber ?? "")}
+                                >
+                                    <ContentCopyIcon fontSize="small" />
+                                </IconButton>
+                            </div>
                             <p className="text-sm text-slate-500">
                                 {t("checkout.va_instructions", "Transfer the exact amount to this Virtual Account from your bank app. Your ticket is issued automatically once payment is received.")}
                             </p>
@@ -158,7 +177,7 @@ const DanaPayment = ({ bookingNo, amount, isLoading = false, successPath = "/eti
                     >
                         {t("checkout.change_method", "Change payment method")}
                     </Button>
-                </CardBody>
+                </CardContent>
             </Card>
         );
     }
@@ -166,17 +185,27 @@ const DanaPayment = ({ bookingNo, amount, isLoading = false, successPath = "/eti
     // Method selection view.
     return (
         <Card>
-            <CardHeader className="font-medium">{t("checkout.choose_payment", "Choose a payment method")}</CardHeader>
+            <CardHeader disableTypography title={<span className="font-medium">{t("checkout.choose_payment", "Choose a payment method")}</span>} />
             <Divider />
-            <CardBody className="flex flex-col gap-5">
+            <CardContent className="flex flex-col gap-5">
                 <div className="flex justify-between">
                     <span className="text-slate-500">{t("checkout.total")}</span>
                     <span className="font-semibold text-orange">{formatIDR(total)}</span>
                 </div>
 
-                <RadioGroup value={method} onValueChange={(v) => setMethod(v as DanaPayMethod)}>
+                <RadioGroup value={method} onChange={(e) => setMethod(e.target.value as DanaPayMethod)}>
                     {METHODS.map((m) => (
-                        <Radio key={m.key} value={m.key}>{m.label}</Radio>
+                        <FormControlLabel
+                            key={m.key}
+                            value={m.key}
+                            control={<Radio />}
+                            label={
+                                <span className="flex items-center gap-3">
+                                    <m.Icon width={44} height={44} />
+                                    <span>{m.label}</span>
+                                </span>
+                            }
+                        />
                     ))}
                 </RadioGroup>
 
@@ -189,7 +218,7 @@ const DanaPayment = ({ bookingNo, amount, isLoading = false, successPath = "/eti
                 >
                     {t("checkout.pay_now", "Pay now")}
                 </Button>
-            </CardBody>
+            </CardContent>
         </Card>
     );
 };

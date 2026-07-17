@@ -1,4 +1,3 @@
-import BankBca from "@icons/BankBca";
 import BankBni from "@icons/BankBni";
 import BankBri from "@icons/BankBri";
 import BankMandiri from "@icons/BankMandiri";
@@ -27,9 +26,6 @@ const PaymentPartners = () => {
                 </div>
                 <div className="filter grayscale hover:grayscale-0 transition-all cursor-pointer">
                     <BankMandiri width={60} height={60} />
-                </div>
-                <div className="filter grayscale hover:grayscale-0 transition-all cursor-pointer">
-                    <BankBca width={60} height={60} />
                 </div>
                 <div className="filter grayscale hover:grayscale-0 transition-all cursor-pointer">
                     <BankBni width={60} height={60} />
