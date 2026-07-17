@@ -2,17 +2,18 @@
     "id": {
         "footer": {
             "description": "Mitra perjalanan terpercaya Anda untuk pemesanan tiket pesawat dan kapal feri di seluruh Asia Tenggara dan sekitarnya.",
+            "nav_title": "Navigasi",
+            "nav_flights": "Pesawat",
+            "nav_ferry": "Feri",
+            "nav_car": "Sewa Mobil",
+            "nav_history": "Riwayat Pesanan",
             "contact_us": "Hubungi Kami",
             "customer_service": "Layanan Pelanggan",
             "service_protection": "Perlindungan Layanan",
             "feedback": "Feedback",
             "about_us_title": "Tentang Kami",
             "about_us": "Tentang TiketQ",
-            "news": "Berita",
             "resouces_and_policies": "Sumber Daya dan Kebijakan",
-            "get_the_app": "Dapatkan Aplikasi",
-            "android_app": "Android App",
-            "iphone_app": "Iphone App",
             "copyright": "Hak Cipta © 2026 tiketq.com Travel Pte Ltd Semua hak dilindungi undang-undang",
             "company_name": "PT INI TIKET QUE | Indonesia"
         }

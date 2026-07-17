@@ -116,6 +116,32 @@ Reference implementation: `src/components/AppNavbar/index.tsx` uses `<Button com
 
 > Distinction: *navigation* must be link-based. *Post-action, programmatic* navigation after an async result is still done imperatively with `router.push()` inside a handler — e.g. `Checkout` pushes to `/checkout/payment` in the `bookFlight` mutation's `onSuccess`, and `DanaPayment` navigates on a `booking:update` push. The rule targets user-initiated link clicks, not side-effect redirects.
 
+## 5b. Forms & Submission (convention)
+
+**Every form must submit on Enter.** Wrap the fields in a native `<form onSubmit={...}>` and give the primary action `type="submit"`:
+
+```tsx
+// ✅ Correct — Enter in any field submits; the button is the submit control
+<form onSubmit={handleSubmit(onValid)}>
+  <TextField ... />
+  <Button type="submit">Continue</Button>
+</form>
+
+// ❌ Wrong — no <form>, submission only via onClick; Enter does nothing
+<TextField ... />
+<Button onClick={onValid}>Continue</Button>
+```
+
+- With `react-hook-form`, the submit control is `<Button type="submit">` and the wrapper is `<form onSubmit={handleSubmit(onValid)}>`.
+- Reference implementation: `pages/history` wraps its lookup in `<form onSubmit={handleSearch}>` with a `type="submit"` button, so Enter submits.
+- A dual-purpose "email or phone" field (e.g. `LoginForm`) stays `type="text"` (so a phone number isn't rejected by email validation), but the surrounding form must still submit on Enter.
+
+## 5c. Footer & Static Content Pages
+
+The site `Footer` (`src/components/Footer`) has four columns — brand, **Navigation** (site map: Flights `/`, Ferry `/ferry`, Car Rental `/car-rental`, My Bookings `/history`), **About Us**, and **Contact Us** — plus a bottom bar with copyright, company name, and social icons. All links use `next/link` (`component={Link}` / `<Link>`), per the navigation rule. There is no "Get the App" section and no in-footer AI promo banner.
+
+The About/Contact/Resources links resolve to real static pages: `pages/about` (`pages.about.*`), `pages/resources` (`pages.resources.*`, i.e. Privacy / Terms / Refund / FAQ), and `pages/contact` (`pages.contact.*`, contact channels). Each is a `NextPageWithLayout` under `AppLayout` and is fully bilingual via the `pages` locale group (`src/locales/pages/{id,en}.json`). See `07-NON-FUNCTIONAL.md` for i18n.
+
 ## 6. Responsive Approach
 
 Full detail in `07-NON-FUNCTIONAL.md`; the design-system essentials (from `docs/RESPONSIVE.md`):
