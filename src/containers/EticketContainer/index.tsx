@@ -30,9 +30,13 @@ const EticketContainer = () => {
         [bookingno, isReady, pathname, push]
     )
 
-    const { data, isFetching, refetch } = useQueryCheckBookFlight({
+    const { data, isLoading, refetch } = useQueryCheckBookFlight({
         enabled: !!bookingno,
-        request: bookingno
+        request: bookingno,
+        // Provider issues the ticket asynchronously after payment (rc 32 →
+        // ONPROGRESS): poll only during that window, on top of the socket push,
+        // so a refresh or missed event can't strand the page.
+        refetchInterval: (response) => response?.data?.status === 'ONPROGRESS' ? 10000 : false,
     });
 
     useEffect(() => {
@@ -98,7 +102,9 @@ const EticketContainer = () => {
       }
     
     return (
-        isFetching ? (
+        // isLoading (not isFetching): background polls must not blank the page
+        // back to a spinner — the user stays on the rendered e-ticket.
+        isLoading ? (
             <div className="flex justify-center py-20">
                 <CircularProgress size={44} />
             </div>
@@ -120,7 +126,7 @@ const EticketContainer = () => {
                             <p className="text-slate-500 font-medium uppercase tracking-wider text-xs font-sans">Booking Code & Status</p>
                             <div className="flex items-center gap-4">
                                 <p className="text-3xl font-mono font-bold text-dark tracking-tight">{data?.data.bookingCode}</p>
-                                <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${data?.data.status === 'ISSUED' ? 'bg-green-100 text-green-700 shadow-sm shadow-green-100/50' : 'bg-cta/10 text-cta shadow-sm shadow-cta/10'}`}>
+                                <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${data?.data.status === 'ISSUED' ? 'bg-green-100 text-green-700 shadow-sm shadow-green-100/50' : 'bg-cta/10 text-cta shadow-sm shadow-cta/10'} ${data?.data.status === 'ONPROGRESS' ? 'animate-pulse' : ''}`}>
                                     {data?.data.status}
                                 </span>
                             </div>
@@ -132,6 +138,20 @@ const EticketContainer = () => {
                             </Button>
                         )}
                     </div>
+
+                    {data?.data.status === 'ONPROGRESS' && (
+                        <div className="flex items-center gap-4 bg-cta/5 border border-cta/20 rounded-ds-md p-5 mb-8">
+                            <CircularProgress size={28} className="shrink-0" />
+                            <div>
+                                <p className="font-bold text-dark">
+                                    {t('checkout.issuing_ticket', 'Pembayaran diterima — tiket sedang diterbitkan…')}
+                                </p>
+                                <p className="text-sm text-slate-500">
+                                    {t('checkout.issuing_ticket_description', 'Halaman ini akan diperbarui otomatis. Anda boleh me-refresh atau kembali lagi nanti.')}
+                                </p>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-primary/5 p-6 rounded-ds-md border border-primary/10 mb-10">
                         <div className="flex items-center gap-4">
