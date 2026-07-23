@@ -6,19 +6,31 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import io from "socket.io-client";
+import { useQueryCheckBookFlight } from "@queries/bookFlight";
 
 // DANA PAY_RETURN landing page. After paying in the DANA app the user is sent
 // to /dana-transaction-status?bookingno=<code>. We wait for the booking:update
-// Socket.io push (same pattern as DanaPayment — no polling, per project rule)
-// and forward to the e-ticket once the matching update arrives. If the event
-// was already delivered while we were away, the manual actions below let the
-// user continue.
+// Socket.io push and forward to the e-ticket once the matching update arrives.
+// A slow poll backs the socket up: if the push fired while this page was
+// closed/refreshed, the poll still sees the issued ticket and forwards —
+// the page survives a refresh instead of waiting forever.
 const DanaTransactionStatusContainer = () => {
 
     const { t } = useTranslation();
     const { query, isReady, push } = useRouter();
 
     const bookingno = query?.bookingno as string | undefined;
+
+    useQueryCheckBookFlight({
+        enabled: !!bookingno,
+        request: bookingno ?? "",
+        refetchInterval: 5000,
+        onSuccess: (response) => {
+            if (response?.data?.status === "ISSUED" && bookingno) {
+                push({ pathname: "/eticket", query: { bookingno } });
+            }
+        },
+    });
 
     useEffect(() => {
         if (!bookingno) return;
