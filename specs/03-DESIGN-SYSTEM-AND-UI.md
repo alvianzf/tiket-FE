@@ -22,23 +22,29 @@ A single `createTheme({ cssVariables: true, ... })` (light mode) carries the bra
 
 ```ts
 export const brand = {
-  primary: "#4267B2",  primaryLight: "#5A7EC4", primaryDark: "#2F4F8A", // cornflower
-  secondary: "#0AD1FF", secondaryDark: "#00B3D9",
-  cta: "#FF5A00", ctaLight: "#FF7A33", ctaDark: "#E65100",             // CTA orange
-  dark: "#2F3033", bgBase: "#F0F4F8",
+  primary: "#4267B2",
+  primaryLight: "#5A7EC4",
+  primaryDark: "#2F4F8A", // cornflower
+  secondary: "#0AD1FF",
+  secondaryDark: "#00B3D9",
+  cta: "#FF5A00",
+  ctaLight: "#FF7A33",
+  ctaDark: "#E65100", // CTA orange
+  dark: "#2F3033",
+  bgBase: "#F0F4F8",
 };
 ```
 
 Palette mapping in the theme:
 
-| MUI role | Colour | Meaning |
-|---|---|---|
-| `primary` | `#4267B2` cornflower | Brand, links, primary buttons |
-| `secondary` | `#0AD1FF` | Accent |
-| **`warning`** | **`#FF5A00` CTA orange** | **The call-to-action colour.** "Pay now", "Continue", search — all use `color="warning"`. This deliberate mapping (CTA → `warning`) is used throughout; treat `warning` as "CTA", not "caution". |
-| `background.default` | `#F0F4F8` | Page background |
-| `background.paper` | `rgba(255,255,255,0.72)` | Frosted surface |
-| `text.primary/secondary` | `#0f172a` / `#475569` | Slate text |
+| MUI role                 | Colour                   | Meaning                                                                                                                                                                                          |
+| ------------------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `primary`                | `#4267B2` cornflower     | Brand, links, primary buttons                                                                                                                                                                    |
+| `secondary`              | `#0AD1FF`                | Accent                                                                                                                                                                                           |
+| **`warning`**            | **`#FF5A00` CTA orange** | **The call-to-action colour.** "Pay now", "Continue", search — all use `color="warning"`. This deliberate mapping (CTA → `warning`) is used throughout; treat `warning` as "CTA", not "caution". |
+| `background.default`     | `#F0F4F8`                | Page background                                                                                                                                                                                  |
+| `background.paper`       | `rgba(255,255,255,0.72)` | Frosted surface                                                                                                                                                                                  |
+| `text.primary/secondary` | `#0f172a` / `#475569`    | Slate text                                                                                                                                                                                       |
 
 - **Typography:** Montserrat; buttons `textTransform: none`, weight 700; headings 700–800.
 - **Shape:** base `borderRadius: 12`; `Paper`/`Card` overridden to `16`; `Button` to `8`.
@@ -50,13 +56,15 @@ A shared `glassSurface` object is applied to **every `Paper` and `Card`** via `s
 ```ts
 const glassSurface = {
   background: "rgba(255, 255, 255, 0.72)",
-  backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
+  backdropFilter: "blur(24px)",
+  WebkitBackdropFilter: "blur(24px)",
   border: "1px solid rgba(255, 255, 255, 0.75)",
   boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.08)",
 };
 ```
 
 Notable component overrides:
+
 - `MuiPaper` — glass + `borderRadius: 16`; `elevation8` bumped to `rgba(255,255,255,0.92)` so menus/popovers stay readable.
 - `MuiCard` — glass + hover transition on `box-shadow`/`transform`.
 - `MuiButton` — `disableElevation`, radius 8, weight 700, `paddingInline: 24`, `&:active { transform: scale(0.97) }`; colored shadow variants for `contained primary` (blue glow) and `contained warning` (orange glow).
@@ -68,18 +76,21 @@ Notable component overrides:
 A thin design-system wrapper over MUI `Button` that adds a `dsVariant` prop and framer-motion micro-interaction. **It forwards all MUI `ButtonProps`**, so `component`, `href`, `onClick`, `startIcon`, `sx`, etc. all pass through.
 
 ```tsx
-<Button dsVariant="cta" isLoading={submitting}>Pay now</Button>
+<Button dsVariant="cta" isLoading={submitting}>
+  Pay now
+</Button>
 ```
 
-| `dsVariant` | Resolves to |
-|---|---|
-| `primary` | `variant="contained" color="primary"` (blue) |
-| `cta` *(default)* | `variant="contained" color="warning"` (orange) |
-| `secondary` | `variant="contained" color="secondary"` |
-| `ghost` | `variant="outlined" color="primary"` with 2px border, fill-on-hover |
-| `glass` | translucent white outlined button with `backdrop-filter: blur(12px)` — for use over imagery |
+| `dsVariant`       | Resolves to                                                                                 |
+| ----------------- | ------------------------------------------------------------------------------------------- |
+| `primary`         | `variant="contained" color="primary"` (blue)                                                |
+| `cta` _(default)_ | `variant="contained" color="warning"` (orange)                                              |
+| `secondary`       | `variant="contained" color="secondary"`                                                     |
+| `ghost`           | `variant="outlined" color="primary"` with 2px border, fill-on-hover                         |
+| `glass`           | translucent white outlined button with `backdrop-filter: blur(12px)` — for use over imagery |
 
 Behaviour:
+
 - Wrapped in a `motion.div` (`whileHover scale 1.02`, `whileTap 0.98`) that is `w-full md:w-auto`.
 - `disableRipple`, `fullWidth`.
 - `isLoading` disables the button and swaps `startIcon` for a `CircularProgress` spinner.
@@ -91,17 +102,18 @@ Tailwind `base`/`components`/`utilities` layers plus CSS custom properties mirro
 
 Hand-written utilities:
 
-| Class | Effect |
-|---|---|
-| `.glass-card` | `rgba(255,255,255,0.85)` + `blur(24px)` + hairline border + soft shadow + `rounded-ds-lg`. The Tailwind sibling to the MUI `glassSurface`; used on `<div>`s that aren't MUI `Card`s. |
-| `.glass-card-dark` | Dark frosted variant (`rgba(17,24,39,0.6)`). |
-| `.glass-navbar` | Brand background + bottom hairline + `sticky top-0 z-50`. Applied by `AppLayout`; **do not** re-add `sticky/top/z` on the wrapper. |
-| `.bg-pattern`, `.home-app`, `.ferry-app` | Brand SVG texture / hero background images. |
-| `.button-orange`, `.button-blue`, `.btn-ds` | Tailwind button styles used where a raw element (e.g. an `IconButton`) needs the CTA look. |
+| Class                                       | Effect                                                                                                                                                                                                                                                                                                                                                                       |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.glass-card`                               | `rgba(255,255,255,0.85)` + `blur(24px)` + hairline border + soft shadow + `rounded-ds-lg`. The Tailwind sibling to the MUI `glassSurface`; used on `<div>`s that aren't MUI `Card`s.                                                                                                                                                                                         |
+| `.glass-card-dark`                          | Dark frosted variant (`rgba(17,24,39,0.6)`).                                                                                                                                                                                                                                                                                                                                 |
+| `.glass-navbar`                             | Brand background + bottom hairline + `sticky top-0 z-50`. Applied by `AppLayout`; **do not** re-add `sticky/top/z` on the wrapper.                                                                                                                                                                                                                                           |
+| `.bg-pattern`, `.home-app`, `.ferry-app`    | Brand SVG texture / hero background images.                                                                                                                                                                                                                                                                                                                                  |
+| `.button-orange`, `.button-blue`, `.btn-ds` | Tailwind button styles used where a raw element (e.g. an `IconButton`) needs the CTA look.                                                                                                                                                                                                                                                                                   |
+| `.animated-bg`, `.animated-bg__blob`        | Fixed, full-viewport layer of three slow-drifting blurred gradient blobs in brand colors (primary/orange/secondary), behind every glass surface. Pure CSS `@keyframes` (no JS animation cost); honors `prefers-reduced-motion`. Rendered by `AnimatedBackground` (`src/components/AnimatedBackground`) and mounted once in `AppLayout`, so every page gets it automatically. |
 
 ## 5. The Navigation Rule (critical)
 
-**Never** wire navigation through `onClick`/`onPress` + `router.push()`, and never combine an `onClick` state change with `<Link>` navigation on the same element — this causes a **double-click bug**. Render the button *as* a link instead.
+**Never** wire navigation through `onClick`/`onPress` + `router.push()`, and never combine an `onClick` state change with `<Link>` navigation on the same element — this causes a **double-click bug**. Render the button _as_ a link instead.
 
 ```tsx
 // ✅ Correct — MUI Button rendered as a Next.js Link
@@ -114,7 +126,7 @@ Hand-written utilities:
 
 Reference implementation: `src/components/AppNavbar/index.tsx` uses `<Button component={Link} href={item.href}>` for its nav items, and the DS `Button` supports the same (`DanaTransactionStatusContainer` renders `<Button component={Link} href="/eticket?…">`).
 
-> Distinction: *navigation* must be link-based. *Post-action, programmatic* navigation after an async result is still done imperatively with `router.push()` inside a handler — e.g. `Checkout` pushes to `/checkout/payment` in the `bookFlight` mutation's `onSuccess`, and `DanaPayment` navigates on a `booking:update` push. The rule targets user-initiated link clicks, not side-effect redirects.
+> Distinction: _navigation_ must be link-based. _Post-action, programmatic_ navigation after an async result is still done imperatively with `router.push()` inside a handler — e.g. `Checkout` pushes to `/checkout/payment` in the `bookFlight` mutation's `onSuccess`, and `DanaPayment` navigates on a `booking:update` push. The rule targets user-initiated link clicks, not side-effect redirects.
 
 ## 5b. Forms & Submission (convention)
 
@@ -146,6 +158,6 @@ The About/Contact/Resources links resolve to real static pages: `pages/about` (`
 
 Full detail in `07-NON-FUNCTIONAL.md`; the design-system essentials (from `docs/RESPONSIVE.md`):
 
-- **Single layout breakpoint: Tailwind `lg` (1024px).** All show/hide toggling uses `lg:hidden` / `hidden lg:flex`. `md:` is reserved for spacing/sizing tweaks *within* a section, never layout-level show/hide.
+- **Single layout breakpoint: Tailwind `lg` (1024px).** All show/hide toggling uses `lg:hidden` / `hidden lg:flex`. `md:` is reserved for spacing/sizing tweaks _within_ a section, never layout-level show/hide.
 - **Root wrapper** (`AppLayout.tsx`) uses `overflow-x-hidden` to prevent horizontal scroll on narrow screens.
 - **Navbar** (`AppNavbar`) is MUI `AppBar` + `Toolbar` with a hand-rolled burger menu: an `IconButton` inside a `lg:hidden` wrapper toggles a local `isMenuOpen`; the open menu is a `fixed inset-x-0 top-16 bottom-0` overlay; the mobile logo is absolutely centered in the toolbar; desktop actions are `hidden lg:flex`; a `useEffect` on `pathname` closes the menu on navigation.

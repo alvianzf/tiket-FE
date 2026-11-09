@@ -14,8 +14,8 @@ Server state is managed by **React Query v3**. The `QueryClient` is created once
 export const defaultQueryOption = {
   defaultOptions: {
     queries: {
-      retry: false,               // no automatic retries — fail fast, surface via toast
-      refetchOnWindowFocus: false // no refetch storm when the tab regains focus
+      retry: false, // no automatic retries — fail fast, surface via toast
+      refetchOnWindowFocus: false, // no refetch storm when the tab regains focus
     },
   },
 };
@@ -28,12 +28,13 @@ export const defaultQueryOption = {
 Keys are centralized in `src/constants/queryKey.ts`:
 
 ```ts
-export const GET_FLIGHTS_KEY        = 'flights';
-export const GET_FLIGHT_PRICES      = 'flightPrices';
-export const GET_CHECK_BOOK_FLIGHT  = 'checkBookFlight';
-export const GET_AIRLINES_KEY       = 'airlines';
-export const GET_AIRPORTS_KEY       = 'airports';
-export const SEARCH_AIRPORTS_KEY    = (search: string) => `searchAirports/${search}`;
+export const GET_FLIGHTS_KEY = "flights";
+export const GET_FLIGHT_PRICES = "flightPrices";
+export const GET_CHECK_BOOK_FLIGHT = "checkBookFlight";
+export const GET_AIRLINES_KEY = "airlines";
+export const GET_AIRPORTS_KEY = "airports";
+export const SEARCH_AIRPORTS_KEY = (search: string) =>
+  `searchAirports/${search}`;
 ```
 
 Hooks compose keys as arrays of `{ key, payload }` objects so the payload (e.g. a booking code or search request) participates in cache identity — see `useQueryCheckBookFlight` below.
@@ -42,16 +43,18 @@ Hooks compose keys as arrays of `{ key, payload }` objects so the payload (e.g. 
 
 Data-fetching hooks live under `src/queries/`, one folder per domain; each wraps a client function from the matching `src/api/<domain>/` folder.
 
-| Hook | File | Backing API call | Purpose |
-|---|---|---|---|
-| `useQuerySearchFlights({ request, enabled })` | `queries/flights/useQuerySearchFlights.ts` | `searchFlights` → `POST` flight search | Flight results for a `{ departure, arrival, departureDate, adult, child, infant }` request. Used by `FlightListContainer` (outbound, return, and each multi-city segment) and `CheckoutContainer`. |
-| `useQueryCheckBookFlight({ request, enabled, onSuccess })` | `queries/bookFlight/useQueryCheckBookFlight.ts` | `checkBookFlight(bookingCode)` → `GET /api/flight/book-info/:code` | Full booking record (status, nominal, passengers, `flightdetail`, `tiket_pdf`). Reference realtime consumer; used by `PaymentContainer` and `EticketContainer`. |
-| `useQueryGetAirports({ enabled })` | `queries/airports/useQueryGetAirports.ts` | `getAirports` | Airport list for search dropdowns. |
-| `useQuerySearchAirports(search)` | `queries/airports/useQuerySearchAirports.ts` | search airports by string | Typeahead airport search. |
-| `useQueryGetAirlines()` | `queries/airlines/useQueryGetAirlines.ts` | `getAirlines` | Airline metadata. |
-| `useQueryFerrySectors()` | `queries/ferry/index.ts` | ferry sectors | Origin/destination sectors for the ferry search form. |
-| `useQueryFerryRoutes({ searchString?, sectorID?, pageIndex?, pageSize? })` | `queries/ferry/index.ts` | ferry routes | Routes, filterable by sector. |
-| `useQuerySearchFerryTrips({ embarkation, destination, tripdate }, options?)` | `queries/ferry/index.ts` | ferry trip schedules | Trip schedules for `FerryListContainer` (outbound + return). `tripdate` is `YYYYMMDD`. |
+| Hook                                                                         | File                                            | Backing API call                                                   | Purpose                                                                                                                                                                                            |
+| ---------------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `useQuerySearchFlights({ request, enabled })`                                | `queries/flights/useQuerySearchFlights.ts`      | `searchFlights` → `POST` flight search                             | Flight results for a `{ departure, arrival, departureDate, adult, child, infant }` request. Used by `FlightListContainer` (outbound, return, and each multi-city segment) and `CheckoutContainer`. |
+| `useQueryCheckBookFlight({ request, enabled, onSuccess })`                   | `queries/bookFlight/useQueryCheckBookFlight.ts` | `checkBookFlight(bookingCode)` → `GET /api/flight/book-info/:code` | Full booking record (status, nominal, passengers, `flightdetail`, `tiket_pdf`). Reference realtime consumer; used by `PaymentContainer` and `EticketContainer`.                                    |
+| `useQueryGetAirports({ enabled })`                                           | `queries/airports/useQueryGetAirports.ts`       | `getAirports`                                                      | Airport list for search dropdowns.                                                                                                                                                                 |
+| `useQuerySearchAirports(search)`                                             | `queries/airports/useQuerySearchAirports.ts`    | search airports by string                                          | Typeahead airport search.                                                                                                                                                                          |
+| `useQueryGetAirlines()`                                                      | `queries/airlines/useQueryGetAirlines.ts`       | `getAirlines`                                                      | Airline metadata.                                                                                                                                                                                  |
+| `useQueryFerrySectors()`                                                     | `queries/ferry/index.ts`                        | ferry sectors                                                      | Origin/destination sectors for the ferry search form.                                                                                                                                              |
+| `useQueryFerryRoutes({ searchString?, sectorID?, pageIndex?, pageSize? })`   | `queries/ferry/index.ts`                        | ferry routes                                                       | Routes, filterable by sector.                                                                                                                                                                      |
+| `useQuerySearchFerryTrips({ embarkation, destination, tripdate }, options?)` | `queries/ferry/index.ts`                        | ferry trip schedules                                               | Trip schedules for `FerryListContainer` (outbound + return). `tripdate` is `YYYYMMDD`.                                                                                                             |
+
+Concierge-pivot containers use `react-query`'s `useQuery`/`useMutation` directly (no dedicated `queries/` hook), the same imperative style as Car Rental below: `ItineraryBuilderContainer` (`getDestinations`, `submitItinerary`), `HotelListContainer` (`getHotels`, `bookHotel`), `ActivityListContainer` (`getActivities`, `bookActivity`). No `refetchInterval` on any of them — §4's rule holds.
 
 ### Non-React-Query fetches (imperative)
 
@@ -80,6 +83,7 @@ baseAPI.interceptors.request.use((config) => {
 ```
 
 `getApiUrl()` returns:
+
 - `http://localhost:3001` when the browser hostname is local (`localhost`, `127.0.0.1`, `192.168.*`, `10.*`);
 - otherwise `process.env.NEXT_PUBLIC_API_URL`, falling back to `https://api.tiketq.com`.
 
@@ -120,7 +124,7 @@ Every consumer **filters by booking number** (`payload.bookingNo === bookingno`)
 Mobile users leave the tab to pay in the bank/DANA app; the socket can drop and a `booking:update` fire while backgrounded. To recover without polling:
 
 - `EticketContainer` attaches `socket.io.on('reconnect', refetch)` — one re-pull on reconnect.
-- `DanaPayment` and `DanaTransactionStatusContainer` rely on socket.io keeping the `booking:update` listener attached across reconnects (so any update emitted *after* reconnect still routes the user forward). Both also expose manual "View my ticket" fallbacks for the case where the event was delivered while away.
+- `DanaPayment` and `DanaTransactionStatusContainer` rely on socket.io keeping the `booking:update` listener attached across reconnects (so any update emitted _after_ reconnect still routes the user forward). Both also expose manual "View my ticket" fallbacks for the case where the event was delivered while away.
 
 > This is **push-based recovery, not polling** — the reconnect handler fires at most once per reconnect. The no-`refetchInterval` rule holds.
 

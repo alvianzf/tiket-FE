@@ -9,22 +9,22 @@
 
 Ground truth: `package.json`, `pages/_app.tsx`, `next.config.mjs`, `tsconfig.json`.
 
-| Concern | Choice | Notes |
-|---|---|---|
-| Framework | **Next.js 14** (`next@14.2.3`), **Pages Router** | Routes live in `pages/`. No `app/` directory. Custom `_app.tsx` and `_document.tsx`. |
-| UI runtime | **React 18** | |
-| Language | **TypeScript 5** | Path aliases (`@components`, `@containers`, `@api`, `@queries`, `@theme`, `@icons`, `@layouts`, `@utils`, `@hooks`, `@interfaces`) configured in `tsconfig.json`. |
-| Component library | **MUI v9** (`@mui/material@^9.2.0`, `@mui/icons-material`, `@mui/x-date-pickers`) | Emotion-based styling. Theme in `src/theme/theme.ts`. `@nextui-org` has been **removed** — some component comments still reference "the old NextUI" as historical notes only. |
-| Styling (hybrid) | **Tailwind CSS 3** + MUI `sx` | Tailwind utilities and MUI components coexist on the same pages. Global CSS + glass utilities in `src/styles/global.css`. Tailwind design tokens in `tailwind.config.js`. |
-| Styling engine | **Emotion** (`@emotion/react`, `@emotion/styled`, `@emotion/cache`, `@emotion/server`) | SSR-safe cache created in `src/theme/createEmotionCache.ts`, injected in `_app.tsx` / `_document.tsx`. |
-| Server state | **React Query v3** (`react-query@^3.39.3`) | `QueryClientProvider` + `Hydrate` in `_app.tsx`. See `02-STATE-AND-DATA.md`. |
-| HTTP client | **Axios** (`src/api/baseApi`) | Single shared instance with request/response interceptors. |
-| Realtime | **socket.io-client v4** | Chat + `booking:update` events. |
-| Forms | **react-hook-form** + **yup** + `@hookform/resolvers/yup` | Mandatory for multi-field booking forms. |
-| i18n | **i18next** + **react-i18next** (`intl-pluralrules`) | `id` (default) / `en`. Setup in `src/utils/i18n/`. |
-| Dates | **moment** + `@mui/x-date-pickers` `AdapterMoment` | `LocalizationProvider` wraps the app in `_app.tsx`. |
-| Animation | **framer-motion** | Page/section transitions, `Button` micro-interactions. |
-| Misc | `qrcode.react` (chatbot QRIS card), `react-toastify` (global toasts), `react-error-boundary`, `react-intersection-observer` (infinite scroll), `swiper`, `react-markdown` + `remark-gfm` (chat rendering), `react-country-flag` (language switcher). |
+| Concern           | Choice                                                                                                                                                                                                                                               | Notes                                                                                                                                                                         |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Framework         | **Next.js 14** (`next@14.2.3`), **Pages Router**                                                                                                                                                                                                     | Routes live in `pages/`. No `app/` directory. Custom `_app.tsx` and `_document.tsx`.                                                                                          |
+| UI runtime        | **React 18**                                                                                                                                                                                                                                         |                                                                                                                                                                               |
+| Language          | **TypeScript 5**                                                                                                                                                                                                                                     | Path aliases (`@components`, `@containers`, `@api`, `@queries`, `@theme`, `@icons`, `@layouts`, `@utils`, `@hooks`, `@interfaces`) configured in `tsconfig.json`.             |
+| Component library | **MUI v9** (`@mui/material@^9.2.0`, `@mui/icons-material`, `@mui/x-date-pickers`)                                                                                                                                                                    | Emotion-based styling. Theme in `src/theme/theme.ts`. `@nextui-org` has been **removed** — some component comments still reference "the old NextUI" as historical notes only. |
+| Styling (hybrid)  | **Tailwind CSS 3** + MUI `sx`                                                                                                                                                                                                                        | Tailwind utilities and MUI components coexist on the same pages. Global CSS + glass utilities in `src/styles/global.css`. Tailwind design tokens in `tailwind.config.js`.     |
+| Styling engine    | **Emotion** (`@emotion/react`, `@emotion/styled`, `@emotion/cache`, `@emotion/server`)                                                                                                                                                               | SSR-safe cache created in `src/theme/createEmotionCache.ts`, injected in `_app.tsx` / `_document.tsx`.                                                                        |
+| Server state      | **React Query v3** (`react-query@^3.39.3`)                                                                                                                                                                                                           | `QueryClientProvider` + `Hydrate` in `_app.tsx`. See `02-STATE-AND-DATA.md`.                                                                                                  |
+| HTTP client       | **Axios** (`src/api/baseApi`)                                                                                                                                                                                                                        | Single shared instance with request/response interceptors.                                                                                                                    |
+| Realtime          | **socket.io-client v4**                                                                                                                                                                                                                              | Chat + `booking:update` events.                                                                                                                                               |
+| Forms             | **react-hook-form** + **yup** + `@hookform/resolvers/yup`                                                                                                                                                                                            | Mandatory for multi-field booking forms.                                                                                                                                      |
+| i18n              | **i18next** + **react-i18next** (`intl-pluralrules`)                                                                                                                                                                                                 | `id` (default) / `en`. Setup in `src/utils/i18n/`.                                                                                                                            |
+| Dates             | **moment** + `@mui/x-date-pickers` `AdapterMoment`                                                                                                                                                                                                   | `LocalizationProvider` wraps the app in `_app.tsx`.                                                                                                                           |
+| Animation         | **framer-motion**                                                                                                                                                                                                                                    | Page/section transitions, `Button` micro-interactions.                                                                                                                        |
+| Misc              | `qrcode.react` (chatbot QRIS card), `react-toastify` (global toasts), `react-error-boundary`, `react-intersection-observer` (infinite scroll), `swiper`, `react-markdown` + `remark-gfm` (chat rendering), `react-country-flag` (language switcher). |
 
 ### `_app.tsx` provider stack
 
@@ -50,7 +50,7 @@ Ground truth: `docs/COMPONENTS_AND_UI.md`, `src/containers/*`, `src/components/*
 
 The codebase enforces a two-tier separation of concerns:
 
-- **`src/containers/` — page-level views.** A container is mounted by exactly one Next.js page. It reads `router.query`, invokes React Query hooks and `useMutation`, opens Socket.io subscriptions, performs navigation guards, and orchestrates side effects. Containers own *behaviour and data*. Examples: `FlightListContainer` (search query, filtering, infinite scroll, navigation), `EticketContainer` (booking query + `booking:update` subscription), `PaymentContainer` (booking query + DANA handoff).
+- **`src/containers/` — page-level views.** A container is mounted by exactly one Next.js page. It reads `router.query`, invokes React Query hooks and `useMutation`, opens Socket.io subscriptions, performs navigation guards, and orchestrates side effects. Containers own _behaviour and data_. Examples: `FlightListContainer` (search query, filtering, infinite scroll, navigation), `EticketContainer` (booking query + `booking:update` subscription), `PaymentContainer` (booking query + DANA handoff).
 - **`src/components/` — reusable UI elements.** Components are presentational or hold only localized UI state (a toggle, a controlled input). They do **not** fetch server data. Examples: `FlightCard`, `DanaPayment`, `PaymentPartners`, `AppNavbar`. Multi-field forms (`Checkout`, `SearchFlight`) live here and own their `react-hook-form` instance, but receive their data (e.g. the selected flight) as props from a container.
 
 > Nuance observed in code: the boundary is pragmatic rather than absolute. Some components in `src/components/` do call APIs directly — e.g. `Checkout` runs `useMutation(bookFlight)`, `CarRentalForm` posts to `/api/car-rental/rent`, `SearchFlight` runs `useQueryGetAirports`. The reliable invariant is the directory role: **containers are 1:1 with pages; components are the composable building blocks pages/containers assemble.**
@@ -98,7 +98,10 @@ tiket-FE/
 │   ├── checkout/payment/…     # Payment + confirm/failed/success/waiting
 │   ├── eticket/index.tsx      # Flight e-ticket       → EticketContainer
 │   ├── ferry/…                # find, index, list, passenger, payment, success, failed
-│   ├── car-rent/…, car-rental/…  # Car search + rental form
+│   ├── car-rent/…, car-rental/…  # Car search + rental form (Private Driver)
+│   ├── itinerary/index.tsx    # ItinerQ drag-and-drop trip builder → ItineraryBuilderContainer
+│   ├── hotels/index.tsx       # Hotel catalog + booking request   → HotelListContainer
+│   ├── activities/index.tsx   # Activities catalog + booking request → ActivityListContainer
 │   ├── dana-transaction-status.tsx  # DANA PAY_RETURN → DanaTransactionStatusContainer
 │   ├── history/, profile/     # Bookings history, profile
 │   └── 404.tsx, offline.tsx
@@ -112,6 +115,7 @@ tiket-FE/
 │   ├── api/                   # Axios clients per domain
 │   │   ├── baseApi/           # Shared Axios instance + getApiUrl + error normalization
 │   │   ├── dana/              # DANA create-order client
+│   │   ├── destinations/, itinerary/, hotels/, activities/  # Concierge-pivot clients
 │   │   ├── searchFlights/, bookFlight/, ferry/, carRental/, airports/, airlines/
 │   ├── queries/              # React Query hooks (flights, ferry, airports, airlines, bookFlight)
 │   ├── constants/queryKey.ts  # React Query key constants

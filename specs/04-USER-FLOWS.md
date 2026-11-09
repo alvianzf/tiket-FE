@@ -9,14 +9,14 @@
 
 ### Steps & ownership
 
-| Step | Route | Container / Component | Key behaviour |
-|---|---|---|---|
-| Search | `/` | `HomeContainer` → `SearchFlight` | Trip-type tabs (one-way / round-trip / multi-city up to 4 segments); `react-hook-form` form; airports from `useQueryGetAirports`; `DatePicker`. On submit, pushes `/flights?...` with all params. |
-| Results | `/flights` | `FlightListContainer` | `useQuerySearchFlights` for outbound (+ a second query for the return leg when round-trip, + one per multi-city segment). Client-side airline/transit filter, price sort, and infinite scroll (`react-intersection-observer`, `PAGE_SIZE = 10`). |
-| Select | `/flights` | `FlightCard` | For round-trip, first click sets `selectedOutboundCode` and re-renders the return list; the return selection pushes to `/checkout`. Multi-city collects one code per segment then pushes all codes. |
-| Checkout | `/checkout` | `CheckoutContainer` → `Checkout` | Re-runs `useQuerySearchFlights` and finds the fare by `searchId === code`. Two tabs — **Order** (contact + passengers) and **Review**. `react-hook-form` + `yup`. Confirm dialog → `useMutation(bookFlight)`. |
-| Payment | `/checkout/payment` | `PaymentContainer` → `DanaPayment` | `useQueryCheckBookFlight` loads the booking; `DanaPayment` renders the DANA picker (see `05-PAYMENTS.md`). |
-| E-ticket | `/eticket` | `EticketContainer` | `useQueryCheckBookFlight` + `booking:update` subscription; renders route, passengers, status badge, PDF/print actions when `ISSUED`. |
+| Step     | Route               | Container / Component              | Key behaviour                                                                                                                                                                                                                                    |
+| -------- | ------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Search   | `/`                 | `HomeContainer` → `SearchFlight`   | Trip-type tabs (one-way / round-trip / multi-city up to 4 segments); `react-hook-form` form; airports from `useQueryGetAirports`; `DatePicker`. On submit, pushes `/flights?...` with all params.                                                |
+| Results  | `/flights`          | `FlightListContainer`              | `useQuerySearchFlights` for outbound (+ a second query for the return leg when round-trip, + one per multi-city segment). Client-side airline/transit filter, price sort, and infinite scroll (`react-intersection-observer`, `PAGE_SIZE = 10`). |
+| Select   | `/flights`          | `FlightCard`                       | For round-trip, first click sets `selectedOutboundCode` and re-renders the return list; the return selection pushes to `/checkout`. Multi-city collects one code per segment then pushes all codes.                                              |
+| Checkout | `/checkout`         | `CheckoutContainer` → `Checkout`   | Re-runs `useQuerySearchFlights` and finds the fare by `searchId === code`. Two tabs — **Order** (contact + passengers) and **Review**. `react-hook-form` + `yup`. Confirm dialog → `useMutation(bookFlight)`.                                    |
+| Payment  | `/checkout/payment` | `PaymentContainer` → `DanaPayment` | `useQueryCheckBookFlight` loads the booking; `DanaPayment` renders the DANA picker (see `05-PAYMENTS.md`).                                                                                                                                       |
+| E-ticket | `/eticket`          | `EticketContainer`                 | `useQueryCheckBookFlight` + `booking:update` subscription; renders route, passengers, status badge, PDF/print actions when `ISSUED`.                                                                                                             |
 
 ### Search form (`SearchFlight`) — validation & submit
 
@@ -84,13 +84,13 @@ sequenceDiagram
 
 Ferry has its own container chain (no shared checkout with flights). Contact/passenger state here uses **local `useState`**, not `react-hook-form` (a divergence from the flight flow — see `07-NON-FUNCTIONAL.md`).
 
-| Step | Route | Container | Behaviour |
-|---|---|---|---|
-| Search | `/ferry`, `/ferry/find` | `FerryFindContainer` → `SearchFerry` | Sector/date search; ferry + payment partner logos shown. |
-| Results | `/ferry/list` | `FerryListContainer` | `useQuerySearchFerryTrips` (outbound + return); trip selection pushes `/ferry/passenger` with `tripID` (and `returnTripID` for round trips). |
-| Passengers | `/ferry/passenger` | `FerryPassengerContainer` | Per-passenger passport fields + contact block (email, confirmation email, mobile, WhatsApp), all local state with manual validation via `toast`. On Next: `reserveFerryBooking(payload)` then immediately `submitFerryBooking({ id, emailConfirmation })`, then push `/ferry/payment` with `bookingNo`, `price`, terminals, `vesselName`, `contactEmail`. Dates normalized `YYYYMMDD → YYYY-MM-DD`. |
-| Payment | `/ferry/payment` | `FerryPaymentContainer` → `DanaPayment` | Loads booking via `getFerryBooking(bookingNo)` (graceful fallback to URL params). Renders `DanaPayment` with `successPath="/ferry/success"`. |
-| Success | `/ferry/success` | `FerrySuccessContainer` | Static confirmation card (step indicator + "payment received"). **Note:** currently static — it does not read a live booking or a socket; it displays a hardcoded order number placeholder. Flagged as a gap in `07-NON-FUNCTIONAL.md`. |
+| Step       | Route                   | Container                               | Behaviour                                                                                                                                                                                                                                                                                                                                                                                           |
+| ---------- | ----------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Search     | `/ferry`, `/ferry/find` | `FerryFindContainer` → `SearchFerry`    | Sector/date search; ferry + payment partner logos shown.                                                                                                                                                                                                                                                                                                                                            |
+| Results    | `/ferry/list`           | `FerryListContainer`                    | `useQuerySearchFerryTrips` (outbound + return); trip selection pushes `/ferry/passenger` with `tripID` (and `returnTripID` for round trips).                                                                                                                                                                                                                                                        |
+| Passengers | `/ferry/passenger`      | `FerryPassengerContainer`               | Per-passenger passport fields + contact block (email, confirmation email, mobile, WhatsApp), all local state with manual validation via `toast`. On Next: `reserveFerryBooking(payload)` then immediately `submitFerryBooking({ id, emailConfirmation })`, then push `/ferry/payment` with `bookingNo`, `price`, terminals, `vesselName`, `contactEmail`. Dates normalized `YYYYMMDD → YYYY-MM-DD`. |
+| Payment    | `/ferry/payment`        | `FerryPaymentContainer` → `DanaPayment` | Loads booking via `getFerryBooking(bookingNo)` (graceful fallback to URL params). Renders `DanaPayment` with `successPath="/ferry/success"`.                                                                                                                                                                                                                                                        |
+| Success    | `/ferry/success`        | `FerrySuccessContainer`                 | Static confirmation card (step indicator + "payment received"). **Note:** currently static — it does not read a live booking or a socket; it displays a hardcoded order number placeholder. Flagged as a gap in `07-NON-FUNCTIONAL.md`.                                                                                                                                                             |
 
 ```mermaid
 flowchart LR
@@ -104,11 +104,11 @@ flowchart LR
 
 Car rental is a **request/lead**, not an instantly-issued ticket — there is no DANA payment step.
 
-| Step | Route | Container / Component | Behaviour |
-|---|---|---|---|
-| Search | `/car-rent`, `/car-rental` | `CarRentContainer` | Local-state hero search (rental date, car type, seat rows); `searchCars(...)` → `CarCard` grid. Batam-only copy. |
-| Details / form | `/car-rental/rent` | `CarRentalFormContainer` → `CarRentalForm` | Loads the car by id (via `searchCars` + find). The form collects personal details, phone (`type="tel"`), email (`type="email"`), rental duration (`type="number"`), and **two required image uploads (KTP photo + KTP selfie)** as `multipart/form-data`. |
-| Submit | — | `CarRentalForm` | Manual validation via `toast`; posts `multipart/form-data` to `POST /api/car-rental/rent` through `baseApi`. On success: success toast + `router.push('/car-rental')`. No payment, no e-ticket — ops follows up ("We will contact you shortly"). |
+| Step           | Route                      | Container / Component                      | Behaviour                                                                                                                                                                                                                                                 |
+| -------------- | -------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Search         | `/car-rent`, `/car-rental` | `CarRentContainer`                         | Local-state hero search (rental date, car type, seat rows); `searchCars(...)` → `CarCard` grid. Batam-only copy.                                                                                                                                          |
+| Details / form | `/car-rental/rent`         | `CarRentalFormContainer` → `CarRentalForm` | Loads the car by id (via `searchCars` + find). The form collects personal details, phone (`type="tel"`), email (`type="email"`), rental duration (`type="number"`), and **two required image uploads (KTP photo + KTP selfie)** as `multipart/form-data`. |
+| Submit         | —                          | `CarRentalForm`                            | Manual validation via `toast`; posts `multipart/form-data` to `POST /api/car-rental/rent` through `baseApi`. On success: success toast + `router.push('/car-rental')`. No payment, no e-ticket — ops follows up ("We will contact you shortly").          |
 
 ```mermaid
 flowchart LR
@@ -116,6 +116,18 @@ flowchart LR
     CB --> CC["/car-rental/rent\nCarRentalForm"]
     CC -->|"multipart POST /api/car-rental/rent"| CD["Toast success → /car-rental"]
 ```
+
+## 3b. ItinerQ, Hotel, and Activity Flows
+
+All three are **request/lead** flows, same pattern as Car Rental — no DANA payment step at submit time; a `Transaction` + `*Booking`/`Itinerary` row is created `PENDING_REVIEW` and the concierge team follows up.
+
+| Flow                     | Route         | Container                   | Behaviour                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------ | ------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ItinerQ trip builder     | `/itinerary`  | `ItineraryBuilderContainer` | `@dnd-kit` drag-and-drop: destinations (`GET /api/destinations`) drag from a catalog panel into an ordered trip panel (`DndContext` + `SortableContext`); running cost/time computed client-side from each destination's `price`/`minStayMinutes`/`travelGapMinutes`. A duration chip (`6 Hours` / `1 Day` / `2 Days`) and an "Ask AI for ideas" button (dispatches `tiketq:open-chat`, see `06-AI-CHATBOT.md`) sit above the builder. Submitting opens a contact-details dialog → `POST /api/itinerary` with `items: [{ destinationId, order }]`. |
+| Hotel booking request    | `/hotels`     | `HotelListContainer`        | Lists the catalog (`GET /api/hotels`) as glass-card tiles; "Request Stay" opens a dialog (contact details + check-in/check-out + guests) → `POST /api/hotels/:id/book`.                                                                                                                                                                                                                                                                                                                                                                            |
+| Activity booking request | `/activities` | `ActivityListContainer`     | Lists the catalog (`GET /api/activities`) as glass-card tiles; "Request Booking" opens a dialog (contact details + date + participants) → `POST /api/activities/:id/book`.                                                                                                                                                                                                                                                                                                                                                                         |
+
+All three catalogs (`Destination`, `Hotel`, `Activity`) are admin-managed via `tiket-admin` (see that project's spec) — `tiket-FE` only reads them (`available=true`) and never writes to the catalog.
 
 ## 4. E-Ticket Delivery via `booking:update`
 

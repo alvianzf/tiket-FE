@@ -9,6 +9,8 @@
 
 A fixed bottom-right floating widget: `fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999]`. A FAB toggles `isOpen` between a `MessageCircle` (closed) and `X` (open) icon; when closed a small promo bubble (`common.ai_bubble`) invites use. Open state renders a chat panel: a scrollable message list (`ChatMessage` per message, auto-scrolled on new messages / typing), a typing indicator driven by `isTyping`, and an input (`placeholder="Type your message..."`) whose submit calls `sendMessage(inputValue)`. All server communication is via `useChatSocket` — there are **no REST calls** in the chatbot.
 
+Any page can open the widget with a prefilled message without lifting chat state: dispatch `window.dispatchEvent(new CustomEvent('tiketq:open-chat', { detail: { prefill: '...' } }))`. `ChatBot` listens for this, sets `isOpen(true)`, and calls `sendMessage(prefill)` if provided. Used by the ItinerQ "Ask AI for ideas" button (`ItineraryBuilderContainer`).
+
 ## 2. `useChatSocket` Hook
 
 ### Connection & session
@@ -19,13 +21,13 @@ A fixed bottom-right floating widget: `fixed bottom-4 right-4 sm:bottom-6 sm:rig
 
 ### Chat protocol (Socket.io events)
 
-| Direction | Event | Payload | Effect |
-|---|---|---|---|
-| → server | `chat:message` | `{ sessionId, text }` | Sent by `sendMessage`; also optimistically appends the user's message and sets `isTyping`. |
-| ← client | `chat:typing` | — | `setIsTyping(true)` |
-| ← client | `chat:response_done` | `{ content }` | Clears typing; appends an assistant text message (if `content`). |
-| ← client | `chat:tool_result` | `ToolResultData` | Clears typing; appends an assistant message with empty `content` and a `toolResult` payload (rendered as a rich card by `ChatMessage`). |
-| ← client | `chat:error` | `{ message }` | Clears typing; appends an `Error: …` assistant message. |
+| Direction | Event                | Payload               | Effect                                                                                                                                  |
+| --------- | -------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| → server  | `chat:message`       | `{ sessionId, text }` | Sent by `sendMessage`; also optimistically appends the user's message and sets `isTyping`.                                              |
+| ← client  | `chat:typing`        | —                     | `setIsTyping(true)`                                                                                                                     |
+| ← client  | `chat:response_done` | `{ content }`         | Clears typing; appends an assistant text message (if `content`).                                                                        |
+| ← client  | `chat:tool_result`   | `ToolResultData`      | Clears typing; appends an assistant message with empty `content` and a `toolResult` payload (rendered as a rich card by `ChatMessage`). |
+| ← client  | `chat:error`         | `{ message }`         | Clears typing; appends an `Error: …` assistant message.                                                                                 |
 
 ### State shape
 
@@ -44,12 +46,48 @@ The hook seeds a bilingual (EN/ID) welcome message and returns `{ messages, isTy
 
 ```ts
 export type ToolResultData =
-  | { type: "flight_results"; data: { options?: FlightOption[]; cheapest?; earliest?; latest?; message? } }
-  | { type: "ferry_results";  data: { options?: FerryOption[];  cheapest?; earliest?; latest?; message? } }
-  | { type: "booking_summary"; data: { bookingCode?; status?; error?; flightdetail?: FlightDetail[] } }
-  | { type: "dana_payment"; data: { bookingCode; kind: "QRIS" | "VA"; vaNumber: string|null; qrContent: string|null; expiryTime: string|null } }
-  | { type: "customer_service_card"; data: Record<string, never> };
+  | {
+      type: "flight_results";
+      data: {
+        options?: FlightOption[];
+        cheapest?;
+        earliest?;
+        latest?;
+        message?;
+      };
+    }
+  | {
+      type: "ferry_results";
+      data: {
+        options?: FerryOption[];
+        cheapest?;
+        earliest?;
+        latest?;
+        message?;
+      };
+    }
+  | {
+      type: "booking_summary";
+      data: { bookingCode?; status?; error?; flightdetail?: FlightDetail[] };
+    }
+  | {
+      type: "dana_payment";
+      data: {
+        bookingCode;
+        kind: "QRIS" | "VA";
+        vaNumber: string | null;
+        qrContent: string | null;
+        expiryTime: string | null;
+      };
+    }
+  | { type: "customer_service_card"; data: Record<string, never> }
+  | {
+      type: "destination_results";
+      data: { destinations: DestinationOption[]; durationLabel: string | null };
+    };
 ```
+
+`DestinationOption` is `{ id, name, area, category?, minStayMinutes, travelGapMinutes, price }` — a trimmed view of the backend `Destination` catalog, returned by the `recommend_itinerary` tool (backend `services/chatService.js`; calls `GET /api/destinations?tags=...`). Use it when the user asks for Batam itinerary/trip ideas or recommendations by interest.
 
 `FlightOption`, `FerryOption`, and `FlightDetail` are also declared in `useChatSocket.ts`. The legacy `'booking_form'` / `'qris_payment'` member names no longer exist.
 
@@ -57,12 +95,13 @@ export type ToolResultData =
 
 `ChatMessage.tsx` renders plain assistant/user text via `react-markdown` (+ `remark-gfm`), and switches on `message.toolResult.type` for rich cards:
 
-| `type` | Rendered card |
-|---|---|
+| `type`                             | Rendered card                                                                                                                                                                                                                                  |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `flight_results` / `ferry_results` | One `InteractiveResultCard` per option. Cards expand to pick Adults/Children/Infants, then call `sendMessage(...)` with a pre-written booking-intent string (see below). `cheapest`/`earliest`/`latest` are shown de-duplicated by `searchId`. |
-| `booking_summary` | Booking code + status badge + route from `flightdetail[0]`; if `data.error`, a red error card instead. |
-| `dana_payment` | Inline payment card. **`kind: "QRIS"`** → a `QRCodeSVG` (from `qrcode.react`) rendered from `data.qrContent` at size 200. **`kind: "VA"`** → a copyable virtual-account number from `data.vaNumber` with a "transfer the exact amount" note. |
-| `customer_service_card` | Static WhatsApp card; CTA links to `https://wa.me/6282382709777`. |
+| `booking_summary`                  | Booking code + status badge + route from `flightdetail[0]`; if `data.error`, a red error card instead.                                                                                                                                         |
+| `dana_payment`                     | Inline payment card. **`kind: "QRIS"`** → a `QRCodeSVG` (from `qrcode.react`) rendered from `data.qrContent` at size 200. **`kind: "VA"`** → a copyable virtual-account number from `data.vaNumber` with a "transfer the exact amount" note.   |
+| `customer_service_card`            | Static WhatsApp card; CTA links to `https://wa.me/6282382709777`.                                                                                                                                                                              |
+| `destination_results`              | One compact card per destination (name, area/category, min-stay time, price) plus a "Build this into a trip in ItinerQ" link to `/itinerary`.                                                                                                  |
 
 ### `InteractiveResultCard` confirm-message format
 
@@ -111,12 +150,16 @@ Promo/marketing copy for the widget is localized in `src/locales/common/{en,id}.
 **Status: planned, not yet implemented.**
 
 ### 6.1 Round-trip & multi-city in chat
+
 The chat should support the same trip types as the web `SearchFlight` form:
+
 - **Round-trip** — `search_flights` already accepts `returnDate` (backend `services/chatService.js`), but the chat flow does not yet present outbound + return selection as a pair. The assistant should search both legs, render outbound and return options (as cards, see §6.2), and carry both selected `searchId`s into `execute_flight_booking`.
 - **Multi-city** — not yet supported by any tool. Requires a new tool (or an extended `search_flights`) that accepts an ordered list of segments (each `{ departure, arrival, departureDate }`), returns per-segment options, and lets the user pick one flight per segment before booking. Mirror the web multi-city flow (`SearchFlight` multi-city UI, `02-STATE-AND-DATA.md`).
 
 ### 6.2 Card-first responses
+
 Bias the assistant toward **rich cards over plain text** for anything structured — search results, a selected itinerary summary, booking confirmations, payment instructions, and booking-history results — to keep the conversation visual and engaging. Concretely:
+
 - Add a `booking_history` `chat:tool_result` card so `get_booking_history` renders a scannable list of bookings (today it returns text only — see the backend `05-INTEGRATIONS.md`/`AI_ARCHITECTURE.md`).
 - Add a round-trip/multi-city itinerary card that shows all chosen legs together before payment.
 - Keep the existing `flight_results` / `ferry_results` / `dana_payment` / `booking_summary` / `customer_service_card` types; text from the model stays as a short narration around the card, per the system prompt's "don't list options in text" rule.

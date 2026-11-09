@@ -7,13 +7,15 @@
 
 ## 1. Purpose
 
-`tiket-FE` is the public, consumer-facing web application through which travellers search, book, pay for, and retrieve tickets for:
+`tiket-FE` began as a pure OTA (flights/ferry/car rental) booking app and is pivoting to a **Batam ⇄ Malaysia ⇄ Singapore travel concierge platform** — a one-stop app for visiting Batam and the surrounding area, not just a ticket store. Travellers can search, book, pay for, and retrieve tickets for:
 
 - **Flights** — one-way, round-trip, and multi-city (up to 4 segments), issued through the Lion Air provider.
-- **Ferries** — international/domestic ferry crossings (e.g. Batam ↔ Singapore) with passport-bearing passengers.
-- **Car rentals** — Batam-area car rental requests (with driver + fuel), submitted as a lead/request rather than an instantly-issued ticket.
+- **Ferries** — international/domestic ferry crossings (e.g. Batam ↔ Singapore), framed as the "border crossing" product.
+- **Private Driver** (formerly "Car Rental") — Batam-area chauffeured transport requests (with driver + fuel), submitted as a lead/request rather than an instantly-issued ticket.
+- **ItinerQ** — a drag-and-drop trip builder (`/itinerary`): travelers drag destinations from an admin-managed catalog into an ordered trip, see running cost and time (stay + travel-gap buffer) update live, pick a trip length, and submit a request. The AI assistant can recommend destinations by interest.
+- **Hotels** (`/hotels`) and **Activities** (`/activities`) — catalog + booking-request pages for stays and experiences (golf, diving, island hopping, etc.), same lead/request pattern as Private Driver.
 
-The application also embeds an **AI booking assistant** (chatbot) that can search flights/ferries and drive a conversational booking + payment flow entirely over Socket.io.
+The application also embeds an **AI booking assistant** (chatbot) that can search flights/ferries, recommend ItinerQ destinations by interest, and drive a conversational booking + payment flow entirely over Socket.io.
 
 It is the customer front-end of a three-project monorepo (see the repository-root `CLAUDE.md`): the Express/Prisma backend `tiketq-bosbiller` serves the REST API and Socket.io server; `tiket-admin` is the internal operations dashboard. `tiket-FE` never talks to the database directly — it consumes the backend REST + realtime surface only.
 
@@ -42,47 +44,52 @@ It is the customer front-end of a three-project monorepo (see the repository-roo
 
 ## 4. High-Level Feature List
 
-| Feature | Entry point | Primary container(s) |
-|---|---|---|
-| Flight search (one-way / round-trip / multi-city) | `/` (home) | `HomeContainer`, `SearchFlight` |
-| Flight results + filter/sort + infinite scroll | `/flights` | `FlightListContainer` |
-| Flight checkout (contact + passengers) | `/checkout` | `CheckoutContainer` → `Checkout` |
-| Flight payment (DANA) | `/checkout/payment` | `PaymentContainer` → `DanaPayment` |
-| Flight e-ticket | `/eticket` | `EticketContainer` |
-| Ferry search | `/ferry`, `/ferry/find` | `FerryFindContainer`, `SearchFerry` |
-| Ferry results | `/ferry/list` | `FerryListContainer` |
-| Ferry passenger + contact entry | `/ferry/passenger` | `FerryPassengerContainer` |
-| Ferry payment (DANA) | `/ferry/payment` | `FerryPaymentContainer` → `DanaPayment` |
-| Ferry success | `/ferry/success` | `FerrySuccessContainer` |
-| Car rental search | `/car-rent`, `/car-rental` | `CarRentContainer` |
-| Car rental request form | `/car-rental/rent` | `CarRentalFormContainer` → `CarRentalForm` |
-| DANA payment-return landing | `/dana-transaction-status` | `DanaTransactionStatusContainer` |
-| AI chatbot | global (rendered in `_app.tsx`) | `ChatBot` + `useChatSocket` |
+| Feature                                           | Entry point                     | Primary container(s)                       |
+| ------------------------------------------------- | ------------------------------- | ------------------------------------------ |
+| Flight search (one-way / round-trip / multi-city) | `/` (home)                      | `HomeContainer`, `SearchFlight`            |
+| Flight results + filter/sort + infinite scroll    | `/flights`                      | `FlightListContainer`                      |
+| Flight checkout (contact + passengers)            | `/checkout`                     | `CheckoutContainer` → `Checkout`           |
+| Flight payment (DANA)                             | `/checkout/payment`             | `PaymentContainer` → `DanaPayment`         |
+| Flight e-ticket                                   | `/eticket`                      | `EticketContainer`                         |
+| Ferry search                                      | `/ferry`, `/ferry/find`         | `FerryFindContainer`, `SearchFerry`        |
+| Ferry results                                     | `/ferry/list`                   | `FerryListContainer`                       |
+| Ferry passenger + contact entry                   | `/ferry/passenger`              | `FerryPassengerContainer`                  |
+| Ferry payment (DANA)                              | `/ferry/payment`                | `FerryPaymentContainer` → `DanaPayment`    |
+| Ferry success                                     | `/ferry/success`                | `FerrySuccessContainer`                    |
+| Private Driver search                             | `/car-rent`, `/car-rental`      | `CarRentContainer`                         |
+| Private Driver request form                       | `/car-rental/rent`              | `CarRentalFormContainer` → `CarRentalForm` |
+| ItinerQ trip builder                              | `/itinerary`                    | `ItineraryBuilderContainer`                |
+| Hotel catalog + booking request                   | `/hotels`                       | `HotelListContainer`                       |
+| Activities catalog + booking request              | `/activities`                   | `ActivityListContainer`                    |
+| DANA payment-return landing                       | `/dana-transaction-status`      | `DanaTransactionStatusContainer`           |
+| AI chatbot (incl. `recommend_itinerary`)          | global (rendered in `_app.tsx`) | `ChatBot` + `useChatSocket`                |
 
 ## 5. Glossary
 
-| Term | Meaning |
-|---|---|
-| **Container** | A page-level React view under `src/containers/` that invokes data hooks and side effects. See `01-ARCHITECTURE.md`. |
-| **Component** | A reusable, largely presentational element under `src/components/`. |
-| **`booking:update`** | Socket.io event emitted by the backend when a booking's payment/issuance status changes; drives e-ticket advancement (see `02-STATE-AND-DATA.md`). |
-| **`searchId`** | Provider-issued, single-use identifier for a specific flight fare; a booking spends it. |
-| **`bookingCode` / `bookingNo`** | Human-facing booking reference used across checkout, payment, e-ticket, and realtime matching. |
-| **DANA** | The Indonesian e-wallet + virtual-account payment gateway; the platform's only payment method. |
-| **VA** | Virtual Account — a per-transaction bank account number the user transfers to (BNI/BRI/MANDIRI). |
-| **REDIRECT** | DANA-wallet payment mode: the browser is redirected to DANA to authorize payment. |
-| **Glassmorphism** | The design language: frosted, translucent surfaces with backdrop blur. See `03-DESIGN-SYSTEM-AND-UI.md`. |
-| **CTA orange** | Brand call-to-action colour `#FF5A00`, mapped to MUI `warning`. |
+| Term                            | Meaning                                                                                                                                                                                                     |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Container**                   | A page-level React view under `src/containers/` that invokes data hooks and side effects. See `01-ARCHITECTURE.md`.                                                                                         |
+| **Component**                   | A reusable, largely presentational element under `src/components/`.                                                                                                                                         |
+| **`booking:update`**            | Socket.io event emitted by the backend when a booking's payment/issuance status changes; drives e-ticket advancement (see `02-STATE-AND-DATA.md`).                                                          |
+| **`searchId`**                  | Provider-issued, single-use identifier for a specific flight fare; a booking spends it.                                                                                                                     |
+| **`bookingCode` / `bookingNo`** | Human-facing booking reference used across checkout, payment, e-ticket, and realtime matching.                                                                                                              |
+| **DANA**                        | The Indonesian e-wallet + virtual-account payment gateway; the platform's only payment method.                                                                                                              |
+| **VA**                          | Virtual Account — a per-transaction bank account number the user transfers to (BNI/BRI/MANDIRI).                                                                                                            |
+| **REDIRECT**                    | DANA-wallet payment mode: the browser is redirected to DANA to authorize payment.                                                                                                                           |
+| **Glassmorphism**               | The design language: frosted, translucent surfaces with backdrop blur. See `03-DESIGN-SYSTEM-AND-UI.md`.                                                                                                    |
+| **CTA orange**                  | Brand call-to-action colour `#FF5A00`, mapped to MUI `warning`.                                                                                                                                             |
+| **ItinerQ**                     | The drag-and-drop Batam trip builder (`/itinerary`); the brand name for the itinerary feature.                                                                                                              |
+| **Destination**                 | An admin-managed catalog entry (name, area, min-stay time, travel-time buffer, price, interest tags) that travelers drag into an ItinerQ trip. Distinct from Hotel/Activity, which are separately bookable. |
 
 ## 6. Specification Index
 
-| File | Contents |
-|---|---|
-| `00-OVERVIEW.md` | This document — purpose, scope, users, feature list, glossary. |
-| `01-ARCHITECTURE.md` | Tech stack, Container vs Component pattern, directory map, page composition. |
-| `02-STATE-AND-DATA.md` | React Query hook registry, shared Axios client, the no-`refetchInterval` rule, Socket.io + query integration. |
+| File                         | Contents                                                                                                         |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `00-OVERVIEW.md`             | This document — purpose, scope, users, feature list, glossary.                                                   |
+| `01-ARCHITECTURE.md`         | Tech stack, Container vs Component pattern, directory map, page composition.                                     |
+| `02-STATE-AND-DATA.md`       | React Query hook registry, shared Axios client, the no-`refetchInterval` rule, Socket.io + query integration.    |
 | `03-DESIGN-SYSTEM-AND-UI.md` | MUI v9 glassmorphism theme, the `Button` wrapper, Tailwind glass utilities, the navigation rule, responsiveness. |
-| `04-USER-FLOWS.md` | End-to-end flight / ferry / car-rental flows with sequence and flow diagrams. |
-| `05-PAYMENTS.md` | DANA payment UI: picker, wallet redirect vs VA, create-order client, PAY_RETURN landing. |
-| `06-AI-CHATBOT.md` | `useChatSocket` hook, chat events, `ChatMessage` tool-result rendering. |
-| `07-NON-FUNCTIONAL.md` | i18n, responsiveness, performance, accessibility, mobile keyboard conventions, known gaps. |
+| `04-USER-FLOWS.md`           | End-to-end flight / ferry / car-rental flows with sequence and flow diagrams.                                    |
+| `05-PAYMENTS.md`             | DANA payment UI: picker, wallet redirect vs VA, create-order client, PAY_RETURN landing.                         |
+| `06-AI-CHATBOT.md`           | `useChatSocket` hook, chat events, `ChatMessage` tool-result rendering.                                          |
+| `07-NON-FUNCTIONAL.md`       | i18n, responsiveness, performance, accessibility, mobile keyboard conventions, known gaps.                       |
