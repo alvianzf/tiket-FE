@@ -74,26 +74,26 @@ const SearchFerry = () => {
 
     if (!mounted) {
         return (
-            <div className="w-full lg:max-w-[1024px] surface-card p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.15)] backdrop-blur-3xl border border-white/20 bg-white/10 rounded-3xl mx-auto animate-pulse h-[136px] flex items-center justify-center">
-                <div className="w-full h-12 bg-white/10 rounded-xl" />
+            <div className="w-full lg:max-w-[1024px] surface-card p-6 md:p-8 mx-auto animate-pulse h-[136px] flex items-center justify-center">
+                <div className="w-full h-12 bg-slate-100 rounded-xl" />
             </div>
         );
     }
 
     return (
-        <div className="w-full lg:max-w-[1024px] surface-card p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.15)] backdrop-blur-3xl border border-white/20 bg-white/10 rounded-3xl mx-auto">
+        <div className="w-full lg:max-w-[1024px] surface-card p-6 md:p-8 mx-auto">
             <div className="flex flex-col gap-6 w-full">
-                <div className="flex flex-row gap-2 bg-white/10 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md w-fit">
+                <div className="flex flex-row gap-2 bg-slate-100 p-1.5 rounded-2xl w-fit">
                     <button
                         type="button"
-                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${type === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`}
+                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${type === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-600 hover:bg-white/60'}`}
                         onClick={() => setType('one_way')}
                     >
                         <span className="truncate">{t('tickets.one_way')}</span>
                     </button>
                     <button
                         type="button"
-                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${type === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`}
+                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${type === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-600 hover:bg-white/60'}`}
                         onClick={() => setType('round_trip')}
                     >
                         <span className="truncate">{t('tickets.round_trip')}</span>

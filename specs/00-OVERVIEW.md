@@ -51,7 +51,7 @@ It is the customer front-end of a three-project monorepo (see the repository-roo
 | Flight checkout (contact + passengers)            | `/checkout`                     | `CheckoutContainer` → `Checkout`           |
 | Flight payment (DANA)                             | `/checkout/payment`             | `PaymentContainer` → `DanaPayment`         |
 | Flight e-ticket                                   | `/eticket`                      | `EticketContainer`                         |
-| Ferry search                                      | `/ferry`, `/ferry/find`         | `FerryFindContainer`, `SearchFerry`        |
+| Ferry search                                      | `/ferry`                        | `ShipContainer`, `SearchFerry`             |
 | Ferry results                                     | `/ferry/list`                   | `FerryListContainer`                       |
 | Ferry passenger + contact entry                   | `/ferry/passenger`              | `FerryPassengerContainer`                  |
 | Ferry payment (DANA)                              | `/ferry/payment`                | `FerryPaymentContainer` → `DanaPayment`    |

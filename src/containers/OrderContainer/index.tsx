@@ -99,10 +99,10 @@ const FlightBookingCard = ({ order }: { order: any }) => {
         <motion.div
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            className={`surface-card backdrop-blur-xl border rounded-2xl p-6 shadow-md transition-shadow ${
+            className={`surface-card p-6 transition-shadow ${
                 isExpired || available === false
-                    ? "bg-slate-50/50 border-slate-200/40 opacity-70"
-                    : "bg-white/70 border-white/40 hover:shadow-lg"
+                    ? "bg-slate-50 opacity-70"
+                    : "hover:shadow-lg"
             }`}
         >
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
@@ -224,8 +224,8 @@ const FerryBookingCard = ({ order }: { order: any }) => {
         <motion.div
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            className={`surface-card backdrop-blur-xl border rounded-2xl p-6 shadow-md transition-shadow ${
-                isExpired ? "bg-slate-50/50 border-slate-200/40 opacity-70" : "bg-white/70 border-white/40 hover:shadow-lg"
+            className={`surface-card p-6 transition-shadow ${
+                isExpired ? "bg-slate-50 opacity-70" : "hover:shadow-lg"
             }`}
         >
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -380,7 +380,7 @@ const OrderContainer = ({ flightData = [], ferryData = [], carData = [] }: Props
                                 key={order.id}
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="surface-card bg-white/70 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow"
+                                className="surface-card p-6 hover:shadow-lg transition-shadow"
                             >
                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                     <div className="flex flex-col gap-3 flex-1">

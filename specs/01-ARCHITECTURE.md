@@ -97,7 +97,7 @@ tiket-FE/
 │   ├── checkout/index.tsx     # Checkout              → CheckoutContainer
 │   ├── checkout/payment/…     # Payment + confirm/failed/success/waiting
 │   ├── eticket/index.tsx      # Flight e-ticket       → EticketContainer
-│   ├── ferry/…                # find, index, list, passenger, payment, success, failed
+│   ├── ferry/…                # index (ShipContainer), list, passenger, payment, success, failed
 │   ├── car-rent/…, car-rental/…  # Car search + rental form (Private Driver)
 │   ├── itinerary/index.tsx    # ItinerQ drag-and-drop trip builder → ItineraryBuilderContainer
 │   ├── hotels/index.tsx       # Hotel catalog + booking request   → HotelListContainer

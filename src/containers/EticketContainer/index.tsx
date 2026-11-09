@@ -118,7 +118,7 @@ const EticketContainer = () => {
                     <div className="w-20 h-1.5 bg-cta rounded-full"></div>
                 </div>
 
-                <div className="surface-card bg-white/85 p-8 md:p-10 shadow-lg relative overflow-hidden border-white/75">
+                <div className="surface-card p-8 md:p-10 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
                     
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10 border-b border-slate-200/40 pb-8 mb-8">
@@ -168,8 +168,8 @@ const EticketContainer = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-12 py-6 bg-white/40 rounded-ds-lg p-8 border border-white/40 mb-10">
-                        <div className="bg-white/80 p-6 rounded-ds-md shadow-inner">
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-12 py-6 bg-slate-50 rounded-ds-lg p-8 mb-10">
+                        <div className="bg-white p-6 rounded-ds-md shadow-sm">
                             <LionAir width={120} height={40}/>
                         </div>
                         
