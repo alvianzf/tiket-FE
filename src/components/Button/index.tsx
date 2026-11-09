@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 interface Props extends ButtonProps {
     children: ReactNode;
-    dsVariant?: "primary" | "cta" | "ghost" | "glass" | "secondary";
+    dsVariant?: "primary" | "cta" | "ghost" | "secondary";
     isLoading?: boolean;
 }
 
@@ -24,17 +24,6 @@ const Button = ({ children, dsVariant = "cta", isLoading = false, ...restProps} 
                     variant: "outlined",
                     color: "primary",
                     sx: { borderWidth: 2, "&:hover": { borderWidth: 2, bgcolor: "primary.main", color: "#fff" } },
-                };
-            case "glass":
-                return {
-                    variant: "outlined",
-                    sx: {
-                        color: "#fff",
-                        bgcolor: "rgba(255,255,255,0.1)",
-                        backdropFilter: "blur(12px)",
-                        borderColor: "rgba(255,255,255,0.25)",
-                        "&:hover": { bgcolor: "rgba(255,255,255,0.2)", borderColor: "rgba(255,255,255,0.25)" },
-                    },
                 };
             default:
                 return {};

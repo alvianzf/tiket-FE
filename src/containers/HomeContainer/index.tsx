@@ -7,52 +7,52 @@ import ConciergeServices from "@components/ConciergeServices";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
+// Rebuilt from scratch: a bold gradient hero (no stock photo) that leans on
+// the brand colors + AnimatedBackground instead, a cleaner trust strip, and
+// the WhyBook/NoCommitment/ConciergeServices sections below it (each
+// rebuilt separately — see their own files).
 const HomeContainer = () => {
     const { t } = useTranslation();
 
     return (
         <>
-        <div className="relative">
-            <div className="flex flex-wrap justify-center min-h-[500px] bg-pattern home-app relative z-50 pt-24 pb-32">
+            <section className="relative overflow-hidden bg-gradient-to-br from-primary-dark via-primary to-secondary pt-16 pb-28 px-6">
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-                    className="flex flex-col items-center gap-8 w-full max-w-[1200px] px-6"
+                    transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+                    className="relative z-10 flex flex-col items-center gap-8 max-w-[1100px] mx-auto"
                 >
                     <div className="text-center max-w-2xl">
                         <span className="inline-block px-4 py-1.5 rounded-full bg-white/15 text-white text-xs font-bold tracking-wide uppercase mb-4">
                             {t("home.hero_badge")}
                         </span>
-                        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">{t("home.hero_title")}</h1>
-                        <p className="text-white/80 mt-3">{t("home.hero_subtitle")}</p>
+                        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">{t("home.hero_title")}</h1>
+                        <p className="text-white/80 mt-3 text-base sm:text-lg">{t("home.hero_subtitle")}</p>
                     </div>
                     <SearchFlight />
                 </motion.div>
-                <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#f0f4f8] to-transparent z-10" />
-            </div>
+            </section>
 
-            <ConciergeServices />
-
-            <div className="flex flex-wrap justify-center relative z-10 px-6 py-12">
-                <motion.div 
-                    initial={{ opacity: 0, y: 40 }}
+            <div className="relative -mt-14 z-10 px-6">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.7, delay: 0.2 }}
-                    className="surface-card flex flex-wrap w-full gap-12 p-8 lg:p-12 max-w-[1200px] shadow-lg items-center justify-around border-white/40"
+                    transition={{ duration: 0.5 }}
+                    className="surface-card max-w-[1100px] mx-auto px-6 sm:px-10 py-6 flex flex-col sm:flex-row items-center gap-8"
                 >
-                    <div className="flex-1 min-w-[300px]">
+                    <div className="flex-1 min-w-0">
                         <AirlinesPartners />
                     </div>
-                    <div className="w-px h-20 bg-slate-200/50 hidden lg:block"></div>
-                    <div className="flex-1 min-w-[300px]">
+                    <div className="w-full h-px sm:w-px sm:h-16 bg-slate-100" />
+                    <div className="flex-1 min-w-0">
                         <PaymentPartners />
                     </div>
                 </motion.div>
             </div>
-        </div>
 
+            <ConciergeServices />
             <WhyBook />
             <NoCommitment />
         </>

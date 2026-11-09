@@ -12,12 +12,14 @@ import {
     useSensors,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { Button, Chip, Dialog, DialogTitle, DialogContent, TextField, CircularProgress } from "@mui/material";
 import { Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { FormProvider } from "react-hook-form";
 import { toast } from "react-toastify";
 
+import Button from "@components/ui/Button";
+import TextField from "@components/ui/TextField";
+import Dialog from "@components/ui/Dialog";
 import { getDestinations } from "@api/destinations";
 import { Destination } from "@api/destinations/types";
 import { submitItinerary } from "@api/itinerary";
@@ -116,17 +118,22 @@ const ItineraryBuilderContainer = () => {
 
             <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
                 {DURATION_OPTIONS.map((opt) => (
-                    <Chip
+                    <button
                         key={opt}
-                        label={opt}
                         onClick={() => setDurationLabel(opt)}
-                        color={durationLabel === opt ? "warning" : "default"}
-                        variant={durationLabel === opt ? "filled" : "outlined"}
-                    />
+                        className={`px-4 h-9 rounded-full text-sm font-semibold border transition-colors ${
+                            durationLabel === opt ? "bg-orange-500 text-white border-orange-500" : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                        }`}
+                    >
+                        {opt}
+                    </button>
                 ))}
-                <Button startIcon={<Sparkles size={16} />} onClick={handleAskAi} variant="outlined" color="primary" size="small" sx={{ ml: 1 }}>
-                    {t("itinerary.ask_ai")}
-                </Button>
+                <button
+                    onClick={handleAskAi}
+                    className="flex items-center gap-1.5 px-4 h-9 rounded-full text-sm font-semibold border-2 border-primary text-primary hover:bg-primary/5 ml-1"
+                >
+                    <Sparkles size={15} /> {t("itinerary.ask_ai")}
+                </button>
             </div>
 
             <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
@@ -173,7 +180,7 @@ const ItineraryBuilderContainer = () => {
                                     <p className="text-xs text-slate-500">{t("itinerary.total_cost")}</p>
                                     <p className="font-bold text-orange-600">Rp {totals.cost.toLocaleString("id-ID")}</p>
                                 </div>
-                                <Button variant="contained" color="warning" onClick={() => setIsSubmitOpen(true)}>
+                                <Button variant="cta" onClick={() => setIsSubmitOpen(true)}>
                                     {t("itinerary.submit")}
                                 </Button>
                             </motion.div>
@@ -184,51 +191,43 @@ const ItineraryBuilderContainer = () => {
                 <DragOverlay>{activeDrag && <DestinationCard destination={activeDrag} />}</DragOverlay>
             </DndContext>
 
-            <Dialog open={isSubmitOpen} onClose={() => setIsSubmitOpen(false)} fullWidth maxWidth="xs">
-                <DialogTitle>{t("itinerary.submit")}</DialogTitle>
-                <DialogContent>
-                    <FormProvider {...methods}>
-                        <form onSubmit={onSubmitTrip} className="flex flex-col gap-3 mt-1">
-                            <TextField
-                                label={t("itinerary.fullname")}
-                                fullWidth
-                                value={watch("fullName")}
-                                onChange={(e) => setValue("fullName", e.target.value)}
-                                error={!!errors.fullName}
-                                helperText={errors.fullName?.message}
-                            />
-                            <TextField
-                                label={t("itinerary.phone")}
-                                fullWidth
-                                value={watch("phone")}
-                                onChange={(e) => setValue("phone", e.target.value)}
-                                error={!!errors.phone}
-                                helperText={errors.phone?.message}
-                            />
-                            <TextField
-                                label={t("itinerary.email")}
-                                fullWidth
-                                value={watch("email")}
-                                onChange={(e) => setValue("email", e.target.value)}
-                                error={!!errors.email}
-                                helperText={errors.email?.message}
-                            />
-                            <TextField
-                                type="date"
-                                label={t("itinerary.start_date")}
-                                fullWidth
-                                slotProps={{ inputLabel: { shrink: true } }}
-                                value={watch("startDate")}
-                                onChange={(e) => setValue("startDate", e.target.value)}
-                                error={!!errors.startDate}
-                                helperText={errors.startDate?.message}
-                            />
-                            <Button type="submit" variant="contained" color="warning" disabled={isSubmitting} sx={{ mt: 1 }}>
-                                {isSubmitting ? <CircularProgress size={20} color="inherit" /> : t("itinerary.submit")}
-                            </Button>
-                        </form>
-                    </FormProvider>
-                </DialogContent>
+            <Dialog open={isSubmitOpen} onClose={() => setIsSubmitOpen(false)} title={t("itinerary.submit")}>
+                <FormProvider {...methods}>
+                    <form onSubmit={onSubmitTrip} className="flex flex-col gap-3">
+                        <TextField
+                            label={t("itinerary.fullname")}
+                            fullWidth
+                            value={watch("fullName")}
+                            onChange={(e) => setValue("fullName", e.target.value)}
+                            error={errors.fullName?.message}
+                        />
+                        <TextField
+                            label={t("itinerary.phone")}
+                            fullWidth
+                            value={watch("phone")}
+                            onChange={(e) => setValue("phone", e.target.value)}
+                            error={errors.phone?.message}
+                        />
+                        <TextField
+                            label={t("itinerary.email")}
+                            fullWidth
+                            value={watch("email")}
+                            onChange={(e) => setValue("email", e.target.value)}
+                            error={errors.email?.message}
+                        />
+                        <TextField
+                            type="date"
+                            label={t("itinerary.start_date")}
+                            fullWidth
+                            value={watch("startDate")}
+                            onChange={(e) => setValue("startDate", e.target.value)}
+                            error={errors.startDate?.message}
+                        />
+                        <Button type="submit" variant="cta" isLoading={isSubmitting} fullWidth className="mt-1">
+                            {t("itinerary.submit")}
+                        </Button>
+                    </form>
+                </FormProvider>
             </Dialog>
         </div>
     );

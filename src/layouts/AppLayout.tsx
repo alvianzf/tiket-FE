@@ -9,9 +9,7 @@ import { ReactNode, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
+import Dialog from "@components/ui/Dialog";
 import SearchBookingNumber from "@components/SearchBookingNumber";
 
 interface Props {
@@ -57,11 +55,8 @@ const AppLayout = ({ children } : Props) => {
                 onChangeLanguage={(lang) => i18n.changeLanguage(lang)}
             />
 
-            <Dialog open={isOpenFind} onClose={() => setIsOpenFind(false)} fullWidth maxWidth="xs">
-                <DialogTitle>{t("home.find_booking_no")}</DialogTitle>
-                <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 1.5, pb: 3 }}>
-                    <SearchBookingNumber onOpenChangeFind={() => setIsOpenFind(false)} />
-                </DialogContent>
+            <Dialog open={isOpenFind} onClose={() => setIsOpenFind(false)} title={t("home.find_booking_no")}>
+                <SearchBookingNumber onOpenChangeFind={() => setIsOpenFind(false)} />
             </Dialog>
         </div>
     )

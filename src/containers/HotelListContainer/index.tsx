@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation } from "react-query";
-import { Button, Dialog, DialogTitle, DialogContent, TextField, CircularProgress } from "@mui/material";
 import { FormProvider } from "react-hook-form";
 import { toast } from "react-toastify";
 import { MapPin } from "lucide-react";
 
+import Button from "@components/ui/Button";
+import TextField from "@components/ui/TextField";
+import Dialog from "@components/ui/Dialog";
 import { getHotels, bookHotel } from "@api/hotels";
 import { Hotel } from "@api/hotels/types";
 import useForm, { FormProps } from "./forms/useForm";
@@ -67,7 +69,7 @@ const HotelListContainer = () => {
                         {hotel.description && <p className="text-sm text-slate-600 line-clamp-2">{hotel.description}</p>}
                         <div className="flex items-center justify-between mt-auto pt-2">
                             <span className="text-orange-600 font-bold">Rp {Number(hotel.pricePerNight).toLocaleString("id-ID")}/night</span>
-                            <Button variant="contained" color="warning" size="small" onClick={() => openBooking(hotel)}>
+                            <Button variant="cta" onClick={() => openBooking(hotel)}>
                                 Request Stay
                             </Button>
                         </div>
@@ -75,25 +77,22 @@ const HotelListContainer = () => {
                 ))}
             </div>
 
-            <Dialog open={!!bookingHotel} onClose={() => setBookingHotel(null)} fullWidth maxWidth="xs">
-                <DialogTitle>Request: {bookingHotel?.name}</DialogTitle>
-                <DialogContent>
-                    <FormProvider {...methods}>
-                        <form onSubmit={onSubmit} className="flex flex-col gap-3 mt-1">
-                            <TextField label={t("itinerary.fullname")} fullWidth value={watch("fullName")} onChange={(e) => setValue("fullName", e.target.value)} error={!!errors.fullName} helperText={errors.fullName?.message} />
-                            <TextField label={t("itinerary.phone")} fullWidth value={watch("phone")} onChange={(e) => setValue("phone", e.target.value)} error={!!errors.phone} helperText={errors.phone?.message} />
-                            <TextField label={t("itinerary.email")} fullWidth value={watch("email")} onChange={(e) => setValue("email", e.target.value)} error={!!errors.email} helperText={errors.email?.message} />
-                            <div className="flex gap-3">
-                                <TextField type="date" label="Check-in" fullWidth slotProps={{ inputLabel: { shrink: true } }} value={watch("checkIn")} onChange={(e) => setValue("checkIn", e.target.value)} error={!!errors.checkIn} helperText={errors.checkIn?.message} />
-                                <TextField type="date" label="Check-out" fullWidth slotProps={{ inputLabel: { shrink: true } }} value={watch("checkOut")} onChange={(e) => setValue("checkOut", e.target.value)} error={!!errors.checkOut} helperText={errors.checkOut?.message} />
-                            </div>
-                            <TextField type="number" label="Guests" fullWidth value={watch("guests")} onChange={(e) => setValue("guests", Number(e.target.value))} error={!!errors.guests} helperText={errors.guests?.message} />
-                            <Button type="submit" variant="contained" color="warning" disabled={isSubmitting} sx={{ mt: 1 }}>
-                                {isSubmitting ? <CircularProgress size={20} color="inherit" /> : "Submit Request"}
-                            </Button>
-                        </form>
-                    </FormProvider>
-                </DialogContent>
+            <Dialog open={!!bookingHotel} onClose={() => setBookingHotel(null)} title={`Request: ${bookingHotel?.name ?? ""}`}>
+                <FormProvider {...methods}>
+                    <form onSubmit={onSubmit} className="flex flex-col gap-3">
+                        <TextField label={t("itinerary.fullname")} fullWidth value={watch("fullName")} onChange={(e) => setValue("fullName", e.target.value)} error={errors.fullName?.message} />
+                        <TextField label={t("itinerary.phone")} fullWidth value={watch("phone")} onChange={(e) => setValue("phone", e.target.value)} error={errors.phone?.message} />
+                        <TextField label={t("itinerary.email")} fullWidth value={watch("email")} onChange={(e) => setValue("email", e.target.value)} error={errors.email?.message} />
+                        <div className="flex gap-3">
+                            <TextField type="date" label="Check-in" fullWidth value={watch("checkIn")} onChange={(e) => setValue("checkIn", e.target.value)} error={errors.checkIn?.message} />
+                            <TextField type="date" label="Check-out" fullWidth value={watch("checkOut")} onChange={(e) => setValue("checkOut", e.target.value)} error={errors.checkOut?.message} />
+                        </div>
+                        <TextField type="number" label="Guests" fullWidth value={watch("guests")} onChange={(e) => setValue("guests", Number(e.target.value))} error={errors.guests?.message} />
+                        <Button type="submit" variant="cta" isLoading={isSubmitting} fullWidth className="mt-1">
+                            Submit Request
+                        </Button>
+                    </form>
+                </FormProvider>
             </Dialog>
         </div>
     );

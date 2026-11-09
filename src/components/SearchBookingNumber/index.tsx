@@ -1,9 +1,10 @@
 import { useTranslation } from "react-i18next"
 import useForm, { FormProps } from "./forms/useForm";
 import { FormProvider } from "react-hook-form";
-import { Button, TextField, InputAdornment, CircularProgress } from "@mui/material";
+import Button from "@components/ui/Button";
+import TextField from "@components/ui/TextField";
 import { useMutation } from "react-query";
-import { FaTicketAlt } from "react-icons/fa";
+import { Ticket } from "lucide-react";
 import { checkBookFlight } from "@api/bookFlight";
 import { useRouter } from "next/router";
 
@@ -45,42 +46,24 @@ const SearchBookingNumber = ({ onOpenChangeFind } : Props) => {
 
     const onSubmit = (data: FormProps) => {
         mutate(data.booking_no);
-
     }
 
     return (
         <FormProvider {...methods}>
-            <div className="flex flex-col gap-5">
-                <div className="flex flex-col gap-2">
-                    <p>{t('home.booking_no')}</p>
-                    <TextField
-                        type="text"
-                        variant="standard"
-                        fullWidth
-                        defaultValue={booking_no}
-                        onChange={(e) => setValue('booking_no', e.target.value)}
-                        helperText={errors?.booking_no?.message}
-                        error={!!errors?.booking_no}
-                        disabled={isLoading}
-                        slotProps={{
-                            input: {
-                                startAdornment: (
-                                    <InputAdornment position="start"><FaTicketAlt className="text-[#4267B2]" /></InputAdornment>
-                                )
-                            }
-                        }}
-                    />
-                </div>
-                <Button
-                    variant="contained"
-                    color="warning"
-                    startIcon={isLoading ? <CircularProgress size={16} color="inherit" /> : undefined}
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+                <TextField
+                    label={t('home.booking_no')}
+                    fullWidth
+                    startIcon={<Ticket size={18} />}
+                    value={booking_no || ""}
+                    onChange={(e) => setValue('booking_no', e.target.value)}
+                    error={errors?.booking_no?.message}
                     disabled={isLoading}
-                    onClick={handleSubmit(onSubmit)}
-                >
+                />
+                <Button type="submit" variant="cta" isLoading={isLoading} fullWidth>
                     {t('home.find_booking_no')}
                 </Button>
-            </div>
+            </form>
         </FormProvider>
     )
 }

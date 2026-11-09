@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation } from "react-query";
-import { Button, Dialog, DialogTitle, DialogContent, TextField, CircularProgress, Chip } from "@mui/material";
 import { FormProvider } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Clock } from "lucide-react";
 
+import Button from "@components/ui/Button";
+import TextField from "@components/ui/TextField";
+import Dialog from "@components/ui/Dialog";
 import { getActivities, bookActivity } from "@api/activities";
 import { Activity } from "@api/activities/types";
 import useForm, { FormProps } from "./forms/useForm";
@@ -61,7 +63,7 @@ const ActivityListContainer = () => {
                         <div>
                             <div className="flex items-center justify-between">
                                 <p className="font-bold text-slate-800">{activity.name}</p>
-                                <Chip label={activity.category} size="small" />
+                                <span className="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">{activity.category}</span>
                             </div>
                             {activity.duration && (
                                 <div className="flex items-center gap-1 text-xs text-slate-500 mt-1">
@@ -72,7 +74,7 @@ const ActivityListContainer = () => {
                         {activity.description && <p className="text-sm text-slate-600 line-clamp-2">{activity.description}</p>}
                         <div className="flex items-center justify-between mt-auto pt-2">
                             <span className="text-orange-600 font-bold">Rp {Number(activity.price).toLocaleString("id-ID")}</span>
-                            <Button variant="contained" color="warning" size="small" onClick={() => openBooking(activity)}>
+                            <Button variant="cta" onClick={() => openBooking(activity)}>
                                 Request Booking
                             </Button>
                         </div>
@@ -80,22 +82,19 @@ const ActivityListContainer = () => {
                 ))}
             </div>
 
-            <Dialog open={!!bookingActivity} onClose={() => setBookingActivity(null)} fullWidth maxWidth="xs">
-                <DialogTitle>Request: {bookingActivity?.name}</DialogTitle>
-                <DialogContent>
-                    <FormProvider {...methods}>
-                        <form onSubmit={onSubmit} className="flex flex-col gap-3 mt-1">
-                            <TextField label={t("itinerary.fullname")} fullWidth value={watch("fullName")} onChange={(e) => setValue("fullName", e.target.value)} error={!!errors.fullName} helperText={errors.fullName?.message} />
-                            <TextField label={t("itinerary.phone")} fullWidth value={watch("phone")} onChange={(e) => setValue("phone", e.target.value)} error={!!errors.phone} helperText={errors.phone?.message} />
-                            <TextField label={t("itinerary.email")} fullWidth value={watch("email")} onChange={(e) => setValue("email", e.target.value)} error={!!errors.email} helperText={errors.email?.message} />
-                            <TextField type="date" label="Date" fullWidth slotProps={{ inputLabel: { shrink: true } }} value={watch("date")} onChange={(e) => setValue("date", e.target.value)} error={!!errors.date} helperText={errors.date?.message} />
-                            <TextField type="number" label="Participants" fullWidth value={watch("participants")} onChange={(e) => setValue("participants", Number(e.target.value))} error={!!errors.participants} helperText={errors.participants?.message} />
-                            <Button type="submit" variant="contained" color="warning" disabled={isSubmitting} sx={{ mt: 1 }}>
-                                {isSubmitting ? <CircularProgress size={20} color="inherit" /> : "Submit Request"}
-                            </Button>
-                        </form>
-                    </FormProvider>
-                </DialogContent>
+            <Dialog open={!!bookingActivity} onClose={() => setBookingActivity(null)} title={`Request: ${bookingActivity?.name ?? ""}`}>
+                <FormProvider {...methods}>
+                    <form onSubmit={onSubmit} className="flex flex-col gap-3">
+                        <TextField label={t("itinerary.fullname")} fullWidth value={watch("fullName")} onChange={(e) => setValue("fullName", e.target.value)} error={errors.fullName?.message} />
+                        <TextField label={t("itinerary.phone")} fullWidth value={watch("phone")} onChange={(e) => setValue("phone", e.target.value)} error={errors.phone?.message} />
+                        <TextField label={t("itinerary.email")} fullWidth value={watch("email")} onChange={(e) => setValue("email", e.target.value)} error={errors.email?.message} />
+                        <TextField type="date" label="Date" fullWidth value={watch("date")} onChange={(e) => setValue("date", e.target.value)} error={errors.date?.message} />
+                        <TextField type="number" label="Participants" fullWidth value={watch("participants")} onChange={(e) => setValue("participants", Number(e.target.value))} error={errors.participants?.message} />
+                        <Button type="submit" variant="cta" isLoading={isSubmitting} fullWidth className="mt-1">
+                            Submit Request
+                        </Button>
+                    </form>
+                </FormProvider>
             </Dialog>
         </div>
     );

@@ -1,7 +1,7 @@
 # 03 — Design System & UI
 
-> The visual language of `tiket-FE`: the MUI v9 glassmorphism theme, the design-system `Button` wrapper, the Tailwind glass utilities, the navigation rule, and the responsive approach.
-> Grounded in `src/theme/theme.ts`, `src/styles/global.css`, `tailwind.config.js`, `src/components/Button/index.tsx`, `src/components/AppNavbar/index.tsx`, `docs/RESPONSIVE.md`, `docs/COMPONENTS_AND_UI.md`.
+> The visual language of `tiket-FE`: the MUI v9 theme (a solid, professional surface system — glassmorphism has been fully retired), the design-system `Button` wrapper, the Tailwind utilities, the mobile-first navigation shell, the navigation rule, and the responsive approach.
+> Grounded in `src/theme/theme.ts`, `src/styles/global.css`, `tailwind.config.js`, `src/components/Button/index.tsx`, `src/components/AppNavbar/index.tsx`, `src/components/BottomNav/index.tsx`, `src/components/AppDrawer/index.tsx`, `docs/RESPONSIVE.md`, `docs/COMPONENTS_AND_UI.md`.
 
 ---
 
@@ -16,7 +16,7 @@ Both appear on the same elements throughout (e.g. an MUI `<Card className="px-4 
 
 ## 2. The MUI Theme (`src/theme/theme.ts`)
 
-A single `createTheme({ cssVariables: true, ... })` (light mode) carries the brand forward and bakes glassmorphism into every surface.
+A single `createTheme({ cssVariables: true, ... })` (light mode) carries the brand forward. **Glassmorphism (frosted/translucent surfaces, backdrop blur) has been fully retired** — every surface is now solid white with a thin neutral border and a soft shadow (see §2a). Only the brand colors and the `Logo` component survived the rebuild unchanged; navbar, footer, card styling, and the theme's component overrides were all rewritten.
 
 ### Brand palette
 
@@ -31,7 +31,8 @@ export const brand = {
   ctaLight: "#FF7A33",
   ctaDark: "#E65100", // CTA orange
   dark: "#2F3033",
-  bgBase: "#F0F4F8",
+  bgBase: "#F7F8FA",
+  border: "#E6E9EE",
 };
 ```
 
@@ -42,34 +43,32 @@ Palette mapping in the theme:
 | `primary`                | `#4267B2` cornflower     | Brand, links, primary buttons                                                                                                                                                                    |
 | `secondary`              | `#0AD1FF`                | Accent                                                                                                                                                                                           |
 | **`warning`**            | **`#FF5A00` CTA orange** | **The call-to-action colour.** "Pay now", "Continue", search — all use `color="warning"`. This deliberate mapping (CTA → `warning`) is used throughout; treat `warning` as "CTA", not "caution". |
-| `background.default`     | `#F0F4F8`                | Page background                                                                                                                                                                                  |
-| `background.paper`       | `rgba(255,255,255,0.72)` | Frosted surface                                                                                                                                                                                  |
+| `background.default`     | `#F7F8FA`                | Page background                                                                                                                                                                                  |
+| `background.paper`       | `#FFFFFF` (solid)        | Surface                                                                                                                                                                                          |
 | `text.primary/secondary` | `#0f172a` / `#475569`    | Slate text                                                                                                                                                                                       |
 
 - **Typography:** Montserrat; buttons `textTransform: none`, weight 700; headings 700–800.
 - **Shape:** base `borderRadius: 12`; `Paper`/`Card` overridden to `16`; `Button` to `8`.
 
-### Glass surfaces (baked in)
+### 2a. Solid surfaces (baked in)
 
-A shared `glassSurface` object is applied to **every `Paper` and `Card`** via `styleOverrides`, so surfaces are frosted by default without opt-in:
+A shared `surface` object is applied to **every `Paper` and `Card`** via `styleOverrides`, so every surface is opaque white by default without opt-in — no transparency, no `backdropFilter`, anywhere in the theme:
 
 ```ts
-const glassSurface = {
-  background: "rgba(255, 255, 255, 0.72)",
-  backdropFilter: "blur(24px)",
-  WebkitBackdropFilter: "blur(24px)",
-  border: "1px solid rgba(255, 255, 255, 0.75)",
-  boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.08)",
+const surface = {
+  background: "#FFFFFF",
+  border: "1px solid #E6E9EE",
+  boxShadow: "0 1px 2px 0 rgba(16,24,40,0.04), 0 1px 3px 0 rgba(16,24,40,0.06)",
 };
 ```
 
 Notable component overrides:
 
-- `MuiPaper` — glass + `borderRadius: 16`; `elevation8` bumped to `rgba(255,255,255,0.92)` so menus/popovers stay readable.
-- `MuiCard` — glass + hover transition on `box-shadow`/`transform`.
+- `MuiPaper` — solid surface + `borderRadius: 16`.
+- `MuiCard` — solid surface + hover transition on `box-shadow`/`transform`.
 - `MuiButton` — `disableElevation`, radius 8, weight 700, `paddingInline: 24`, `&:active { transform: scale(0.97) }`; colored shadow variants for `contained primary` (blue glow) and `contained warning` (orange glow).
-- `MuiOutlinedInput` — radius 8, translucent white fill.
-- `MuiAppBar` — solid brand `#4267B2` background, no shadow (the navbar wrapper adds glass; see §5).
+- `MuiOutlinedInput` — radius 8, solid white fill.
+- `MuiAppBar` — solid brand `#4267B2` background, no shadow (the `.app-header` wrapper supplies the sticky positioning; see §5).
 
 ## 3. The `Button` Wrapper (`src/components/Button/index.tsx`)
 
@@ -81,13 +80,12 @@ A thin design-system wrapper over MUI `Button` that adds a `dsVariant` prop and 
 </Button>
 ```
 
-| `dsVariant`       | Resolves to                                                                                 |
-| ----------------- | ------------------------------------------------------------------------------------------- |
-| `primary`         | `variant="contained" color="primary"` (blue)                                                |
-| `cta` _(default)_ | `variant="contained" color="warning"` (orange)                                              |
-| `secondary`       | `variant="contained" color="secondary"`                                                     |
-| `ghost`           | `variant="outlined" color="primary"` with 2px border, fill-on-hover                         |
-| `glass`           | translucent white outlined button with `backdrop-filter: blur(12px)` — for use over imagery |
+| `dsVariant`       | Resolves to                                                         |
+| ----------------- | ------------------------------------------------------------------- |
+| `primary`         | `variant="contained" color="primary"` (blue)                        |
+| `cta` _(default)_ | `variant="contained" color="warning"` (orange)                      |
+| `secondary`       | `variant="contained" color="secondary"`                             |
+| `ghost`           | `variant="outlined" color="primary"` with 2px border, fill-on-hover |
 
 Behaviour:
 
@@ -98,20 +96,35 @@ Behaviour:
 
 ## 4. Tailwind Layer & Global Styles (`src/styles/global.css`)
 
-Tailwind `base`/`components`/`utilities` layers plus CSS custom properties mirroring the brand (`--primary`, `--orange`, `--glass-bg`, `--glass-blur: 24px`, …). Design tokens are also declared in `tailwind.config.js` (`primary`, `secondary`, `cta`, `orange`, radius scale `ds-sm|md|lg|xl` = 8/12/16/24, Montserrat + JetBrains Mono).
+Tailwind `base`/`components`/`utilities` layers plus CSS custom properties mirroring the brand (`--primary`, `--orange`, `--border-subtle`, `--bottom-nav-height: 64px`, …). Design tokens are also declared in `tailwind.config.js` (`primary`, `secondary`, `cta`, `orange`, radius scale `ds-sm|md|lg|xl` = 8/12/16/24, Montserrat + JetBrains Mono).
 
 Hand-written utilities:
 
-| Class                                       | Effect                                                                                                                                                                                                                                                                                                                                                                       |
-| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `.glass-card`                               | `rgba(255,255,255,0.85)` + `blur(24px)` + hairline border + soft shadow + `rounded-ds-lg`. The Tailwind sibling to the MUI `glassSurface`; used on `<div>`s that aren't MUI `Card`s.                                                                                                                                                                                         |
-| `.glass-card-dark`                          | Dark frosted variant (`rgba(17,24,39,0.6)`).                                                                                                                                                                                                                                                                                                                                 |
-| `.glass-navbar`                             | Brand background + bottom hairline + `sticky top-0 z-50`. Applied by `AppLayout`; **do not** re-add `sticky/top/z` on the wrapper.                                                                                                                                                                                                                                           |
-| `.bg-pattern`, `.home-app`, `.ferry-app`    | Brand SVG texture / hero background images.                                                                                                                                                                                                                                                                                                                                  |
-| `.button-orange`, `.button-blue`, `.btn-ds` | Tailwind button styles used where a raw element (e.g. an `IconButton`) needs the CTA look.                                                                                                                                                                                                                                                                                   |
-| `.animated-bg`, `.animated-bg__blob`        | Fixed, full-viewport layer of three slow-drifting blurred gradient blobs in brand colors (primary/orange/secondary), behind every glass surface. Pure CSS `@keyframes` (no JS animation cost); honors `prefers-reduced-motion`. Rendered by `AnimatedBackground` (`src/components/AnimatedBackground`) and mounted once in `AppLayout`, so every page gets it automatically. |
+| Class                                       | Effect                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.surface-card`                             | Opaque `#FFFFFF` + thin `--border-subtle` border + soft shadow + `rounded-ds-lg`. The Tailwind sibling to the MUI `surface` object (§2a); used on `<div>`s that aren't MUI `Card`s. **No transparency, no blur** — renamed from the old `.glass-card` when glassmorphism was retired.                                                                                                                          |
+| `.surface-card-dark`                        | Dark solid variant (`#181B20`), used by the dark chat widget.                                                                                                                                                                                                                                                                                                                                                  |
+| `.app-header`                               | Solid brand-color background + `sticky top-0 z-50`. Wraps `AppNavbar`/`CheckoutNavbar` in `AppLayout`/`CheckoutLayout` — **do not** re-add `sticky/top/z` on the wrapper. Renamed from `.glass-navbar`.                                                                                                                                                                                                        |
+| `.bottom-nav`                               | Fixed, mobile-only bottom bar (`height: var(--bottom-nav-height)`), solid white + top hairline border, `z-60`, `env(safe-area-inset-bottom)` padding for notched phones. Backs `BottomNav` (§5a).                                                                                                                                                                                                              |
+| `.bg-pattern`, `.home-app`, `.ferry-app`    | Brand SVG texture / hero background images.                                                                                                                                                                                                                                                                                                                                                                    |
+| `.button-orange`, `.button-blue`, `.btn-ds` | Tailwind button styles used where a raw element (e.g. an `IconButton`) needs the CTA look.                                                                                                                                                                                                                                                                                                                     |
+| `.animated-bg`, `.animated-bg__blob`        | Fixed, full-viewport layer of three slow-drifting blurred gradient blobs in brand colors (primary/orange/secondary), at a subtle `opacity: 0.18` behind the (now opaque) surfaces. Pure CSS `@keyframes` (no JS animation cost); honors `prefers-reduced-motion`. Rendered by `AnimatedBackground` (`src/components/AnimatedBackground`) and mounted once in `AppLayout`, so every page gets it automatically. |
 
-## 5. The Navigation Rule (critical)
+## 5. Navigation Shell (mobile-first)
+
+Rebuilt to fix a real inconsistency: `AppNavbar` (full nav) and `CheckoutNavbar` (bare logo bar) used to look like two different apps. Both now sit on the same `.app-header` surface, and the shell is designed mobile-first with two cooperating pieces below `lg` (1024px):
+
+- **`AppNavbar`** — a slim top bar (logo + burger) on mobile; a full horizontal nav (all links + Find Booking + language + Login + My Bookings) on desktop (`lg:flex`, mobile nav hidden via `hidden lg:flex`). Takes a single `onOpenDrawer` prop — it doesn't own drawer state itself.
+- **`BottomNav`** (mobile-only, `lg:hidden`) — a fixed bottom tab bar with the "most important" client-facing destinations: Flights, Ferry, ItinerQ, Private Driver, plus a "More" tab. Lives in `src/components/BottomNav`.
+- **`AppDrawer`** — a right-anchored MUI `Drawer` holding everything _not_ in the bottom nav: Hotels, Activities, My Bookings, Find Booking, language switcher, Login. Opened by either the header burger or the bottom nav's "More" tab — both call the _same_ lifted `isDrawerOpen` state, so there's only ever one drawer instance. Lives in `src/components/AppDrawer`.
+
+**State ownership:** `AppLayout` owns `isDrawerOpen` and the Find-Booking dialog's `isOpenFind` for the mobile path, passing callbacks down to `AppNavbar` (burger) and `BottomNav` ("More"). `AppNavbar` separately owns its own `isOpenFind` for the desktop "Find Booking" button — two independent dialog instances, mutually exclusive by viewport, which is simpler than threading one shared dialog through both layout and navbar.
+
+`AppLayout`'s main content gets `pb-[calc(var(--bottom-nav-height)+8px)] lg:pb-0` so the fixed bottom nav never overlaps page content or the footer; `ChatBot`'s floating button is offset the same way on mobile (`bottom-[calc(var(--bottom-nav-height)+12px)] lg:bottom-6`) so the two floating UIs don't collide.
+
+`CheckoutLayout`/`CheckoutNavbar` intentionally has **no** bottom nav and **no** burger — just the logo on `.app-header` — to avoid distracting the traveler mid-payment. This is a deliberate reduction, not a different design system.
+
+## 6. The Navigation Rule (critical)
 
 **Never** wire navigation through `onClick`/`onPress` + `router.push()`, and never combine an `onClick` state change with `<Link>` navigation on the same element — this causes a **double-click bug**. Render the button _as_ a link instead.
 

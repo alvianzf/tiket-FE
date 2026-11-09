@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { Drawer, IconButton, Button } from "@mui/material";
-import { X, Hotel, Compass, Receipt, Search, Globe } from "lucide-react";
+import Drawer from "@components/ui/Drawer";
+import Button from "@components/ui/Button";
+import { X, Receipt, Search, Globe } from "lucide-react";
 import ReactCountryFlag from "react-country-flag";
 import Logo from "@icons/Logo";
 
@@ -23,19 +24,17 @@ const AppDrawer = ({ open, onClose, onOpenFind, language, onChangeLanguage }: Pr
     const { pathname } = useRouter();
 
     const links = [
-        { label: t("home.hotels", "Hotels"), href: "/hotels", icon: Hotel },
-        { label: t("home.activities", "Activities"), href: "/activities", icon: Compass },
         { label: t("common.my_bookings", "My Bookings"), href: "/history", icon: Receipt },
     ];
 
     return (
-        <Drawer anchor="right" open={open} onClose={onClose} slotProps={{ paper: { sx: { width: "min(360px, 100vw)" } } }}>
+        <Drawer open={open} onClose={onClose}>
             <div className="flex flex-col h-full">
                 <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
                     <Logo className="h-7 w-auto" />
-                    <IconButton onClick={onClose} aria-label="Close menu">
+                    <button onClick={onClose} aria-label="Close menu" className="text-slate-500 hover:text-slate-800">
                         <X size={20} />
-                    </IconButton>
+                    </button>
                 </div>
 
                 <nav className="flex flex-col gap-1 p-3">
@@ -73,30 +72,21 @@ const AppDrawer = ({ open, onClose, onOpenFind, language, onChangeLanguage }: Pr
                             <Globe size={16} /> {t("common.language")}
                         </span>
                         <div className="flex gap-2">
-                            <IconButton
+                            <button
                                 onClick={() => onChangeLanguage("id")}
-                                sx={{ borderRadius: "10px", backgroundColor: language === "id" ? "rgba(66,103,178,0.1)" : "transparent" }}
+                                className={`w-10 h-10 flex items-center justify-center rounded-lg ${language === "id" ? "bg-primary/10" : ""}`}
                             >
                                 <ReactCountryFlag countryCode="ID" svg className="rounded-full w-5 h-5 object-cover" />
-                            </IconButton>
-                            <IconButton
+                            </button>
+                            <button
                                 onClick={() => onChangeLanguage("en")}
-                                sx={{ borderRadius: "10px", backgroundColor: language === "en" ? "rgba(66,103,178,0.1)" : "transparent" }}
+                                className={`w-10 h-10 flex items-center justify-center rounded-lg ${language === "en" ? "bg-primary/10" : ""}`}
                             >
                                 <ReactCountryFlag countryCode="GB" svg className="rounded-full w-5 h-5 object-cover" />
-                            </IconButton>
+                            </button>
                         </div>
                     </div>
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        color="warning"
-                        component="a"
-                        href="https://dashboard.tiketq.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        sx={{ height: 48 }}
-                    >
+                    <Button variant="cta" fullWidth href="https://dashboard.tiketq.com" target="_blank" rel="noopener noreferrer">
                         {t("profile.login")}
                     </Button>
                 </div>
