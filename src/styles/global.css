@@ -84,7 +84,7 @@ body {
   height: 46vmax;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.18;
+  opacity: 0.4;
   will-change: transform;
 }
 

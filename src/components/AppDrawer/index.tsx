@@ -2,7 +2,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import Drawer from "@components/ui/Drawer";
-import Button from "@components/ui/Button";
 import { X, Receipt, Search, Globe } from "lucide-react";
 import ReactCountryFlag from "react-country-flag";
 import Logo from "@icons/Logo";
@@ -30,9 +29,9 @@ const AppDrawer = ({ open, onClose, onOpenFind, language, onChangeLanguage }: Pr
     return (
         <Drawer open={open} onClose={onClose}>
             <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+                <div className="flex items-center justify-between px-5 py-4 bg-primary">
                     <Logo className="h-7 w-auto" />
-                    <button onClick={onClose} aria-label="Close menu" className="text-slate-500 hover:text-slate-800">
+                    <button onClick={onClose} aria-label="Close menu" className="text-white/80 hover:text-white">
                         <X size={20} />
                     </button>
                 </div>
@@ -66,7 +65,7 @@ const AppDrawer = ({ open, onClose, onOpenFind, language, onChangeLanguage }: Pr
                     </button>
                 </nav>
 
-                <div className="mt-auto p-5 border-t border-slate-100 flex flex-col gap-4">
+                <div className="mt-auto p-5 border-t border-slate-100">
                     <div className="flex items-center justify-between">
                         <span className="flex items-center gap-2 text-sm font-semibold text-slate-500">
                             <Globe size={16} /> {t("common.language")}
@@ -86,9 +85,6 @@ const AppDrawer = ({ open, onClose, onOpenFind, language, onChangeLanguage }: Pr
                             </button>
                         </div>
                     </div>
-                    <Button variant="cta" fullWidth href="https://dashboard.tiketq.com" target="_blank" rel="noopener noreferrer">
-                        {t("profile.login")}
-                    </Button>
                 </div>
             </div>
         </Drawer>

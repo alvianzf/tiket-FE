@@ -1,6 +1,5 @@
 import SearchBookingNumber from "@components/SearchBookingNumber";
 import Dialog from "@components/ui/Dialog";
-import Button from "@components/ui/Button";
 import Logo from "@icons/Logo";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Menu as MenuIcon, Search } from "lucide-react";
@@ -88,10 +87,6 @@ const AppNavbar = ({ onOpenDrawer }: Props) => {
                             </DropdownMenu.Content>
                         </DropdownMenu.Portal>
                     </DropdownMenu.Root>
-
-                    <Button variant="cta" href="https://dashboard.tiketq.com" target="_blank" rel="noopener noreferrer">
-                        {t("profile.login")}
-                    </Button>
 
                     <Link href="/history" className="font-semibold text-white/80 hover:text-white text-sm transition-colors whitespace-nowrap">
                         {t("common.my_bookings")}

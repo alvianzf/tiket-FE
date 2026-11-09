@@ -1,6 +1,7 @@
 import Facebook from "@icons/Facebook";
 import Instagram from "@icons/Instagram";
 import Twitter from "@icons/Twitter";
+import Button from "@components/ui/Button";
 import Link from "next/link";
 import { useTranslation } from "react-i18next"
 
@@ -23,6 +24,9 @@ const Footer = () => {
                     <div className="flex flex-col gap-4">
                         <p className="font-extrabold text-dark tracking-tight text-lg">Tiket<span className="text-primary">Q</span></p>
                         <p className="text-slate-500 text-sm leading-relaxed max-w-xs">{t('footer.description') || "Premium travel booking experience with the best prices and services."}</p>
+                        <Button variant="outline" href="https://dashboard.tiketq.com" target="_blank" rel="noopener noreferrer" className="h-9 px-5 self-start">
+                            {t('profile.login')}
+                        </Button>
                     </div>
                     <div className="flex flex-col gap-3">
                         <p className="font-bold text-dark uppercase tracking-wider text-xs">{t('footer.nav_title')}</p>
