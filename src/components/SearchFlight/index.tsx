@@ -141,7 +141,7 @@ const SearchFlight = () => {
 
     if (!mounted) {
         return (
-            <div className="w-full lg:max-w-[1200px] glass-card p-8 md:p-10 border-white/30 backdrop-blur-3xl mx-auto animate-pulse h-[136px] flex items-center justify-center">
+            <div className="w-full lg:max-w-[1200px] surface-card p-8 md:p-10 border-white/30 backdrop-blur-3xl mx-auto animate-pulse h-[136px] flex items-center justify-center">
                 <div className="w-full h-12 bg-white/10 rounded-xl" />
             </div>
         );
@@ -150,7 +150,7 @@ const SearchFlight = () => {
     const tripType = watch('tripType');
 
     return (
-        <div className="w-full lg:max-w-[1200px] glass-card p-8 md:p-10 border-white/30 backdrop-blur-3xl mx-auto">
+        <div className="w-full lg:max-w-[1200px] surface-card p-8 md:p-10 border-white/30 backdrop-blur-3xl mx-auto">
             <FormProvider {...methods}>
                 <div className="flex flex-row gap-2 bg-white/10 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md w-fit mb-6">
                     <button

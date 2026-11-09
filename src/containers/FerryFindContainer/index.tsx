@@ -18,7 +18,7 @@ const FerryFindContainer = () => {
             </div>
             
             <div className="flex flex-wrap justify-center -mt-12 relative z-20 px-4">
-                <div className="glass-card flex flex-wrap w-full gap-8 p-8 max-w-[1280px] bg-white/40 shadow-2xl items-center justify-around border-white/40 backdrop-blur-2xl">
+                <div className="surface-card flex flex-wrap w-full gap-8 p-8 max-w-[1280px] bg-white/40 shadow-2xl items-center justify-around border-white/40 backdrop-blur-2xl">
                     <div className="flex-1 min-w-[300px]">
                         <FerryPartners />
                     </div>

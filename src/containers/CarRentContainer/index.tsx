@@ -66,7 +66,7 @@ const CarRentContainer = () => {
             <div className="flex flex-col gap-0 w-full items-center justify-center animate-pulse">
                 <div className="w-full home-app flex flex-col items-center justify-center py-16 px-4 gap-8">
                     <div className="h-10 w-48 bg-white/10 rounded-xl" />
-                    <div className="glass-card p-6 md:p-8 rounded-2xl border border-white/10 bg-white/5 w-full max-w-3xl h-24" />
+                    <div className="surface-card p-6 md:p-8 rounded-2xl border border-white/10 bg-white/5 w-full max-w-3xl h-24" />
                 </div>
             </div>
         );
@@ -86,7 +86,7 @@ const CarRentContainer = () => {
                 </div>
 
                 {/* Glassmorphism search card */}
-                <div className="glass-card p-6 md:p-8 rounded-2xl shadow-2xl backdrop-blur-xl border border-white/10 bg-white/5 w-full max-w-3xl">
+                <div className="surface-card p-6 md:p-8 rounded-2xl shadow-2xl backdrop-blur-xl border border-white/10 bg-white/5 w-full max-w-3xl">
                     <div className="flex flex-col md:flex-row gap-6 items-end w-full">
                         {/* Date */}
                         <div className="flex flex-col gap-1 w-full md:flex-1">

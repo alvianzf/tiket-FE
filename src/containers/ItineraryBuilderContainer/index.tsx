@@ -164,7 +164,7 @@ const ItineraryBuilderContainer = () => {
                         </div>
 
                         {trip.length > 0 && (
-                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card p-4 mt-4 flex items-center justify-between">
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="surface-card p-4 mt-4 flex items-center justify-between">
                                 <div>
                                     <p className="text-xs text-slate-500">{t("itinerary.total_time")}</p>
                                     <p className="font-bold text-slate-800">{totals.hours}h {totals.mins}m</p>

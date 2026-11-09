@@ -92,7 +92,7 @@ const CarRentalForm = ({ car, date }: Props) => {
     return (
         <div className="flex flex-col gap-6 w-full max-w-[700px] mx-auto px-4 py-8">
             {/* Car summary */}
-            <div className="glass-card p-6 rounded-2xl border border-white/20 bg-white/30 backdrop-blur-xl shadow-xl flex flex-col gap-3">
+            <div className="surface-card p-6 rounded-2xl border border-white/20 bg-white/30 backdrop-blur-xl shadow-xl flex flex-col gap-3">
                 <div>
                     <h2 className="text-xl font-bold text-slate-800">{car.name}</h2>
                     <p className="text-slate-500 text-sm">{car.type} · {car.rows} Baris · {car.transmission}</p>
@@ -129,7 +129,7 @@ const CarRentalForm = ({ car, date }: Props) => {
             </div>
 
             {/* Personal details */}
-            <div className="glass-card p-6 rounded-2xl border border-white/20 bg-white/30 backdrop-blur-xl shadow-xl flex flex-col gap-4">
+            <div className="surface-card p-6 rounded-2xl border border-white/20 bg-white/30 backdrop-blur-xl shadow-xl flex flex-col gap-4">
                 <h3 className="font-bold text-slate-800 text-lg">Personal Details</h3>
                 <div className="flex flex-col gap-1">
                     <label className="text-sm text-slate-600">Full Name (as in KTP)</label>
@@ -149,7 +149,7 @@ const CarRentalForm = ({ car, date }: Props) => {
             </div>
 
             {/* Documents */}
-            <div className="glass-card p-6 rounded-2xl border border-white/20 bg-white/30 backdrop-blur-xl shadow-xl flex flex-col gap-5">
+            <div className="surface-card p-6 rounded-2xl border border-white/20 bg-white/30 backdrop-blur-xl shadow-xl flex flex-col gap-5">
                 <h3 className="font-bold text-slate-800 text-lg">Identity Documents</h3>
                 <p className="text-sm text-slate-500 -mt-2">Required for identity verification before your rental is approved.</p>
                 <UploadArea

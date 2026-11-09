@@ -53,7 +53,7 @@ const ActivityListContainer = () => {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {activities.map((activity) => (
-                    <div key={activity.id} className="glass-card p-5 flex flex-col gap-3">
+                    <div key={activity.id} className="surface-card p-5 flex flex-col gap-3">
                         {activity.photos?.[0] && (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src={activity.photos[0]} alt={activity.name} className="w-full h-36 object-cover rounded-ds-sm" />

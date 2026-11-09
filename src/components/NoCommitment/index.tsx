@@ -167,7 +167,7 @@ const NoCommitment = () => {
                                 key={idx}
                                 variants={cardVariants}
                                 whileHover={{ y: -6, scale: 1.02 }}
-                                className={`glass-card p-8 bg-white border border-slate-100/80 hover:shadow-2xl transition-all duration-300 flex flex-col gap-6 group ${feature.hoverBorder}`}
+                                className={`surface-card p-8 bg-white border border-slate-100/80 hover:shadow-2xl transition-all duration-300 flex flex-col gap-6 group ${feature.hoverBorder}`}
                             >
                                 <div className={`w-16 h-16 ${feature.bgColor} rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm`}>
                                     {feature.icon}
@@ -229,7 +229,7 @@ const NoCommitment = () => {
 
                     {/* Simulated live chat mock component */}
                     <div className="flex-1 max-w-sm w-full relative z-10 shrink-0 lg:ml-8">
-                        <div className="glass-card-dark p-5 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-xl flex flex-col gap-4">
+                        <div className="surface-card-dark p-5 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-xl flex flex-col gap-4">
                             
                             {/* Header status */}
                             <div className="flex items-center justify-between pb-3 border-b border-white/10">

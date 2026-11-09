@@ -9,10 +9,9 @@
   --secondary: #0ad1ff;
   --orange: #ff5a00;
   --dark: #2f3033;
-  --bg-base: #f0f4f8;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.18);
-  --glass-blur: 24px;
+  --bg-base: #f7f8fa;
+  --border-subtle: #e6e9ee;
+  --bottom-nav-height: 64px;
 }
 
 .bg-pattern {
@@ -21,35 +20,48 @@
 }
 
 body {
-  @apply bg-[#f0f4f8] text-slate-900 antialiased font-sans;
+  @apply bg-[#f7f8fa] text-slate-900 antialiased font-sans;
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
-  @apply rounded-ds-lg transition-all duration-300;
+/* Solid, professional surface — replaces the old frosted/translucent glass
+   look app-wide. No backdrop-filter anywhere in the new design. */
+.surface-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  box-shadow:
+    0 1px 2px 0 rgba(16, 24, 40, 0.04),
+    0 1px 3px 0 rgba(16, 24, 40, 0.06);
+  @apply rounded-ds-lg transition-shadow duration-200;
 }
 
-.glass-card-dark {
-  background: rgba(17, 24, 39, 0.6);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+.surface-card-dark {
+  background: #181b20;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.35);
   @apply rounded-ds-lg;
 }
 
-.glass-navbar {
+.app-header {
   background: var(--primary);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   @apply sticky top-0 z-50;
 }
 
 .btn-ds {
   @apply font-bold rounded-ds-sm transition-all duration-200 active:scale-95;
+}
+
+/* Fixed mobile bottom tab bar — sits above page content, below modals/chat */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--bottom-nav-height);
+  background: #ffffff;
+  border-top: 1px solid var(--border-subtle);
+  box-shadow: 0 -2px 8px 0 rgba(16, 24, 40, 0.04);
+  z-index: 60;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .home-app {
@@ -72,7 +84,7 @@ body {
   height: 46vmax;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.35;
+  opacity: 0.18;
   will-change: transform;
 }
 

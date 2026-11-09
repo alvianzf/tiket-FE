@@ -28,7 +28,7 @@ const ConciergeServices = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: i * 0.08 }}
                         >
-                            <Link href={service.href} className="glass-card flex flex-col gap-3 p-5 h-full hover:-translate-y-1 transition-transform">
+                            <Link href={service.href} className="surface-card flex flex-col gap-3 p-5 h-full hover:-translate-y-1 transition-transform">
                                 <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${service.color}`}>
                                     <service.icon size={22} />
                                 </div>

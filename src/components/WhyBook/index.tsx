@@ -44,7 +44,7 @@ const WhyBook = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                     {features.map((feature, index) => (
-                        <div key={index} className="glass-card p-8 bg-white border-slate-100 hover:scale-105 transition-all text-center space-y-6 group shadow-xl hover:shadow-2xl">
+                        <div key={index} className="surface-card p-8 bg-white border-slate-100 hover:scale-105 transition-all text-center space-y-6 group shadow-xl hover:shadow-2xl">
                             <div className={`w-24 h-24 ${feature.bgColor} rounded-3xl flex items-center justify-center mx-auto ${feature.hoverIconBg} group-hover:rotate-6 transition-all duration-500 shadow-inner`}>
                                 <NextImage 
                                     src={feature.icon} 

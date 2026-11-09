@@ -118,7 +118,7 @@ const EticketContainer = () => {
                     <div className="w-20 h-1.5 bg-cta rounded-full"></div>
                 </div>
 
-                <div className="glass-card bg-white/85 p-8 md:p-10 shadow-lg relative overflow-hidden border-white/75">
+                <div className="surface-card bg-white/85 p-8 md:p-10 shadow-lg relative overflow-hidden border-white/75">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
                     
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10 border-b border-slate-200/40 pb-8 mb-8">
@@ -269,7 +269,7 @@ const EticketContainer = () => {
                     </div>
                 </div>
 
-                <div className="glass-card bg-slate-900 border-none text-slate-300 p-10 md:p-12 shadow-2xl space-y-12">
+                <div className="surface-card bg-slate-900 border-none text-slate-300 p-10 md:p-12 shadow-2xl space-y-12">
                     <div className="space-y-6">
                         <h4 className="text-xl font-bold text-white flex items-center gap-3">
                             <span className="bg-white/10 p-2 rounded-lg">💡</span> Catatan Penting:

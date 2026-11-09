@@ -1,12 +1,13 @@
-import { createTheme, alpha } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
 
 /**
  * TiketQ Material UI theme.
  *
  * Carries the pre-existing brand forward: primary cornflower #4267B2, CTA
- * orange #FF5A00, Montserrat, and the 8/12/16/24 radius scale. Glassmorphism is
- * baked into Paper/Card (frosted translucent surface + backdrop blur) so every
- * surface picks it up by default — matching the old `.glass-card` utility.
+ * orange #FF5A00, Montserrat, and the 8/12/16/24 radius scale. The visual
+ * language is a solid, professional surface system (white cards, a subtle
+ * 1px border, soft shadow) — no backdrop blur / translucency anywhere,
+ * replacing the previous glassmorphism look.
  */
 
 export const brand = {
@@ -19,16 +20,15 @@ export const brand = {
   ctaLight: "#FF7A33",
   ctaDark: "#E65100",
   dark: "#2F3033",
-  bgBase: "#F0F4F8",
+  bgBase: "#F7F8FA",
+  border: "#E6E9EE",
 } as const;
 
-// Shared glassmorphism surface — frosted white with a bright hairline border.
-const glassSurface = {
-  background: "rgba(255, 255, 255, 0.72)",
-  backdropFilter: "blur(24px)",
-  WebkitBackdropFilter: "blur(24px)",
-  border: "1px solid rgba(255, 255, 255, 0.75)",
-  boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.08)",
+// Shared solid surface — opaque white with a neutral hairline border.
+const surface = {
+  background: "#FFFFFF",
+  border: `1px solid ${brand.border}`,
+  boxShadow: "0 1px 2px 0 rgba(16,24,40,0.04), 0 1px 3px 0 rgba(16,24,40,0.06)",
 };
 
 const theme = createTheme({
@@ -38,7 +38,7 @@ const theme = createTheme({
     primary: { main: brand.primary, light: brand.primaryLight, dark: brand.primaryDark, contrastText: "#fff" },
     secondary: { main: brand.secondary, dark: brand.secondaryDark, contrastText: brand.dark },
     warning: { main: brand.cta, light: brand.ctaLight, dark: brand.ctaDark, contrastText: "#fff" },
-    background: { default: brand.bgBase, paper: "rgba(255,255,255,0.72)" },
+    background: { default: brand.bgBase, paper: "#FFFFFF" },
     text: { primary: "#0f172a", secondary: "#475569" },
   },
   typography: {
@@ -57,20 +57,18 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundImage: "none",
-          ...glassSurface,
+          ...surface,
           borderRadius: 16,
         },
-        // Menus/popovers need an opaque-enough surface to stay readable.
-        elevation8: { background: "rgba(255,255,255,0.92)" },
       },
     },
     MuiCard: {
       defaultProps: { elevation: 0 },
       styleOverrides: {
         root: {
-          ...glassSurface,
+          ...surface,
           borderRadius: 16,
-          transition: "box-shadow .3s ease, transform .3s ease",
+          transition: "box-shadow .2s ease, transform .2s ease",
         },
       },
     },
@@ -105,13 +103,13 @@ const theme = createTheme({
     MuiTextField: { defaultProps: { variant: "outlined", size: "small" } },
     MuiOutlinedInput: {
       styleOverrides: {
-        root: { borderRadius: 8, background: alpha("#ffffff", 0.6) },
+        root: { borderRadius: 8, background: "#FFFFFF" },
       },
     },
     MuiChip: { styleOverrides: { root: { fontWeight: 600 } } },
     MuiAppBar: {
       styleOverrides: {
-        root: { background: brand.primary, boxShadow: "none", borderBottom: "1px solid rgba(255,255,255,0.1)" },
+        root: { background: brand.primary, boxShadow: "none" },
       },
     },
   },

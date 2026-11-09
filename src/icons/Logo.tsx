@@ -1,13 +1,17 @@
 import React from 'react';
 
-const Logo = () => {
+interface Props {
+    className?: string;
+}
+
+const Logo = ({ className = "h-[40px] w-auto" }: Props) => {
     return (
-        <svg 
-            id="Layer_1" 
-            xmlns="http://www.w3.org/2000/svg" 
-            xmlnsXlink="http://www.w3.org/1999/xlink" 
+        <svg
+            id="Layer_1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 809.45 272.74"
-            className="h-[40px] w-auto"
+            className={className}
         >
             <defs>
                 <style>

@@ -12,7 +12,7 @@ const PurchaseContainer = () => {
                     {t('profile.purchase_title')}
                 </h1>
                 
-                <div className="glass-card overflow-hidden bg-white/10 p-8 md:p-12 shadow-2xl relative">
+                <div className="surface-card overflow-hidden bg-white/10 p-8 md:p-12 shadow-2xl relative">
                     {/* Decorative blur elements for premium feel */}
                     <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
                     <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl -ml-32 -mb-32"></div>

@@ -53,7 +53,7 @@ const HotelListContainer = () => {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {hotels.map((hotel) => (
-                    <div key={hotel.id} className="glass-card p-5 flex flex-col gap-3">
+                    <div key={hotel.id} className="surface-card p-5 flex flex-col gap-3">
                         {hotel.photos?.[0] && (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src={hotel.photos[0]} alt={hotel.name} className="w-full h-36 object-cover rounded-ds-sm" />

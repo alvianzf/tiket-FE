@@ -57,7 +57,7 @@ const DanaTransactionStatusContainer = () => {
 
     return (
         <div className="flex justify-center px-5 py-16 min-h-screen">
-            <div className="glass-card bg-white/85 p-8 md:p-12 shadow-lg w-full max-w-[560px] flex flex-col items-center text-center gap-8">
+            <div className="surface-card bg-white/85 p-8 md:p-12 shadow-lg w-full max-w-[560px] flex flex-col items-center text-center gap-8">
                 <CircularProgress size={48} />
 
                 <div className="space-y-2">

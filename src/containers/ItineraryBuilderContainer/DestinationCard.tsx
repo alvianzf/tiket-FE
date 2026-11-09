@@ -16,7 +16,7 @@ const DestinationCard = ({ destination, disabled }: { destination: Destination; 
             {...listeners}
             {...attributes}
             style={{ transform: CSS.Translate.toString(transform) }}
-            className={`glass-card p-3 cursor-grab active:cursor-grabbing select-none transition-opacity ${
+            className={`surface-card p-3 cursor-grab active:cursor-grabbing select-none transition-opacity ${
                 isDragging ? "opacity-40" : disabled ? "opacity-50 cursor-not-allowed" : "opacity-100"
             }`}
         >

@@ -40,7 +40,7 @@ const HomeContainer = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.7, delay: 0.2 }}
-                    className="glass-card flex flex-wrap w-full gap-12 p-8 lg:p-12 max-w-[1200px] shadow-lg items-center justify-around border-white/40"
+                    className="surface-card flex flex-wrap w-full gap-12 p-8 lg:p-12 max-w-[1200px] shadow-lg items-center justify-around border-white/40"
                 >
                     <div className="flex-1 min-w-[300px]">
                         <AirlinesPartners />

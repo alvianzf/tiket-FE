@@ -72,7 +72,7 @@ const FerryListContainer = () => {
             <motion.div 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-4xl glass-card border-none bg-white/10 backdrop-blur-3xl p-8 rounded-3xl shadow-xl border border-white/10"
+                className="w-full max-w-4xl surface-card border-none bg-white/10 backdrop-blur-3xl p-8 rounded-3xl shadow-xl border border-white/10"
             >
                 <div className="flex justify-between items-center relative">
                     {/* Background Line */}
@@ -107,13 +107,13 @@ const FerryListContainer = () => {
                 )}
                 
                 {isError && (
-                    <div className="glass-card bg-red-50/10 border-red-500/20 p-8 rounded-3xl w-full max-w-md text-center">
+                    <div className="surface-card bg-red-50/10 border-red-500/20 p-8 rounded-3xl w-full max-w-md text-center">
                         <p className="text-red-500 font-bold">{t('tickets.error_loading_trips')}</p>
                     </div>
                 )}
                 
                 {!isFetching && !isError && tripList.length === 0 && (
-                    <div className="glass-card bg-white/5 backdrop-blur-xl p-16 rounded-[40px] w-full text-center border-none shadow-2xl">
+                    <div className="surface-card bg-white/5 backdrop-blur-xl p-16 rounded-[40px] w-full text-center border-none shadow-2xl">
                          <div className="bg-orange-500/10 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
                             <Ship size={48} className="text-[#ff5a00]" />
                          </div>
@@ -161,12 +161,12 @@ const FerryListContainer = () => {
                             </div>
                         )}
                         {isReturnError && (
-                            <div className="glass-card bg-red-50/10 border-red-500/20 p-8 rounded-3xl w-full max-w-md text-center">
+                            <div className="surface-card bg-red-50/10 border-red-500/20 p-8 rounded-3xl w-full max-w-md text-center">
                                 <p className="text-red-500 font-bold">{t('tickets.error_loading_trips')}</p>
                             </div>
                         )}
                         {!isFetchingReturn && !isReturnError && returnTripList.length === 0 && (
-                            <div className="glass-card bg-white/5 backdrop-blur-xl p-16 rounded-[40px] w-full text-center border-none shadow-2xl">
+                            <div className="surface-card bg-white/5 backdrop-blur-xl p-16 rounded-[40px] w-full text-center border-none shadow-2xl">
                                 <div className="bg-orange-500/10 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
                                     <Ship size={48} className="text-[#ff5a00]" />
                                 </div>

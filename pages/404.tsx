@@ -21,7 +21,7 @@ const Custom404 = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="glass-card max-w-lg w-full p-12 text-center relative z-10">
+        <div className="surface-card max-w-lg w-full p-12 text-center relative z-10">
         <motion.div 
           initial={{ y: -20 }}
           animate={{ y: 0 }}

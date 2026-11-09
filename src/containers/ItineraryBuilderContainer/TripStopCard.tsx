@@ -19,7 +19,7 @@ const TripStopCard = ({ destination, index, onRemove }: Props) => {
         <div
             ref={setNodeRef}
             style={{ transform: CSS.Transform.toString(transform), transition }}
-            className={`glass-card p-3 flex items-center gap-3 ${isDragging ? "opacity-40" : ""}`}
+            className={`surface-card p-3 flex items-center gap-3 ${isDragging ? "opacity-40" : ""}`}
         >
             <div
                 {...attributes}

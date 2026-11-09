@@ -91,7 +91,7 @@ const PassengerInput = () => {
                 }}
             />
             {open && (
-                <div className="absolute top-[100%] left-0 mt-2 w-max min-w-[320px] z-[9999] glass-card shadow-2xl rounded-2xl p-6 border border-white/20 bg-white/40 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-200">
+                <div className="absolute top-[100%] left-0 mt-2 w-max min-w-[320px] z-[9999] surface-card shadow-2xl rounded-2xl p-6 border border-white/20 bg-white/40 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-200">
                     <div className="flex flex-col gap-6">
                         <div className="flex flex-col gap-5">
                             <div className="flex flex-row justify-between items-center gap-6">

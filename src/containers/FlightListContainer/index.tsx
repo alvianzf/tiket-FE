@@ -240,7 +240,7 @@ const FlightListContainer = () => {
                         <motion.div 
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="w-full lg:min-w-[50%] lg:w-auto glass-card p-5 md:p-6 rounded-2xl shadow-xl backdrop-blur-3xl border border-white/20 bg-white/10"
+                            className="w-full lg:min-w-[50%] lg:w-auto surface-card p-5 md:p-6 rounded-2xl shadow-xl backdrop-blur-3xl border border-white/20 bg-white/10"
                         >
                             <div className="flex flex-row gap-4 items-center justify-between w-full">
                                 <div className="flex flex-col gap-1 flex-1">
