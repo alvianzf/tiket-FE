@@ -10,7 +10,8 @@ const localeGroups = [
     'profile',
     'form',
     'common',
-    'pages'
+    'pages',
+    'itinerary'
 ];
 
 const localeEnGroups = {};

@@ -3,7 +3,8 @@
         "home": {
             "flight": "Pesawat",
             "ferry": "Feri",
-            "car_rental": "Sewa Mobil",
+            "car_rental": "Sopir Pribadi",
+            "itinerary": "ItinerQ",
             "airlines_partners": "Mitra Maskapai",
             "airlines_partners_description": "Kami bermitra dengan maskapai domestik dan internasional terkemuka untuk memberikan Anda opsi penerbangan terbaik.",
             "payment_partners": "Mitra Pembayaran Terpercaya",

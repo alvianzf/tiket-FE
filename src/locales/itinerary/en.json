@@ -1,0 +1,21 @@
+{
+    "en": {
+        "itinerary": {
+            "title": "ItinerQ Trip Builder",
+            "subtitle": "Drag Batam destinations into your trip, see the cost and time add up as you go.",
+            "catalog_title": "Destinations",
+            "trip_title": "Your Trip",
+            "trip_empty": "Drag destinations here to start building your trip.",
+            "duration_label": "Trip length",
+            "ask_ai": "Ask AI for ideas",
+            "total_cost": "Total cost",
+            "total_time": "Total time",
+            "submit": "Request This Trip",
+            "success": "Itinerary request received. Our concierge team will confirm availability and reach out.",
+            "fullname": "Full Name",
+            "phone": "Phone",
+            "email": "Email",
+            "start_date": "Start Date"
+        }
+    }
+}

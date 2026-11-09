@@ -336,6 +336,48 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, sendMessage }) => {
             );
         }
 
+        if (toolResult.type === 'destination_results') {
+            const { destinations, durationLabel } = toolResult.data;
+            if (!destinations || destinations.length === 0) return null;
+            return (
+                <div className="flex flex-col gap-2 mt-2 w-full">
+                    {destinations.map((d) => (
+                        <Card
+                            key={d.id}
+                            sx={{
+                                background: '#1e293b',
+                                color: '#fff',
+                                border: '1px solid #334155',
+                                backdropFilter: 'none',
+                                WebkitBackdropFilter: 'none',
+                                boxShadow: 'none',
+                            }}
+                        >
+                            <CardContent sx={{ p: 1.5, '&:last-child': { pb: 1.5 } }}>
+                                <div className="flex justify-between items-start gap-2">
+                                    <div>
+                                        <p className="font-bold text-slate-100 text-sm">{d.name}</p>
+                                        <p className="text-xs text-slate-400">{d.area} &middot; {d.category}</p>
+                                    </div>
+                                    <span className="text-orange-400 text-xs font-bold whitespace-nowrap">Rp {Number(d.price).toLocaleString('id-ID')}</span>
+                                </div>
+                                <p className="text-[11px] text-slate-500 mt-1">~{d.minStayMinutes} min visit</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                    <Button
+                        component="a"
+                        href="/itinerary"
+                        variant="outlined"
+                        size="small"
+                        sx={{ mt: 0.5, color: '#fb923c', borderColor: '#fb923c', '&:hover': { borderColor: '#fb923c', background: 'rgba(251,146,60,0.1)' } }}
+                    >
+                        Build this into a trip{durationLabel ? ` (${durationLabel})` : ''} in ItinerQ
+                    </Button>
+                </div>
+            );
+        }
+
         return null;
     };
 

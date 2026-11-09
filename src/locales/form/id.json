@@ -1,7 +1,8 @@
 {
     "id": {
         "form": {
-            "required": "Wajib diisi"
+            "required": "Wajib diisi",
+            "invalid_email": "Alamat email tidak valid"
         }
     }
 }

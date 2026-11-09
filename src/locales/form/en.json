@@ -1,7 +1,8 @@
 {
     "en": {
         "form": {
-            "required": "Required"
+            "required": "Required",
+            "invalid_email": "Invalid email address"
         }
     }
 }

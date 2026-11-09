@@ -1,4 +1,5 @@
 import AppNavbar from "@components/AppNavbar";
+import AnimatedBackground from "@components/AnimatedBackground";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from "@components/Footer";
@@ -12,11 +13,12 @@ interface Props {
 
 const AppLayout = ({ children } : Props) => {
     const router = useRouter();
-    
+
     return (
         <div className="w-full h-full min-h-screen bg-[#f0f4f8] flex flex-col justify-between overflow-x-hidden">
+            <AnimatedBackground />
             <ToastContainer />
-            <div className="w-full flex-1 h-full min-h-screen">
+            <div className="w-full flex-1 h-full min-h-screen relative z-[1]">
                 <div className="glass-navbar flex flex-row justify-center">
                     <AppNavbar />
                 </div>

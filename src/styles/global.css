@@ -58,6 +58,83 @@ body {
   background-position: center;
 }
 
+.animated-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.animated-bg__blob {
+  position: absolute;
+  width: 46vmax;
+  height: 46vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  will-change: transform;
+}
+
+.animated-bg__blob--primary {
+  top: -10%;
+  left: -12%;
+  background: var(--primary);
+  animation: drift-a 26s ease-in-out infinite;
+}
+
+.animated-bg__blob--cta {
+  bottom: -14%;
+  right: -10%;
+  background: var(--orange);
+  animation: drift-b 32s ease-in-out infinite;
+}
+
+.animated-bg__blob--secondary {
+  top: 30%;
+  right: 20%;
+  width: 34vmax;
+  height: 34vmax;
+  background: var(--secondary);
+  animation: drift-c 22s ease-in-out infinite;
+}
+
+@keyframes drift-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(8vw, 6vh) scale(1.08);
+  }
+}
+
+@keyframes drift-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-6vw, -8vh) scale(1.1);
+  }
+}
+
+@keyframes drift-c {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-5vw, 5vh) scale(0.95);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-bg__blob {
+    animation: none;
+  }
+}
+
 .ferry-app {
   background: url("/images/ferry-bg.jpg");
   background-size: cover;

@@ -1,0 +1,21 @@
+{
+    "id": {
+        "itinerary": {
+            "title": "ItinerQ Trip Builder",
+            "subtitle": "Seret destinasi Batam ke dalam rencana perjalanan Anda, lihat biaya dan waktu bertambah secara langsung.",
+            "catalog_title": "Destinasi",
+            "trip_title": "Perjalanan Anda",
+            "trip_empty": "Seret destinasi ke sini untuk mulai menyusun perjalanan.",
+            "duration_label": "Lama perjalanan",
+            "ask_ai": "Tanya AI untuk ide",
+            "total_cost": "Total biaya",
+            "total_time": "Total waktu",
+            "submit": "Ajukan Perjalanan Ini",
+            "success": "Permintaan itinerary diterima. Tim concierge kami akan mengonfirmasi ketersediaan dan menghubungi Anda.",
+            "fullname": "Nama Lengkap",
+            "phone": "Telepon",
+            "email": "Email",
+            "start_date": "Tanggal Mulai"
+        }
+    }
+}

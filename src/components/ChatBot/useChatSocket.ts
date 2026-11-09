@@ -36,7 +36,8 @@ export type ToolResultData =
     | { type: 'ferry_results'; data: { options?: FerryOption[]; cheapest?: FerryOption; earliest?: FerryOption; latest?: FerryOption; message?: string } }
     | { type: 'booking_summary'; data: { bookingCode?: string; status?: string; error?: string; flightdetail?: FlightDetail[] } }
     | { type: 'dana_payment'; data: { bookingCode: string; kind: 'QRIS' | 'VA'; vaNumber: string | null; qrContent: string | null; expiryTime: string | null } }
-    | { type: 'customer_service_card'; data: Record<string, never> };
+    | { type: 'customer_service_card'; data: Record<string, never> }
+    | { type: 'destination_results'; data: { destinations: { id: number; name: string; area: string; category?: string; minStayMinutes: number; travelGapMinutes: number; price: number }[]; durationLabel: string | null } };
 
 export type Message = {
     id: string;

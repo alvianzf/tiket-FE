@@ -3,7 +3,8 @@
         "home": {
             "flight": "Flight",
             "ferry": "Ferry",
-            "car_rental": "Car Rental",
+            "car_rental": "Private Driver",
+            "itinerary": "ItinerQ",
             "airlines_partners": "Airlines Partners",
             "airlines_partners_description": "We partner with leading domestic and international airlines to give you the best flight options.",
             "payment_partners": "Trusted Payment Partners",

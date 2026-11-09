@@ -21,6 +21,18 @@ const ChatBot = () => {
         scrollToBottom();
     }, [messages, isTyping, isOpen]);
 
+    // Lets other pages (e.g. the ItinerQ trip builder) open the assistant
+    // with a prefilled ask, without lifting chat state out of this widget.
+    useEffect(() => {
+        const handler = (e: Event) => {
+            const prefill = (e as CustomEvent<{ prefill?: string }>).detail?.prefill;
+            setIsOpen(true);
+            if (prefill) sendMessage(prefill);
+        };
+        window.addEventListener('tiketq:open-chat', handler);
+        return () => window.removeEventListener('tiketq:open-chat', handler);
+    }, [sendMessage]);
+
     const handleSend = () => {
         if (!inputValue.trim()) return;
         sendMessage(inputValue);
