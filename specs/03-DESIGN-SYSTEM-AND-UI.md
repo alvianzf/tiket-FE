@@ -1,18 +1,27 @@
 # 03 — Design System & UI
 
-> The visual language of `tiket-FE`: the MUI v9 theme (a solid, professional surface system — glassmorphism has been fully retired), the design-system `Button` wrapper, the Tailwind utilities, the mobile-first navigation shell, the navigation rule, and the responsive approach.
-> Grounded in `src/theme/theme.ts`, `src/styles/global.css`, `tailwind.config.js`, `src/components/Button/index.tsx`, `src/components/AppNavbar/index.tsx`, `src/components/BottomNav/index.tsx`, `src/components/AppDrawer/index.tsx`, `docs/RESPONSIVE.md`, `docs/COMPONENTS_AND_UI.md`.
+> The visual language of `tiket-FE`: two coexisting component systems (MUI for the deep booking/checkout forms, a lightweight no-MUI `ui/` kit for the app shell and anything built after the shell rebuild), a solid professional surface system (glassmorphism fully retired), the mobile-first navigation shell, the navigation rule, and the responsive approach.
+> Grounded in `src/theme/theme.ts`, `src/styles/global.css`, `tailwind.config.js`, `src/components/ui/*`, `src/components/Button/index.tsx`, `src/components/AppNavbar/index.tsx`, `src/components/BottomNav/index.tsx`, `src/components/AppDrawer/index.tsx`, `docs/RESPONSIVE.md`, `docs/COMPONENTS_AND_UI.md`.
 
 ---
 
-## 1. Hybrid Styling Model
+## 1. Two Component Systems (transitional)
 
-`tiket-FE` styles UI two ways simultaneously:
+`tiket-FE` is mid-migration off MUI. **Two systems currently coexist, split by area, not mixed within one component:**
 
-1. **MUI v9 components** styled through the theme and the `sx` prop (`Card`, `Button`, `TextField`, `AppBar`, `Dialog`, `Tabs`, `Table`, date pickers).
-2. **Tailwind CSS 3** utilities plus a handful of hand-written glass utilities in `src/styles/global.css`.
+1. **MUI v9** — still used in the deep booking/checkout forms: `SearchFlight`, `Checkout` (and its passenger sub-forms), `FerryPassenger`, `CarRentalForm`, anything using `@mui/x-date-pickers`. These are high-risk, payment-critical flows that were deliberately **not** touched in the shell rebuild — migrating them off MUI is a separate, future pass.
+2. **`src/components/ui/`** (no MUI) — `Button`, `TextField`, `Dialog`, `Drawer`, built on Radix UI primitives (`@radix-ui/react-dialog`, `@radix-ui/react-dropdown-menu`) + Tailwind + framer-motion. Used by the app shell (`AppNavbar`, `AppDrawer`, `AppLayout`'s find-booking dialog, `SearchBookingNumber`) and every page/dialog built since (ItinerQ, Hotel, Activity booking dialogs).
 
-Both appear on the same elements throughout (e.g. an MUI `<Card className="px-4 w-full mt-[40px]">`). NextUI has been removed; residual "old NextUI" comments are historical. When editing a page, match whichever styling the surrounding code already uses.
+When editing a page, match whichever system the surrounding code already uses — **do not mix MUI and `ui/` components inside the same form or dialog.** Tailwind CSS 3 utilities are used throughout both. NextUI has been removed from `tiket-FE` entirely (it remains the UI library for the separate `tiket-admin` project); residual "old NextUI" comments in `tiket-FE` are historical.
+
+### 1a. The `ui/` kit (`src/components/ui/`)
+
+- **`Button`** — `variant: "primary" | "cta" | "outline" | "ghost"`, `isLoading`, `fullWidth`; renders a `motion.button`, or a `motion.div`-wrapped `next/link` when `href` is passed (keeps link-based navigation — see §6). Bold rounded-xl shapes with colored glow shadows on `primary`/`cta`.
+- **`TextField`** — plain labeled `<input>`, `error` renders a message below.
+- **`Dialog`** — Radix `Dialog` (focus trap, `Escape`/overlay-click close, a11y `Title` built in — pass `title` or it falls back to a visually-hidden one) + framer-motion scale/fade enter, centered.
+- **`Drawer`** — same Radix primitive, slides in from the right edge instead of appearing centered; used for `AppDrawer`.
+
+Both `Dialog` and `Drawer` render via `RadixDialog.Portal` with `forceMount` + `AnimatePresence`, so the exit animation plays before unmount.
 
 ## 2. The MUI Theme (`src/theme/theme.ts`)
 
@@ -70,9 +79,9 @@ Notable component overrides:
 - `MuiOutlinedInput` — radius 8, solid white fill.
 - `MuiAppBar` — solid brand `#4267B2` background, no shadow (the `.app-header` wrapper supplies the sticky positioning; see §5).
 
-## 3. The `Button` Wrapper (`src/components/Button/index.tsx`)
+## 2b. The MUI-era `Button` Wrapper (`src/components/Button/index.tsx`)
 
-A thin design-system wrapper over MUI `Button` that adds a `dsVariant` prop and framer-motion micro-interaction. **It forwards all MUI `ButtonProps`**, so `component`, `href`, `onClick`, `startIcon`, `sx`, etc. all pass through.
+**For MUI-area pages only** (§1) — not to be confused with `ui/Button` (§1a), which is unrelated and used everywhere else. A thin design-system wrapper over MUI `Button` that adds a `dsVariant` prop and framer-motion micro-interaction. **It forwards all MUI `ButtonProps`**, so `component`, `href`, `onClick`, `startIcon`, `sx`, etc. all pass through.
 
 ```tsx
 <Button dsVariant="cta" isLoading={submitting}>
