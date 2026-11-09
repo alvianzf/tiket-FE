@@ -1,6 +1,18 @@
 {
     "id": {
         "home": {
+            "hero_badge": "Batam · Malaysia · Singapura",
+            "hero_title": "Teman Perjalanan Anda di Batam",
+            "hero_subtitle": "Satu platform untuk menyeberang, berkeliling, dan merencanakan perjalanan — pesawat, feri, sopir pribadi, dan itinerary Anda sendiri.",
+            "services_title": "Semua Kebutuhan Perjalanan Batam Anda",
+            "service_flight": "Pesawat",
+            "service_flight_desc": "Penerbangan domestik dan internasional dari dan ke Batam.",
+            "service_ferry": "Penyeberangan",
+            "service_ferry_desc": "Tiket feri antara Batam, Singapura, dan Johor.",
+            "service_driver": "Sopir Pribadi",
+            "service_driver_desc": "Antar jemput bandara, golf, dan perjalanan harian dengan sopir.",
+            "service_itinerary": "ItinerQ Trip Builder",
+            "service_itinerary_desc": "Seret destinasi untuk menyusun itinerary Batam Anda sendiri.",
             "flight": "Pesawat",
             "ferry": "Feri",
             "car_rental": "Sopir Pribadi",

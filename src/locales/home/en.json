@@ -1,6 +1,18 @@
 {
     "en": {
         "home": {
+            "hero_badge": "Batam · Malaysia · Singapore",
+            "hero_title": "Your Batam Travel Concierge",
+            "hero_subtitle": "One platform to cross the border, get around, and plan your trip — flights, ferries, private drivers, and your own itinerary.",
+            "services_title": "Everything for Your Batam Trip",
+            "service_flight": "Flights",
+            "service_flight_desc": "Domestic and international flights in and out of Batam.",
+            "service_ferry": "Border Crossing",
+            "service_ferry_desc": "Ferry tickets between Batam, Singapore, and Johor.",
+            "service_driver": "Private Driver",
+            "service_driver_desc": "Airport transfers, golf runs, and day trips with a driver.",
+            "service_itinerary": "ItinerQ Trip Builder",
+            "service_itinerary_desc": "Drag destinations into your own Batam itinerary.",
             "flight": "Flight",
             "ferry": "Ferry",
             "car_rental": "Private Driver",
