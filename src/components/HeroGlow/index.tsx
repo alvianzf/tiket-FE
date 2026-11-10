@@ -8,11 +8,15 @@ const HeroGlow = () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <span
             className="absolute rounded-full bg-white"
-            style={{ top: "-15%", left: "-8%", width: "40vmax", height: "40vmax", filter: "blur(70px)", opacity: 0.12, animation: "drift-a 22s ease-in-out infinite" }}
+            style={{ top: "-15%", left: "-8%", width: "42vmax", height: "42vmax", filter: "blur(55px)", opacity: 0.3, animation: "drift-a 22s ease-in-out infinite" }}
+        />
+        <span
+            className="absolute rounded-full"
+            style={{ bottom: "-22%", right: "-10%", width: "38vmax", height: "38vmax", filter: "blur(55px)", opacity: 0.35, background: "var(--orange)", animation: "drift-b 28s ease-in-out infinite" }}
         />
         <span
             className="absolute rounded-full bg-white"
-            style={{ bottom: "-20%", right: "-10%", width: "36vmax", height: "36vmax", filter: "blur(70px)", opacity: 0.1, animation: "drift-b 28s ease-in-out infinite" }}
+            style={{ top: "30%", right: "10%", width: "26vmax", height: "26vmax", filter: "blur(60px)", opacity: 0.22, animation: "drift-c 17s ease-in-out infinite" }}
         />
     </div>
 );
