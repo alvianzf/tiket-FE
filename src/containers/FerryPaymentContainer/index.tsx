@@ -33,8 +33,12 @@ const FerryPaymentContainer = () => {
     }, [bookingNo]);
 
     const totalPrice = booking?.totalPrice ?? price;
+    const basePrice = booking?.basePrice;
+    const serviceFee = booking?.serviceFee;
 
     const passengers: any[] = booking?.passengers ?? [];
+
+    const formatRp = (value: number) => `Rp ${Number(value).toLocaleString('id-ID')}`;
 
     return (
         <div className="flex flex-col gap-8 w-full items-center justify-center py-10">
@@ -84,6 +88,29 @@ const FerryPaymentContainer = () => {
                                                         <i>Adult</i>
                                                     </div>
                                                 ))}
+                                            </div>
+                                        </>
+                                    )}
+                                    {(basePrice !== undefined || serviceFee !== undefined) && (
+                                        <>
+                                            <hr className="border-slate-200" />
+                                            <div className="flex flex-col gap-1.5 text-sm">
+                                                {basePrice !== undefined && (
+                                                    <div className="flex flex-row justify-between text-slate-500">
+                                                        <p>Ticket Price</p>
+                                                        <p>{formatRp(basePrice)}</p>
+                                                    </div>
+                                                )}
+                                                {serviceFee !== undefined && (
+                                                    <div className="flex flex-row justify-between text-slate-500">
+                                                        <p>Service Fee</p>
+                                                        <p>{formatRp(serviceFee)}</p>
+                                                    </div>
+                                                )}
+                                                <div className="flex flex-row justify-between font-bold text-slate-800">
+                                                    <p>Total</p>
+                                                    <p>{formatRp(totalPrice)}</p>
+                                                </div>
                                             </div>
                                         </>
                                     )}
