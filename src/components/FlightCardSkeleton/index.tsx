@@ -1,12 +1,5 @@
-import { Card, Skeleton } from "@mui/material";
+const FlightCardSkeleton = () => (
+    <div className="surface-card w-full h-32 animate-pulse" />
+);
 
-const FlightCardSkeleton = () => {
-
-    return (
-        <Card className="w-full">
-            <Skeleton variant="rounded" className="rounded-lg h-32 w-full" height={128} />
-        </Card>
-    )
-}
-
-export default FlightCardSkeleton
+export default FlightCardSkeleton;

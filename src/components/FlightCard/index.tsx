@@ -1,7 +1,6 @@
 import { Flight } from "@api/searchFlights/types";
 import NextImage from "next/image";
-import Button from "@components/Button";
-import { Card, CardContent } from "@mui/material";
+import Button from "@components/ui/Button";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getPrice } from "@api/searchFlights/types";
@@ -40,20 +39,23 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
             animate={{ opacity: 1, x: 0 }}
             layout
         >
-            <Card className="flex flex-col h-auto shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
-                <CardContent onClick={handleExtended} className="overflow-visible cursor-pointer" sx={{ p: 0, "&:last-child": { pb: 0 } }}>
+            <div className="surface-card flex flex-col h-auto overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <div onClick={handleExtended} className="cursor-pointer">
                     <div className="flex flex-col gap-6 p-5 lg:p-8">
                         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                             {/* Airline Info & Price */}
                             <div className="flex items-center gap-4 lg:w-[35%]">
-                                <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-md">
-                                    <NextImage src={flight.airlineIcon} alt={flight.airlineCode} width={50} height={50} className="brightness-110 object-contain min-w-[50px]"/>
+                                <div className="p-3 bg-slate-100 rounded-2xl">
+                                    <NextImage src={flight.airlineIcon} alt={flight.airlineCode} width={50} height={50} className="object-contain min-w-[50px]"/>
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-lg font-extrabold text-dark tracking-tight leading-tight">{flight.airlineName}</p>
+                                    {isMounted && minPrice !== null && Number.isFinite(minPrice) && minPrice > 0 && (
+                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Mulai dari</span>
+                                    )}
                                     <p className="text-xl md:text-2xl text-cta font-mono font-bold tracking-tighter">
-                                        {!isMounted ? "" : (minPrice !== null && Number.isFinite(minPrice) && minPrice > 0 ? 
-                                            `${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(minPrice)}` : 
+                                        {!isMounted ? "" : (minPrice !== null && Number.isFinite(minPrice) && minPrice > 0 ?
+                                            `${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(minPrice)}` :
                                             "Harga Tidak Tersedia")}
                                         <span className="text-[10px] font-sans font-medium text-slate-500 ml-1">/ Org</span>
                                     </p>
@@ -90,7 +92,7 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
 
                             {/* Action Button */}
                             <div className="w-full lg:w-auto">
-                                <Button dsVariant="cta" className="w-full md:w-auto min-w-[140px] px-8 h-12 md:h-14 font-bold rounded-ds-sm shadow-md" onClick={handleSelect(flight.searchId)}>
+                                <Button variant="cta" className="w-full md:w-auto min-w-[140px] px-8 h-12 md:h-14" onClick={handleSelect(flight.searchId)}>
                                     {t('tickets.choose')}
                                 </Button>
                             </div>
@@ -163,8 +165,8 @@ const FlightCard = ({ flight, handleSelect } : Props) => {
                             )}
                         </AnimatePresence>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
         </motion.div>
     )
 }

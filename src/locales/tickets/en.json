@@ -53,6 +53,7 @@
             "payment": "Finalize Payment",
             "seats_available": "%{count} seats available",
             "ferry_name": "Vessel Name",
+            "border_crossing_ready": "Immigration-Ready Crossing",
             "price": "Total Price",
             "multi_city": "Multi-City",
             "add_flight": "Add Flight",

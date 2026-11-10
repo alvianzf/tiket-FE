@@ -187,7 +187,7 @@ const CarRentContainer = () => {
             </div>
 
             {/* Results */}
-            <div className="flex gap-4 w-full flex-row relative flex-wrap items-start max-w-[1280px] px-4 py-6">
+            <div className="grid gap-4 w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-start max-w-[1280px] px-4 py-6">
                 {isLoading && (
                     <>
                         <CarCardSkeleton />

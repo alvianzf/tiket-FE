@@ -53,6 +53,7 @@
             "payment": "Finalisasi Pembayaran",
             "seats_available": "%{count} kursi tersedia",
             "ferry_name": "Nama Kapal",
+            "border_crossing_ready": "Siap Lintas Negara",
             "price": "Total Harga",
             "multi_city": "Multi-Kota",
             "add_flight": "Tambah Penerbangan",
