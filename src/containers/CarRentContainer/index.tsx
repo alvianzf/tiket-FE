@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CarCard from "@components/CarCard";
 import CarCardSkeleton from "@components/CarCardSkeleton";
-import { MenuItem, TextField } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
 import { useState, useEffect } from "react";
 import { searchCars } from "@api/carRental";
 import { CarResult } from "@api/carRental/types";
@@ -12,14 +10,12 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import HeroGlow from "@components/HeroGlow";
 import Button from "@components/ui/Button";
+import Combobox from "@components/ui/Combobox";
+import DatePicker from "@components/ui/DatePicker";
 import { Calendar, Car as CarIcon, Users, Search, Fuel, ShieldCheck, MessageCircle } from "lucide-react";
 
 const fieldTileClass = "flex-1 min-w-0 bg-slate-50 rounded-xl p-3 border border-slate-100 focus-within:border-primary/50 focus-within:bg-white transition-colors";
 const fieldLabelClass = "flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-1";
-const bareInputSx = {
-    "& .MuiInput-underline:before, & .MuiInput-underline:after": { display: "none" },
-    "& .MuiInputBase-input": { fontWeight: 700, color: "#1e293b", padding: 0 },
-};
 
 const HOW_IT_WORKS = [
     { icon: Calendar, title: "Pick your date", desc: "Choose when you need the car and how many seats." },
@@ -28,28 +24,27 @@ const HOW_IT_WORKS = [
 ];
 
 const CAR_TYPES = [
-    { key: "all", label: "All Types" },
-    { key: "City Car", label: "City Car" },
-    { key: "Sedan", label: "Sedan" },
-    { key: "SUV", label: "SUV" },
-    { key: "MPV", label: "MPV" },
-    { key: "Minibus", label: "Minibus" },
-    { key: "Pick-up", label: "Pick-up" },
-    { key: "Double Cabin", label: "Double Cabin" },
-    { key: "Van", label: "Van" },
+    { code: "all", name: "All Types" },
+    { code: "City Car", name: "City Car" },
+    { code: "Sedan", name: "Sedan" },
+    { code: "SUV", name: "SUV" },
+    { code: "MPV", name: "MPV" },
+    { code: "Minibus", name: "Minibus" },
+    { code: "Pick-up", name: "Pick-up" },
+    { code: "Double Cabin", name: "Double Cabin" },
+    { code: "Van", name: "Van" },
 ];
 
 const ROW_OPTIONS = [
-    { key: "", label: "All" },
-    { key: "2", label: "2 Rows" },
-    { key: "3", label: "3 Rows" },
+    { code: "", name: "All" },
+    { code: "2", name: "2 Rows" },
+    { code: "3", name: "3 Rows" },
 ];
 
 // Rebuilt from scratch to match the new shell: gradient hero (no stock
-// photo) + decorative SVGs, a solid white search card (the old frosted
-// dark-glass card + white text was designed for a photo background that no
-// longer exists here). The search form fields themselves (MUI DatePicker/
-// Select) are left as-is — that's the deep-forms migration, deferred.
+// photo) + decorative SVGs, a solid white search card. The search controls
+// themselves are no longer MUI either — Combobox/DatePicker (see
+// src/components/ui) replace the Select/DatePicker entirely.
 const CarRentContainer = () => {
     const { t } = useTranslation();
     const [mounted, setMounted] = useState(false);
@@ -121,52 +116,28 @@ const CarRentContainer = () => {
                             <div className={fieldTileClass}>
                                 <p className={fieldLabelClass}><Calendar size={12} /> Rental Date</p>
                                 <DatePicker
-                                    minDate={moment().startOf("day")}
-                                    value={moment(date, "YYYY-MM-DD")}
-                                    onChange={(val) => { if (val) setDate(val.format("YYYY-MM-DD")); }}
-                                    slotProps={{
-                                        textField: {
-                                            variant: "standard",
-                                            fullWidth: true,
-                                            sx: bareInputSx,
-                                            slotProps: { htmlInput: { "aria-label": "Rental Date" } },
-                                        },
-                                    }}
+                                    value={date}
+                                    onChange={setDate}
+                                    min={moment().format("YYYY-MM-DD")}
                                 />
                             </div>
 
                             <div className={fieldTileClass}>
                                 <p className={fieldLabelClass}><CarIcon size={12} /> Car Type</p>
-                                <TextField
-                                    select
-                                    variant="standard"
-                                    fullWidth
-                                    sx={bareInputSx}
-                                    slotProps={{ htmlInput: { "aria-label": "Car Type" } }}
+                                <Combobox
+                                    options={CAR_TYPES}
                                     value={type}
-                                    onChange={(e) => setType(e.target.value)}
-                                >
-                                    {CAR_TYPES.map((ct) => (
-                                        <MenuItem key={ct.key} value={ct.key}>{ct.label}</MenuItem>
-                                    ))}
-                                </TextField>
+                                    onChange={setType}
+                                />
                             </div>
 
                             <div className={fieldTileClass}>
                                 <p className={fieldLabelClass}><Users size={12} /> Seat Rows</p>
-                                <TextField
-                                    select
-                                    variant="standard"
-                                    fullWidth
-                                    sx={bareInputSx}
-                                    slotProps={{ htmlInput: { "aria-label": "Seat Rows" } }}
+                                <Combobox
+                                    options={ROW_OPTIONS}
                                     value={rows}
-                                    onChange={(e) => setRows(e.target.value)}
-                                >
-                                    {ROW_OPTIONS.map((r) => (
-                                        <MenuItem key={r.key} value={r.key}>{r.label}</MenuItem>
-                                    ))}
-                                </TextField>
+                                    onChange={setRows}
+                                />
                             </div>
                         </div>
 

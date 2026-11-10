@@ -1,5 +1,5 @@
 import { Card, Divider, MenuItem, TextField } from "@mui/material"
-import { DatePicker } from "@mui/x-date-pickers";
+import DatePicker from "@components/ui/DatePicker";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "./forms/useForm";
@@ -22,9 +22,6 @@ const fieldSx = {
     },
 } as const;
 
-const monoInputSx = {
-    "& .MuiInput-input": { fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" },
-} as const;
 
 const CheckoutOrderChild = () => {
 
@@ -123,21 +120,18 @@ const CheckoutOrderChild = () => {
                                         slotProps={{ inputLabel: { shrink: true } }}
                                         sx={fieldSx}
                                     />
-                                    <DatePicker
-                                        label={t('checkout.date_of_birth')}
-                                        onChange={(value) => setValue(`childPassengers.${index}.date_of_birth`, moment(value).format('YYYY-MM-DD'))}
-                                        defaultValue={watch(`childPassengers.${index}.date_of_birth`) ? moment(watch(`childPassengers.${index}.date_of_birth`)) : null}
-                                        slotProps={{
-                                            textField: {
-                                                variant: "standard",
-                                                fullWidth: true,
-                                                error: !!errors?.childPassengers?.[index]?.date_of_birth,
-                                                helperText: errors?.childPassengers?.[index]?.date_of_birth?.message,
-                                                slotProps: { inputLabel: { shrink: true } },
-                                                sx: [fieldSx, monoInputSx],
-                                            },
-                                        }}
-                                    />
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-bold uppercase tracking-wide text-[13.5px] text-slate-400">{t('checkout.date_of_birth')}</span>
+                                        <DatePicker
+                                            value={watch(`childPassengers.${index}.date_of_birth`) || ''}
+                                            onChange={(value) => setValue(`childPassengers.${index}.date_of_birth`, value)}
+                                            max={moment().format('YYYY-MM-DD')}
+                                            error={!!errors?.childPassengers?.[index]?.date_of_birth}
+                                        />
+                                        {errors?.childPassengers?.[index]?.date_of_birth && (
+                                            <span className="text-xs text-red-500">{errors.childPassengers[index]?.date_of_birth?.message}</span>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
                                     <TextField

@@ -1,23 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Autocomplete, TextField } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import { useTranslation } from "react-i18next"
 import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useQueryFerryRoutes } from "../../queries/ferry";
 import Button from "@components/ui/Button";
-import { Ship, MapPin, ArrowLeftRight, Sparkles, Search } from "lucide-react";
+import Combobox from "@components/ui/Combobox";
+import DatePicker from "@components/ui/DatePicker";
+import { Ship, MapPin, ArrowLeftRight, Sparkles, Search, Users, Minus, Plus } from "lucide-react";
 
-// Shared "field tile" chrome: an icon + micro-label header, with the actual
-// MUI input stripped of its own border/label underneath. Redesigned from
-// scratch — the old layout was a plain row of underlined MUI TextFields.
+// Field tile chrome shared across the redesigned search forms: an icon +
+// micro-label header over a plain control (Combobox / DatePicker / counter)
+// with no MUI underneath — a genuinely different control set, not a
+// restyle of the old MUI Autocomplete + DatePicker row.
 const fieldTileClass = "flex-1 min-w-0 bg-slate-50 rounded-xl p-3 border border-slate-100 focus-within:border-primary/50 focus-within:bg-white transition-colors";
 const fieldLabelClass = "flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-1";
-const bareInputSx = {
-    "& .MuiInput-underline:before, & .MuiInput-underline:after": { display: "none" },
-    "& .MuiInputBase-input": { fontWeight: 700, color: "#1e293b", padding: 0 },
-};
 
 const SearchFerry = () => {
     const [mounted, setMounted] = useState(false);
@@ -29,34 +26,28 @@ const SearchFerry = () => {
         setMounted(true);
     }, []);
     const [destinationPort, setDestinationPort] = useState<string>("");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [departureDate, setDepartureDate] = useState<any>(moment());
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [returnDate, setReturnDate] = useState<any>(null);
+    const [departureDate, setDepartureDate] = useState<string>(moment().format('YYYY-MM-DD'));
+    const [returnDate, setReturnDate] = useState<string>("");
+    const [passengerCount, setPassengerCount] = useState(1);
     const { push } = useRouter();
 
     const { data: routesData, isLoading: isLoadingRoutes } = useQueryFerryRoutes({ pageIndex: 0, pageSize: 0 });
 
     const departurePorts = useMemo(() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const data = (routesData as any)?.data;
         if (!data?.records) return [];
         const ports = new Map();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         data.records.forEach((route: any) => {
             ports.set(route.embarkationPort.code, route.embarkationPort.name);
         });
-        return Array.from(ports.entries()).map(([code, name]) => ({ code, name }));
+        return Array.from(ports.entries()).map(([code, name]) => ({ code, name: name as string }));
     }, [routesData]);
 
     const availableDestinations = useMemo(() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const data = (routesData as any)?.data;
         if (!data?.records || !departurePort) return [];
         return data.records
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .filter((route: any) => route.embarkationPort.code === departurePort)
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .map((route: any) => ({
                 code: route.destinationPort.code,
                 name: route.destinationPort.name
@@ -66,17 +57,16 @@ const SearchFerry = () => {
     const handleSearch = () => {
         if (!departurePort || !destinationPort || !departureDate) return;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const params = new URLSearchParams({
             embarkation: departurePort,
             destination: destinationPort,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            tripdate: (departureDate as any).format('YYYYMMDD'),
-            type
+            tripdate: moment(departureDate, 'YYYY-MM-DD').format('YYYYMMDD'),
+            type,
+            adult: String(passengerCount)
         });
 
         if (type === 'round_trip' && returnDate) {
-            params.append('returndate', returnDate.format('YYYYMMDD'));
+            params.append('returndate', moment(returnDate, 'YYYY-MM-DD').format('YYYYMMDD'));
         }
 
         push(`/ferry/list?${params.toString()}`);
@@ -115,64 +105,23 @@ const SearchFerry = () => {
                 <div className="flex flex-col lg:flex-row gap-3 w-full">
                     <div className={fieldTileClass}>
                         <p className={fieldLabelClass}><MapPin size={12} /> {t('tickets.departure')}</p>
-                        <Autocomplete
+                        <Combobox
                             options={departurePorts}
-                            loading={isLoadingRoutes}
-                            value={departurePorts.find((port: any) => port.code === departurePort) ?? null}
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            onChange={(_, port: any) => {
-                                if (port) {
-                                    setDeparturePort(port.code);
-                                    setDestinationPort("");
-                                }
-                            }}
-                            getOptionLabel={(port: any) => port.name}
-                            isOptionEqualToValue={(option: any, val: any) => option.code === val.code}
-                            slotProps={{ popper: { className: "z-[9999]", placement: "bottom" } }}
-                            renderOption={(props, port: any) => (
-                                <li {...props} key={port.code} className={`${props.className} capitalize`}>
-                                    {port.name}
-                                </li>
-                            )}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder={t('tickets.departure_placeholder')}
-                                    sx={bareInputSx}
-                                />
-                            )}
+                            value={departurePort}
+                            isLoading={isLoadingRoutes}
+                            placeholder={t('tickets.departure_placeholder')}
+                            onChange={(code) => { setDeparturePort(code); setDestinationPort(""); }}
                         />
                     </div>
 
                     <div className={fieldTileClass}>
                         <p className={fieldLabelClass}><MapPin size={12} /> {t('tickets.destination')}</p>
-                        <Autocomplete
+                        <Combobox
                             options={availableDestinations}
-                            value={availableDestinations.find((port: any) => port.code === destinationPort) ?? null}
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            onChange={(_, port: any) => {
-                                if (port) {
-                                    setDestinationPort(port.code);
-                                }
-                            }}
-                            getOptionLabel={(port: any) => port.name}
-                            isOptionEqualToValue={(option: any, val: any) => option.code === val.code}
+                            value={destinationPort}
                             disabled={!departurePort}
-                            slotProps={{ popper: { className: "z-[9999]", placement: "bottom" } }}
-                            renderOption={(props, port: any) => (
-                                <li {...props} key={port.code} className={`${props.className} capitalize`}>
-                                    {port.name}
-                                </li>
-                            )}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder={t('tickets.destination_placeholder')}
-                                    sx={bareInputSx}
-                                />
-                            )}
+                            placeholder={t('tickets.destination_placeholder')}
+                            onChange={setDestinationPort}
                         />
                     </div>
 
@@ -181,8 +130,7 @@ const SearchFerry = () => {
                         <DatePicker
                             value={departureDate}
                             onChange={setDepartureDate}
-                            minDate={moment()}
-                            slotProps={{ textField: { variant: "standard", fullWidth: true, sx: bareInputSx } }}
+                            min={moment().format('YYYY-MM-DD')}
                         />
                     </div>
 
@@ -192,12 +140,35 @@ const SearchFerry = () => {
                             <DatePicker
                                 value={returnDate}
                                 onChange={setReturnDate}
-                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                minDate={(departureDate as any) || moment()}
-                                slotProps={{ textField: { variant: "standard", fullWidth: true, sx: bareInputSx } }}
+                                min={departureDate || moment().format('YYYY-MM-DD')}
                             />
                         </div>
                     )}
+
+                    <div className={fieldTileClass}>
+                        <p className={fieldLabelClass}><Users size={12} /> {t('tickets.passenger', { count: passengerCount })}</p>
+                        <div className="flex items-center gap-3">
+                            <button
+                                type="button"
+                                aria-label="Decrease passengers"
+                                onClick={() => setPassengerCount((c) => Math.max(1, c - 1))}
+                                disabled={passengerCount <= 1}
+                                className="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center disabled:opacity-40 shrink-0"
+                            >
+                                <Minus size={12} />
+                            </button>
+                            <span className="font-bold text-slate-800 min-w-[1.5ch] text-center">{passengerCount}</span>
+                            <button
+                                type="button"
+                                aria-label="Increase passengers"
+                                onClick={() => setPassengerCount((c) => Math.min(9, c + 1))}
+                                disabled={passengerCount >= 9}
+                                className="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center disabled:opacity-40 shrink-0"
+                            >
+                                <Plus size={12} />
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <Button

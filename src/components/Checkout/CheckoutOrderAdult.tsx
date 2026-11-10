@@ -1,9 +1,11 @@
-import { Card, Divider, InputAdornment, MenuItem, TextField } from "@mui/material"
+import { Card, Divider, MenuItem, TextField } from "@mui/material"
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormProps } from "./forms/useForm";
-import { User, Calendar } from "lucide-react";
+import { User } from "lucide-react";
 import { motion } from "framer-motion";
+import moment from "moment";
+import DatePicker from "@components/ui/DatePicker";
 
 // Replicates the old NextUI "underlined + outside label" input look.
 const fieldSx = {
@@ -20,9 +22,6 @@ const fieldSx = {
     },
 } as const;
 
-const monoInputSx = {
-    "& .MuiInput-input": { fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" },
-} as const;
 
 const CheckoutOrderAdult = () => {
     const { setValue, formState: { errors }, control, watch } = useFormContext<FormProps>();
@@ -125,28 +124,19 @@ const CheckoutOrderAdult = () => {
                                         slotProps={{ inputLabel: { shrink: true } }}
                                         sx={fieldSx}
                                     />
-                                    <TextField
-                                        type="date"
-                                        label={t('checkout.date_of_birth')}
-                                        variant="standard"
-                                        fullWidth
-                                        placeholder={t('checkout.select_date')}
-                                        value={watch(`adultPassengers.${index}.date_of_birth`)}
-                                        onChange={(e) => handleDateChange(e.target.value, index)}
-                                        error={!!errors?.adultPassengers?.[index]?.date_of_birth}
-                                        helperText={errors?.adultPassengers?.[index]?.date_of_birth?.message}
-                                        slotProps={{
-                                            inputLabel: { shrink: true },
-                                            input: {
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
-                                                        <Calendar size={18} className="text-slate-400" />
-                                                    </InputAdornment>
-                                                ),
-                                            },
-                                        }}
-                                        sx={[fieldSx, monoInputSx]}
-                                    />
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-bold uppercase tracking-wide text-[13.5px] text-slate-400">{t('checkout.date_of_birth')}</span>
+                                        <DatePicker
+                                            value={watch(`adultPassengers.${index}.date_of_birth`) || ''}
+                                            onChange={(value) => handleDateChange(value, index)}
+                                            max={moment().format('YYYY-MM-DD')}
+                                            placeholder={t('checkout.select_date')}
+                                            error={!!errors?.adultPassengers?.[index]?.date_of_birth}
+                                        />
+                                        {errors?.adultPassengers?.[index]?.date_of_birth && (
+                                            <span className="text-xs text-red-500">{errors.adultPassengers[index]?.date_of_birth?.message}</span>
+                                        )}
+                                    </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">

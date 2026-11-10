@@ -10,18 +10,21 @@ interface Props {
     embarkation: string;
     destination: string;
     tripdate: string;
+    passengerCount?: number;
     onSelect?: (trip: FerryTrip) => void;
 }
 
-const FerryCard = ({ trip, embarkation, destination, tripdate, onSelect }: Props) => {
+const FerryCard = ({ trip, embarkation, destination, tripdate, passengerCount = 1, onSelect }: Props) => {
     const { t } = useTranslation();
     const { push } = useRouter();
+
+    const totalPrice = (trip.price ?? 0) * passengerCount;
 
     const formattedPrice = new Intl.NumberFormat("id-ID", {
         style: "currency",
         currency: trip.currency || "IDR",
         maximumFractionDigits: 0,
-    }).format(trip.price ?? 0);
+    }).format(totalPrice);
 
     const handleOrder = () => {
         if (onSelect) {
@@ -36,7 +39,8 @@ const FerryCard = ({ trip, embarkation, destination, tripdate, onSelect }: Props
                 destination,
                 tripdate,
                 vesselName: trip.vesselName,
-                price: trip.price,
+                price: totalPrice,
+                adult: passengerCount,
             }
         });
     };
@@ -97,7 +101,7 @@ const FerryCard = ({ trip, embarkation, destination, tripdate, onSelect }: Props
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full w-fit backdrop-blur-sm border border-white/10">
+                            <div className="flex items-center gap-2 px-4 py-2 bg-slate-100 rounded-full w-fit">
                                 <Users size={14} className="text-slate-400" />
                                 <span className="text-xs font-black text-slate-600 uppercase tracking-widest leading-none">
                                     {t('tickets.seats_available', { count: trip.availableSeats })}
@@ -108,7 +112,9 @@ const FerryCard = ({ trip, embarkation, destination, tripdate, onSelect }: Props
                         {/* Pricing Side */}
                         <div className="flex-shrink-0 flex flex-col items-center md:items-end gap-6 md:pl-10 md:border-l border-white/10">
                             <div className="text-center md:text-right">
-                                <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-1 block">{t('tickets.price', 'Total Price')}</span>
+                                <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-1 block">
+                                    {t('tickets.price', 'Total Price')} &middot; {t('tickets.passenger', { count: passengerCount })}
+                                </span>
                                 <span className="text-3xl font-black text-[#ff5a00] tracking-tighter">{formattedPrice}</span>
                             </div>
 

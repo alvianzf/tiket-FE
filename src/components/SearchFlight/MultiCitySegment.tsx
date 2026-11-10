@@ -1,10 +1,9 @@
-import { Autocomplete, TextField, InputAdornment } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
+import Combobox from "@components/ui/Combobox";
+import DatePicker from "@components/ui/DatePicker";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { Airport } from "@api/airports/types";
-import { FaPlaneDeparture, FaPlaneArrival } from "react-icons/fa";
-import { Trash2 } from "lucide-react";
+import { PlaneTakeoff, PlaneLanding, Trash2 } from "lucide-react";
 
 export interface SegmentValue {
     from: string;
@@ -26,6 +25,8 @@ interface Props {
 const MultiCitySegment = ({ index, value, airports, isLoading, canRemove, minDate, onChange, onRemove }: Props) => {
     const { t } = useTranslation();
 
+    const airportOptions = airports.map((item) => ({ code: item.code, name: `${item.code} — ${item.name}`, group: item.group }));
+
     return (
         <div className="flex flex-col lg:flex-row gap-4 items-end w-full p-4 bg-slate-50 rounded-2xl border border-slate-100">
             <div className="hidden lg:flex w-6 shrink-0 items-center justify-center self-end pb-2">
@@ -33,122 +34,39 @@ const MultiCitySegment = ({ index, value, airports, isLoading, canRemove, minDat
             </div>
             <div className="w-full lg:flex-1 flex flex-col gap-2">
                 <p className="font-medium text-slate-800/80 text-sm">{t('tickets.from')}</p>
-                <Autocomplete
-                    aria-label={t('tickets.from')}
-                    options={airports}
-                    loading={isLoading}
-                    value={airports.find((item) => item.code === value.from) ?? null}
-                    onChange={(_, item) => { if (item) onChange(index, { ...value, from: item.code }); }}
-                    getOptionLabel={(item) => item.name}
-                    isOptionEqualToValue={(option, val) => option.code === val.code}
-                    groupBy={() => t('tickets.popular_city')}
-                    slotProps={{
-                        popper: {
-                            className: "z-[9999]",
-                            sx: { width: { xs: "350px !important", md: "600px !important" } }
-                        }
-                    }}
-                    renderGroup={(params) => (
-                        <li key={params.key}>
-                            <div className="text-primary text-base font-bold pl-2 py-1">{params.group}</div>
-                            <ul className="list-none p-0">{params.children}</ul>
-                        </li>
-                    )}
-                    renderOption={(props, item) => (
-                        <li {...props} key={item.code} className={`${props.className} text-black hover:bg-primary hover:text-white transition-colors`}>
-                            <div className="flex flex-col">
-                                <span className="font-bold">{item.code}</span>
-                                <span className="text-xs opacity-80">{item.name}</span>
-                            </div>
-                        </li>
-                    )}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            variant="standard"
-                            placeholder={t('tickets.from_placeholder')}
-                            slotProps={{
-                                ...params.slotProps,
-                                input: {
-                                    ...params.slotProps.input,
-                                    startAdornment: (
-                                        <>
-                                            <InputAdornment position="start"><FaPlaneDeparture className="text-primary" /></InputAdornment>
-                                            {params.slotProps.input.startAdornment}
-                                        </>
-                                    )
-                                }
-                            }}
-                        />
-                    )}
-                />
+                <div className="flex items-center gap-2 bg-white rounded-xl p-3 border border-slate-100 focus-within:border-primary/50 transition-colors">
+                    <PlaneTakeoff size={16} className="text-primary shrink-0" />
+                    <Combobox
+                        options={airportOptions}
+                        value={value.from}
+                        isLoading={isLoading}
+                        placeholder={t('tickets.from_placeholder')}
+                        onChange={(code) => onChange(index, { ...value, from: code })}
+                    />
+                </div>
             </div>
             <div className="w-full lg:flex-1 flex flex-col gap-2">
                 <p className="font-medium text-slate-800/80 text-sm">{t('tickets.to')}</p>
-                <Autocomplete
-                    aria-label={t('tickets.to')}
-                    options={airports}
-                    loading={isLoading}
-                    value={airports.find((item) => item.code === value.to) ?? null}
-                    onChange={(_, item) => { if (item) onChange(index, { ...value, to: item.code }); }}
-                    getOptionLabel={(item) => item.name}
-                    isOptionEqualToValue={(option, val) => option.code === val.code}
-                    groupBy={() => t('tickets.popular_city')}
-                    slotProps={{
-                        popper: {
-                            className: "z-[9999]",
-                            sx: { width: { xs: "350px !important", md: "600px !important" } }
-                        }
-                    }}
-                    renderGroup={(params) => (
-                        <li key={params.key}>
-                            <div className="text-primary text-base font-bold pl-2 py-1">{params.group}</div>
-                            <ul className="list-none p-0">{params.children}</ul>
-                        </li>
-                    )}
-                    renderOption={(props, item) => (
-                        <li {...props} key={item.code} className={`${props.className} text-black hover:bg-primary hover:text-white transition-colors`}>
-                            <div className="flex flex-col">
-                                <span className="font-bold">{item.code}</span>
-                                <span className="text-xs opacity-80">{item.name}</span>
-                            </div>
-                        </li>
-                    )}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            variant="standard"
-                            placeholder={t('tickets.to_placeholder')}
-                            slotProps={{
-                                ...params.slotProps,
-                                input: {
-                                    ...params.slotProps.input,
-                                    startAdornment: (
-                                        <>
-                                            <InputAdornment position="start"><FaPlaneArrival className="text-primary" /></InputAdornment>
-                                            {params.slotProps.input.startAdornment}
-                                        </>
-                                    )
-                                }
-                            }}
-                        />
-                    )}
-                />
+                <div className="flex items-center gap-2 bg-white rounded-xl p-3 border border-slate-100 focus-within:border-primary/50 transition-colors">
+                    <PlaneLanding size={16} className="text-primary shrink-0" />
+                    <Combobox
+                        options={airportOptions}
+                        value={value.to}
+                        isLoading={isLoading}
+                        placeholder={t('tickets.to_placeholder')}
+                        onChange={(code) => onChange(index, { ...value, to: code })}
+                    />
+                </div>
             </div>
             <div className="w-full lg:flex-1 flex flex-col gap-2">
                 <p className="font-medium text-slate-800/80 text-sm">{t('tickets.departured_date')}</p>
-                <DatePicker
-                    className="w-full"
-                    minDate={minDate ? moment(minDate) : moment()}
-                    value={value.date ? moment(value.date) : null}
-                    onChange={(v) => { if (v) onChange(index, { ...value, date: v.format('YYYY-MM-DD') }); }}
-                    slotProps={{
-                        textField: {
-                            variant: "standard",
-                            fullWidth: true
-                        }
-                    }}
-                />
+                <div className="bg-white rounded-xl p-3 border border-slate-100 focus-within:border-primary/50 transition-colors">
+                    <DatePicker
+                        value={value.date}
+                        onChange={(date) => onChange(index, { ...value, date })}
+                        min={minDate || moment().format('YYYY-MM-DD')}
+                    />
+                </div>
             </div>
             {canRemove && (
                 <button

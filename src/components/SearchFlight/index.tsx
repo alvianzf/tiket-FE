@@ -1,5 +1,5 @@
-import { DatePicker } from "@mui/x-date-pickers";
 import Button from "@components/ui/Button";
+import DatePicker from "@components/ui/DatePicker";
 import { useTranslation } from "react-i18next";
 import FromInput from "./FromInput";
 import DestinationInput from "./DestinationInput";
@@ -14,11 +14,6 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { Plane, ArrowLeftRight, Route, Plus, Search } from "lucide-react";
-
-const bareInputSx = {
-    "& .MuiInput-underline:before, & .MuiInput-underline:after": { display: "none" },
-    "& .MuiInputBase-input": { fontWeight: 700, color: "#1e293b", padding: 0 },
-};
 
 const SearchFlight = () => {
     const [mounted, setMounted] = useState(false);
@@ -245,42 +240,18 @@ const SearchFlight = () => {
                     <div className="w-full lg:flex-1 bg-slate-50 rounded-xl p-3 border border-slate-100 focus-within:border-primary/50 focus-within:bg-white transition-colors">
                         <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-1">{t('tickets.departured_date')}</p>
                         <DatePicker
-                            className="w-full"
-                            minDate={moment()}
-                            value={watch('date') ? moment(watch('date')) : null}
-                            onChange={(value) => {
-                                if (value) {
-                                    setValue('date', value.format('YYYY-MM-DD'));
-                                }
-                            }}
-                            slotProps={{
-                                textField: {
-                                    variant: "standard",
-                                    fullWidth: true,
-                                    sx: bareInputSx
-                                }
-                            }}
+                            value={watch('date') || ''}
+                            onChange={(value) => setValue('date', value)}
+                            min={moment().format('YYYY-MM-DD')}
                         />
                     </div>
                     {tripType === 'round_trip' && (
                         <div className="w-full lg:flex-1 bg-slate-50 rounded-xl p-3 border border-slate-100 focus-within:border-primary/50 focus-within:bg-white transition-colors">
                             <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-1">{t('tickets.return_date')}</p>
                             <DatePicker
-                                className="w-full"
-                                minDate={watch('date') ? moment(watch('date')) : moment()}
-                                value={watch('returnDate') ? moment(watch('returnDate')!) : null}
-                                onChange={(value) => {
-                                    if (value) {
-                                        setValue('returnDate', value.format('YYYY-MM-DD'));
-                                    }
-                                }}
-                                slotProps={{
-                                    textField: {
-                                        variant: "standard",
-                                        fullWidth: true,
-                                        sx: bareInputSx
-                                    }
-                                }}
+                                value={watch('returnDate') || ''}
+                                onChange={(value) => setValue('returnDate', value)}
+                                min={watch('date') || moment().format('YYYY-MM-DD')}
                             />
                         </div>
                     )}

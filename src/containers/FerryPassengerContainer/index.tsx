@@ -2,7 +2,7 @@ import FerryPassenger from "@components/FerryPassenger";
 import { Button, CircularProgress, TextField } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { reserveFerryBooking, submitFerryBooking } from "@api/ferry";
 import FerryStepper from "@components/FerryStepper";
@@ -31,7 +31,7 @@ const defaultPassenger = (): PassengerData => ({
 
 const FerryPassengerContainer = () => {
 
-    const { push, query } = useRouter();
+    const { push, query, isReady } = useRouter();
 
     const tripID = query?.tripID as string ?? '';
     const embarkation = query?.embarkation as string ?? '';
@@ -40,6 +40,8 @@ const FerryPassengerContainer = () => {
     const returndate = query?.returndate as string ?? '';
     const vesselName = query?.vesselName as string ?? '';
     const price = query?.price as string ?? '0';
+    // How many tickets were chosen on the search form (defaults to 1, clamped 1-9).
+    const passengerCount = Math.min(9, Math.max(1, parseInt(query?.adult as string, 10) || 1));
 
     const [passengers, setPassengers] = useState<PassengerData[]>([defaultPassenger(), defaultPassenger()]);
     const [contactEmail, setContactEmail] = useState('');
@@ -47,6 +49,14 @@ const FerryPassengerContainer = () => {
     const [mobileNumber, setMobileNumber] = useState('');
     const [whatsappNumber, setWhatsappNumber] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // router.query is empty until isReady - (re)build the passenger form list
+    // to match the ticket count chosen on the search form, not a hardcoded 2.
+    useEffect(() => {
+        if (!isReady) return;
+        setPassengers(Array.from({ length: passengerCount }, defaultPassenger));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isReady, passengerCount]);
 
     const handlePassengerChange = (index: number, data: PassengerData) => {
         setPassengers(prev => {

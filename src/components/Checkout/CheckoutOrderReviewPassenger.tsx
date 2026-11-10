@@ -1,6 +1,7 @@
 import { Card, Divider } from "@mui/material"
 import { useTranslation } from "react-i18next"
 import { User, Calendar, CheckCircle2 } from "lucide-react";
+import moment from "moment";
 
 interface Props {
     fullname: string;
@@ -33,7 +34,9 @@ const CheckoutOrderReviewPassenger = ({ fullname, date_of_birth, index } : Props
                             <Calendar size={12} />
                             <span className="text-[10px] font-bold uppercase tracking-wider font-sans">{t('checkout.date_of_birth')}</span>
                         </div>
-                        <p className="text-sm font-semibold text-dark font-mono pl-4.5">{date_of_birth || '-'}</p>
+                        <p className="text-sm font-semibold text-dark font-mono pl-4.5">
+                            {date_of_birth && moment(date_of_birth, 'YYYY-MM-DD').isValid() ? moment(date_of_birth, 'YYYY-MM-DD').format('DD-MM-YYYY') : '-'}
+                        </p>
                     </div>
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-1.5 text-slate-400">

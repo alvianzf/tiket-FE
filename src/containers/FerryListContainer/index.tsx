@@ -19,6 +19,7 @@ const FerryListContainer = () => {
     const tripdate = query?.tripdate as string ?? '';
     const type = (query?.type as string) || 'one_way';
     const returndate = query?.returndate as string ?? '';
+    const passengerCount = parseInt(query?.adult as string, 10) || 1;
 
     const isRoundTrip = type === 'round_trip';
     const [selectedOutbound, setSelectedOutbound] = useState<FerryTrip | null>(null);
@@ -44,7 +45,7 @@ const FerryListContainer = () => {
 
     const handleReturnSelect = (trip: FerryTrip) => {
         if (!selectedOutbound) return;
-        const totalPrice = (selectedOutbound.price ?? 0) + (trip.price ?? 0);
+        const totalPrice = ((selectedOutbound.price ?? 0) + (trip.price ?? 0)) * passengerCount;
         push({
             pathname: '/ferry/passenger',
             query: {
@@ -56,6 +57,7 @@ const FerryListContainer = () => {
                 returndate,
                 vesselName: selectedOutbound.vesselName,
                 price: totalPrice,
+                adult: passengerCount,
             }
         });
     };
@@ -145,6 +147,7 @@ const FerryListContainer = () => {
                                 embarkation={embarkation}
                                 destination={destination}
                                 tripdate={tripdate}
+                                passengerCount={passengerCount}
                                 onSelect={isRoundTrip ? handleOutboundSelect : undefined}
                             />
                         ))}
@@ -187,6 +190,7 @@ const FerryListContainer = () => {
                                     embarkation={destination}
                                     destination={embarkation}
                                     tripdate={returndate}
+                                    passengerCount={passengerCount}
                                     onSelect={handleReturnSelect}
                                 />
                             ))}
