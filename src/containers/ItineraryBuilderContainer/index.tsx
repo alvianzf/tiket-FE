@@ -12,10 +12,16 @@ import {
     useSensors,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { Sparkles } from "lucide-react";
+import { Sparkles, MousePointer2, Clock3, Send } from "lucide-react";
 import { motion } from "framer-motion";
 import { FormProvider } from "react-hook-form";
 import { toast } from "react-toastify";
+
+const HOW_IT_WORKS = [
+    { icon: MousePointer2, title: "Drag destinations", desc: "Pull places from the catalog into your trip, in any order." },
+    { icon: Clock3, title: "Watch cost & time add up", desc: "Each stop's visit time and travel buffer update your totals live." },
+    { icon: Send, title: "Submit your trip", desc: "Our concierge team confirms availability and reaches out." },
+];
 
 import Button from "@components/ui/Button";
 import TextField from "@components/ui/TextField";
@@ -114,6 +120,27 @@ const ItineraryBuilderContainer = () => {
             <div className="text-center mb-8">
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-800">{t("itinerary.title")}</h1>
                 <p className="text-slate-600 mt-2">{t("itinerary.subtitle")}</p>
+            </div>
+
+            <div className="grid sm:grid-cols-3 gap-4 mb-8">
+                {HOW_IT_WORKS.map((step, i) => (
+                    <motion.div
+                        key={step.title}
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.4, delay: i * 0.1 }}
+                        className="surface-card p-4 flex items-start gap-3"
+                    >
+                        <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
+                            <step.icon size={18} />
+                        </div>
+                        <div>
+                            <p className="font-bold text-slate-800 text-sm">{i + 1}. {step.title}</p>
+                            <p className="text-slate-500 text-xs mt-0.5">{step.desc}</p>
+                        </div>
+                    </motion.div>
+                ))}
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
