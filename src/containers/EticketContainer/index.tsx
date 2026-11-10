@@ -24,7 +24,7 @@ const EticketContainer = () => {
             // route, and a dep-less redirect here livelocks pushing '/' (prod incident).
             if (!isReady || pathname !== '/eticket') return;
             if (!bookingno) {
-                push('/');
+                push('/flight');
             }
         },
         [bookingno, isReady, pathname, push]

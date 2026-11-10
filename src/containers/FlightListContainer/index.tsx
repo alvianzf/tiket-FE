@@ -56,7 +56,7 @@ const FlightListContainer = () => {
 
         if (isMultiCity) {
             if (multiCitySegments.length >= 2) { setOpen(false); return; }
-            push('/');
+            push('/flight');
             return;
         }
 
@@ -67,7 +67,7 @@ const FlightListContainer = () => {
 
         const timer = setTimeout(() => {
             if (!from || !to || !date || !adult || !classParams) {
-                push('/');
+                push('/flight');
             }
         }, 0);
         return () => clearTimeout(timer);

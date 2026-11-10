@@ -9,8 +9,8 @@ const Footer = () => {
     const { t } = useTranslation();
 
     const navLinks = [
-        { label: t('footer.nav_flights'), href: '/' },
-        { label: t('footer.nav_ferry'), href: '/ferry' },
+        { label: t('footer.nav_flights'), href: '/flight' },
+        { label: t('footer.nav_ferry'), href: '/' },
         { label: t('footer.nav_car'), href: '/car-rental' },
         { label: t('footer.nav_history'), href: '/history' },
     ];

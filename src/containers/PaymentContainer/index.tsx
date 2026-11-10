@@ -20,7 +20,7 @@ const PaymentContainer = () => {
             // route, and a dep-less redirect here livelocks pushing '/' (prod incident).
             if (!isReady || pathname !== '/checkout/payment') return;
             if (!bookingno) {
-                push('/');
+                push('/flight');
             }
         },
         [bookingno, isReady, pathname, push]

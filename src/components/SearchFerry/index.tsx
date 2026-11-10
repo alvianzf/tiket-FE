@@ -83,10 +83,10 @@ const SearchFerry = () => {
     return (
         <div className="w-full lg:max-w-[1024px] surface-card p-6 md:p-8 mx-auto">
             <div className="flex flex-col gap-5 w-full">
-                <div className="flex flex-row gap-2 bg-slate-100 p-1.5 rounded-2xl w-fit">
+                <div className="flex flex-row gap-2 bg-slate-100 p-1.5 rounded-2xl w-full sm:w-fit">
                     <button
                         type="button"
-                        className={`flex items-center gap-1.5 grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-bold ${type === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
+                        className={`flex items-center justify-center gap-1.5 grow rounded-xl transition-all h-10 px-3 sm:px-4 min-w-0 text-sm font-bold whitespace-nowrap ${type === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
                         onClick={() => setType('one_way')}
                     >
                         <Ship size={14} />
@@ -94,7 +94,7 @@ const SearchFerry = () => {
                     </button>
                     <button
                         type="button"
-                        className={`flex items-center gap-1.5 grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-bold ${type === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
+                        className={`flex items-center justify-center gap-1.5 grow rounded-xl transition-all h-10 px-3 sm:px-4 min-w-0 text-sm font-bold whitespace-nowrap ${type === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
                         onClick={() => setType('round_trip')}
                     >
                         <ArrowLeftRight size={14} />

@@ -152,30 +152,30 @@ const SearchFlight = () => {
     return (
         <div className="w-full lg:max-w-[1200px] surface-card p-6 md:p-10 mx-auto">
             <FormProvider {...methods}>
-                <div className="flex flex-row gap-2 bg-slate-100 p-1.5 rounded-2xl w-fit mb-6">
+                <div className="flex flex-row gap-2 bg-slate-100 p-1.5 rounded-2xl w-full sm:w-fit mb-6">
                     <button
                         type="button"
-                        className={`flex items-center gap-1.5 grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-bold ${!isMultiCity && tripType === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
+                        className={`flex items-center justify-center gap-1 sm:gap-1.5 grow rounded-xl transition-all h-10 px-2 sm:px-4 min-w-0 text-xs sm:text-sm font-bold whitespace-nowrap ${!isMultiCity && tripType === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
                         onClick={() => { setIsMultiCity(false); setValue('tripType', 'one_way'); }}
                     >
-                        <Plane size={14} />
-                        {t('tickets.one_way')}
+                        <Plane size={14} className="shrink-0 hidden sm:inline" />
+                        <span className="truncate">{t('tickets.one_way')}</span>
                     </button>
                     <button
                         type="button"
-                        className={`flex items-center gap-1.5 grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-bold ${!isMultiCity && tripType === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
+                        className={`flex items-center justify-center gap-1 sm:gap-1.5 grow rounded-xl transition-all h-10 px-2 sm:px-4 min-w-0 text-xs sm:text-sm font-bold whitespace-nowrap ${!isMultiCity && tripType === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
                         onClick={() => { setIsMultiCity(false); setValue('tripType', 'round_trip'); }}
                     >
-                        <ArrowLeftRight size={14} />
-                        {t('tickets.round_trip')}
+                        <ArrowLeftRight size={14} className="shrink-0 hidden sm:inline" />
+                        <span className="truncate">{t('tickets.round_trip')}</span>
                     </button>
                     <button
                         type="button"
-                        className={`flex items-center gap-1.5 grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-bold ${isMultiCity ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
+                        className={`flex items-center justify-center gap-1 sm:gap-1.5 grow rounded-xl transition-all h-10 px-2 sm:px-4 min-w-0 text-xs sm:text-sm font-bold whitespace-nowrap ${isMultiCity ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
                         onClick={() => setIsMultiCity(true)}
                     >
-                        <Route size={14} />
-                        {t('tickets.multi_city')}
+                        <Route size={14} className="shrink-0 hidden sm:inline" />
+                        <span className="truncate">{t('tickets.multi_city')}</span>
                     </button>
                 </div>
 

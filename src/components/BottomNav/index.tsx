@@ -14,10 +14,10 @@ const BottomNav = ({ onOpenMore }: Props) => {
     const { pathname } = useRouter();
 
     const tabs = [
-        { label: t("home.ferry"), href: "/ferry", icon: Ship, isActive: pathname.startsWith("/ferry") },
+        { label: t("home.ferry"), href: "/", icon: Ship, isActive: pathname === "/" },
         { label: t("home.itinerary"), href: "/itinerary", icon: Map, isActive: pathname.startsWith("/itinerary") },
         { label: t("home.car_rental"), href: "/car-rental", icon: Car, isActive: pathname.startsWith("/car-rental") },
-        { label: t("home.flight"), href: "/", icon: Plane, isActive: pathname === "/" },
+        { label: t("home.flight"), href: "/flight", icon: Plane, isActive: pathname.startsWith("/flight") },
     ];
 
     return (

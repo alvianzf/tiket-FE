@@ -24,7 +24,7 @@ const CheckoutContainer = () => {
         if (!isReady || pathname !== '/checkout') return;
 
         if (!from || !to || !date || !adult || !child || !classParams || !code) {
-            push('/');
+            push('/flight');
 
             return;
         }
@@ -49,7 +49,7 @@ const CheckoutContainer = () => {
 
     useEffect(() => {
         if (!isReady && !isFetching && !flightData) {
-            push('/');
+            push('/flight');
 
             return;
         }

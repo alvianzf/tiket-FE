@@ -3,22 +3,22 @@ import { NextPageWithLayout } from "@interfaces/common";
 import { buildSeoTags } from "@utils/common";
 import Head from "next/head";
 import { AppLayout } from "@layouts";
-import HomeContainer from "@containers/HomeContainer";
+import ShipContainer from "@containers/ShipContainer";
 
 const HomePage: NextPageWithLayout = () => {
     const seoTags = useMetaTags({
-        title: 'Pesan Tiket Pesawat, Feri & Sewa Mobil di Batam',
-        description: 'TiketQ — platform lengkap untuk pesan tiket pesawat, feri, dan sewa mobil di Batam. Harga terbaik, proses mudah, aman dan terpercaya.',
-        keywords: 'tiket pesawat batam, feri batam, sewa mobil batam, tiketq, pesan tiket online batam, travel batam',
-        ogTitle: 'TiketQ — Tiket Pesawat, Feri & Sewa Mobil Batam',
-        ogDescription: 'Pesan tiket pesawat, feri, dan sewa mobil di Batam dengan mudah. Harga terbaik, layanan 24/7.',
+        title: 'Tiket Feri Batam - Malaysia - Singapura | TiketQ',
+        description: 'Pesan tiket feri Batam ke Malaysia & Singapura dengan mudah dan aman. Jadwal lengkap, harga terbaik, konfirmasi instan.',
+        keywords: 'tiket feri batam, feri batam singapura, feri batam malaysia, tiketq, pesan feri online',
+        ogTitle: 'TiketQ — Tiket Feri Batam, Malaysia & Singapura',
+        ogDescription: 'Pesan tiket feri Batam ke Malaysia & Singapura dengan mudah dan aman. Harga terbaik, layanan 24/7.',
         canonical: 'https://tiketq.com',
     })
 
     return (
         <>
             <Head>{buildSeoTags(seoTags)}</Head>
-            <HomeContainer />
+            <ShipContainer />
         </>
     )
 }
