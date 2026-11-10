@@ -24,11 +24,14 @@ const AppNavbar = ({ onOpenDrawer }: Props) => {
 
     const { pathname } = useRouter();
 
+    // Order reflects the Batam/MY/SG concierge focus: crossing the border
+    // (Ferry) first, then planning (ItinerQ), getting around (Private
+    // Driver), and flights last.
     const menuItems = [
-        { label: t("home.flight"), href: "/", isActive: pathname === "/" },
         { label: t("home.ferry"), href: "/ferry", isActive: pathname.startsWith("/ferry") },
-        { label: t("home.car_rental"), href: "/car-rental", isActive: pathname.startsWith("/car-rental") },
         { label: t("home.itinerary"), href: "/itinerary", isActive: pathname.startsWith("/itinerary") },
+        { label: t("home.car_rental"), href: "/car-rental", isActive: pathname.startsWith("/car-rental") },
+        { label: t("home.flight"), href: "/", isActive: pathname === "/" },
     ];
 
     return (

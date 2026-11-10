@@ -62,7 +62,7 @@ const CheckoutOrderAdult = () => {
                                 {t('checkout.adult', { count: index+1 })}
                             </span>
                         </div>
-                        <Divider sx={{ mx: { xs: 2.5, md: 4 }, borderColor: "rgba(255,255,255,0.1)" }} />
+                        <Divider sx={{ mx: { xs: 2.5, md: 4 }, borderColor: "#E6E9EE" }} />
                         <div className="p-5 md:p-8 pt-4 md:pt-6">
                             <div className="flex flex-col gap-5 md:gap-8 w-full">
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">

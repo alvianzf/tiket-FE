@@ -91,7 +91,7 @@ const PassengerInput = () => {
                 }}
             />
             {open && (
-                <div className="absolute top-[100%] left-0 mt-2 w-max min-w-[320px] z-[9999] surface-card shadow-2xl rounded-2xl p-6 border border-white/20 bg-white/40 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-200">
+                <div className="absolute top-[100%] left-0 mt-2 w-max min-w-[320px] z-[9999] surface-card shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200">
                     <div className="flex flex-col gap-6">
                         <div className="flex flex-col gap-5">
                             <div className="flex flex-row justify-between items-center gap-6">
@@ -99,7 +99,7 @@ const PassengerInput = () => {
                                     <p className="font-bold text-slate-800">{t('tickets.adult')}</p>
                                     <p className="text-sm text-slate-600">{t('tickets.adult_desc')}</p>
                                 </div>
-                                <div className="flex flex-row gap-4 items-center bg-white/50 rounded-full px-2 py-1 border border-white/60">
+                                <div className="flex flex-row gap-4 items-center bg-slate-100 rounded-full px-2 py-1">
                                     <IconButton size="small" className="text-slate-800 hover:bg-slate-200/50" onClick={handleDecreaseAdultTotal}>
                                         <IconMinus width={16} height={16}/>
                                     </IconButton>
@@ -115,7 +115,7 @@ const PassengerInput = () => {
                                     <p className="font-bold text-slate-800">{t('tickets.child')}</p>
                                     <p className="text-sm text-slate-600">{t('tickets.child_desc')}</p>
                                 </div>
-                                <div className="flex flex-row gap-4 items-center bg-white/50 rounded-full px-2 py-1 border border-white/60">
+                                <div className="flex flex-row gap-4 items-center bg-slate-100 rounded-full px-2 py-1">
                                     <IconButton size="small" className="text-slate-800 hover:bg-slate-200/50" onClick={handleDecreaseChildTotal}>
                                         <IconMinus width={16} height={16}/>
                                     </IconButton>
@@ -131,7 +131,7 @@ const PassengerInput = () => {
                                     <p className="font-bold text-slate-800">{t('tickets.infant')}</p>
                                     <p className="text-sm text-slate-600">{t('tickets.infant_desc')}</p>
                                 </div>
-                                <div className="flex flex-row gap-4 items-center bg-white/50 rounded-full px-2 py-1 border border-white/60">
+                                <div className="flex flex-row gap-4 items-center bg-slate-100 rounded-full px-2 py-1">
                                     <IconButton size="small" className="text-slate-800 hover:bg-slate-200/50" onClick={handleDecreaseInfantTotal}>
                                         <IconMinus width={16} height={16}/>
                                     </IconButton>

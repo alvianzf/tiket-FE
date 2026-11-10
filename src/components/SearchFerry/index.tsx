@@ -1,13 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Autocomplete, TextField, InputAdornment } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import { useTranslation } from "react-i18next"
 import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useQueryFerryRoutes } from "../../queries/ferry";
-import IconSearch from "@icons/IconSearch";
-import { FaShip } from "react-icons/fa";
+import Button from "@components/ui/Button";
+import { Ship, MapPin, ArrowLeftRight, Sparkles, Search } from "lucide-react";
+
+// Shared "field tile" chrome: an icon + micro-label header, with the actual
+// MUI input stripped of its own border/label underneath. Redesigned from
+// scratch — the old layout was a plain row of underlined MUI TextFields.
+const fieldTileClass = "flex-1 min-w-0 bg-slate-50 rounded-xl p-3 border border-slate-100 focus-within:border-primary/50 focus-within:bg-white transition-colors";
+const fieldLabelClass = "flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-1";
+const bareInputSx = {
+    "& .MuiInput-underline:before, & .MuiInput-underline:after": { display: "none" },
+    "& .MuiInputBase-input": { fontWeight: 700, color: "#1e293b", padding: 0 },
+};
 
 const SearchFerry = () => {
     const [mounted, setMounted] = useState(false);
@@ -74,7 +84,7 @@ const SearchFerry = () => {
 
     if (!mounted) {
         return (
-            <div className="w-full lg:max-w-[1024px] surface-card p-6 md:p-8 mx-auto animate-pulse h-[136px] flex items-center justify-center">
+            <div className="w-full lg:max-w-[1024px] surface-card p-6 md:p-8 mx-auto animate-pulse h-[200px] flex items-center justify-center">
                 <div className="w-full h-12 bg-slate-100 rounded-xl" />
             </div>
         );
@@ -82,26 +92,29 @@ const SearchFerry = () => {
 
     return (
         <div className="w-full lg:max-w-[1024px] surface-card p-6 md:p-8 mx-auto">
-            <div className="flex flex-col gap-6 w-full">
+            <div className="flex flex-col gap-5 w-full">
                 <div className="flex flex-row gap-2 bg-slate-100 p-1.5 rounded-2xl w-fit">
                     <button
                         type="button"
-                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${type === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-600 hover:bg-white/60'}`}
+                        className={`flex items-center gap-1.5 grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-bold ${type === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
                         onClick={() => setType('one_way')}
                     >
+                        <Ship size={14} />
                         <span className="truncate">{t('tickets.one_way')}</span>
                     </button>
                     <button
                         type="button"
-                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${type === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-600 hover:bg-white/60'}`}
+                        className={`flex items-center gap-1.5 grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-bold ${type === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
                         onClick={() => setType('round_trip')}
                     >
+                        <ArrowLeftRight size={14} />
                         <span className="truncate">{t('tickets.round_trip')}</span>
                     </button>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 items-end w-full">
-                    <div className="w-full lg:flex-1 relative">
+                <div className="flex flex-col lg:flex-row gap-3 w-full">
+                    <div className={fieldTileClass}>
+                        <p className={fieldLabelClass}><MapPin size={12} /> {t('tickets.departure')}</p>
                         <Autocomplete
                             options={departurePorts}
                             loading={isLoadingRoutes}
@@ -125,26 +138,15 @@ const SearchFerry = () => {
                                 <TextField
                                     {...params}
                                     variant="standard"
-                                    label={t('tickets.departure')}
                                     placeholder={t('tickets.departure_placeholder')}
-                                    slotProps={{
-                                        ...params.slotProps,
-                                        input: {
-                                            ...params.slotProps.input,
-                                            startAdornment: (
-                                                <>
-                                                    <InputAdornment position="start"><FaShip className="text-[#ff5a00]" /></InputAdornment>
-                                                    {params.slotProps.input.startAdornment}
-                                                </>
-                                            )
-                                        }
-                                    }}
+                                    sx={bareInputSx}
                                 />
                             )}
                         />
                     </div>
 
-                    <div className="w-full lg:flex-1 relative">
+                    <div className={fieldTileClass}>
+                        <p className={fieldLabelClass}><MapPin size={12} /> {t('tickets.destination')}</p>
                         <Autocomplete
                             options={availableDestinations}
                             value={availableDestinations.find((port: any) => port.code === destinationPort) ?? null}
@@ -167,67 +169,53 @@ const SearchFerry = () => {
                                 <TextField
                                     {...params}
                                     variant="standard"
-                                    label={t('tickets.destination')}
                                     placeholder={t('tickets.destination_placeholder')}
-                                    slotProps={{
-                                        ...params.slotProps,
-                                        input: {
-                                            ...params.slotProps.input,
-                                            startAdornment: (
-                                                <>
-                                                    <InputAdornment position="start"><FaShip className="text-[#ff5a00]" /></InputAdornment>
-                                                    {params.slotProps.input.startAdornment}
-                                                </>
-                                            )
-                                        }
-                                    }}
+                                    sx={bareInputSx}
                                 />
                             )}
                         />
                     </div>
 
-                    <div className="w-full lg:flex-1">
+                    <div className={fieldTileClass}>
+                        <p className={fieldLabelClass}>{t('tickets.departured_date')}</p>
                         <DatePicker
-                            label={t('tickets.departured_date')}
                             value={departureDate}
                             onChange={setDepartureDate}
                             minDate={moment()}
-                            slotProps={{ textField: { variant: "standard", fullWidth: true } }}
+                            slotProps={{ textField: { variant: "standard", fullWidth: true, sx: bareInputSx } }}
                         />
                     </div>
 
                     {type === 'round_trip' && (
-                        <div className="w-full lg:flex-1">
+                        <div className={fieldTileClass}>
+                            <p className={fieldLabelClass}>{t('tickets.return_date')}</p>
                             <DatePicker
-                                label={t('tickets.return_date')}
                                 value={returnDate}
                                 onChange={setReturnDate}
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 minDate={(departureDate as any) || moment()}
-                                slotProps={{ textField: { variant: "standard", fullWidth: true } }}
+                                slotProps={{ textField: { variant: "standard", fullWidth: true, sx: bareInputSx } }}
                             />
                         </div>
                     )}
-
-                    <Button
-                        variant="contained"
-                        color="warning"
-                        className="w-full lg:min-w-[56px] lg:w-[56px] h-[56px] rounded-2xl flex items-center justify-center gap-2 mt-4 lg:mt-0"
-                        sx={{ minWidth: 0, borderRadius: "1rem", "@media (min-width:1024px)": { paddingInline: 0 } }}
-                        onClick={handleSearch}
-                        disabled={!departurePort || !destinationPort || !departureDate}
-                    >
-                        <IconSearch width={24} height={24}/>
-                        <span className="lg:hidden ml-2 font-bold">{t('common.search_ferry')}</span>
-                    </Button>
                 </div>
+
+                <Button
+                    variant="cta"
+                    fullWidth
+                    className="h-14 text-base"
+                    onClick={handleSearch}
+                    disabled={!departurePort || !destinationPort || !departureDate}
+                >
+                    <Search size={18} /> {t('common.search_ferry')}
+                </Button>
             </div>
 
             {/* AI Banner */}
-            <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-orange-500/20 to-primary/20 border border-orange-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-orange-500/10 to-primary/10 border border-orange-500/20 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/30 text-white shrink-0">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                        <Sparkles size={18} />
                     </div>
                     <div>
                         <p className="text-slate-800 font-bold text-sm md:text-base">{t('common.ai_promo_banner_title')}</p>

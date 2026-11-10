@@ -1,11 +1,11 @@
 import FerryPassenger from "@components/FerryPassenger";
-import { Button, Card, CardContent, CircularProgress, TextField } from "@mui/material";
+import { Button, CircularProgress, TextField } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { reserveFerryBooking, submitFerryBooking } from "@api/ferry";
+import FerryStepper from "@components/FerryStepper";
 
 interface PassengerData {
     title: string;
@@ -31,7 +31,6 @@ const defaultPassenger = (): PassengerData => ({
 
 const FerryPassengerContainer = () => {
 
-    const { t } = useTranslation();
     const { push, query } = useRouter();
 
     const tripID = query?.tripID as string ?? '';
@@ -128,50 +127,9 @@ const FerryPassengerContainer = () => {
     };
 
     return (
-        <div className="flex flex-col gap-8 w-full items-center justify-center">
-            <div className="flex gap-2 w-full flex-col relative flex-nowrap items-center max-w-[1024px]">
-                <Card className="px-4 w-full mt-[40px]">
-                    <CardContent>
-                        <div className="flex flex-row items-center w-full gap-2">
-                            <div className="flex flex-col items-center gap-1 w-[20%]">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="#4267b2" width="20px" height="20px" viewBox="0 0 512 512" stroke="#4267b2">
-                                    <g id="SVGRepo_bgCarrier" strokeWidth="0"/>
-                                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm80 248c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80z"/>
-                                    </g>
-                                </svg>
-                                <span>{t('tickets.select_schedule')}</span>
-                            </div>
-                            <div className="flex flex-col items-center w-[20%]">
-                                <hr className="border-1 border-black w-[50%]" />
-                            </div>
-                            <div className="flex flex-col items-center w-[20%]">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="#4267b2" width="20px" height="20px" viewBox="0 0 512 512" stroke="#4267b2">
-                                    <g id="SVGRepo_bgCarrier" strokeWidth="0"/>
-                                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm80 248c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80z"/>
-                                    </g>
-                                </svg>
-                                <span>{t('tickets.ordering_details')}</span>
-                            </div>
-                            <div className="flex flex-col items-center w-[20%]">
-                                <hr className="border-1 border-black w-[50%]" />
-                            </div>
-                            <div className="flex flex-col items-center w-[20%] opacity-55">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="#4267b2" width="20px" height="20px" viewBox="0 0 512 512" stroke="#4267b2">
-                                    <g id="SVGRepo_bgCarrier" strokeWidth="0"/>
-                                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm80 248c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80z"/>
-                                    </g>
-                                </svg>
-                                <span>{t('tickets.payment')}</span>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+        <div className="flex flex-col gap-8 w-full items-center justify-center py-10">
+            <div className="flex gap-2 w-full flex-col relative flex-nowrap items-center max-w-[1024px] px-4">
+                <FerryStepper activeStep={2} />
             </div>
             <div className="flex gap-4 w-full flex-col relative flex-nowrap items-center max-w-[1280px]">
                 {passengers.map((p, i) => (
@@ -182,39 +140,37 @@ const FerryPassengerContainer = () => {
                         onChange={handlePassengerChange}
                     />
                 ))}
-                <Card className="p-4 w-full">
-                    <CardContent>
-                        <span className="text-[24px] font-bold mb-4">Booking Requirements</span>
-                        <div className="flex flex-row gap-4">
-                            <div className="flex flex-col gap-4 w-[50%]">
-                                <div className="flex flex-col gap-2">
-                                    <p>Email Address</p>
-                                    <TextField type="email" fullWidth sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
-                                        value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <p>Mobile Phone</p>
-                                    <TextField type="tel" fullWidth sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
-                                        value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} />
-                                </div>
+                <div className="surface-card p-6 md:p-8 w-full">
+                    <p className="text-xl font-bold text-slate-800 mb-5">Booking Requirements</p>
+                    <div className="flex flex-col md:flex-row gap-6">
+                        <div className="flex flex-col gap-4 w-full md:w-1/2">
+                            <div className="flex flex-col gap-1.5">
+                                <p className="text-sm font-semibold text-slate-600">Email Address</p>
+                                <TextField type="email" variant="standard" fullWidth
+                                    value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} />
                             </div>
-                            <div className="flex flex-col gap-4 w-[50%]">
-                                <div className="flex flex-col gap-2">
-                                    <p>Confirmation Email Address</p>
-                                    <TextField type="email" fullWidth sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
-                                        value={confirmationEmail} onChange={(e) => setConfirmationEmail(e.target.value)} />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <p>WhatsApp No.</p>
-                                    <TextField type="tel" fullWidth sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
-                                        value={whatsappNumber} onChange={(e) => setWhatsappNumber(e.target.value)} />
-                                </div>
+                            <div className="flex flex-col gap-1.5">
+                                <p className="text-sm font-semibold text-slate-600">Mobile Phone</p>
+                                <TextField type="tel" variant="standard" fullWidth
+                                    value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} />
                             </div>
                         </div>
-                    </CardContent>
-                </Card>
+                        <div className="flex flex-col gap-4 w-full md:w-1/2">
+                            <div className="flex flex-col gap-1.5">
+                                <p className="text-sm font-semibold text-slate-600">Confirmation Email Address</p>
+                                <TextField type="email" variant="standard" fullWidth
+                                    value={confirmationEmail} onChange={(e) => setConfirmationEmail(e.target.value)} />
+                            </div>
+                            <div className="flex flex-col gap-1.5">
+                                <p className="text-sm font-semibold text-slate-600">WhatsApp No.</p>
+                                <TextField type="tel" variant="standard" fullWidth
+                                    value={whatsappNumber} onChange={(e) => setWhatsappNumber(e.target.value)} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className="flex flex-row justify-between w-full">
-                    <Button variant="contained" color="inherit" component={Link} href="/ferry/list">
+                    <Button variant="outlined" color="primary" component={Link} href="/ferry/list">
                         {'Back'}
                     </Button>
                     <Button variant="contained" color="warning" disabled={isSubmitting}

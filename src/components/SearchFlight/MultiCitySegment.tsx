@@ -27,7 +27,7 @@ const MultiCitySegment = ({ index, value, airports, isLoading, canRemove, minDat
     const { t } = useTranslation();
 
     return (
-        <div className="flex flex-col lg:flex-row gap-4 items-end w-full p-4 bg-white/5 rounded-2xl border border-white/10">
+        <div className="flex flex-col lg:flex-row gap-4 items-end w-full p-4 bg-slate-50 rounded-2xl border border-slate-100">
             <div className="hidden lg:flex w-6 shrink-0 items-center justify-center self-end pb-2">
                 <span className="text-xs font-black text-orange-500">{index + 1}</span>
             </div>

@@ -4,6 +4,7 @@ import SearchFlight from "@components/SearchFlight";
 import WhyBook from "@components/WhyBook";
 import NoCommitment from "@components/NoCommitment";
 import ConciergeServices from "@components/ConciergeServices";
+import HeroGlow from "@components/HeroGlow";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
@@ -16,7 +17,8 @@ const HomeContainer = () => {
 
     return (
         <>
-            <section className="relative overflow-hidden bg-gradient-to-br from-primary-dark via-primary to-secondary pt-16 pb-32 px-6">
+            <section className="relative bg-gradient-to-br from-primary-dark via-primary to-secondary pt-16 pb-32 px-6">
+                <HeroGlow />
                 {/* Decorative motifs — plane trail + island dots, on-brand "adventurous" touches */}
                 <svg className="absolute top-10 left-[6%] w-24 h-24 text-white/15 hidden sm:block" viewBox="0 0 100 100" fill="none" aria-hidden="true">
                     <path d="M10 70 Q 40 20, 90 15" stroke="currentColor" strokeWidth="2" strokeDasharray="4 6" fill="none" />
@@ -32,7 +34,7 @@ const HomeContainer = () => {
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-                    className="relative z-10 flex flex-col items-center gap-8 max-w-[1100px] mx-auto"
+                    className="relative flex flex-col items-center gap-8 max-w-[1100px] mx-auto"
                 >
                     <div className="text-center max-w-2xl">
                         <span className="inline-block px-4 py-1.5 rounded-full bg-white/15 text-white text-xs font-bold tracking-wide uppercase mb-4">
@@ -50,7 +52,7 @@ const HomeContainer = () => {
                 </svg>
             </section>
 
-            <div className="relative -mt-14 z-10 px-6">
+            <div className="relative -mt-14 px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}

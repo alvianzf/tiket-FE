@@ -69,7 +69,7 @@ const CheckoutOrderReview = () => {
                                 {watch('firstname')} {watch('lastname')}
                             </span>
                         </div>
-                        <Divider sx={{ mx: 4, borderColor: "rgba(255,255,255,0.1)" }} />
+                        <Divider sx={{ mx: 4, borderColor: "#E6E9EE" }} />
                         <div className="p-8 pt-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="flex items-center gap-4 group">

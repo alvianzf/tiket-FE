@@ -1,11 +1,10 @@
 import { DatePicker } from "@mui/x-date-pickers";
-import Button from "@components/Button";
+import Button from "@components/ui/Button";
 import { useTranslation } from "react-i18next";
 import FromInput from "./FromInput";
 import DestinationInput from "./DestinationInput";
 import PassengerInput from "./PassengerInput";
 import MultiCitySegment, { SegmentValue } from "./MultiCitySegment";
-import IconSearch from "@icons/IconSearch";
 import { useQueryGetAirports } from "@queries/airports";
 import { Airport } from "@api/airports/types";
 import { FormProvider } from "react-hook-form";
@@ -14,6 +13,12 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { Plane, ArrowLeftRight, Route, Plus, Search } from "lucide-react";
+
+const bareInputSx = {
+    "& .MuiInput-underline:before, & .MuiInput-underline:after": { display: "none" },
+    "& .MuiInputBase-input": { fontWeight: 700, color: "#1e293b", padding: 0 },
+};
 
 const SearchFlight = () => {
     const [mounted, setMounted] = useState(false);
@@ -141,8 +146,8 @@ const SearchFlight = () => {
 
     if (!mounted) {
         return (
-            <div className="w-full lg:max-w-[1200px] surface-card p-8 md:p-10 border-white/30 backdrop-blur-3xl mx-auto animate-pulse h-[136px] flex items-center justify-center">
-                <div className="w-full h-12 bg-white/10 rounded-xl" />
+            <div className="w-full lg:max-w-[1200px] surface-card p-8 md:p-10 mx-auto animate-pulse h-[136px] flex items-center justify-center">
+                <div className="w-full h-12 bg-slate-100 rounded-xl" />
             </div>
         );
     }
@@ -150,28 +155,31 @@ const SearchFlight = () => {
     const tripType = watch('tripType');
 
     return (
-        <div className="w-full lg:max-w-[1200px] surface-card p-8 md:p-10 border-white/30 backdrop-blur-3xl mx-auto">
+        <div className="w-full lg:max-w-[1200px] surface-card p-6 md:p-10 mx-auto">
             <FormProvider {...methods}>
-                <div className="flex flex-row gap-2 bg-white/10 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md w-fit mb-6">
+                <div className="flex flex-row gap-2 bg-slate-100 p-1.5 rounded-2xl w-fit mb-6">
                     <button
                         type="button"
-                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${!isMultiCity && tripType === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`}
+                        className={`flex items-center gap-1.5 grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-bold ${!isMultiCity && tripType === 'one_way' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
                         onClick={() => { setIsMultiCity(false); setValue('tripType', 'one_way'); }}
                     >
+                        <Plane size={14} />
                         {t('tickets.one_way')}
                     </button>
                     <button
                         type="button"
-                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${!isMultiCity && tripType === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`}
+                        className={`flex items-center gap-1.5 grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-bold ${!isMultiCity && tripType === 'round_trip' ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
                         onClick={() => { setIsMultiCity(false); setValue('tripType', 'round_trip'); }}
                     >
+                        <ArrowLeftRight size={14} />
                         {t('tickets.round_trip')}
                     </button>
                     <button
                         type="button"
-                        className={`grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-medium ${isMultiCity ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white font-bold' : 'bg-transparent text-slate-700/70 hover:bg-white/20'}`}
+                        className={`flex items-center gap-1.5 grow rounded-xl transition-all h-10 px-4 min-w-0 text-sm font-bold ${isMultiCity ? 'bg-orange-500 shadow-lg shadow-orange-500/30 text-white' : 'bg-transparent text-slate-500 hover:bg-white'}`}
                         onClick={() => setIsMultiCity(true)}
                     >
+                        <Route size={14} />
                         {t('tickets.multi_city')}
                     </button>
                 </div>
@@ -200,19 +208,19 @@ const SearchFlight = () => {
                                     <button
                                         type="button"
                                         onClick={() => setSegments(prev => [...prev, defaultSegment()])}
-                                        className="text-sm font-bold text-orange-500 hover:text-orange-600 transition-colors px-4 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 whitespace-nowrap"
+                                        className="flex items-center gap-1 text-sm font-bold text-orange-500 hover:text-orange-600 transition-colors px-4 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 whitespace-nowrap"
                                     >
-                                        + {t('tickets.add_flight')}
+                                        <Plus size={14} /> {t('tickets.add_flight')}
                                     </button>
                                 )}
                                 <Button
                                     isLoading={isSubmitting}
-                                    dsVariant="cta"
-                                    className="h-[48px] px-8 rounded-ds-md"
+                                    variant="cta"
+                                    className="h-12 px-8"
                                     onClick={handleMultiCitySearch}
                                 >
-                                    {!isSubmitting && <span className="mr-2"><IconSearch width={20} height={20} /></span>}
-                                    <span className="font-bold">{t('common.search_flight')}</span>
+                                    <Search size={18} />
+                                    {t('common.search_flight')}
                                 </Button>
                             </div>
                         </div>
@@ -234,8 +242,8 @@ const SearchFlight = () => {
                     <div className="w-full lg:w-auto">
                         <PassengerInput />
                     </div>
-                    <div className="w-full lg:flex-1 flex flex-col gap-2">
-                        <p className="font-medium text-slate-800/80">{t('tickets.departured_date')}</p>
+                    <div className="w-full lg:flex-1 bg-slate-50 rounded-xl p-3 border border-slate-100 focus-within:border-primary/50 focus-within:bg-white transition-colors">
+                        <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-1">{t('tickets.departured_date')}</p>
                         <DatePicker
                             className="w-full"
                             minDate={moment()}
@@ -248,14 +256,15 @@ const SearchFlight = () => {
                             slotProps={{
                                 textField: {
                                     variant: "standard",
-                                    fullWidth: true
+                                    fullWidth: true,
+                                    sx: bareInputSx
                                 }
                             }}
                         />
                     </div>
                     {tripType === 'round_trip' && (
-                        <div className="w-full lg:flex-1 flex flex-col gap-2">
-                            <p className="font-medium text-slate-800/80">{t('tickets.return_date')}</p>
+                        <div className="w-full lg:flex-1 bg-slate-50 rounded-xl p-3 border border-slate-100 focus-within:border-primary/50 focus-within:bg-white transition-colors">
+                            <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-1">{t('tickets.return_date')}</p>
                             <DatePicker
                                 className="w-full"
                                 minDate={watch('date') ? moment(watch('date')) : moment()}
@@ -268,7 +277,8 @@ const SearchFlight = () => {
                                 slotProps={{
                                     textField: {
                                         variant: "standard",
-                                        fullWidth: true
+                                        fullWidth: true,
+                                        sx: bareInputSx
                                     }
                                 }}
                             />
@@ -276,13 +286,12 @@ const SearchFlight = () => {
                     )}
                     <Button
                         isLoading={isSubmitting}
-                        dsVariant="cta"
-                        className="h-[56px] w-full lg:min-w-[56px] lg:w-[56px] rounded-ds-md"
-                        sx={{ minWidth: 0, "@media (min-width:1024px)": { paddingInline: 0 } }}
+                        variant="cta"
+                        className="h-14 w-full lg:w-14 lg:px-0"
                         onClick={() => handleSubmit(onSubmit)()}
                     >
-                        {!isSubmitting && <IconSearch width={24} height={24}/>}
-                        <span className="lg:hidden ml-2 font-bold">{t('common.search_flight')}</span>
+                        <Search size={20} />
+                        <span className="lg:hidden font-bold">{t('common.search_flight')}</span>
                     </Button>
                 </div>
                 )}

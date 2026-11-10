@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CarCard from "@components/CarCard";
 import CarCardSkeleton from "@components/CarCardSkeleton";
-import { Button, CircularProgress, MenuItem, TextField } from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { useState, useEffect } from "react";
 import { searchCars } from "@api/carRental";
@@ -10,6 +10,22 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import HeroGlow from "@components/HeroGlow";
+import Button from "@components/ui/Button";
+import { Calendar, Car as CarIcon, Users, Search, Fuel, ShieldCheck, MessageCircle } from "lucide-react";
+
+const fieldTileClass = "flex-1 min-w-0 bg-slate-50 rounded-xl p-3 border border-slate-100 focus-within:border-primary/50 focus-within:bg-white transition-colors";
+const fieldLabelClass = "flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-1";
+const bareInputSx = {
+    "& .MuiInput-underline:before, & .MuiInput-underline:after": { display: "none" },
+    "& .MuiInputBase-input": { fontWeight: 700, color: "#1e293b", padding: 0 },
+};
+
+const HOW_IT_WORKS = [
+    { icon: Calendar, title: "Pick your date", desc: "Choose when you need the car and how many seats." },
+    { icon: MessageCircle, title: "We confirm by WhatsApp", desc: "Our team reaches out to confirm availability and driver details." },
+    { icon: CarIcon, title: "Driver meets you", desc: "Airport pickup or hotel pickup, driver + fuel included." },
+];
 
 const CAR_TYPES = [
     { key: "all", label: "All Types" },
@@ -74,7 +90,8 @@ const CarRentContainer = () => {
 
     return (
         <div className="flex flex-col gap-0 w-full items-center justify-center">
-            <section className="relative overflow-hidden w-full bg-gradient-to-br from-orange-600 via-orange-500 to-primary pt-16 pb-32 px-4">
+            <section className="relative w-full bg-gradient-to-br from-orange-600 via-orange-500 to-primary pt-16 pb-32 px-4">
+                <HeroGlow />
                 <svg className="absolute top-10 right-[10%] w-20 h-20 text-white/15 hidden sm:block" viewBox="0 0 100 100" fill="none" aria-hidden="true">
                     <rect x="15" y="40" width="70" height="30" rx="8" stroke="currentColor" strokeWidth="2" />
                     <circle cx="30" cy="75" r="8" stroke="currentColor" strokeWidth="2" />
@@ -85,7 +102,7 @@ const CarRentContainer = () => {
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-                    className="relative z-10 flex flex-col items-center gap-8 max-w-3xl mx-auto"
+                    className="relative flex flex-col items-center gap-8 max-w-3xl mx-auto"
                 >
                     <div className="flex flex-col items-center gap-3 text-center">
                         <span className="inline-block px-4 py-1.5 rounded-full bg-white/15 text-white text-xs font-bold tracking-wide uppercase">
@@ -100,9 +117,9 @@ const CarRentContainer = () => {
                     </div>
 
                     <div className="surface-card p-6 md:p-8 w-full">
-                        <div className="flex flex-col md:flex-row gap-6 items-end w-full">
-                            <div className="flex flex-col gap-1 w-full md:flex-1">
-                                <p className="text-slate-600 text-sm font-medium">Rental Date</p>
+                        <div className="flex flex-col md:flex-row gap-3 w-full">
+                            <div className={fieldTileClass}>
+                                <p className={fieldLabelClass}><Calendar size={12} /> Rental Date</p>
                                 <DatePicker
                                     minDate={moment().startOf("day")}
                                     value={moment(date, "YYYY-MM-DD")}
@@ -111,18 +128,20 @@ const CarRentContainer = () => {
                                         textField: {
                                             variant: "standard",
                                             fullWidth: true,
+                                            sx: bareInputSx,
                                             slotProps: { htmlInput: { "aria-label": "Rental Date" } },
                                         },
                                     }}
                                 />
                             </div>
 
-                            <div className="flex flex-col gap-1 w-full md:flex-1">
-                                <p className="text-slate-600 text-sm font-medium">Car Type</p>
+                            <div className={fieldTileClass}>
+                                <p className={fieldLabelClass}><CarIcon size={12} /> Car Type</p>
                                 <TextField
                                     select
                                     variant="standard"
                                     fullWidth
+                                    sx={bareInputSx}
                                     slotProps={{ htmlInput: { "aria-label": "Car Type" } }}
                                     value={type}
                                     onChange={(e) => setType(e.target.value)}
@@ -133,12 +152,13 @@ const CarRentContainer = () => {
                                 </TextField>
                             </div>
 
-                            <div className="flex flex-col gap-1 w-full md:flex-1">
-                                <p className="text-slate-600 text-sm font-medium">Seat Rows</p>
+                            <div className={fieldTileClass}>
+                                <p className={fieldLabelClass}><Users size={12} /> Seat Rows</p>
                                 <TextField
                                     select
                                     variant="standard"
                                     fullWidth
+                                    sx={bareInputSx}
                                     slotProps={{ htmlInput: { "aria-label": "Seat Rows" } }}
                                     value={rows}
                                     onChange={(e) => setRows(e.target.value)}
@@ -148,19 +168,17 @@ const CarRentContainer = () => {
                                     ))}
                                 </TextField>
                             </div>
-
-                            <Button
-                                variant="contained"
-                                color="warning"
-                                className="w-full md:w-auto"
-                                sx={{ height: 48, borderRadius: "10px", px: { md: 4 } }}
-                                onClick={handleSearch}
-                                disabled={isLoading}
-                                startIcon={isLoading ? <CircularProgress size={16} color="inherit" /> : undefined}
-                            >
-                                Cari Mobil
-                            </Button>
                         </div>
+
+                        <Button
+                            variant="cta"
+                            fullWidth
+                            className="h-14 text-base mt-3"
+                            onClick={handleSearch}
+                            isLoading={isLoading}
+                        >
+                            <Search size={18} /> Cari Mobil
+                        </Button>
                     </div>
                 </motion.div>
 
@@ -169,8 +187,36 @@ const CarRentContainer = () => {
                 </svg>
             </section>
 
+            {/* How it works */}
+            <div className="w-full max-w-[1280px] px-4 -mt-10 relative mb-4">
+                <div className="grid sm:grid-cols-3 gap-4">
+                    {HOW_IT_WORKS.map((step, i) => (
+                        <motion.div
+                            key={step.title}
+                            initial={{ opacity: 0, y: 16 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: i * 0.1 }}
+                            className="surface-card p-5 flex items-start gap-3"
+                        >
+                            <div className="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center shrink-0">
+                                <step.icon size={20} />
+                            </div>
+                            <div>
+                                <p className="font-bold text-slate-800 text-sm">{i + 1}. {step.title}</p>
+                                <p className="text-slate-500 text-xs mt-0.5">{step.desc}</p>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+                <div className="flex items-center justify-center gap-6 mt-5 text-slate-500 text-xs font-semibold">
+                    <span className="flex items-center gap-1.5"><Fuel size={14} className="text-primary" /> Fuel included</span>
+                    <span className="flex items-center gap-1.5"><ShieldCheck size={14} className="text-primary" /> Verified drivers</span>
+                </div>
+            </div>
+
             {/* Results */}
-            <div className="flex gap-4 w-full flex-row relative flex-wrap items-start max-w-[1280px] px-4 py-10 -mt-10">
+            <div className="flex gap-4 w-full flex-row relative flex-wrap items-start max-w-[1280px] px-4 py-6">
                 {isLoading && (
                     <>
                         <CarCardSkeleton />

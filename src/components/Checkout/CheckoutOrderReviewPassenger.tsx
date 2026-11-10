@@ -25,7 +25,7 @@ const CheckoutOrderReviewPassenger = ({ fullname, date_of_birth, index } : Props
                     <CheckCircle2 size={18} className="text-emerald-500 opacity-50" />
                 </div>
             </div>
-            <Divider sx={{ mx: 3, borderColor: "rgba(255,255,255,0.1)" }} />
+            <Divider sx={{ mx: 3, borderColor: "#E6E9EE" }} />
             <div className="p-6 pt-4">
                 <div className="flex items-center gap-6">
                     <div className="flex flex-col gap-1">

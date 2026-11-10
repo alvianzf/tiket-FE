@@ -9,13 +9,14 @@ interface Props {
     isLoading: boolean;
 }
 
-// The summary card intentionally overrides the default glass surface with a
-// more translucent tint, heavier blur, and a 32px radius.
+// Solid card with a slightly larger radius to stand out as the sticky
+// summary. (Previously an almost-invisible rgba(255,255,255,0.10) +
+// blur(64px) glass override — broken now that the page behind it is a
+// plain solid background, not a photo/gradient to blur.)
 const summaryCardSx = {
-    background: "rgba(255,255,255,0.10)",
-    backdropFilter: "blur(64px)",
-    border: "none",
-    borderRadius: "32px",
+    background: "#FFFFFF",
+    border: "1px solid #E6E9EE",
+    borderRadius: "24px",
     boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)",
 } as const;
 
@@ -38,18 +39,18 @@ const CheckoutOrderSummary = ({ flightData, isLoading } : Props) => {
             >
                 <Card className="overflow-hidden sticky top-24" sx={summaryCardSx}>
                     <div className="p-8 pb-4">
-                        <div className="flex items-center gap-2 text-slate-400 font-black uppercase tracking-[0.2em] text-xs">
+                        <div className="flex items-center gap-2 text-slate-500 font-black uppercase tracking-[0.2em] text-xs">
                             <Receipt size={14} />
                             <span>{t('checkout.order_summary')}</span>
                         </div>
                     </div>
-                    <Divider sx={{ mx: 4, borderColor: "rgba(255,255,255,0.1)" }} />
+                    <Divider sx={{ mx: 4, borderColor: "#E6E9EE" }} />
                     <div className="p-8 pt-6">
                         <div className="flex flex-col gap-8">
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between group">
                                     <div className="flex items-center gap-2 border-l-2 border-slate-200 pl-3 group-hover:border-[#ff5a00] transition-colors">
-                                        <span className="text-xs font-black uppercase tracking-wider text-slate-400">{t('checkout.total')}</span>
+                                        <span className="text-xs font-black uppercase tracking-wider text-slate-500">{t('checkout.total')}</span>
                                     </div>
                                     <span className="text-2xl font-black text-[#ff5a00] tracking-tighter">
                                         {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(totalPrice)}

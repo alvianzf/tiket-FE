@@ -7,10 +7,10 @@ const ConciergeServices = () => {
     const { t } = useTranslation();
 
     const services = [
-        { title: t("home.service_flight"), desc: t("home.service_flight_desc"), href: "/", icon: Plane, color: "text-primary bg-primary/10" },
         { title: t("home.service_ferry"), desc: t("home.service_ferry_desc"), href: "/ferry", icon: Ship, color: "text-secondary bg-secondary/10" },
-        { title: t("home.service_driver"), desc: t("home.service_driver_desc"), href: "/car-rental", icon: Car, color: "text-orange-600 bg-orange-500/10" },
         { title: t("home.service_itinerary"), desc: t("home.service_itinerary_desc"), href: "/itinerary", icon: Map, color: "text-emerald-600 bg-emerald-500/10" },
+        { title: t("home.service_driver"), desc: t("home.service_driver_desc"), href: "/car-rental", icon: Car, color: "text-orange-600 bg-orange-500/10" },
+        { title: t("home.service_flight"), desc: t("home.service_flight_desc"), href: "/", icon: Plane, color: "text-primary bg-primary/10" },
     ];
 
     return (
