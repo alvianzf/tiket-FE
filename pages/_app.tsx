@@ -7,6 +7,7 @@ import { Hydrate, QueryClient, QueryClientProvider, QueryErrorResetBoundary } fr
 import { ReactQueryDevtools } from "react-query/devtools";
 import '@utils/i18n';
 import { useTranslation } from "react-i18next";
+import { usePageTracking } from "@hooks/common";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -32,6 +33,8 @@ export default function App({ Component, pageProps, emotionCache = clientSideEmo
     const { t } = useTranslation();
     const getLayout = Component.getLayout ?? ((page) => page);
     const [queryClient] = useState(() => new QueryClient(defaultQueryOption))
+
+    usePageTracking();
 
     useEffect(() => {
         // 🥚 Easter egg — for the curious who open the console.
