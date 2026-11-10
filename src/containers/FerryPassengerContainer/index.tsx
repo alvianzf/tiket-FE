@@ -34,6 +34,7 @@ const FerryPassengerContainer = () => {
     const { push, query, isReady } = useRouter();
 
     const tripID = query?.tripID as string ?? '';
+    const returnTripID = query?.returnTripID as string ?? '';
     const embarkation = query?.embarkation as string ?? '';
     const destination = query?.destination as string ?? '';
     const tripdate = query?.tripdate as string ?? '';
@@ -87,6 +88,7 @@ const FerryPassengerContainer = () => {
 
             const payload = {
                 tripID,
+                ...(returnTripID ? { returnTripID } : {}),
                 contactEmail,
                 contactMobileNumber: mobileNumber,
                 whatsappMobileNumber: whatsappNumber || mobileNumber,
@@ -124,6 +126,8 @@ const FerryPassengerContainer = () => {
                     price,
                     embarkation,
                     destination,
+                    tripdate,
+                    ...(returndate ? { returndate } : {}),
                     vesselName,
                     contactEmail,
                 }

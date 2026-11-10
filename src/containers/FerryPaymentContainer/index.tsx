@@ -2,9 +2,17 @@
 import DanaPayment from "@components/Payment/DanaPayment";
 import FerryStepper from "@components/FerryStepper";
 import { Card, CardContent, CardHeader, CircularProgress } from "@mui/material";
+import { Ship, RotateCcw } from "lucide-react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { getFerryBooking } from "@api/ferry";
+import moment from "moment";
+
+const formatTripDate = (value: string) => {
+    if (!value) return '';
+    const parsed = moment(value, ['YYYYMMDD', 'YYYY-MM-DD'], true);
+    return parsed.isValid() ? parsed.format('DD-MM-YYYY') : value;
+};
 
 const FerryPaymentContainer = () => {
 
@@ -14,6 +22,9 @@ const FerryPaymentContainer = () => {
     const price = parseInt(query?.price as string ?? '0');
     const embarkation = query?.embarkation as string ?? '';
     const destination = query?.destination as string ?? '';
+    const tripdate = query?.tripdate as string ?? '';
+    const returndate = query?.returndate as string ?? '';
+    const isRoundTrip = !!returndate;
     const vesselName = query?.vesselName as string ?? '';
 
     const [booking, setBooking] = useState<any>(null);
@@ -71,10 +82,39 @@ const FerryPaymentContainer = () => {
                             />
                             <CardContent>
                                 <div className="flex flex-col gap-4">
-                                    <div className="flex flex-row items-center justify-between">
-                                        <p className="font-bold">{embarkation || '—'}</p>
-                                        <hr className="border-slate-200 w-[20%]"/>
-                                        <p className="font-bold">{destination || '—'}</p>
+                                    {isRoundTrip && (
+                                        <div className="flex items-center gap-1.5 w-fit px-2.5 py-1 rounded-full bg-orange-500/10">
+                                            <RotateCcw size={12} className="text-[#ff5a00]" />
+                                            <span className="text-[10px] font-black uppercase tracking-wider text-[#ff5a00]">Round Trip</span>
+                                        </div>
+                                    )}
+
+                                    <div className="flex flex-col gap-2.5">
+                                        <div className="flex items-start gap-2">
+                                            <Ship size={14} className="text-slate-400 mt-0.5 shrink-0" />
+                                            <div className="flex-1">
+                                                <div className="flex flex-row items-center justify-between">
+                                                    <p className="font-bold">{embarkation || '—'}</p>
+                                                    <hr className="border-slate-200 w-[15%]"/>
+                                                    <p className="font-bold">{destination || '—'}</p>
+                                                </div>
+                                                {tripdate && <p className="text-slate-400 text-xs mt-0.5">{formatTripDate(tripdate)}</p>}
+                                            </div>
+                                        </div>
+
+                                        {isRoundTrip && (
+                                            <div className="flex items-start gap-2">
+                                                <RotateCcw size={14} className="text-slate-400 mt-0.5 shrink-0" />
+                                                <div className="flex-1">
+                                                    <div className="flex flex-row items-center justify-between">
+                                                        <p className="font-bold">{destination || '—'}</p>
+                                                        <hr className="border-slate-200 w-[15%]"/>
+                                                        <p className="font-bold">{embarkation || '—'}</p>
+                                                    </div>
+                                                    <p className="text-slate-400 text-xs mt-0.5">{formatTripDate(returndate)}</p>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                     {vesselName && <p className="text-slate-500 text-sm">{vesselName}</p>}
                                     {passengers.length > 0 && (
